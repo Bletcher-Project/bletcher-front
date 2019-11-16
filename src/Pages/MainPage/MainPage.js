@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import logo from "../../logo.svg";
+
 const defaultProps = {};
 const propTypes = {};
 
@@ -10,7 +12,12 @@ class MainPage extends Component {
   }
 
   render() {
-    return <div className="mainPage">This is Main Page.</div>;
+    return (
+      <div className="mainPage">
+        <img src={logo} width="40px" alt="logo" />
+        This is Main Page.
+      </div>
+    );
   }
 }
 
