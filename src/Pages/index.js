@@ -1,6 +1,7 @@
-/* Default Page */
-import DefaultPage from "./_DefaultPage/DefaultPage";
+import MainPage from "./MainPage/MainPage";
+import SignUpPage from "./SignUpPage/SignUpPage";
+import HomePage from "./HomePage/HomePage";
+import UserPage from "./UserPage/UserPage";
+import GuidePage from "./GuidePage/GuidePage";
 
-export {
-  DefaultPage
-};
+export { MainPage, SignUpPage, HomePage, UserPage, GuidePage };
