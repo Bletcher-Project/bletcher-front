@@ -1,8 +1,4 @@
-/*
- * Author: @nayunhwan (github.com/nayunhwan)
- * Email: nayunhwan.dev@mgail.com
- */
+import MainButton from "./MainButton/MainButton";
 
 import NavBar from "./NavBar/NavBar";
-
-export { NavBar };
+export { MainButton, NavBar };
