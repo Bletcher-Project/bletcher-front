@@ -1,5 +1,12 @@
 import React, { Component } from "react";
 
+<<<<<<< Page/MainPage
+=======
+import logo from "../../logo.svg";
+
+import { MainButton } from "../../Components";
+
+>>>>>>> MainButton #1
 const defaultProps = {};
 const propTypes = {};
 
@@ -12,6 +19,7 @@ class MainPage extends Component {
   render() {
     return (
       <div className="mainPage">
+<<<<<<< Page/MainPage
         <div className="mainPage__header">
           <div className="mainPage__header__intro">
             <h1 className="mainPage__header__intro-head">Bletcher</h1>
@@ -20,6 +28,11 @@ class MainPage extends Component {
             </p>
           </div>
         </div>
+=======
+        <img src={logo} width="40px" alt="logo" />
+        This is Main Page.
+        <MainButton text="Getting Start" />
+>>>>>>> MainButton #1
       </div>
     );
   }

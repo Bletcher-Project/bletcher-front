@@ -1,8 +1,3 @@
-/*
- * Author: @nayunhwan (github.com/nayunhwan)
- * Email: nayunhwan.dev@mgail.com
- */
+import MainButton from "./MainButton/MainButton";
 
-import DefaultComponent from "./_DefaultComponent/DefaultComponent";
-
-export { DefaultComponent };
+export { MainButton };
