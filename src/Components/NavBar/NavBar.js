@@ -10,6 +10,8 @@ import {
   NavbarBrand,
   Nav
 } from "reactstrap";
+import "bootstrap/dist/css/bootstrap.css";
+
 
 const defaultProps = {};
 const propTypes = {};
@@ -23,26 +25,24 @@ class NavBar extends Component {
   render() {
     const { isStart, isSignup } = this.props;
     return (
-      <Navbar>
-        <NavbarBrand>
-          <img src={logo} width="40px" alt="logo" />
+      <Navbar> 
+        <NavbarBrand className="navBar__logo" fixed="top">
+          <NavLink href="/"><img src={logo}  width="40px" alt="logo" /></NavLink>
           {isSignup === true ? (
-            <span>bletcher</span>
+            <p className="navBar__logo__text">Bletcher</p>
           ) : null}
         </NavbarBrand>
-
-        <Nav>
+        <Nav className="navBar__items" >
           {isStart === true ? (
-            <NavItem>
+            <NavItem className="navBar__items__item">
               <NavLink href ="/signup">Sign Up</NavLink>
             </NavItem>
           ) : null}
           {isStart === true ? (
-            <NavItem>
+            <NavItem className="navBar__itmes__item">
               <NavLink href="/about">About</NavLink>
             </NavItem>
           ) : null}
-
         </Nav>
       </Navbar>
     );
