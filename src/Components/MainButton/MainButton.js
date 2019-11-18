@@ -19,7 +19,6 @@ const PurpleButton = withStyles(theme => ({
     color: theme.palette.getContrastText(purple[600]),
     backgroundColor: purple[600],
     "&:hover": {
-      fontWeight: 600,
       color: purple[600],
       border: "2px solid",
       backgroundColor: "rgba(0,0,0,0)",
