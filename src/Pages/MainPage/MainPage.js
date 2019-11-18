@@ -2,8 +2,6 @@ import React, { Component } from "react";
 
 import { MainButton } from "../../Components";
 
-import { MainButton } from "../../Components";
-
 const defaultProps = {};
 const propTypes = {};
 
