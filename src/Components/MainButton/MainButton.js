@@ -41,7 +41,12 @@ class MainButton extends Component {
     const { text, onClick } = this.props;
     return (
       <div className="mainButton">
-        <PurpleButton variant="contained" color="primary" onClick={onClick}>
+        <PurpleButton
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={onClick}
+        >
           {text}
         </PurpleButton>
       </div>
