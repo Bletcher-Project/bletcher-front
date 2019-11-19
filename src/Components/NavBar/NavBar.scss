@@ -1,31 +1,43 @@
 /*
   NavBar Component Styling
 */
+nav {
+  position: fixed !important;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  background-color: white;
+  z-index: 1500;
+  padding: 0 !important;
+}
 
 .navBar {
   background-color: white;
-  height: 3rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
   box-sizing: border-box;
+  
+  &__borderline-bottom {
+    border-bottom: 0.5px solid #dbdbdb;
+  }
 
   &__logo {
     display: flex !important;
-    padding-top: 0px;
-    padding-bottom: 0px;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
     padding-left: 60px;
     
-
     &__img {
       padding-right: 7px !important;
     }
 
     &__text {
-      font-family: flood-std, sans-serif !important;
+      font-family: flood-std, sans-serif;
       font-weight: 400;
-      font-size: 1.8rem !important;
-      margin-top: 0.5rem !important;
-      margin-bottom: 0  !important;
-      margin-left: 0 !important;
+      font-size: 1.8rem;
+      padding: 0;
+      margin-top: 0.5rem;
+      margin-bottom: 0;
+      margin-left: 0;
     }
   }
 
@@ -46,9 +58,4 @@
       }
     }
   }
-
-  &__borderline-bottom {
-    border-bottom: 0.5px solid #dbdbdb !important;
-  }
-  
 }

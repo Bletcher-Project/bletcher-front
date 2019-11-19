@@ -11,6 +11,13 @@ body {
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  a {
+    color: #000000;
+  }
+  a:hover {
+    text-decoration: none;
+    color: #000000;
+  }
 }
 
 code {
@@ -18,13 +25,3 @@ code {
     monospace;
 }
 
-.navbar {
-  position: sticky !important;
-  top: 0 !important;
-  background-color: white !important;
-
-}
-
-a {
-  color : #000000 !important;
-}
