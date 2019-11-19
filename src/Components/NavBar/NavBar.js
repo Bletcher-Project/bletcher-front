@@ -10,6 +10,7 @@ import {
   NavbarBrand,
   Nav
 } from "reactstrap";
+import cx from "classnames";
 import "bootstrap/dist/css/bootstrap.css";
 
 
@@ -23,23 +24,21 @@ class NavBar extends Component {
   }
 
   render() {
-    const { isStart, isSignup } = this.props;
+    const { isActive } = this.props;
     return (
-      <Navbar> 
-        <NavbarBrand className="navBar__logo" fixed="top">
-          <NavLink href="/"><img src={logo}  width="40px" alt="logo" /></NavLink>
-          {isSignup === true ? (
+      <Navbar className={cx(null, {
+        "navBar__borderline-bottom": isActive !== "main"
+      })}> 
+        <NavbarBrand className="navBar__logo " fixed="top">
+          <NavLink className="navBar__logo__img" href="/"><img src={logo}  width="35px" alt="logo" /></NavLink>
+          { isActive === "signup" ? (
             <p className="navBar__logo__text">Bletcher</p>
           ) : null}
         </NavbarBrand>
         <Nav className="navBar__items" >
-          {isStart === true ? (
+          { isActive === "main" ? (
             <NavItem className="navBar__items__item">
               <NavLink href ="/signup">Sign Up</NavLink>
-            </NavItem>
-          ) : null}
-          {isStart === true ? (
-            <NavItem className="navBar__itmes__item">
               <NavLink href="/about">About</NavLink>
             </NavItem>
           ) : null}

@@ -17,3 +17,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.navbar {
+  position: sticky !important;
+  top: 0 !important;
+  background-color: white !important;
+
+}
+
+a {
+  color : #000000 !important;
+}

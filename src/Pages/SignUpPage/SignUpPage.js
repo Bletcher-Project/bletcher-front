@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { NavBar } from "../../Components";
 
 const defaultProps = {};
 const propTypes = {};
@@ -10,7 +11,27 @@ class SignUpPage extends Component {
   }
 
   render() {
-    return <div>This is SignUp Page</div>;
+    return (
+      <div>
+        <NavBar isActive="signup" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+        <img src="https://deepart-io.s3.amazonaws.com/img/result.jpg" width="30%" />
+      </div>
+    );
   }
 }
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { MainButton } from "../../Components";
+import { MainButton, NavBar } from "../../Components";
 
 const defaultProps = {};
 const propTypes = {};
@@ -14,6 +14,7 @@ class MainPage extends Component {
   render() {
     return (
       <div className="mainPage">
+        <NavBar isActive="main"/>
         <div className="mainPage__header">
           <div className="mainPage__header__intro">
             <h1 className="mainPage__header__intro-head">Bletcher</h1>
