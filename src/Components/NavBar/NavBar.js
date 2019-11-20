@@ -17,6 +17,7 @@ import NotificationsNoneOutlinedIcon from '@material-ui/icons/NotificationsNoneO
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import PropTypes from 'prop-types';
 import Slide from '@material-ui/core/Slide';
+import AppBar from '@material-ui/core/AppBar';
 import "bootstrap/dist/css/bootstrap.css";
 
 
@@ -25,10 +26,11 @@ const propTypes = {};
 
 function HideOnScroll(props) {
   const { isActive } = props;
-  const trigger = useScrollTrigger();
+  const trigger = useScrollTrigger({disableHysteresis: true, threshold: 100});
 
   return (
     <Slide appear={false} direction="down" in={!trigger}>
+      <AppBar>
       <Navbar className={cx(null, {
           "navBar__borderline-bottom": isActive !== "NotLoggedIn"
         })}> 
@@ -54,6 +56,7 @@ function HideOnScroll(props) {
             ) : null}
           </Nav>
         </Navbar>
+        </AppBar>
     </Slide>
   );
 }
