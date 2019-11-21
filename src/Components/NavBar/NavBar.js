@@ -7,11 +7,11 @@ import logo from "../../logo.svg";
 import "bootstrap/dist/css/bootstrap.css";
 
 import { 
+  Nav,
   Navbar,
   NavItem,
   NavLink,
-  NavbarBrand,
-  Nav
+  NavbarBrand
 } from "reactstrap";
 import {
   DashboardOutlined,
@@ -20,22 +20,22 @@ import {
 } from "@material-ui/icons";
 import {
   AppBar,
-  Slide,
+  Fade,
   useScrollTrigger
 } from "@material-ui/core";
-
 
 const defaultProps = {};
 const propTypes = {};
 
 const HideOnScroll = (props) => {
   const { children } = props;
-  const trigger = useScrollTrigger({disableHysteresis: true, threshold: 100});
-
+  const trigger = useScrollTrigger();
   return (
-    <Slide appear={false} direction="down" in={!trigger}>
+
+    <Fade in={!trigger} timeout={500}>
       {children}
-    </Slide>
+    </Fade>
+    
   );
 }
 
@@ -78,8 +78,6 @@ class NavBar extends Component {
         </AppBar>
       </HideOnScroll>
     );
-      
-    
   }
 }
 
