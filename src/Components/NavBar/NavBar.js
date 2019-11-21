@@ -1,14 +1,16 @@
 // This Component is Skeleton of React Structure for Web Development
 // If you want to make other Component, Copy and Refactor this Component.
 
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import cx from "classnames";
 import logo from "../../logo.svg";
 import "bootstrap/dist/css/bootstrap.css";
 
 import { 
+  Collapse,
   Nav,
   Navbar,
+  NavbarToggler,
   NavItem,
   NavLink,
   NavbarBrand
@@ -21,6 +23,7 @@ import {
 import {
   AppBar,
   Fade,
+  Tooltip,
   useScrollTrigger
 } from "@material-ui/core";
 
@@ -31,11 +34,23 @@ const HideOnScroll = (props) => {
   const { children } = props;
   const trigger = useScrollTrigger();
   return (
-
     <Fade in={!trigger} timeout={500}>
       {children}
     </Fade>
-    
+  );
+}
+
+const CollapseNavbar = (props) => {
+  const { children } = props;
+  const [collapsed, setCollapsed] = useState(true);
+  const toggleNavbar = () => setCollapsed(!collapsed);
+  return (
+    <NavbarToggler onClick={toggleNavbar}>
+    <Collapse isOpen={!collapsed}>
+      {children}
+    </Collapse>
+    </NavbarToggler>
+
   );
 }
 
@@ -54,7 +69,9 @@ class NavBar extends Component {
           "navBar__borderline-bottom": isActive !== "NotLoggedIn"
            })}> 
             <NavbarBrand className="navBar__logo " fixed="top">
-              <NavLink className="navBar__logo__img" href="/"><img src={logo}  width="35px" alt="logo" /></NavLink>
+              <NavLink className="navBar__logo__img" href="/">
+                <img src={logo}  width="35px" alt="logo" />
+              </NavLink>
               { isActive === "SignUp" || isActive === "LoggedIn" ? (
                 <p className="navBar__logo__text">Bletcher</p>
               ) : null}
@@ -68,13 +85,39 @@ class NavBar extends Component {
               ) : null}
               { isActive === "LoggedIn" ? (
                 <NavItem className="navBar__items__item">
-                  <NavLink href =""><DashboardOutlined alt="feed"/></NavLink>
-                  <NavLink href=""><AccountCircleOutlined alt="My page"/></NavLink>
-                  <NavLink href=""><NotificationsNoneOutlined alt="Notification"/></NavLink>
+                  <Tooltip title="Feed" aria-label="feed">
+                    <NavLink href ="">
+                      <DashboardOutlined alt="feed" />
+                    </NavLink>
+                  </Tooltip>
+                  <Tooltip title="My page" aria-label="my page">
+                    <NavLink href="">
+                      <AccountCircleOutlined alt="My page" />
+                    </NavLink>
+                  </Tooltip>
+                  <Tooltip title="Notification" aria-label="notification">
+                    <NavLink href="">
+                      <NotificationsNoneOutlined alt="Notification"/>
+                    </NavLink>
+                  </Tooltip>
                 </NavItem>
               ) : null}
+              { isActive === "LoggedIn" ? (
+                <CollapseNavbar>
+                <AppBar>
+                  <Nav className="navBar__items">
+                    <NavItem className="navBar__items__item">
+                      <NavLink href="/settings">Settings</NavLink>
+                    </NavItem>
+                    <NavItem className="navBar__items__item">
+                      <NavLink href="">Sign Out</NavLink>
+                    </NavItem>
+                  </Nav>
+                </AppBar>
+                </CollapseNavbar>
+              ) : null}
             </Nav>
-        </Navbar>
+          </Navbar>
         </AppBar>
       </HideOnScroll>
     );
