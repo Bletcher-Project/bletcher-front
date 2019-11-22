@@ -19,7 +19,7 @@ import {
   DashboardOutlined,
   AccountCircleOutlined,
   NotificationsNoneOutlined,
-  MoreVertOutlined
+  MoreHoriz
 } from "@material-ui/icons";
 import {
   AppBar,
@@ -89,9 +89,6 @@ class NavBar extends Component {
               ) : null}
               { isActive === "LoggedIn" ? (
                 <NavItem className="navBar__items__item">
-                  <Tooltip title="More" aria-label="more">
-                    <MoreVertOutlined alt="More"/>
-                  </Tooltip>
                   <Tooltip title="Feed" aria-label="feed">
                     <NavLink href ="">
                       <DashboardOutlined alt="feed" />
@@ -105,6 +102,11 @@ class NavBar extends Component {
                   <Tooltip title="Notification" aria-label="notification">
                     <NavLink href="">
                       <NotificationsNoneOutlined alt="Notification"/>
+                    </NavLink>
+                  </Tooltip>
+                  <Tooltip title="More" aria-label="more">
+                    <NavLink href="">
+                      <MoreHoriz alt="More"/>
                     </NavLink>
                   </Tooltip>
                 </NavItem>
