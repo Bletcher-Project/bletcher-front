@@ -13,10 +13,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   a {
     color: #000000;
-  }
-  a:hover {
-    text-decoration: none;
-    color: #000000;
+    :hover {
+      text-decoration: none;
+      color: #000000;
+    }
   }
 }
 
@@ -24,4 +24,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
