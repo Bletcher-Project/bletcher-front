@@ -35,25 +35,25 @@ class NavBar extends Component {
     const { isActive } = this.props;
     return (
       <Navbar className={cx(null, {
-        "navbar__borderline-bottom": isActive !== "NotLoggedIn"
+        "navBar__borderline-bottom": isActive !== "NotLoggedIn"
       })}>
-        <NavbarBrand className="navbar__logo " fixed="top">
-          <NavLink className="navbar__logo__img" href="/">
+        <NavbarBrand className="navBar__logo " fixed="top">
+          <NavLink className="navBar__logo__img" href="/">
             <img src={logo} width="35px" alt="logo" />
           </NavLink>
           {isActive === "SignUp" || isActive === "SignnedIn" ? (
-            <p className="navbar__logo__text">Bletcher</p>
+            <p className="navBar__logo__text">Bletcher</p>
           ) : null}
         </NavbarBrand>
-        <Nav className="navbar__items" >
+        <Nav className="navBar__items" >
           {isActive === "NotLoggedIn" ? (
-            <NavItem className="navbar__items__item">
+            <NavItem className="navBar__items__item">
               <NavLink href="/signup">Sign Up</NavLink>
               <NavLink href="/about">About</NavLink>
             </NavItem>
           ) : null}
           {isActive === "SignnedIn" ? (
-            <NavItem className="navbar__items__item">
+            <NavItem className="navBar__items__item">
               <Tooltip title="Feed" aria-label="feed">
                 <NavLink href="">
                   <DashboardOutlined alt="feed" />
