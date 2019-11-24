@@ -14,7 +14,7 @@ class MainPage extends Component {
   render() {
     return (
       <div className="mainPage">
-        <NavBar isActive="NotLoggedIn"/>
+        <NavBar isActive="NotSignedIn"/>
         <div className="mainPage__header">
           <div className="mainPage__header__intro">
             <h1 className="mainPage__header__intro-head">Bletcher</h1>

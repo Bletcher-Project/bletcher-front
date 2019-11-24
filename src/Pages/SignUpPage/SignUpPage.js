@@ -13,71 +13,7 @@ class SignUpPage extends Component {
   render() {
     return (
       <div>
-        <NavBar isActive="SignnedIn" />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
-        <img
-          src="https://deepart-io.s3.amazonaws.com/img/result.jpg"
-          width="30%" alt="example"
-        />
+        <NavBar isActive="SignUp" />
       </div>
     );
   }

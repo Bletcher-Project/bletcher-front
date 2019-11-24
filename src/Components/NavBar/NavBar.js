@@ -5,22 +5,7 @@ import React, { Component } from "react";
 import cx from "classnames";
 import logo from "../../logo.svg";
 
-import { 
-  Nav,
-  Navbar,
-  NavItem,
-  NavLink,
-  NavbarBrand
-} from "reactstrap";
-import {
-  DashboardOutlined,
-  AccountCircleOutlined,
-  NotificationsNoneOutlined,
-  MoreHoriz
-} from "@material-ui/icons";
-import {
-  Tooltip
-} from "@material-ui/core";
+import { Nav, Navbar, NavItem, NavLink, NavbarBrand } from "reactstrap";
 
 const defaultProps = {};
 const propTypes = {};
@@ -34,46 +19,40 @@ class NavBar extends Component {
   render() {
     const { isActive } = this.props;
     return (
-      <Navbar className={cx(null, {
-        "navBar__borderline-bottom": isActive !== "NotLoggedIn"
-      })}>
+      <Navbar
+        className={cx(null, {
+          "navBar__bordershadow-bottom": isActive !== "NotLoggedIn"
+        })}
+      >
         <NavbarBrand className="navBar__logo " fixed="top">
           <NavLink className="navBar__logo__img" href="/">
-            <img src={logo} width="35px" alt="logo" />
+            <img src={logo} width="33px" alt="logo" />
           </NavLink>
           {isActive === "SignUp" || isActive === "SignnedIn" ? (
             <p className="navBar__logo__text">Bletcher</p>
           ) : null}
         </NavbarBrand>
-        <Nav className="navBar__items" >
-          {isActive === "NotLoggedIn" ? (
+        <Nav className="navBar__items">
+          {isActive === "NotSignedIn" ? (
             <NavItem className="navBar__items__item">
               <NavLink href="/signup">Sign Up</NavLink>
               <NavLink href="/about">About</NavLink>
             </NavItem>
           ) : null}
-          {isActive === "SignnedIn" ? (
+          {isActive === "SignedIn" ? (
             <NavItem className="navBar__items__item">
-              <Tooltip title="Feed" aria-label="feed">
-                <NavLink href="">
-                  <DashboardOutlined alt="feed" />
-                </NavLink>
-              </Tooltip>
-              <Tooltip title="My page" aria-label="my page">
-                <NavLink href="">
-                  <AccountCircleOutlined alt="My page" />
-                </NavLink>
-              </Tooltip>
-              <Tooltip title="Notification" aria-label="notification">
-                <NavLink href="">
-                  <NotificationsNoneOutlined alt="Notification" />
-                </NavLink>
-              </Tooltip>
-              <Tooltip title="More" aria-label="more">
-                <NavLink href="">
-                  <MoreHoriz alt="More" />
-                </NavLink>
-              </Tooltip>
+              <NavLink href="">
+                Feed
+              </NavLink>
+              <NavLink href="">
+                MyPage
+              </NavLink>
+              <NavLink href="">
+                Notification
+              </NavLink>
+              <NavLink href="">
+                More
+              </NavLink>
             </NavItem>
           ) : null}
         </Nav>
