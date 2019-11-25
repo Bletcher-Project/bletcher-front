@@ -11,6 +11,13 @@ body {
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  a {
+    color: #000000;
+    &:hover {
+      text-decoration: none;
+      color: #000000;
+    }
+  }
 }
 
 code {

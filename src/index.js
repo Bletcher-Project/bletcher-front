@@ -5,6 +5,7 @@ import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
 
 // css
+import "bootstrap/dist/css/bootstrap.css";
 import "./index.scss";
 
 // Root React Component

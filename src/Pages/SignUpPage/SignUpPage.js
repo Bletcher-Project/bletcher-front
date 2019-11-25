@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { NavBar } from "../../Components";
 
 const defaultProps = {};
 const propTypes = {};
@@ -10,7 +11,11 @@ class SignUpPage extends Component {
   }
 
   render() {
-    return <div>This is SignUp Page</div>;
+    return (
+      <div>
+        <NavBar isActive="SignUp" />
+      </div>
+    );
   }
 }
 
