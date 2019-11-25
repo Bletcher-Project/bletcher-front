@@ -21,7 +21,7 @@ class NavBar extends Component {
     return (
       <Navbar
         className={cx(null, {
-          "navBar__bordershadow-bottom": isActive !== "NotLoggedIn"
+          "navBar__bordershadow-bottom": isActive !== "NotSignedIn"
         })}
       >
         <NavbarBrand className="navBar__logo " fixed="top">
