@@ -14,6 +14,10 @@
     z-index: 1500;
   }
 
+  &__main {
+    padding-top: 1%;
+  }
+
   &__shadow {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
   }
@@ -46,7 +50,7 @@
     &__item {
       display: flex;
       align-items: center;
-      padding-right: 0 20px 0 0;
+      padding: 0 20px 0 0;
     }
   }
 }

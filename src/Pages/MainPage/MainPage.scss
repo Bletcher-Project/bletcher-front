@@ -13,7 +13,8 @@
     align-content: center;
 
     &__intro {
-      margin-top: 15%;
+      //margin-top: 17%;
+      margin-bottom: -50%;
       text-align: center;
 
       &-head {
@@ -33,6 +34,35 @@
 
       &-btn {
         padding-top: 2%;
+      }
+    }
+
+    &__signIn {
+      margin-bottom: -52%;
+      text-align: center;
+
+      &__email {
+        margin: 15px 0;
+      }
+
+      &__password {
+        margin: 15px 0;
+      }
+
+      &-btn {
+        padding-top: 2%;
+        margin-bottom: 0.5%;
+      }
+
+      &__signUpLink a {
+        font-size: 1rem;
+        border-bottom: 1px solid black;
+
+        &:hover {
+          padding: 0 3px;
+          border-bottom: 1.5px solid $main-color;
+          color: $main-color;
+        }
       }
     }
   }

@@ -21,6 +21,7 @@ class NavBar extends Component {
     return (
       <Navbar
         className={cx(null, {
+          navBar__main: isActive === "main",
           navBar__shadow: isActive !== "main"
         })}
       >
