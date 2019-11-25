@@ -19,7 +19,7 @@ class SignUpPage extends Component {
         <NavBar isActive="SignUp" />
         <div className="signupPage__type">
           <p className="signupPage__type-head">
-            Choose your type.
+            Choose your user type.
           </p>
           <div className="signupPage__type__btn">
             <img className="signupPage__type__btn-img" src={logo_sketcher} />
@@ -32,7 +32,7 @@ class SignUpPage extends Component {
             <img className="signupPage__type__btn-img" src={logo_creator} />
             <p className="signupPage__type__btn-head">Creator</p>
             <p className="signupPage__type__btn-describe">
-              Share your creation for sketchers.
+              Share your creation for Sketchers.
             </p>
           </div>
         </div>
