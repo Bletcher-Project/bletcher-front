@@ -21,40 +21,31 @@ class NavBar extends Component {
     return (
       <Navbar
         className={cx(null, {
-          "navBar__bordershadow-bottom": isActive !== "NotSignedIn"
+          navBar__shadow: isActive !== "main"
         })}
       >
         <NavbarBrand className="navBar__logo " fixed="top">
-          <NavLink className="navBar__logo__img" href="/">
+          <NavLink className="navBar__logo-img" href="/">
             <img src={logo} width="33px" alt="logo" />
           </NavLink>
-          {isActive === "SignUp" || isActive === "SignnedIn" ? (
-            <p className="navBar__logo__text">Bletcher</p>
+          {isActive !== "main" ? (
+            <p className="navBar__logo-text">Bletcher</p>
           ) : null}
         </NavbarBrand>
         <Nav className="navBar__items">
-          {isActive === "NotSignedIn" ? (
+          {isActive === "main" ? (
             <NavItem className="navBar__items__item">
               <NavLink href="/signup">Sign Up</NavLink>
               <NavLink href="/about">About</NavLink>
             </NavItem>
-          ) : null}
-          {isActive === "SignedIn" ? (
+          ) : (
             <NavItem className="navBar__items__item">
-              <NavLink href="">
-                Feed
-              </NavLink>
-              <NavLink href="">
-                MyPage
-              </NavLink>
-              <NavLink href="">
-                Notification
-              </NavLink>
-              <NavLink href="">
-                More
-              </NavLink>
+              <NavLink href="">Feed</NavLink>
+              <NavLink href="">MyPage</NavLink>
+              <NavLink href="">Notification</NavLink>
+              <NavLink href="">More</NavLink>
             </NavItem>
-          ) : null}
+          )}
         </Nav>
       </Navbar>
     );

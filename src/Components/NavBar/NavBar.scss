@@ -14,25 +14,21 @@
     z-index: 1500;
   }
 
-  &__bordershadow-bottom {
+  &__shadow {
     box-shadow: 0 4px 3px rgba(0, 0, 0, 0.075);
   }
 
   &__logo {
     display: flex;
-    padding: {
-      top: 0px;
-      bottom: 0px;
-      left: 60px;
-    }
+    padding: 0 0 0 60px;
 
-    &__img {
+    &-img {
       padding: {
         right: 7px;
       }
     }
 
-    &__text {
+    &-text {
       color: black;
       font: {
         family: flood-std, sans-serif;
