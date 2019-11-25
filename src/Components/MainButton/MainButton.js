@@ -3,12 +3,7 @@
 
 import React, { Component } from "react";
 
-import {
-  createMuiTheme,
-  withStyles,
-  makeStyles,
-  ThemeProvider
-} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import { purple } from "@material-ui/core/colors";
 
@@ -17,11 +12,22 @@ const propTypes = {};
 
 const PurpleButton = withStyles(theme => ({
   root: {
-    color: theme.palette.getContrastText(purple[500]),
-    backgroundColor: purple[500],
+    boxShadow: "none",
+    textTransform: "none",
+    fontSize: 17,
+    padding: "0 20px",
+    color: theme.palette.getContrastText(purple[600]),
+    backgroundColor: purple[600],
     "&:hover": {
-      backgroundColor: purple[700]
-    }
+      color: purple[600],
+      border: "2px solid",
+      backgroundColor: "rgba(0,0,0,0)",
+      borderColor: purple[600]
+    },
+    "&:active": {
+      boxShadow: "none"
+    },
+    "&:focus": {}
   }
 }))(Fab);
 
@@ -35,7 +41,7 @@ class MainButton extends Component {
     const { text } = this.props;
     return (
       <div className="mainButton">
-        <PurpleButton variant="contained" color="primary">
+        <PurpleButton variant="contained" color="primary" size="large">
           {text}
         </PurpleButton>
       </div>
