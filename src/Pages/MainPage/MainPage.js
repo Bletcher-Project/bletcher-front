@@ -16,7 +16,7 @@ class MainPage extends Component {
     console.log(this.state.isClicked);
     return (
       <div className="mainPage">
-        <NavBar isActive="main"/>
+        <NavBar isActive="main" />
         {!isClicked ? (
           <div className="mainPage__header">
             <div className="mainPage__header__intro">
