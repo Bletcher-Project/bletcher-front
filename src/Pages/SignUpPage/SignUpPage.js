@@ -22,24 +22,20 @@ class SignUpPage extends Component {
             Choose your type.
           </p>
           <div className="signupPage__type__btn">
-            <img className="signupPage__type__btn-img"
-              src={logo_sketcher}
-              width="200px" />
+            <img className="signupPage__type__btn-img" src={logo_sketcher} />
             <p className="signupPage__type__btn-head">Sketcher</p>
             <p className="signupPage__type__btn-describe">
               Recreate with your creative idea.
             </p>
           </div>
           <div className="signupPage__type__btn">
-            <img className="signupPage__type__btn-img"
-              src={logo_creator}
-              width="200px" />
+            <img className="signupPage__type__btn-img" src={logo_creator} />
             <p className="signupPage__type__btn-head">Creator</p>
             <p className="signupPage__type__btn-describe">
               Share your creation for sketchers.
             </p>
           </div>
-        </div>_
+        </div>
       </div>
     );
   }
