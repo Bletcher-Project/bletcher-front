@@ -57,10 +57,11 @@
       &__signUpLink a {
         font-size: 1rem;
         border-bottom: 1px solid black;
+        transition: 0.3s;
 
         &:hover {
           padding: 0 3px;
-          border-bottom: 1.5px solid $main-color;
+          border-bottom: 1px solid $main-color;
           color: $main-color;
         }
       }
