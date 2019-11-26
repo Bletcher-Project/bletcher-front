@@ -2,56 +2,56 @@
   Sign Up Page Styling
 */
 
-.signupPage {
-  width: 100%;
-  height: 100%;
+// .signupPage {
+//   width: 100%;
+//   height: 100%;
 
-  &__type {
-    width: 100%;
-    height: 600px;
-    justify-content: center;
-    align-content: center;
-    margin-top: 10%;
-    text-align: center;
+//   &__type {
+//     width: 100%;
+//     height: 600px;
+//     justify-content: center;
+//     align-content: center;
+//     margin-top: 10%;  
+//     text-align: center;
 
-    &-head {
-      display: flex;
-      justify-content: center;
-      align-content: center;
-      margin: 0 0 3% 0;
-      font-size: 3rem;
-    }
+//     &-head {
+//       display: flex;
+//       justify-content: center;
+//       align-content: center;
+//       margin: 0 0 3% 0;
+//       font-size: 3rem;
+//     }
 
-    &__btn {
-      width: 25%;
-      height: 70%;
-      background-color: white;
-      display: inline-block;
-      margin: 0 10px 0 10px;
-      padding: 5% 0 5% 0;
-      text-align: center;
-      border: 4px solid $main-color;
-      border-radius: 20px;
-      transition: transform 0.2s;
+//     &__btn {
+//       width: 25%;
+//       height: 70%;
+//       background-color: white;
+//       display: inline-block;
+//       margin: 0 10px 0 10px;
+//       padding: 5% 0 5% 0;
+//       text-align: center;
+//       border: 4px solid $main-color;
+//       border-radius: 20px;
+//       transition: transform 0.2s;
 
-      &:hover {
-        transform: scale(1.05);
-      }
+//       &:hover {
+//         transform: scale(1.05);
+//       }
 
-      &-img {
-        width: 45%;
-        margin: 0 0 5% 0;
-        // margin: 0 10% 0 10%;
-      }
+//       &-img {
+//         width: 45%;
+//         margin: 0 0 5% 0;
+//         // margin: 0 10% 0 10%;
+//       }
 
-      &-head {
-        font-size: 2.5rem;
-      }
+//       &-head {
+//         font-size: 2.5rem;
+//       }
 
-      &-describe {
-        color: $main-color;
-        font-size: 1.3rem;
-      }
-    }
-  }
-}
+//       &-describe {
+//         color: $main-color;
+//         font-size: 1.3rem;
+//       }
+//     }
+//   }
+// }
