@@ -14,7 +14,7 @@ class SignUpPage extends Component {
     super(props);
     this.state = {};
   }
-  
+
   render() {
     return (
       <div className="signupPage">
@@ -23,23 +23,13 @@ class SignUpPage extends Component {
           <p className="signupPage__type-head">
             Choose your user type.
           </p>
-          <div className="signupPage__type__btn">
-            <TypeButton>
-              <img className="signupPage__type__btn-img" src={logo_sketcher} alt="sketcher"/>
-              <p className="signupPage__type__btn-head">Sketcher</p>
-              <p className="signupPage__type__btn-describe">
-                Recreate with your creative idea.
-              </p>
-            </TypeButton>
-          </div>
-          <div className="signupPage__type__btn">
-            <TypeButton>
-              <img className="signupPage__type__btn-img" src={logo_creator} alt="creator"/>
-              <p className="signupPage__type__btn-head">Creator</p>
-              <p className="signupPage__type__btn-describe">
-                Share your creation for Sketchers.
-              </p>
-            </TypeButton>
+          <div className="signupPage__type-btn">
+            <TypeButton Title="Sketcher" 
+            Description="Recreate with your creative idea." 
+            logo={logo_sketcher} />
+            <TypeButton Title="Creator" 
+            Description="Share your creation for sketchers." 
+            logo={logo_creator} />
           </div>
         </div>
       </div>
