@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, transitions } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
 const styles = {
@@ -9,19 +9,13 @@ const styles = {
     width: "16%",
     height: "65%",
     margin: "0 10px 0 10px",
+    padding: "20px 0 0 0",
     border: "3px solid",
     borderColor: "#8e24aa",
     borderRadius: "20px",
-    padding: "20px 0 0 0",
     textTransform: "unset",
-    zIndex: "modal",
-    position: "fixed",
     "&:hover": {
-      width: "16.6%",
-      height: "65.6%",
-      zIndex: "tooltip",
-      position: "absolute"
-      
+      transform: "scale(1.1,1.1)"
     }
   },
   title: {
@@ -32,7 +26,7 @@ const styles = {
     fontSize: "1.1rem",
     color:  "#8e24aa",
   }
-};
+}
 
 function TypeButton(props) {
   const { classes, Title, Description, logo } = props;
