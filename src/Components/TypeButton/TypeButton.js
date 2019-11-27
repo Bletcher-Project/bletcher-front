@@ -1,44 +1,52 @@
-// This Component is Skeleton of React Structure for Web Development
-// If you want to make other Component, Copy and Refactor this Component.
-
-import React, { Component } from "react";
-
+import React from "react";
+import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 
-const defaultProps = {};
-const propTypes = {};
-
-const OutlinedButton = withStyles(theme => ({
+const styles = {
   root: {
-    width: "25%",
-    display: "flex",
-    color: "black",
-    backgroundColor: "white",
+    display: "block",
+    width: "16%",
+    height: "65%",
+    margin: "0 10px 0 10px",
+    border: "3px solid",
+    borderColor: "#8e24aa",
+    borderRadius: "20px",
+    padding: "20px 0 0 0",
+    textTransform: "unset",
+    zIndex: "modal",
+    position: "fixed",
     "&:hover": {
-    
-    },
-    border: 1
+      width: "16.6%",
+      height: "65.6%",
+      zIndex: "tooltip",
+      position: "absolute"
+      
+    }
   },
-}))(Button);
-
-class TypeButton extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+  title: {
+    fontSize: "2rem",
+    margin: "20px 0 0 0"
+  },
+  desc: {
+    fontSize: "1.1rem",
+    color:  "#8e24aa",
   }
+};
 
-  render() {
-    const { children } = this.props;
-    return (
-      <OutlinedButton>
-        { children }
-      </OutlinedButton>
-    );
-  }
+function TypeButton(props) {
+  const { classes, Title, Description, logo } = props;
+  return (
+    <Button className={classes.root}>
+      <img src={logo} width="130px" alt={logo}/>
+      <p className={classes.title}>{Title}</p>
+      <p className={classes.desc}>{Description}</p>
+    </Button>
+  );
 }
 
-TypeButton.defaultProps = defaultProps;
-TypeButton.propTypes = propTypes;
+TypeButton.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
-export default TypeButton;
+export default withStyles(styles)(TypeButton);
