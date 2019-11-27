@@ -24,10 +24,12 @@ class SignUpPage extends Component {
             Choose your user type.
           </p>
           <div className="signupPage__type-btn">
-            <TypeButton Title="Sketcher" 
+            <TypeButton 
+            Title="Sketcher" 
             Description="Recreate with your creative idea." 
             logo={logo_sketcher} />
-            <TypeButton Title="Creator" 
+            <TypeButton 
+            Title="Creator" 
             Description="Share your creation for sketchers." 
             logo={logo_creator} />
           </div>
