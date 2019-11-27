@@ -14,6 +14,7 @@ const styles = {
     borderColor: "#8e24aa",
     borderRadius: "20px",
     textTransform: "unset",
+    transition: "all 0.2s",
     "&:hover": {
       transform: "scale(1.1,1.1)"
     }
