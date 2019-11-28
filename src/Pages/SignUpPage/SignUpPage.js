@@ -25,12 +25,12 @@ class SignUpPage extends Component {
           </p>
           <div className="signupPage__type-btn">
             <TypeButton 
-            Title="Sketcher" 
-            Description="Recreate with your creative idea." 
+            title="Sketcher" 
+            content="Recreate with your creative idea." 
             logo={logo_sketcher} />
             <TypeButton 
-            Title="Creator" 
-            Description="Share your creation for sketchers." 
+            title="Creator" 
+            content="Share your creation for sketchers." 
             logo={logo_creator} />
           </div>
         </div>
