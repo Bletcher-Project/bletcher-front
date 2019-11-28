@@ -6,8 +6,8 @@ import Button from "@material-ui/core/Button";
 const styles = {
   root: {
     display: "block",
-    width: "16%",
-    height: "65%",
+    width: "24%",
+    height: "93%",
     margin: "0 10px 0 10px",
     padding: "20px 0 0 0",
     border: "3px solid",
@@ -25,9 +25,10 @@ const styles = {
   },
   desc: {
     fontSize: "1.1rem",
-    color:  "#8e24aa",
+    color: "#8e24aa",
+    padding: "0 10px 0 10px"
   }
-}
+};
 
 function TypeButton(props) {
   const { classes, title, content, logo } = props;
