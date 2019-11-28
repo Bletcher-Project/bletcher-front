@@ -15,10 +15,14 @@
   height: 100%;
 
   &__type {
-    display: block;
+    display: inline-flexbox;
     @include content-center;
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+    }
     width: 100%;
     height: 100%;
+    
 
     &-head {
       display: flex;
@@ -29,6 +33,7 @@
 
     &-btn {
       display: flex;
+      flex-wrap: wrap;
       @include content-center;
       height: 60%;
       background-color: white;
