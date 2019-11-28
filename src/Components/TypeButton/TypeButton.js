@@ -14,9 +14,9 @@ const styles = {
     borderColor: "#8e24aa",
     borderRadius: "20px",
     textTransform: "unset",
-    transition: "all 0.2s",
+    transition: "all 0.4s",
     "&:hover": {
-      transform: "scale(1.1,1.1)"
+      transform: "scale(1.015,1.015)"
     }
   },
   title: {
@@ -30,12 +30,12 @@ const styles = {
 }
 
 function TypeButton(props) {
-  const { classes, Title, Description, logo } = props;
+  const { classes, title, content, logo } = props;
   return (
     <Button className={classes.root}>
       <img src={logo} width="130px" alt={logo}/>
-      <p className={classes.title}>{Title}</p>
-      <p className={classes.desc}>{Description}</p>
+      <p className={classes.title}>{title}</p>
+      <p className={classes.desc}>{content}</p>
     </Button>
   );
 }
