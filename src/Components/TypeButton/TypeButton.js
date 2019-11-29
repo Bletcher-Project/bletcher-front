@@ -34,9 +34,9 @@ const styles = {
 };
 
 function TypeButton(props) {
-  const { classes, title, content, logo } = props;
+  const { classes, title, content, logo, onClick } = props;
   return (
-    <Button className={classes.root}>
+    <Button className={classes.root} onClick={onClick}>
       <img src={logo} width="130px" alt={logo}/>
       <p className={classes.title}>{title}</p>
       <p className={classes.desc}>{content}</p>
