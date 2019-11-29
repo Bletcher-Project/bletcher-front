@@ -45,11 +45,16 @@
   // example code - undesigned
   &__info {
     @include content-center;
+    display: block;
     position: absolute;
     width:100%;
     height: 100%;
     background-color: white;
-    // z-index: 1700;
+
+    &-text {
+      // @include content-center;
+      display: block;
+    }
   }
   // example code - undesigned
 
@@ -60,7 +65,7 @@
     width:100%;
     height: 100%;
     background-color: white;
-    // z-index: 1700;
+
   }
   // example code - undesigned
 

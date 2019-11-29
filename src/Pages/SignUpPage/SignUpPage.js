@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { NavBar, TypeButton, MainButton } from "../../Components";
 
 import Slide from '@material-ui/core/Slide';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 import logo_sketcher from "../../Assets/images/logo_sketcher.png";
 import logo_creator from "../../Assets/images/logo_creator.png";
@@ -11,20 +12,27 @@ import logo_creator from "../../Assets/images/logo_creator.png";
 const defaultProps = {};
 const propTypes = {};
 
-
-
 class SignUpPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      infoChecked: false,
-      profileChecked: false
+      email: "",
+      password: "",
+      repassword: "",
+      name: "",
+      status: "",
+      infoOpen: false,
+      profileOpen: false,
+      isEmailValid: false,
+      isPwdValid: false,
+      isRepwdValid: false,
+      isNameValid: true,
+      isStatusValid: false
     };
   }
 
-
-
   render() {
+    const { infoOpen, profileOpen, isEmailValid, isPwdValid, isRepwdValid, isNameValid, isStatusValid } = this.state;
     return (
       <div className="signupPage">
         <NavBar isActive="SignUp" />
@@ -35,7 +43,7 @@ class SignUpPage extends Component {
           <div className="signupPage__type-btn">
             <TypeButton
               title="Sketcher"
-              content="Recreate with your creativ e idea."
+              content="Recreate with your creative idea."
               logo={logo_sketcher}
               onClick={this.handleInfo}
             />
@@ -50,38 +58,79 @@ class SignUpPage extends Component {
 
         <Slide
           direction="right"
-          in={this.state.infoChecked}
+          in={infoOpen}
           mountOnEnter
-          timeout={ {appear: 1000, enter: 750 , exit: 750} }
+          timeout={{ appear: 1000, enter: 750, exit: 750 }}
         >
           <div className="signupPage__info">
             <p className="signupPage__info-head">Enter your personal information.</p>
 
             {/* example code - undesigned */}
-            <button><ArrowBackIcon onClick={this.handleInfo}/></button>
-            <input name="email" placeholder="email"></input>
-            <input name="pwd" placeholder="password"></input>
-            <input name="pwd_confirm" placeholder="password confirm"></input>
-            <MainButton text="Next" onClick={this.handleProfile}/>
+            <ArrowBackIcon onClick={this.handleInfo} />
+            <div className="signupPage__info-input">
+              <TextField
+                id="standard-basic"
+                label="Email"
+                type="email"
+                onChange={this.handleEmailCheck}
+                error={!isEmailValid} />
+            </div>
+            <div className="signupPage__info-input">
+              <TextField
+                id="standard-basic"
+                label="Password"
+                type="password"
+                onChange={this.handlePwdCheck}
+                error={!isPwdValid} />
+            </div>
+            <div className="signupPage__info-input">
+              <TextField
+                id="standard-basic"
+                label="Re-password"
+                type="password"
+                onChange={this.handleRepwdCheck}
+                error={!isRepwdValid} />
+            </div>
+            <Button
+              disabled={!(isEmailValid & isPwdValid & isRepwdValid)}
+              onClick={this.handleProfile} >
+              Next
+            </Button>
             {/* example code - undesigned */}
 
           </div>
         </Slide>
         <Slide
           direction="left"
-          in={this.state.profileChecked}
+          in={profileOpen}
           mountOnEnter
-          timeout={ {appear: 1000, enter: 750 , exit: 750} }
+          timeout={{ appear: 1000, enter: 750, exit: 750 }}
         >
           <div className="signupPage__profile">
-            <p className="signupPage__profile-head">Enter your personal information.</p>
+            <p className="signupPage__profile-head">Complete your profile.</p>
 
             {/* example code - undesigned */}
-            <button><ArrowBackIcon onClick={this.handleProfile}/></button>
-            <input name="email" placeholder="email"></input>
-            <input name="pwd" placeholder="password"></input>
-            <input name="pwd_confirm" placeholder="password confirm"></input>
-            <MainButton text="Next" />
+            <ArrowBackIcon onClick={this.handleProfile} />
+            <div className="signupPage__profile-input">
+              <TextField
+                id="standard-basic"
+                label="name not yet"
+                type="text"
+                error={!isNameValid} />
+            </div>
+            <div className="signupPage__profile-input">
+              <TextField
+                id="standard-basic"
+                label="status"
+                type="text"
+                onChange={this.handleStatusCheck}
+                error={!isStatusValid} />
+            </div>
+            <Button text="choose image..." />
+            <Button
+              disabled={!(isNameValid&isStatusValid)} >
+              Next
+            </Button>
             {/* example code - undesigned */}
 
           </div>
@@ -92,18 +141,65 @@ class SignUpPage extends Component {
   }
 
   handleInfo = () => {
-    console.log("button clicked!");
     this.setState({
-      infoChecked: !this.state.infoChecked
+      infoOpen: !this.state.infoOpen
     });
   };
-  
+
   handleProfile = () => {
-    console.log("button clicked!");
     this.setState({
-      profileChecked: !this.state.profileChecked
+      profileOpen: !this.state.profileOpen
     });
   };
+
+  handleEmailCheck = e => {
+    const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    this.setState({ email: e.target.value });
+    if (regExp.test(e.target.value)) {
+      this.setState({ isEmailValid: true });
+    } else {
+      this.setState({ isEmailValid: false });
+    }
+  }
+
+  handlePwdCheck = e => {
+    const regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/;
+    this.setState({ password: e.target.value });
+    if (regExp.test(e.target.value)) {
+      this.setState({ isPwdValid: true });
+    } else {
+      this.setState({ isPwdValid: false });
+    }
+  }
+
+  handleRepwdCheck = e => {
+    this.setState({ repassword: e.target.value },
+      () => {
+        if (this.state.password === this.state.repassword) {
+          this.setState({ isRepwdValid: true });
+        } else {
+          this.setState({ isRepwdValid: false });
+        }
+      });
+  }
+
+  handleNameCheck = e => { // server side check needs to be done
+    this.setState({ name: e.target.value });
+  }
+
+  handleStatusCheck = e => {
+    this.setState({ status: e.target.value },
+      () => {
+        if (this.state.status.length >= 100) {
+          this.setState({ isStatusValid: false });
+        } else {
+          this.setState({ isStatusValid: true });
+        }
+      });
+    
+  }
+
+
 }
 
 SignUpPage.defaultProps = defaultProps;
