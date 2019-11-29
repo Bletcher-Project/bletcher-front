@@ -4,7 +4,7 @@
 .navBar {
   @at-root .navbar {
     //overriding bootstrap .navbar settings
-    background-color: white;
+    //background-color: white;
     box-sizing: border-box;
     position: fixed;
     top: 0;
@@ -12,6 +12,10 @@
     width: 100%;
     height: 53px;
     z-index: 1500;
+  }
+
+  &__main {
+    padding-top: 1%;
   }
 
   &__shadow {
@@ -40,13 +44,13 @@
   &__items {
     display: flex;
     align-items: center;
-    background-color: white;
+    //background-color: white;
     padding: 0 35px 0 0;
 
     &__item {
       display: flex;
       align-items: center;
-      padding-right: 0 20px 0 0;
+      padding: 0 20px 0 0;
     }
   }
 }

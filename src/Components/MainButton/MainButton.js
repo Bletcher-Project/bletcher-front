@@ -14,6 +14,7 @@ const PurpleButton = withStyles(theme => ({
   root: {
     boxShadow: "none",
     textTransform: "none",
+    width: "150px",
     fontSize: 17,
     padding: "0 20px",
     color: theme.palette.getContrastText(purple[600]),
@@ -27,7 +28,7 @@ const PurpleButton = withStyles(theme => ({
     "&:active": {
       boxShadow: "none"
     },
-    "&:focus": {}
+    "&:focus": { outline: "none" }
   }
 }))(Fab);
 
@@ -38,10 +39,15 @@ class MainButton extends Component {
   }
 
   render() {
-    const { text } = this.props;
+    const { text, onClick } = this.props;
     return (
       <div className="mainButton">
-        <PurpleButton variant="contained" color="primary" size="large">
+        <PurpleButton
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={onClick}
+        >
           {text}
         </PurpleButton>
       </div>
