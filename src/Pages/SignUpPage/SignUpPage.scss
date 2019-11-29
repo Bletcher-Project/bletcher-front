@@ -53,4 +53,15 @@
   }
   // example code - undesigned
 
+  // example code - undesigned
+  &__profile {
+    @include content-center;
+    position: absolute;
+    width:100%;
+    height: 100%;
+    background-color: white;
+    // z-index: 1700;
+  }
+  // example code - undesigned
+
 }

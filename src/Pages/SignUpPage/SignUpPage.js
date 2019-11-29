@@ -17,7 +17,8 @@ class SignUpPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      infoChecked: false
+      infoChecked: false,
+      profileChecked: false
     };
   }
 
@@ -61,6 +62,25 @@ class SignUpPage extends Component {
             <input name="email" placeholder="email"></input>
             <input name="pwd" placeholder="password"></input>
             <input name="pwd_confirm" placeholder="password confirm"></input>
+            <MainButton text="Next" onClick={this.handleProfile}/>
+            {/* example code - undesigned */}
+
+          </div>
+        </Slide>
+        <Slide
+          direction="left"
+          in={this.state.profileChecked}
+          mountOnEnter
+          timeout={ {appear: 1000, enter: 750 , exit: 750} }
+        >
+          <div className="signupPage__profile">
+            <p className="signupPage__profile-head">Enter your personal information.</p>
+
+            {/* example code - undesigned */}
+            <button><ArrowBackIcon onClick={this.handleProfile}/></button>
+            <input name="email" placeholder="email"></input>
+            <input name="pwd" placeholder="password"></input>
+            <input name="pwd_confirm" placeholder="password confirm"></input>
             <MainButton text="Next" />
             {/* example code - undesigned */}
 
@@ -75,6 +95,13 @@ class SignUpPage extends Component {
     console.log("button clicked!");
     this.setState({
       infoChecked: !this.state.infoChecked
+    });
+  };
+  
+  handleProfile = () => {
+    console.log("button clicked!");
+    this.setState({
+      profileChecked: !this.state.profileChecked
     });
   };
 }
