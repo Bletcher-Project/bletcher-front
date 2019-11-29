@@ -4,6 +4,12 @@ import { MainButton, NavBar } from "../../Components";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
 import { purple } from "@material-ui/core/colors";
+import BackgroundSlider from "react-background-slider";
+
+import bgImage1 from "../../Assets/bg-image/bg-1.jpg";
+import bgImage2 from "../../Assets/bg-image/bg-2.jpg";
+import bgImage3 from "../../Assets/bg-image/bg-3.jpg";
+import bgImage4 from "../../Assets/bg-image/bg-4.jpg";
 
 const defaultProps = {};
 const propTypes = {};
@@ -22,7 +28,7 @@ const PurpleInput = withStyles({
 class MainPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { isClicked: true };
+    this.state = { isClicked: false };
   }
 
   render() {
@@ -31,6 +37,11 @@ class MainPage extends Component {
     return (
       <div className="mainPage">
         <NavBar isActive="main" />
+        <BackgroundSlider
+          images={[bgImage1, bgImage2]}
+          duration={5}
+          transition={2}
+        />
         <div className="mainPage__header">
           {!isClicked ? (
             <div className="mainPage__header__intro">
@@ -44,35 +55,35 @@ class MainPage extends Component {
             </div>
           ) : (
             <div className="mainPage__header__signIn">
-              <div className="mainPage__header__signIn__email">
-                <PurpleInput
-                  className="mainPage__header__signIn__email__input"
-                  label="Email / Name"
-                  type="email"
-                  name="email"
-                  style={{ width: 250 }}
-                />
-              </div>
-              <div className="mainPage__header__signIn__password">
-                <PurpleInput
-                  className="mainPage__header__signIn__password__input"
-                  label="Password"
-                  type="password"
-                  name="password"
-                  style={{ width: 250 }}
-                />
-              </div>
-              <div className="mainPage__header__signIn-btn">
-                <MainButton text="Sign In" onClick={this.handleSignIn} />
-              </div>
-              <div className="mainPage__header__signIn__signUpLink">
-                <a href="/signup">Don’t have an account?</a>
+              <div className="mainPage__header__signIn-container">
+                <div className="mainPage__header__signIn__email">
+                  <PurpleInput
+                    className="mainPage__header__signIn__email__input"
+                    label="Email / Name"
+                    type="email"
+                    name="email"
+                    style={{ width: 250 }}
+                  />
+                </div>
+                <div className="mainPage__header__signIn__password">
+                  <PurpleInput
+                    className="mainPage__header__signIn__password__input"
+                    label="Password"
+                    type="password"
+                    name="password"
+                    style={{ width: 250 }}
+                  />
+                </div>
+                <div className="mainPage__header__signIn-btn">
+                  <MainButton text="Sign In" onClick={this.handleSignIn} />
+                </div>
+                <div className="mainPage__header__signIn__signUpLink">
+                  <a href="/signup">Don’t have an account?</a>
+                </div>
               </div>
             </div>
           )}
         </div>
-
-        <div className="mainPage__header"></div>
       </div>
     );
   }
