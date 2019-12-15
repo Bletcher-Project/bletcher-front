@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { NavBar, TypeButton, MainButton } from "../../Components";
 
-import Slide from '@material-ui/core/Slide';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import Slide from "@material-ui/core/Slide";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 import logo_sketcher from "../../Assets/images/logo_sketcher.png";
 import logo_creator from "../../Assets/images/logo_creator.png";
@@ -32,14 +32,48 @@ class SignUpPage extends Component {
   }
 
   render() {
-    const { infoOpen, profileOpen, isEmailValid, isPwdValid, isRepwdValid, isNameValid, isStatusValid } = this.state;
+    const {
+      infoOpen,
+      profileOpen,
+      isEmailValid,
+      isPwdValid,
+      isRepwdValid,
+      isNameValid,
+      isStatusValid
+    } = this.state;
     return (
       <div className="signupPage">
         <NavBar isActive="SignUp" />
+        {!(infoOpen || profileOpen) && (
+          <Slide
+            direction="down"
+            in={!(infoOpen || profileOpen)}
+            timeout={{ appear: 1000, enter: 750, exit: 750 }}
+          >
+            <p className="signupPage__type-head">Choose your user type.</p>
+          </Slide>
+        )}
+        {infoOpen & !profileOpen && (
+          <Slide
+            direction="left"
+            in={infoOpen & !profileOpen}
+            timeout={{ appear: 1000, enter: 750, exit: 750 }}
+          >
+            <p className="signupPage__info-head">
+              Enter your personal information.
+            </p>
+          </Slide>
+        )}
+        {profileOpen && (
+          <Slide
+            direction="right"
+            in={profileOpen}
+            timeout={{ appear: 1000, enter: 750, exit: 750 }}
+          >
+            <p className="signupPage__profile-head">Complete your profile.</p>
+          </Slide>
+        )}
         <div className="signupPage__type">
-          <p className="signupPage__type-head">
-            Choose your user type.
-          </p>
           <div className="signupPage__type-btn">
             <TypeButton
               title="Sketcher"
@@ -63,8 +97,6 @@ class SignUpPage extends Component {
           timeout={{ appear: 1000, enter: 750, exit: 750 }}
         >
           <div className="signupPage__info">
-            <p className="signupPage__info-head">Enter your personal information.</p>
-
             {/* example code - undesigned */}
             <ArrowBackIcon onClick={this.handleInfo} />
             <div className="signupPage__info-input">
@@ -73,7 +105,8 @@ class SignUpPage extends Component {
                 label="Email"
                 type="email"
                 onChange={this.handleEmailCheck}
-                error={!isEmailValid} />
+                error={!isEmailValid}
+              />
             </div>
             <div className="signupPage__info-input">
               <TextField
@@ -81,7 +114,8 @@ class SignUpPage extends Component {
                 label="Password"
                 type="password"
                 onChange={this.handlePwdCheck}
-                error={!isPwdValid} />
+                error={!isPwdValid}
+              />
             </div>
             <div className="signupPage__info-input">
               <TextField
@@ -89,15 +123,16 @@ class SignUpPage extends Component {
                 label="Re-password"
                 type="password"
                 onChange={this.handleRepwdCheck}
-                error={!isRepwdValid} />
+                error={!isRepwdValid}
+              />
             </div>
             <Button
               disabled={!(isEmailValid & isPwdValid & isRepwdValid)}
-              onClick={this.handleProfile} >
+              onClick={this.handleProfile}
+            >
               Next
             </Button>
             {/* example code - undesigned */}
-
           </div>
         </Slide>
         <Slide
@@ -107,8 +142,6 @@ class SignUpPage extends Component {
           timeout={{ appear: 1000, enter: 750, exit: 750 }}
         >
           <div className="signupPage__profile">
-            <p className="signupPage__profile-head">Complete your profile.</p>
-
             {/* example code - undesigned */}
             <ArrowBackIcon onClick={this.handleProfile} />
             <div className="signupPage__profile-input">
@@ -116,7 +149,8 @@ class SignUpPage extends Component {
                 id="standard-basic"
                 label="name not yet"
                 type="text"
-                error={!isNameValid} />
+                error={!isNameValid}
+              />
             </div>
             <div className="signupPage__profile-input">
               <TextField
@@ -124,18 +158,14 @@ class SignUpPage extends Component {
                 label="status"
                 type="text"
                 onChange={this.handleStatusCheck}
-                error={!isStatusValid} />
+                error={!isStatusValid}
+              />
             </div>
             <Button text="choose image..." />
-            <Button
-              disabled={!(isNameValid&isStatusValid)} >
-              Next
-            </Button>
+            <Button disabled={!(isNameValid & isStatusValid)}>Next</Button>
             {/* example code - undesigned */}
-
           </div>
         </Slide>
-
       </div>
     );
   }
@@ -160,7 +190,7 @@ class SignUpPage extends Component {
     } else {
       this.setState({ isEmailValid: false });
     }
-  }
+  };
 
   handlePwdCheck = e => {
     const regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/;
@@ -170,36 +200,32 @@ class SignUpPage extends Component {
     } else {
       this.setState({ isPwdValid: false });
     }
-  }
+  };
 
   handleRepwdCheck = e => {
-    this.setState({ repassword: e.target.value },
-      () => {
-        if (this.state.password === this.state.repassword) {
-          this.setState({ isRepwdValid: true });
-        } else {
-          this.setState({ isRepwdValid: false });
-        }
-      });
-  }
+    this.setState({ repassword: e.target.value }, () => {
+      if (this.state.password === this.state.repassword) {
+        this.setState({ isRepwdValid: true });
+      } else {
+        this.setState({ isRepwdValid: false });
+      }
+    });
+  };
 
-  handleNameCheck = e => { // server side check needs to be done
+  handleNameCheck = e => {
+    // server side check needs to be done
     this.setState({ name: e.target.value });
-  }
+  };
 
   handleStatusCheck = e => {
-    this.setState({ status: e.target.value },
-      () => {
-        if (this.state.status.length >= 100) {
-          this.setState({ isStatusValid: false });
-        } else {
-          this.setState({ isStatusValid: true });
-        }
-      });
-    
-  }
-
-
+    this.setState({ status: e.target.value }, () => {
+      if (this.state.status.length >= 100) {
+        this.setState({ isStatusValid: false });
+      } else {
+        this.setState({ isStatusValid: true });
+      }
+    });
+  };
 }
 
 SignUpPage.defaultProps = defaultProps;
