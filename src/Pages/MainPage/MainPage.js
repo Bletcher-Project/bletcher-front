@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 
-import { MainButton, NavBar } from "../../Components";
-import TextField from "@material-ui/core/TextField";
-import { withStyles } from "@material-ui/core/styles";
-import { purple } from "@material-ui/core/colors";
+import { NavBar, MainButton, MainInput } from "../../Components";
 import BackgroundSlider from "react-background-slider";
 
 import bgImage1 from "../../Assets/bg-image/bg-1.jpg";
@@ -13,17 +10,6 @@ import bgImage4 from "../../Assets/bg-image/bg-4.jpg";
 
 const defaultProps = {};
 const propTypes = {};
-
-const PurpleInput = withStyles({
-  root: {
-    "& label.Mui-focused": {
-      color: purple[700]
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: purple[700]
-    }
-  }
-})(TextField);
 
 class MainPage extends Component {
   constructor(props) {
@@ -38,8 +24,8 @@ class MainPage extends Component {
       <div className="mainPage">
         <NavBar isActive="main" />
         <BackgroundSlider
-          images={[bgImage1, bgImage2]}
-          duration={5}
+          images={[bgImage2, bgImage1]}
+          duration={20}
           transition={2}
         />
         <div className="mainPage__header">
@@ -57,21 +43,21 @@ class MainPage extends Component {
             <div className="mainPage__header__signIn">
               <div className="mainPage__header__signIn-container">
                 <div className="mainPage__header__signIn__email">
-                  <PurpleInput
+                  <MainInput
                     className="mainPage__header__signIn__email__input"
                     label="Email / Name"
                     type="email"
                     name="email"
-                    style={{ width: 250 }}
+                    width={250}
                   />
                 </div>
                 <div className="mainPage__header__signIn__password">
-                  <PurpleInput
+                  <MainInput
                     className="mainPage__header__signIn__password__input"
                     label="Password"
                     type="password"
                     name="password"
-                    style={{ width: 250 }}
+                    width={250}
                   />
                 </div>
                 <div className="mainPage__header__signIn-btn">

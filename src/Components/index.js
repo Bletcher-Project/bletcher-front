@@ -1,4 +1,5 @@
-import MainButton from "./MainButton/MainButton";
 import NavBar from "./NavBar/NavBar";
+import MainButton from "./MainButton/MainButton";
+import MainInput from "./MainInput/MainInput";
 
-export { MainButton, NavBar };
+export { NavBar, MainButton, MainInput };
