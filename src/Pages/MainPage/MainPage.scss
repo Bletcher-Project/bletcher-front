@@ -2,23 +2,33 @@
   Main Page Styling
 */
 
+@mixin content-full {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0%;
+  left: 0;
+}
+
 .mainPage {
   width: 100%;
   height: 100%;
+  overflow: scroll;
 
   &__header {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 10%;
-    left: 0;
+    @include content-full;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-content: center;
     text-align: center;
+    overflow: scroll;
 
     &__intro {
+      @include content-full;
+      height: 100%;
+      padding-top: 17%;
+
       &-head {
         font-family: flood-std, sans-serif;
         font-weight: 400;
@@ -40,38 +50,47 @@
     }
 
     &__signIn {
-      margin-bottom: -5%;
-      display: flex;
-      justify-content: center;
+      @include content-full;
+      height: 100%;
+      top: 100%;
+      padding-top: 10%;
 
-      &-container {
-        padding: 7% 4.5%;
-        background-color: rgba(255, 255, 255, 0.6);
-        box-shadow: 3px 4px 7px 5px rgba(0, 0, 0, 0.1);
-      }
+      &__part {
+        display: flex;
+        justify-content: center;
 
-      &__email {
-        margin: 15px 0;
-      }
+        &-container {
+          padding: 6.5% 4.5%;
+          transition: 0.5s;
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 3px 4px 7px 5px rgba(0, 0, 0, 0.1);
+          }
+        }
 
-      &__password {
-        margin: 15px 0;
-      }
+        &__email {
+          margin: 15px 0;
+        }
 
-      &-btn {
-        padding-top: 5%;
-        margin-bottom: 1.5%;
-      }
+        &__password {
+          margin: 15px 0;
+        }
 
-      &__signUpLink a {
-        font-size: 1rem;
-        border-bottom: 1px solid black;
-        transition: 0.3s;
+        &-btn {
+          padding-top: 10%;
+          margin-bottom: 1.5%;
+        }
 
-        &:hover {
-          padding: 0 3px;
-          border-bottom: 1px solid $main-color;
-          color: $main-color;
+        &__signUpLink a {
+          font-size: 1rem;
+          border-bottom: 1px solid black;
+          transition: 0.3s;
+
+          &:hover {
+            padding: 0 3px;
+            border-bottom: 1px solid $main-color;
+            color: $main-color;
+          }
         }
       }
     }
