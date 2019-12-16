@@ -21,6 +21,7 @@ class SignUpPage extends Component {
       repassword: "",
       name: "",
       status: "",
+      usertype: "",
       infoOpen: false,
       profileOpen: false,
       isEmailValid: false,
@@ -48,7 +49,7 @@ class SignUpPage extends Component {
           <Slide
             direction="down"
             in={!(infoOpen || profileOpen)}
-            timeout={{ appear: 1000, enter: 750, exit: 750 }}
+            timeout={{ appear: 1000, enter: 1000, exit: 1000 }}
           >
             <p className="signupPage__type-head">Choose your user type.</p>
           </Slide>
@@ -60,7 +61,7 @@ class SignUpPage extends Component {
             timeout={{ appear: 1000, enter: 750, exit: 750 }}
           >
             <p className="signupPage__info-head">
-              Enter your personal information.
+              Enter your personal information {this.state.usertype}.
             </p>
           </Slide>
         )}
@@ -73,22 +74,31 @@ class SignUpPage extends Component {
             <p className="signupPage__profile-head">Complete your profile.</p>
           </Slide>
         )}
-        <div className="signupPage__type">
-          <div className="signupPage__type-btn">
-            <TypeButton
-              title="Sketcher"
-              content="Recreate with your creative idea."
-              logo={logo_sketcher}
-              onClick={this.handleInfo}
-            />
-            <TypeButton
-              title="Creator"
-              content="Share your creation for sketchers."
-              logo={logo_creator}
-              onClick={this.handleInfo}
-            />
+
+        <Slide
+          direction="up"
+          in={!infoOpen}
+          timeout={{ appear: 1000, enter: 750, exit: 750 }}
+        >
+          <div className="signupPage__type">
+            <div className="signupPage__type-btn">
+              <TypeButton
+                title="Sketcher"
+                value="sketcher"
+                content="Recreate with your creative idea."
+                logo={logo_sketcher}
+                onClick={this.handleType}
+              />
+              <TypeButton
+                title="Creator"
+                value="creator"
+                content="Share your creation for sketchers."
+                logo={logo_creator}
+                onClick={this.handleType}
+              />
+            </div>
           </div>
-        </div>
+        </Slide>
 
         <Slide
           direction="right"
@@ -98,7 +108,7 @@ class SignUpPage extends Component {
         >
           <div className="signupPage__info">
             {/* example code - undesigned */}
-            <ArrowBackIcon onClick={this.handleInfo} />
+            <ArrowBackIcon onClick={this.handleType} />
             <div className="signupPage__info-input">
               <TextField
                 id="standard-basic"
@@ -169,6 +179,17 @@ class SignUpPage extends Component {
       </div>
     );
   }
+
+  handleType = e => { //TODO should solve asynchronous problem.
+    this.setState(
+      {
+        usertype: e.target.value
+      },
+      () => {
+        this.handleInfo();
+      }
+    );
+  };
 
   handleInfo = () => {
     this.setState({

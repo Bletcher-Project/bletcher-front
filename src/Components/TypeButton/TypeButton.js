@@ -34,10 +34,10 @@ const styles = {
 };
 
 function TypeButton(props) {
-  const { classes, title, content, logo, onClick } = props;
+  const { classes, title, content, logo, onClick, value } = props;
   return (
-    <Button className={classes.root} onClick={onClick}>
-      <img src={logo} width="130px" alt={logo}/>
+    <Button className={classes.root} onClick={onClick} value={value}>
+      <img src={logo} width="130px" alt={logo} />
       <p className={classes.title}>{title}</p>
       <p className={classes.desc}>{content}</p>
     </Button>
@@ -45,7 +45,7 @@ function TypeButton(props) {
 }
 
 TypeButton.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(TypeButton);
