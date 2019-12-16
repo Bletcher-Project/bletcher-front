@@ -61,7 +61,7 @@ class SignUpPage extends Component {
             timeout={{ appear: 1000, enter: 750, exit: 750 }}
           >
             <p className="signupPage__info-head">
-              Enter your personal information {this.state.usertype}.
+              Enter your personal information {this.state.usertype}
             </p>
           </Slide>
         )}
@@ -87,14 +87,14 @@ class SignUpPage extends Component {
                 value="sketcher"
                 content="Recreate with your creative idea."
                 logo={logo_sketcher}
-                onClick={this.handleType}
+                onClick={this.handleTypeSketcher}
               />
               <TypeButton
                 title="Creator"
-                value="creator"
+                value="sketcher"
                 content="Share your creation for sketchers."
                 logo={logo_creator}
-                onClick={this.handleType}
+                onClick={this.handleTypeCreator}
               />
             </div>
           </div>
@@ -108,7 +108,7 @@ class SignUpPage extends Component {
         >
           <div className="signupPage__info">
             {/* example code - undesigned */}
-            <ArrowBackIcon onClick={this.handleType} />
+            <ArrowBackIcon onClick={this.handleInfo} />
             <div className="signupPage__info-input">
               <TextField
                 id="standard-basic"
@@ -180,15 +180,32 @@ class SignUpPage extends Component {
     );
   }
 
-  handleType = e => { //TODO should solve asynchronous problem.
-    this.setState(
-      {
-        usertype: e.target.value
-      },
-      () => {
-        this.handleInfo();
-      }
-    );
+  
+  TODO //should solve asynchronous problem. => e.target.value doesn't get immediately
+  // handleType = async (e) => {
+  //   
+  //   const value = await e.target.value;
+  //   alert(value);
+  //   this.setState(
+  //     {
+  //       usertype: value
+  //     },
+  //     () => {
+  //       this.handleInfo();
+  //     }
+  //   );
+  // };
+
+  handleTypeSketcher = () => {
+    this.setState({ usertype: "sketcher " }, () => {
+      this.handleInfo();
+    });
+  };
+
+  handleTypeCreator = () => {
+    this.setState({ usertype: "creator" }, () => {
+      this.handleInfo();
+    });
   };
 
   handleInfo = () => {
