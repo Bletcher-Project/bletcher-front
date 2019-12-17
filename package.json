@@ -10,6 +10,7 @@
     "react": "^16.11.0",
     "react-background-slider": "^1.2.0",
     "react-dom": "^16.11.0",
+    "react-images-upload": "^1.2.7",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.3.0",
     "reactstrap": "^8.1.1",
