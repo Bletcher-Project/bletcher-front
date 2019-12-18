@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { NavBar, TypeButton, MainButton } from "../../Components";
 
 import Slide from "@material-ui/core/Slide";
@@ -23,7 +24,8 @@ class SignUpPage extends Component {
       repassword: "",
       name: "",
       status: "",
-      usertype: "",
+      usertype: null,
+      profileImg: null,
       infoOpen: false,
       profileOpen: false,
       isEmailValid: true,
@@ -188,7 +190,11 @@ class SignUpPage extends Component {
               withLabel={false}
               buttonText="Choose image"
             />
-            <Button disabled={this.state.name === "" || isNameValid === false}>
+            <input type="file" name="img" onChange={this.handleProfileImg} />
+            <Button
+              disabled={this.state.name === "" || isNameValid === false}
+              onClick={this.handleSignup}
+            >
               Sign Up
             </Button>
 
@@ -214,6 +220,25 @@ class SignUpPage extends Component {
   //   );
   // };
 
+  handleSignup = () => {
+    const formData = new FormData();
+    formData.append("email", this.state.email);
+    formData.append("name", this.state.name);
+    formData.append("password", this.state.password);
+    formData.append("status", this.state.status);
+    formData.append("type", this.state.usertype);
+    formData.append("img", this.state.profileImg);
+
+    return axios
+      .post("http://127.0.0.1:4000/signup", formData)
+      .then(res => {
+        alert("signup success!");
+      })
+      .catch(err => {
+        alert("signup fail!");
+      });
+  };
+
   handleTypeSketcher = () => {
     this.setState({ usertype: "sketcher " }, () => {
       this.handleInfo();
@@ -236,6 +261,10 @@ class SignUpPage extends Component {
     this.setState({
       profileOpen: !this.state.profileOpen
     });
+  };
+
+  handleProfileImg = e => {
+    this.setState({ profileImg: e.target.files[0] });
   };
 
   handleEnterKey = e => {
@@ -300,9 +329,7 @@ class SignUpPage extends Component {
 
   handleNameCheck = e => {
     //TODO Server side check needs to be done
-    this.setState({ name: e.target.value }, () => {
-      console.log(this.state.name);
-    });
+    this.setState({ name: e.target.value });
   };
 
   handleStatusCheck = e => {
