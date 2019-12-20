@@ -185,11 +185,11 @@ class SignUpPage extends Component {
               />
             </div>
 
-            <ImageUploader //TODO Need to modify Upload component design
+            {/* <ImageUploader //TODO Need to modify Upload component design
               withPreview={true}
               withLabel={false}
               buttonText="Choose image"
-            />
+            /> */}
             <input type="file" name="img" onChange={this.handleProfileImg} />
             <Button
               disabled={this.state.name === "" || isNameValid === false}
@@ -205,20 +205,50 @@ class SignUpPage extends Component {
     );
   }
 
-  //TODO Should solve asynchronous problem. => e.target.value doesn't get immediately
-  // handleType = async (e) => {
-  //
-  //   const value = await e.target.value;
-  //   alert(value);
-  //   this.setState(
-  //     {
-  //       usertype: value
-  //     },
-  //     () => {
-  //       this.handleInfo();
-  //     }
-  //   );
-  // };
+  handleNameCheck = e => {
+    this.setState({ name: e.target.value }, () => {
+      if (this.state.name.length >= 3) {
+        axios
+          .post("http://127.0.0.1:4000/users/name", { name: this.state.name })
+          .then(res => {
+            console.log("available name!");
+            this.setState({ isNameValid: true });
+          })
+          .catch(err => {
+            console.log("exist name!");
+            this.setState({ isNameValid: false });
+          });
+      } else {
+        this.setState({ isNameValid: false });
+      }
+    });
+  };
+
+  handleEmailCheck = e => {
+    const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    this.setState({ email: e.target.value }, () => {
+      if (this.state.email === "" || regExp.test(this.state.email)) {
+        this.setState({ isEmailValid: true });
+      } else {
+        this.setState({ isEmailValid: false });
+      }
+
+      if (regExp.test(this.state.email)) {
+        axios
+          .post("http://127.0.0.1:4000/users/email", {
+            email: this.state.email
+          })
+          .then(res => {
+            console.log("available email!");
+            this.setState({ isEmailValid: true });
+          })
+          .catch(err => {
+            console.log("exist email!");
+            this.setState({ isEmailValid: false });
+          });
+      }
+    });
+  };
 
   handleSignup = () => {
     const formData = new FormData();
@@ -280,45 +310,25 @@ class SignUpPage extends Component {
     }
   };
 
-  handleEmailCheck = e => {
-    const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-    this.setState({ email: e.target.value }, () => {
-      if (this.state.email === "") {
-        this.setState({ isEmailValid: true });
-      } else if (regExp.test(this.state.email)) {
-        this.setState({ isEmailValid: true });
-      } else {
-        this.setState({ isEmailValid: false });
-      }
-    });
-  };
-
   handlePwdCheck = e => {
     const regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/;
+
     this.setState({ password: e.target.value }, () => {
-      if (regExp.test(this.state.password)) {
-        this.setState({ isPwdValid: true });
-      } else {
-        this.setState({ isPwdValid: false });
-      }
-      if (this.state.password !== this.state.repassword) {
-        this.setState({ isRepwdValid: false });
-      } else if (this.state.password === this.state.repassword) {
-        this.setState({ isRepwdValid: true });
-      }
+      this.setState({
+        isPwdValid:
+          this.state.password === "" || regExp.test(this.state.password)
+      });
+      this.setState({
+        isRepwdValid: this.state.password === this.state.repassword
+      });
     });
   };
 
   handleRepwdCheck = e => {
-    if (e.keyCode === 13) {
-      alert("Enter!");
-    }
-    const regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/;
     this.setState({ repassword: e.target.value }, () => {
       if (
-        regExp.test(this.state.repassword) &
-        (this.state.password !== "") &
-        (this.state.password === this.state.repassword)
+        this.state.repassword === "" ||
+        this.state.password === this.state.repassword
       ) {
         this.setState({ isRepwdValid: true });
       } else if (this.state.password !== this.state.repassword) {
@@ -327,18 +337,9 @@ class SignUpPage extends Component {
     });
   };
 
-  handleNameCheck = e => {
-    //TODO Server side check needs to be done
-    this.setState({ name: e.target.value });
-  };
-
   handleStatusCheck = e => {
     this.setState({ status: e.target.value }, () => {
-      if (this.state.status.length >= 100) {
-        this.setState({ isStatusValid: false });
-      } else {
-        this.setState({ isStatusValid: true });
-      }
+      this.setState({ isStatusValid: this.state.status.length <= 100 });
     });
   };
 }
