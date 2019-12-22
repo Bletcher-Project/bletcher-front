@@ -9,7 +9,7 @@
 }
 
 .signupPage {
-  top: 15%;
+  top: 18%;
   position: fixed;
   width: 100%;
   height: 100%;
@@ -28,7 +28,7 @@
     &-head {
       display: flex;
       @include content-center;
-      margin: 0 0 1.5% 0;
+      margin: 0 0 0 0;
       font-size: 2.5rem;
     }
 

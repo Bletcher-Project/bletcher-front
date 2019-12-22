@@ -43,8 +43,6 @@ class NavBar extends Component {
             <NavItem className="navBar__items__item">
               <NavLink href="">Feed</NavLink>
               <NavLink href="">MyPage</NavLink>
-              <NavLink href="">Notification</NavLink>
-              <NavLink href="">More</NavLink>
             </NavItem>
           )}
         </Nav>

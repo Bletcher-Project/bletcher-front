@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { NavBar, TypeButton, MainButton } from "../../Components";
+import { NavBar, TypeButton, MainInput } from "../../Components";
 
 import Slide from "@material-ui/core/Slide";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -55,7 +55,7 @@ class SignUpPage extends Component {
             in={!(infoOpen || profileOpen)}
             timeout={{ appear: 1000, enter: 1000, exit: 1000 }}
           >
-            <p className="signupPage__type-head">Choose your user type.</p>
+            <p className="signupPage__type-head">Choose your Art type.</p>
           </Slide>
         )}
         {infoOpen & !profileOpen && (
@@ -65,7 +65,8 @@ class SignUpPage extends Component {
             timeout={{ appear: 1000, enter: 750, exit: 750 }}
           >
             <p className="signupPage__info-head">
-              Enter your personal information {this.state.usertype}
+              Hello, {this.state.usertype}! <br />
+              Enter your personal information.
             </p>
           </Slide>
         )}
@@ -89,14 +90,14 @@ class SignUpPage extends Component {
               <TypeButton
                 title="Sketcher"
                 value="sketcher"
-                content="Recreate with your creative idea."
+                content="Share your artisic idea."
                 logo={logo_sketcher}
                 onClick={this.handleTypeSketcher}
               />
               <TypeButton
                 title="Creator"
                 value="sketcher"
-                content="Share your creation for sketchers."
+                content="Share your creation."
                 logo={logo_creator}
                 onClick={this.handleTypeCreator}
               />
@@ -114,28 +115,31 @@ class SignUpPage extends Component {
             {/* example code - undesigned */}
             <ArrowBackIcon onClick={this.handleInfo} />
             <div className="signupPage__info-input">
-              <TextField
+              <MainInput
                 id="standard-basic"
                 label="Email"
                 type="email"
+                width="210px"
                 onChange={this.handleEmailCheck}
                 error={!isEmailValid}
               />
             </div>
             <div className="signupPage__info-input">
-              <TextField
+              <MainInput
                 id="standard-basic"
                 label="Password"
                 type="password"
+                width="210px"
                 onChange={this.handlePwdCheck}
                 error={!isPwdValid}
               />
             </div>
             <div className="signupPage__info-input">
-              <TextField
+              <MainInput
                 id="standard-basic"
                 label="Re-password"
                 type="password"
+                width="210px"
                 onChange={this.handleRepwdCheck}
                 onKeyPress={this.handleEnterKey}
                 error={!isRepwdValid}
@@ -167,7 +171,7 @@ class SignUpPage extends Component {
             {/* example code - undesigned */}
             <ArrowBackIcon onClick={this.handleProfile} />
             <div className="signupPage__profile-input">
-              <TextField
+              <MainInput
                 id="standard-basic"
                 label="name not yet"
                 type="text"
@@ -176,7 +180,7 @@ class SignUpPage extends Component {
               />
             </div>
             <div className="signupPage__profile-input">
-              <TextField
+              <MainInput
                 id="standard-basic"
                 label="status"
                 type="text"
@@ -206,8 +210,9 @@ class SignUpPage extends Component {
   }
 
   handleNameCheck = e => {
+    const regExp = /^\S([0-9a-zA-z][\_\.]?){2,29}$/;
     this.setState({ name: e.target.value }, () => {
-      if (this.state.name.length >= 3) {
+      if (regExp.test(this.state.name)) {
         axios
           .post("http://127.0.0.1:4000/users/name", { name: this.state.name })
           .then(res => {
@@ -225,7 +230,7 @@ class SignUpPage extends Component {
   };
 
   handleEmailCheck = e => {
-    const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
     this.setState({ email: e.target.value }, () => {
       if (this.state.email === "" || regExp.test(this.state.email)) {
         this.setState({ isEmailValid: true });
@@ -270,13 +275,13 @@ class SignUpPage extends Component {
   };
 
   handleTypeSketcher = () => {
-    this.setState({ usertype: "sketcher " }, () => {
+    this.setState({ usertype: "Sketcher" }, () => {
       this.handleInfo();
     });
   };
 
   handleTypeCreator = () => {
-    this.setState({ usertype: "creator" }, () => {
+    this.setState({ usertype: "Creator" }, () => {
       this.handleInfo();
     });
   };
@@ -311,7 +316,7 @@ class SignUpPage extends Component {
   };
 
   handlePwdCheck = e => {
-    const regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/;
+    const regExp = /\S[\*\!0-9a-zA-Z]{7,15}$/;
 
     this.setState({ password: e.target.value }, () => {
       this.setState({
