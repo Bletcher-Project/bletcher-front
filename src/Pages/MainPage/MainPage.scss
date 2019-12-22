@@ -62,7 +62,8 @@
         &-container {
           padding: 6.5% 4.5%;
           transition: 0.5s;
-          &:hover {
+          &:hover,
+          &-on {
             background-color: rgba(255, 255, 255, 0.6);
             box-shadow: 3px 4px 7px 5px rgba(0, 0, 0, 0.1);
           }

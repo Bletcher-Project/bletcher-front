@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import { NavBar, MainButton, MainInput } from "../../Components";
 import BackgroundSlider from "react-background-slider";
+import cx from "classnames";
 import "animate.css";
 import WOW from "wowjs";
 
@@ -14,7 +15,7 @@ const propTypes = {};
 class MainPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { isClicked: false };
+    this.state = { isClicked: false, email: "", password: "" };
     this.SignIn = React.createRef();
     this.Intro = React.createRef();
   }
@@ -24,6 +25,7 @@ class MainPage extends Component {
   }
 
   render() {
+    const { email, password } = this.state;
     return (
       <div className="mainPage">
         <NavBar isActive="main" />
@@ -45,7 +47,12 @@ class MainPage extends Component {
 
           <div className="mainPage__header__signIn" ref={this.SignIn}>
             <div className="mainPage__header__signIn__part">
-              <div className="mainPage__header__signIn__part-container">
+              <div
+                className={cx("mainPage__header__signIn__part-container", {
+                  "mainPage__header__signIn__part-container-on":
+                    email !== "" || password !== ""
+                })}
+              >
                 <div className="mainPage__header__signIn__part__email">
                   <MainInput
                     className="mainPage__header__signIn__part__email__input"
@@ -53,6 +60,7 @@ class MainPage extends Component {
                     type="email"
                     name="email"
                     width={250}
+                    onChange={e => this.setState({ email: e.target.value })}
                   />
                 </div>
                 <div className="mainPage__header__signIn__part__password">
@@ -62,6 +70,7 @@ class MainPage extends Component {
                     type="password"
                     name="password"
                     width={250}
+                    onChange={e => this.setState({ password: e.target.value })}
                   />
                 </div>
                 <div className="mainPage__header__signIn__part-btn">
