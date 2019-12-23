@@ -39,13 +39,14 @@ class MainButton extends Component {
   }
 
   render() {
-    const { text, onClick } = this.props;
+    const { text, onClick, disabled } = this.props;
     return (
       <div className="mainButton">
         <PurpleButton
           variant="contained"
           color="primary"
           size="large"
+          disabled={disabled}
           onClick={onClick}
         >
           {text}

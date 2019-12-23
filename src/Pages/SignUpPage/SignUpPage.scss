@@ -14,6 +14,14 @@
   width: 100%;
   height: 100%;
 
+  &__back {
+    border: none;
+    background-color: none;
+    display: block;
+    margin-left: 30px;
+    cursor: pointer;
+  }
+
   &__type {
     display: inline-flexbox;
     position: absolute;
@@ -23,7 +31,6 @@
     }
     width: 100%;
     height: 100%;
-    // z-index: 1600;
 
     &-head {
       display: flex;
@@ -41,7 +48,6 @@
     }
   }
 
-  // example code - undesigned
   &__info {
     @include content-center;
     display: block;
@@ -51,7 +57,6 @@
     background-color: white;
 
     &-text {
-      // @include content-center;
       display: block;
     }
 
@@ -61,10 +66,12 @@
       margin: 0 0 1.5% 0;
       font-size: 2.5rem;
     }
-  }
-  // example code - undesigned
 
-  // example code - undesigned
+    &-input {
+      display: block;
+    }
+  }
+
   &__profile {
     @include content-center;
     position: absolute;
@@ -79,5 +86,4 @@
       font-size: 2.5rem;
     }
   }
-  // example code - undesigned
 }

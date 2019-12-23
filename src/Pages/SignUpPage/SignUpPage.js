@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { NavBar, TypeButton, MainInput } from "../../Components";
+import { NavBar, TypeButton, MainInput, MainButton } from "../../Components";
 
 import Slide from "@material-ui/core/Slide";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-
-import ImageUploader from "react-images-upload";
+import { purple } from "@material-ui/core/colors";
 
 import logo_sketcher from "../../Assets/images/logo_sketcher.png";
 import logo_creator from "../../Assets/images/logo_creator.png";
@@ -49,13 +48,16 @@ class SignUpPage extends Component {
     return (
       <div className="signupPage">
         <NavBar isActive="SignUp" />
+
         {!(infoOpen || profileOpen) && (
           <Slide
             direction="down"
             in={!(infoOpen || profileOpen)}
             timeout={{ appear: 1000, enter: 1000, exit: 1000 }}
           >
-            <p className="signupPage__type-head">Choose your Art type.</p>
+            <div>
+              <p className="signupPage__type-head">Choose your Art type.</p>
+            </div>
           </Slide>
         )}
         {infoOpen & !profileOpen && (
@@ -64,10 +66,18 @@ class SignUpPage extends Component {
             in={infoOpen & !profileOpen}
             timeout={{ appear: 1000, enter: 750, exit: 750 }}
           >
-            <p className="signupPage__info-head">
-              Hello, {this.state.usertype}! <br />
-              Enter your personal information.
-            </p>
+            <div>
+              <a className="signupPage__back">
+                <ArrowBackIcon
+                  style={{ color: purple[700], fontSize: 70 }}
+                  onClick={this.handleInfo}
+                />
+              </a>
+              <p className="signupPage__info-head">
+                Hello, {this.state.usertype}! <br />
+                Enter your personal information.
+              </p>
+            </div>
           </Slide>
         )}
         {profileOpen && (
@@ -76,7 +86,15 @@ class SignUpPage extends Component {
             in={profileOpen}
             timeout={{ appear: 1000, enter: 750, exit: 750 }}
           >
-            <p className="signupPage__profile-head">Complete your profile.</p>
+            <div>
+              <a className="signupPage__back">
+                <ArrowBackIcon
+                  style={{ color: purple[700], fontSize: 70 }}
+                  onClick={this.handleProfile}
+                />
+              </a>
+              <p className="signupPage__profile-head">Complete your profile.</p>
+            </div>
           </Slide>
         )}
 
@@ -113,7 +131,7 @@ class SignUpPage extends Component {
         >
           <div className="signupPage__info">
             {/* example code - undesigned */}
-            <ArrowBackIcon onClick={this.handleInfo} />
+
             <div className="signupPage__info-input">
               <MainInput
                 id="standard-basic"
@@ -145,7 +163,7 @@ class SignUpPage extends Component {
                 error={!isRepwdValid}
               />
             </div>
-            <Button
+            <MainButton
               disabled={
                 this.state.email === "" ||
                 this.state.password === "" ||
@@ -154,10 +172,10 @@ class SignUpPage extends Component {
                 isPwdValid === false ||
                 isRepwdValid === false
               }
+              text="Next"
               onClick={this.handleProfile}
-            >
-              Next
-            </Button>
+            />
+
             {/* example code - undesigned */}
           </div>
         </Slide>
@@ -169,12 +187,13 @@ class SignUpPage extends Component {
         >
           <div className="signupPage__profile">
             {/* example code - undesigned */}
-            <ArrowBackIcon onClick={this.handleProfile} />
+
             <div className="signupPage__profile-input">
               <MainInput
                 id="standard-basic"
                 label="name not yet"
                 type="text"
+                width="210px"
                 onChange={this.handleNameCheck}
                 error={!isNameValid}
               />
@@ -184,23 +203,18 @@ class SignUpPage extends Component {
                 id="standard-basic"
                 label="status"
                 type="text"
+                width="210px"
                 onChange={this.handleStatusCheck}
                 error={!isStatusValid}
               />
             </div>
 
-            {/* <ImageUploader //TODO Need to modify Upload component design
-              withPreview={true}
-              withLabel={false}
-              buttonText="Choose image"
-            /> */}
             <input type="file" name="img" onChange={this.handleProfileImg} />
-            <Button
+            <MainButton
+              text="Sign Up"
               disabled={this.state.name === "" || isNameValid === false}
               onClick={this.handleSignup}
-            >
-              Sign Up
-            </Button>
+            />
 
             {/* example code - undesigned */}
           </div>
@@ -213,16 +227,16 @@ class SignUpPage extends Component {
     const regExp = /^\S([0-9a-zA-z][\_\.]?){2,29}$/;
     this.setState({ name: e.target.value }, () => {
       if (regExp.test(this.state.name)) {
-        axios
-          .post("http://127.0.0.1:4000/users/name", { name: this.state.name })
-          .then(res => {
-            console.log("available name!");
-            this.setState({ isNameValid: true });
-          })
-          .catch(err => {
-            console.log("exist name!");
-            this.setState({ isNameValid: false });
-          });
+        // axios
+        //   .post("http://127.0.0.1:4000/users/name", { name: this.state.name })
+        //   .then(res => {
+        //     console.log("available name!");
+        //     this.setState({ isNameValid: true });
+        //   })
+        //   .catch(err => {
+        //     console.log("exist name!");
+        //     this.setState({ isNameValid: false });
+        //   });
       } else {
         this.setState({ isNameValid: false });
       }
@@ -230,7 +244,7 @@ class SignUpPage extends Component {
   };
 
   handleEmailCheck = e => {
-    const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+    const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     this.setState({ email: e.target.value }, () => {
       if (this.state.email === "" || regExp.test(this.state.email)) {
         this.setState({ isEmailValid: true });
@@ -238,20 +252,20 @@ class SignUpPage extends Component {
         this.setState({ isEmailValid: false });
       }
 
-      if (regExp.test(this.state.email)) {
-        axios
-          .post("http://127.0.0.1:4000/users/email", {
-            email: this.state.email
-          })
-          .then(res => {
-            console.log("available email!");
-            this.setState({ isEmailValid: true });
-          })
-          .catch(err => {
-            console.log("exist email!");
-            this.setState({ isEmailValid: false });
-          });
-      }
+      // if (regExp.test(this.state.email)) {
+      //   axios
+      //     .post("http://127.0.0.1:4000/users/email", {
+      //       email: this.state.email
+      //     })
+      //     .then(res => {
+      //       console.log("available email!");
+      //       this.setState({ isEmailValid: true });
+      //     })
+      //     .catch(err => {
+      //       console.log("exist email!");
+      //       this.setState({ isEmailValid: false });
+      //     });
+      // }
     });
   };
 
