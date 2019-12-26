@@ -25,6 +25,7 @@ class SignUpPage extends Component {
       status: "",
       usertype: null,
       profileImg: null,
+      profileImgUrl: null,
       infoOpen: false,
       profileOpen: false,
       isEmailValid: true,
@@ -45,6 +46,7 @@ class SignUpPage extends Component {
       isNameValid,
       isStatusValid
     } = this.state;
+
     return (
       <div className="signupPage">
         <NavBar isActive="SignUp" />
@@ -53,7 +55,7 @@ class SignUpPage extends Component {
           <Slide
             direction="down"
             in={!(infoOpen || profileOpen)}
-            timeout={{ appear: 1000, enter: 1000, exit: 1000 }}
+            timeout={{ appear: 1000, enter: 750, exit: 750 }}
           >
             <div>
               <p className="signupPage__type-head">Choose your Art type.</p>
@@ -130,11 +132,8 @@ class SignUpPage extends Component {
           timeout={{ appear: 1000, enter: 750, exit: 750 }}
         >
           <div className="signupPage__info">
-            {/* example code - undesigned */}
-
             <div className="signupPage__info-input">
               <MainInput
-                id="standard-basic"
                 label="Email"
                 type="email"
                 width="210px"
@@ -144,7 +143,6 @@ class SignUpPage extends Component {
             </div>
             <div className="signupPage__info-input">
               <MainInput
-                id="standard-basic"
                 label="Password"
                 type="password"
                 width="210px"
@@ -154,7 +152,6 @@ class SignUpPage extends Component {
             </div>
             <div className="signupPage__info-input">
               <MainInput
-                id="standard-basic"
                 label="Re-password"
                 type="password"
                 width="210px"
@@ -163,20 +160,20 @@ class SignUpPage extends Component {
                 error={!isRepwdValid}
               />
             </div>
-            <MainButton
-              disabled={
-                this.state.email === "" ||
-                this.state.password === "" ||
-                this.state.repassword === "" ||
-                isEmailValid === false ||
-                isPwdValid === false ||
-                isRepwdValid === false
-              }
-              text="Next"
-              onClick={this.handleProfile}
-            />
-
-            {/* example code - undesigned */}
+            <div className="signupPage__info-next">
+              <MainButton
+                disabled={
+                  this.state.email === "" ||
+                  this.state.password === "" ||
+                  this.state.repassword === "" ||
+                  isEmailValid === false ||
+                  isPwdValid === false ||
+                  isRepwdValid === false
+                }
+                text="Next"
+                onClick={this.handleProfile}
+              />
+            </div>
           </div>
         </Slide>
         <Slide
@@ -186,8 +183,6 @@ class SignUpPage extends Component {
           timeout={{ appear: 1000, enter: 750, exit: 750 }}
         >
           <div className="signupPage__profile">
-            {/* example code - undesigned */}
-
             <div className="signupPage__profile-input">
               <MainInput
                 id="standard-basic"
@@ -209,14 +204,37 @@ class SignUpPage extends Component {
               />
             </div>
 
-            <input type="file" name="img" onChange={this.handleProfileImg} />
-            <MainButton
-              text="Sign Up"
-              disabled={this.state.name === "" || isNameValid === false}
-              onClick={this.handleSignup}
-            />
+            <div className="signupPage__profile__img">
+              <div className="signupPage__profile__img-upload">
+                <input
+                  accept="image/*"
+                  type="file"
+                  style={{ display: "none" }}
+                  id="profile-upload"
+                  name="img"
+                  onChange={this.handleProfileImg}
+                />
+                <label htmlFor="profile-upload">
+                  <MainButton
+                    size="small"
+                    component="span"
+                    text="Choose Image..."
+                  />
+                </label>
+              </div>
 
-            {/* example code - undesigned */}
+              <div className="signupPage__profile__img-preview">
+                <img src={this.state.profileImgUrl} />
+              </div>
+            </div>
+
+            <div className="signupPage__profile-signup">
+              <MainButton
+                text="Sign Up"
+                disabled={this.state.name === "" || isNameValid === false}
+                onClick={this.handleSignup}
+              />
+            </div>
           </div>
         </Slide>
       </div>
@@ -313,7 +331,11 @@ class SignUpPage extends Component {
   };
 
   handleProfileImg = e => {
-    this.setState({ profileImg: e.target.files[0] });
+    this.setState({ profileImg: e.target.files[0] }, () => {
+      this.setState({
+        profileImgUrl: URL.createObjectURL(this.state.profileImg)
+      });
+    });
   };
 
   handleEnterKey = e => {
