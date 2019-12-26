@@ -218,7 +218,7 @@ class SignUpPage extends Component {
                   <MainButton
                     size="small"
                     component="span"
-                    text="Choose Image..."
+                    text="Choose Image"
                   />
                 </label>
               </div>
@@ -332,9 +332,11 @@ class SignUpPage extends Component {
 
   handleProfileImg = e => {
     this.setState({ profileImg: e.target.files[0] }, () => {
-      this.setState({
-        profileImgUrl: URL.createObjectURL(this.state.profileImg)
-      });
+      if (this.state.profileImg) {
+        this.setState({
+          profileImgUrl: URL.createObjectURL(this.state.profileImg)
+        });
+      }
     });
   };
 
