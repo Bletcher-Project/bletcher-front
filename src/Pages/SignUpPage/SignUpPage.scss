@@ -18,7 +18,7 @@
     border: none;
     background-color: none;
     display: block;
-    margin-left: 30px;
+    margin-left: 50px;
     cursor: pointer;
   }
 
@@ -26,16 +26,13 @@
     display: inline-flexbox;
     position: absolute;
     @include content-center;
-    @media screen and (max-width: 768px) {
-      flex-direction: column;
-    }
     width: 100%;
     height: 100%;
 
     &-head {
       display: flex;
       @include content-center;
-      margin: 0 0 0 0;
+      margin: 0;
       font-size: 2.5rem;
     }
 
@@ -69,7 +66,7 @@
 
     &-input {
       display: block;
-      margin-bottom: 1.2%;
+      margin-bottom: 30px;
     }
 
     &-next {
@@ -79,6 +76,7 @@
 
   &__profile {
     @include content-center;
+    display: block;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -93,28 +91,25 @@
 
     &-input {
       display: block;
-      margin-bottom: 1.2%;
+      margin-bottom: 20px;
     }
 
     &__img {
-      display: inline-block;
-      width: 20%;
-      margin-left: auto;
-      // border: solid red 4px;
+      display: inline-block; 
+      margin-top: 20px; 
+      width: 220px;
+      height: 140px;
 
       &-upload {
         display: inline-flex;
-        margin: 4.2% 0 0 1%;
-        position: absolute;
       }
 
       &-preview {
+        @include content-center;  
         display: inline-flex;
         width: 90px;
         height: 90px;
-        margin: 0 0 0 60%;
         overflow: hidden;
-        justify-content: center;
         border: solid #7b1fa2 4px;
         border-radius: 34px;
 

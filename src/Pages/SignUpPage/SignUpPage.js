@@ -3,9 +3,7 @@ import axios from "axios";
 import { NavBar, TypeButton, MainInput, MainButton } from "../../Components";
 
 import Slide from "@material-ui/core/Slide";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import KeyboardBackspaceIcon from "@material-ui/icons/KeyboardBackspace";
 import { purple } from "@material-ui/core/colors";
 
 import logo_sketcher from "../../Assets/images/logo_sketcher.png";
@@ -47,58 +45,47 @@ class SignUpPage extends Component {
       isStatusValid
     } = this.state;
 
+    let slide_header;
+
+    if (!(infoOpen || profileOpen)) {
+      slide_header = (
+        <div>
+          <p className="signupPage__type-head">Choose your Art type.</p>
+        </div>
+      );
+    } else if (infoOpen & !profileOpen) {
+      slide_header = (
+        <div>
+          <a className="signupPage__back">
+            <KeyboardBackspaceIcon
+              style={{ color: purple[700], fontSize: 60 }}
+              onClick={this.handleInfo}
+            />
+          </a>
+          <p className="signupPage__info-head">
+            Hello, {this.state.usertype}! <br />
+            Enter your personal information.
+          </p>
+        </div>
+      );
+    } else if (profileOpen) {
+      slide_header = (
+        <div>
+          <a className="signupPage__back">
+            <KeyboardBackspaceIcon
+              style={{ color: purple[700], fontSize: 60 }}
+              onClick={this.handleProfile}
+            />
+          </a>
+          <p className="signupPage__profile-head">Complete your profile.</p>
+        </div>
+      );
+    }
     return (
       <div className="signupPage">
         <NavBar isActive="SignUp" />
 
-        {!(infoOpen || profileOpen) && (
-          <Slide
-            direction="down"
-            in={!(infoOpen || profileOpen)}
-            timeout={{ appear: 1000, enter: 750, exit: 750 }}
-          >
-            <div>
-              <p className="signupPage__type-head">Choose your Art type.</p>
-            </div>
-          </Slide>
-        )}
-        {infoOpen & !profileOpen && (
-          <Slide
-            direction="left"
-            in={infoOpen & !profileOpen}
-            timeout={{ appear: 1000, enter: 750, exit: 750 }}
-          >
-            <div>
-              <a className="signupPage__back">
-                <ArrowBackIcon
-                  style={{ color: purple[700], fontSize: 70 }}
-                  onClick={this.handleInfo}
-                />
-              </a>
-              <p className="signupPage__info-head">
-                Hello, {this.state.usertype}! <br />
-                Enter your personal information.
-              </p>
-            </div>
-          </Slide>
-        )}
-        {profileOpen && (
-          <Slide
-            direction="right"
-            in={profileOpen}
-            timeout={{ appear: 1000, enter: 750, exit: 750 }}
-          >
-            <div>
-              <a className="signupPage__back">
-                <ArrowBackIcon
-                  style={{ color: purple[700], fontSize: 70 }}
-                  onClick={this.handleProfile}
-                />
-              </a>
-              <p className="signupPage__profile-head">Complete your profile.</p>
-            </div>
-          </Slide>
-        )}
+        {slide_header}
 
         <Slide
           direction="up"
@@ -126,7 +113,7 @@ class SignUpPage extends Component {
         </Slide>
 
         <Slide
-          direction="right"
+          direction="up"
           in={infoOpen}
           mountOnEnter
           timeout={{ appear: 1000, enter: 750, exit: 750 }}
@@ -139,6 +126,7 @@ class SignUpPage extends Component {
                 width="210px"
                 onChange={this.handleEmailCheck}
                 error={!isEmailValid}
+                helperText={isEmailValid ? null : "Incorrect Email"}
               />
             </div>
             <div className="signupPage__info-input">
@@ -177,7 +165,7 @@ class SignUpPage extends Component {
           </div>
         </Slide>
         <Slide
-          direction="left"
+          direction="up"
           in={profileOpen}
           mountOnEnter
           timeout={{ appear: 1000, enter: 750, exit: 750 }}
@@ -326,6 +314,7 @@ class SignUpPage extends Component {
 
   handleProfile = () => {
     this.setState({
+      infoOpen: !this.state.infoOpen,
       profileOpen: !this.state.profileOpen
     });
   };

@@ -28,7 +28,15 @@ class MainInput extends Component {
   }
 
   render() {
-    const { label, type, name, width, onChange, error } = this.props;
+    const {
+      label,
+      type,
+      name,
+      width,
+      onChange,
+      error,
+      helperText
+    } = this.props;
     return (
       <div className="mainInput">
         <PurpleInput
@@ -38,6 +46,7 @@ class MainInput extends Component {
           style={{ width: width }}
           onChange={onChange}
           error={error}
+          helperText={helperText}
         />
       </div>
     );
