@@ -1,0 +1,2 @@
+export const SUCCEED_TO_SIGNUP = "SUCCEED_TO_SIGNUP";
+export const FAILED_TO_SIGNUP = "FAILED_TO_SIGNUP";
