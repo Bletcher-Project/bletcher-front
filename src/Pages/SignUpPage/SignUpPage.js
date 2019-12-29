@@ -3,11 +3,14 @@ import axios from "axios";
 import { NavBar, TypeButton, MainInput, MainButton } from "../../Components";
 
 import Slide from "@material-ui/core/Slide";
-import KeyboardBackspaceIcon from "@material-ui/icons/KeyboardBackspace";
+import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
+import Avatar from "@material-ui/core/Avatar";
+import PersonIcon from "@material-ui/icons/Person";
 import { purple } from "@material-ui/core/colors";
 
 import logo_sketcher from "../../Assets/images/logo_sketcher.png";
 import logo_creator from "../../Assets/images/logo_creator.png";
+import default_profile from "../../Assets/images/default_profile.svg";
 
 const defaultProps = {};
 const propTypes = {};
@@ -55,29 +58,38 @@ class SignUpPage extends Component {
       );
     } else if (infoOpen & !profileOpen) {
       slide_header = (
-        <div>
-          <a className="signupPage__back">
-            <KeyboardBackspaceIcon
-              style={{ color: purple[700], fontSize: 60 }}
-              onClick={this.handleInfo}
-            />
-          </a>
-          <p className="signupPage__info-head">
-            Hello, {this.state.usertype}! <br />
-            Enter your personal information.
-          </p>
+        <div className="signupPage__info-head">
+          <div className="back">
+            <a>
+              <NavigateBeforeIcon
+                style={{ color: purple[700], fontSize: 60 }}
+                onClick={this.handleInfo}
+              />
+            </a>
+          </div>
+
+          <div className="title">
+            <p>
+              Hello, {this.state.usertype}! <br />
+              Enter your personal information.
+            </p>
+          </div>
         </div>
       );
     } else if (profileOpen) {
       slide_header = (
-        <div>
-          <a className="signupPage__back">
-            <KeyboardBackspaceIcon
-              style={{ color: purple[700], fontSize: 60 }}
-              onClick={this.handleProfile}
-            />
-          </a>
-          <p className="signupPage__profile-head">Complete your profile.</p>
+        <div className="signupPage__info-head">
+          <div className="back">
+            <a>
+              <NavigateBeforeIcon
+                style={{ color: purple[700], fontSize: 60 }}
+                onClick={this.handleProfile}
+              />
+            </a>
+          </div>
+          <div className="title">
+            <p>Complete your profile.</p>
+          </div>
         </div>
       );
     }
@@ -170,8 +182,8 @@ class SignUpPage extends Component {
           mountOnEnter
           timeout={{ appear: 1000, enter: 750, exit: 750 }}
         >
-          <div className="signupPage__profile">
-            <div className="signupPage__profile-input">
+          <div className="signupPage__info">
+            <div className="signupPage__info-input">
               <MainInput
                 id="standard-basic"
                 label="name not yet"
@@ -181,7 +193,7 @@ class SignUpPage extends Component {
                 error={!isNameValid}
               />
             </div>
-            <div className="signupPage__profile-input">
+            <div className="signupPage__info-input">
               <MainInput
                 id="standard-basic"
                 label="status"
@@ -192,8 +204,17 @@ class SignUpPage extends Component {
               />
             </div>
 
-            <div className="signupPage__profile__img">
-              <div className="signupPage__profile__img-upload">
+            <div className="signupPage__info__img">
+              <Avatar
+                className="signupPage__info__img-preview"
+                src={
+                  this.state.profileImgUrl
+                    ? this.state.profileImgUrl
+                    : default_profile
+                }
+                style={{ width: "120px", height: "120px" }}
+              />
+              <div className="signupPage__info__img-upload">
                 <input
                   accept="image/*"
                   type="file"
@@ -210,13 +231,9 @@ class SignUpPage extends Component {
                   />
                 </label>
               </div>
-
-              <div className="signupPage__profile__img-preview">
-                <img src={this.state.profileImgUrl} />
-              </div>
             </div>
 
-            <div className="signupPage__profile-signup">
+            <div className="signupPage__info-signup">
               <MainButton
                 text="Sign Up"
                 disabled={this.state.name === "" || isNameValid === false}

@@ -6,8 +6,8 @@ import Button from "@material-ui/core/Button";
 const styles = {
   root: {
     display: "block",
-    width: "24%",
-    height: "93%",
+    width: "280px",
+    height: "340px",
     margin: "0 10px 0 10px",
     padding: "20px 0 0 0",
     border: "3px solid",
@@ -37,7 +37,7 @@ function TypeButton(props) {
   const { classes, title, content, logo, onClick, value } = props;
   return (
     <Button className={classes.root} onClick={onClick} value={value}>
-      <img src={logo} width="130px" alt={logo} />
+      <img src={logo} width="100px" alt={logo} />
       <p className={classes.title}>{title}</p>
       <p className={classes.desc}>{content}</p>
     </Button>
