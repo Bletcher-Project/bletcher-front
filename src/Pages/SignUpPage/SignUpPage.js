@@ -24,6 +24,9 @@ class SignUpPage extends Component {
       repassword: "",
       name: "",
       status: "",
+      helpEmail: "",
+      helpPwd: "",
+      helpRePwd: "",
       usertype: null,
       profileImg: null,
       profileImgUrl: null,
@@ -40,6 +43,9 @@ class SignUpPage extends Component {
 
   render() {
     const {
+      helpEmail,
+      helpPwd,
+      helpRePwd,
       infoOpen,
       profileOpen,
       isInfoNext,
@@ -140,7 +146,7 @@ class SignUpPage extends Component {
                 width="210px"
                 onChange={this.handleEmailCheck}
                 // error={!isEmailValid}
-                helperText={isEmailValid ? " " : "Incorrect Email"} //TODO Make helperText return function e.g. {this.handleHelper}
+                helperText={isEmailValid ? " " : helpEmail} //TODO Make helperText return result e.g. {this.state.helpEmail}
               />
             </div>
             <div className="signupPage__info-input">
@@ -150,7 +156,7 @@ class SignUpPage extends Component {
                 width="210px"
                 onChange={this.handlePwdCheck}
                 // error={!isPwdValid}
-                helperText={isPwdValid ? " " : "Incorrect Password"}
+                helperText={isPwdValid ? " " : helpPwd}
               />
             </div>
             <div className="signupPage__info-input">
@@ -161,7 +167,7 @@ class SignUpPage extends Component {
                 onChange={this.handleRepwdCheck}
                 onKeyPress={this.handleEnterKey}
                 // error={!isRepwdValid}
-                helperText={isRepwdValid ? " " : "Type Same Password"}
+                helperText={isRepwdValid ? " " : helpRePwd}
               />
             </div>
             <div className="signupPage__info-next">
@@ -242,22 +248,49 @@ class SignUpPage extends Component {
     );
   }
 
-  handleNameCheck = e => {
-    const regExp = /^\S([0-9a-zA-z][\_\.]?){2,29}$/;
-    this.setState({ name: e.target.value }, () => {
-      if (regExp.test(this.state.name)) {
-        // axios
-        //   .post("http://127.0.0.1:4000/users/name", { name: this.state.name })
-        //   .then(res => {
-        //     console.log("available name!");
-        this.setState({ isNameValid: true });
-        //   })
-        //   .catch(err => {
-        //     console.log("exist name!");
-        // this.setState({ isNameValid: false });
-        //   });
+  handlePwdCheck = e => {
+    const regExp = /\S[0-9a-zA-Z]{7,15}$/;
+
+    this.setState({ password: e.target.value }, () => {
+      this.handleInfoNext();
+      if (this.state.password === "" || regExp.test(this.state.password)) {
+        this.setState({ isPwdValid: true }, () => {
+          this.handleInfoNext();
+        });
       } else {
-        this.setState({ isNameValid: false });
+        this.setState({ isPwdValid: false }, () => {
+          this.handleInfoNext();
+          const Isnum = /\S[0-9]$/;
+          const IsChar = /\S[a-zA-Z]$/;
+          if (
+            IsChar.test(this.state.password) & !Isnum.test(this.state.password)
+          ) {
+            this.setState({ helpPwd: "Num should be contained" });
+          } else if (
+            Isnum.test(this.state.password) & !IsChar.test(this.state.password)
+          ) {
+            this.setState({ helpPwd: "Alphabet should be contained" });
+          } else {
+            this.setState({ helpPwd: " " });
+          }
+        });
+      }
+    });
+  };
+
+  handleRepwdCheck = e => {
+    this.setState({ repassword: e.target.value }, () => {
+      if (
+        this.state.repassword === "" ||
+        this.state.password === this.state.repassword
+      ) {
+        this.setState({ isRepwdValid: true }, () => {
+          this.handleInfoNext();
+        });
+      } else {
+        this.setState({ isRepwdValid: false }, () => {
+          this.handleInfoNext();
+        });
       }
     });
   };
@@ -272,7 +305,9 @@ class SignUpPage extends Component {
         });
       } else if ((this.state.email !== "") & !regExp.test(this.state.email)) {
         this.setState({ isEmailValid: false }, () => {
-          this.handleInfoNext();
+          this.setState({ helpEmail: "Incorrect Email Form" }, () => {
+            this.handleInfoNext();
+          });
         });
       }
 
@@ -290,6 +325,48 @@ class SignUpPage extends Component {
       //       this.setState({ isEmailValid: false });
       //     });
       // }
+    });
+  };
+
+  handleInfoNext = () => {
+    if ((this.state.password !== "") & (this.state.repassword !== "")) {
+      if (this.state.password === this.state.repassword) {
+        this.setState({ isRepwdValid: true });
+      } else {
+        this.setState({ isRepwdValid: false, isInfoNext: false });
+      }
+    }
+    if (
+      (this.state.email !== "") &
+      (this.state.password !== "") &
+      (this.state.repassword !== "") &
+      (this.state.isEmailValid &
+        this.state.isPwdValid &
+        this.state.isRepwdValid)
+    ) {
+      this.setState({ isInfoNext: true });
+    } else {
+      this.setState({ isInfoNext: false });
+    }
+  };
+
+  handleNameCheck = e => {
+    const regExp = /^\S([0-9a-zA-z][\_\.]?){2,29}$/;
+    this.setState({ name: e.target.value }, () => {
+      if (regExp.test(this.state.name)) {
+        // axios
+        //   .post("http://127.0.0.1:4000/users/name", { name: this.state.name })
+        //   .then(res => {
+        //     console.log("available name!");
+        this.setState({ isNameValid: true });
+        //   })
+        //   .catch(err => {
+        //     console.log("exist name!");
+        // this.setState({ isNameValid: false });
+        //   });
+      } else {
+        this.setState({ isNameValid: false });
+      }
     });
   };
 
@@ -357,62 +434,6 @@ class SignUpPage extends Component {
         this.state.isRepwdValid)
     ) {
       this.handleProfile();
-    }
-  };
-
-  handlePwdCheck = e => {
-    const regExp = /\S[\*\!0-9a-zA-Z]{7,15}$/;
-
-    this.setState({ password: e.target.value }, () => {
-      this.handleInfoNext();
-      if (this.state.password === "" || regExp.test(this.state.password)) {
-        this.setState({ isPwdValid: true }, () => {
-          this.handleInfoNext();
-        });
-      } else {
-        this.setState({ isPwdValid: false }, () => {
-          this.handleInfoNext();
-        });
-      }
-    });
-  };
-
-  handleRepwdCheck = e => {
-    this.setState({ repassword: e.target.value }, () => {
-      if (
-        this.state.repassword === "" ||
-        this.state.password === this.state.repassword
-      ) {
-        this.setState({ isRepwdValid: true }, () => {
-          this.handleInfoNext();
-        });
-      } else {
-        this.setState({ isRepwdValid: false }, () => {
-          this.handleInfoNext();
-        });
-      }
-    });
-  };
-
-  handleInfoNext = () => {
-    if ((this.state.password !== "") & (this.state.repassword !== "")) {
-      if (this.state.password === this.state.repassword) {
-        this.setState({ isRepwdValid: true });
-      } else {
-        this.setState({ isRepwdValid: false, isInfoNext: false });
-      }
-    }
-    if (
-      (this.state.email !== "") &
-      (this.state.password !== "") &
-      (this.state.repassword !== "") &
-      (this.state.isEmailValid &
-        this.state.isPwdValid &
-        this.state.isRepwdValid)
-    ) {
-      this.setState({ isInfoNext: true });
-    } else {
-      this.setState({ isInfoNext: false });
     }
   };
 
