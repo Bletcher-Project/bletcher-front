@@ -65,23 +65,26 @@
 
     &-input {
       text-align: center;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
 
     &__img {
-      // border: solid 3px purple;
+      //border: solid 3px purple;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
       align-self: center;
       margin-top: 20px;
       width: 230px;
       height: 180px;
 
-      &-upload {
-        margin-top: 10px;
+      &-preview {
+        align-self: center;
+        border: solid #7b1fa2 3px;
       }
 
-      &-preview {
-        border: solid #7b1fa2 4px;
-        border-radius: 80px;
+      &-upload {
+        margin-top: 10px;
       }
     }
 

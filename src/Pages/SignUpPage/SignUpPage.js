@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { NavBar, TypeButton, MainInput, MainButton } from "../../Components";
+import { NavBar, TypeButton, SignupInput, MainButton } from "../../Components";
 
 import Slide from "@material-ui/core/Slide";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
@@ -29,6 +29,7 @@ class SignUpPage extends Component {
       profileImgUrl: null,
       infoOpen: false,
       profileOpen: false,
+      isInfoNext: false,
       isEmailValid: true,
       isPwdValid: true,
       isRepwdValid: true,
@@ -41,6 +42,7 @@ class SignUpPage extends Component {
     const {
       infoOpen,
       profileOpen,
+      isInfoNext,
       isEmailValid,
       isPwdValid,
       isRepwdValid,
@@ -132,44 +134,39 @@ class SignUpPage extends Component {
         >
           <div className="signupPage__info">
             <div className="signupPage__info-input">
-              <MainInput
+              <SignupInput
                 label="Email"
                 type="email"
                 width="210px"
                 onChange={this.handleEmailCheck}
-                error={!isEmailValid}
-                helperText={isEmailValid ? null : "Incorrect Email"}
+                // error={!isEmailValid}
+                helperText={isEmailValid ? " " : "Incorrect Email"} //TODO Make helperText return function e.g. {this.handleHelper}
               />
             </div>
             <div className="signupPage__info-input">
-              <MainInput
+              <SignupInput
                 label="Password"
                 type="password"
                 width="210px"
                 onChange={this.handlePwdCheck}
-                error={!isPwdValid}
+                // error={!isPwdValid}
+                helperText={isPwdValid ? " " : "Incorrect Password"}
               />
             </div>
             <div className="signupPage__info-input">
-              <MainInput
+              <SignupInput
                 label="Re-password"
                 type="password"
                 width="210px"
                 onChange={this.handleRepwdCheck}
                 onKeyPress={this.handleEnterKey}
-                error={!isRepwdValid}
+                // error={!isRepwdValid}
+                helperText={isRepwdValid ? " " : "Type Same Password"}
               />
             </div>
             <div className="signupPage__info-next">
               <MainButton
-                disabled={
-                  this.state.email === "" ||
-                  this.state.password === "" ||
-                  this.state.repassword === "" ||
-                  isEmailValid === false ||
-                  isPwdValid === false ||
-                  isRepwdValid === false
-                }
+                disabled={!isInfoNext}
                 text="Next"
                 onClick={this.handleProfile}
               />
@@ -183,27 +180,6 @@ class SignUpPage extends Component {
           timeout={{ appear: 1000, enter: 750, exit: 750 }}
         >
           <div className="signupPage__info">
-            <div className="signupPage__info-input">
-              <MainInput
-                id="standard-basic"
-                label="name not yet"
-                type="text"
-                width="210px"
-                onChange={this.handleNameCheck}
-                error={!isNameValid}
-              />
-            </div>
-            <div className="signupPage__info-input">
-              <MainInput
-                id="standard-basic"
-                label="status"
-                type="text"
-                width="210px"
-                onChange={this.handleStatusCheck}
-                error={!isStatusValid}
-              />
-            </div>
-
             <div className="signupPage__info__img">
               <Avatar
                 className="signupPage__info__img-preview"
@@ -232,6 +208,26 @@ class SignUpPage extends Component {
                 </label>
               </div>
             </div>
+            <div className="signupPage__info-input">
+              <SignupInput
+                id="standard-basic"
+                label="name"
+                type="text"
+                width="210px"
+                onChange={this.handleNameCheck}
+                error={!isNameValid}
+              />
+            </div>
+            <div className="signupPage__info-input">
+              <SignupInput
+                id="standard-basic"
+                label="status"
+                type="text"
+                width="210px"
+                onChange={this.handleStatusCheck}
+                error={!isStatusValid}
+              />
+            </div>
 
             <div className="signupPage__info-signup">
               <MainButton
@@ -254,11 +250,11 @@ class SignUpPage extends Component {
         //   .post("http://127.0.0.1:4000/users/name", { name: this.state.name })
         //   .then(res => {
         //     console.log("available name!");
-        //     this.setState({ isNameValid: true });
+        this.setState({ isNameValid: true });
         //   })
         //   .catch(err => {
         //     console.log("exist name!");
-        //     this.setState({ isNameValid: false });
+        // this.setState({ isNameValid: false });
         //   });
       } else {
         this.setState({ isNameValid: false });
@@ -269,10 +265,15 @@ class SignUpPage extends Component {
   handleEmailCheck = e => {
     const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     this.setState({ email: e.target.value }, () => {
+      this.handleInfoNext();
       if (this.state.email === "" || regExp.test(this.state.email)) {
-        this.setState({ isEmailValid: true });
-      } else {
-        this.setState({ isEmailValid: false });
+        this.setState({ isEmailValid: true }, () => {
+          this.handleInfoNext();
+        });
+      } else if ((this.state.email !== "") & !regExp.test(this.state.email)) {
+        this.setState({ isEmailValid: false }, () => {
+          this.handleInfoNext();
+        });
       }
 
       // if (regExp.test(this.state.email)) {
@@ -363,13 +364,16 @@ class SignUpPage extends Component {
     const regExp = /\S[\*\!0-9a-zA-Z]{7,15}$/;
 
     this.setState({ password: e.target.value }, () => {
-      this.setState({
-        isPwdValid:
-          this.state.password === "" || regExp.test(this.state.password)
-      });
-      this.setState({
-        isRepwdValid: this.state.password === this.state.repassword
-      });
+      this.handleInfoNext();
+      if (this.state.password === "" || regExp.test(this.state.password)) {
+        this.setState({ isPwdValid: true }, () => {
+          this.handleInfoNext();
+        });
+      } else {
+        this.setState({ isPwdValid: false }, () => {
+          this.handleInfoNext();
+        });
+      }
     });
   };
 
@@ -379,11 +383,37 @@ class SignUpPage extends Component {
         this.state.repassword === "" ||
         this.state.password === this.state.repassword
       ) {
-        this.setState({ isRepwdValid: true });
-      } else if (this.state.password !== this.state.repassword) {
-        this.setState({ isRepwdValid: false });
+        this.setState({ isRepwdValid: true }, () => {
+          this.handleInfoNext();
+        });
+      } else {
+        this.setState({ isRepwdValid: false }, () => {
+          this.handleInfoNext();
+        });
       }
     });
+  };
+
+  handleInfoNext = () => {
+    if ((this.state.password !== "") & (this.state.repassword !== "")) {
+      if (this.state.password === this.state.repassword) {
+        this.setState({ isRepwdValid: true });
+      } else {
+        this.setState({ isRepwdValid: false, isInfoNext: false });
+      }
+    }
+    if (
+      (this.state.email !== "") &
+      (this.state.password !== "") &
+      (this.state.repassword !== "") &
+      (this.state.isEmailValid &
+        this.state.isPwdValid &
+        this.state.isRepwdValid)
+    ) {
+      this.setState({ isInfoNext: true });
+    } else {
+      this.setState({ isInfoNext: false });
+    }
   };
 
   handleStatusCheck = e => {
