@@ -10,7 +10,7 @@
 
 .signupPage {
   // border: solid 5px red;
-  top: 18%;
+  //top: 18%;
   position: fixed;
   width: 100%;
   height: 100%;
@@ -22,9 +22,9 @@
     height: 100%;
 
     &-head {
+      margin-top: 10%;
       display: flex;
       @include content-center;
-      margin: 0;
       font-size: 2.5rem;
     }
 
@@ -46,14 +46,16 @@
     height: 100%;
     background-color: white;
 
-    &-head {
+    &-head { //TODO redesign back button css style
       // border: solid 3px blue;
+      margin-top: 10%;
+      margin-bottom: 36px;
+      display: flex;
       justify-content: center;
-      margin: 0 0 0 0;
       font-size: 2.5rem;
       .back {
         position: fixed;
-        left: 200px;
+        left: 30%;
         border: none;
         background-color: none;
         cursor: pointer;
@@ -74,7 +76,6 @@
       flex-direction: column;
       text-align: center;
       align-self: center;
-      margin-top: 20px;
       width: 230px;
       height: 180px;
 
@@ -96,6 +97,43 @@
     &-signup {
       text-align: center;
       margin-top: 1.5%;
+    }
+  }
+
+  &__success {
+    @keyframes float {
+      0% {
+        transform: translatey(0px);
+      }
+      50% {
+        transform: translatey(-5px);
+      }
+      100% {
+        transform: translatey(0px);
+      }
+    }
+    //border: solid 3px red;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    &-head {
+      margin-top: 260px;
+      margin-bottom: 48px;
+      font-size: 3rem;
+    }
+
+    &-logo {
+      img {
+        animation: float 2s ease-in-out infinite;
+      }
+    }
+
+    &-desc {
+      margin-top: 16px;
+      margin-bottom: 20px;
+      font-size: 2rem;
     }
   }
 }

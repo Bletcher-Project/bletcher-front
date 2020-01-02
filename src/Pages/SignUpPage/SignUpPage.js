@@ -10,6 +10,7 @@ import { purple } from "@material-ui/core/colors";
 import logo_sketcher from "../../Assets/images/logo_sketcher.png";
 import logo_creator from "../../Assets/images/logo_creator.png";
 import default_profile from "../../Assets/images/default_profile.svg";
+import signup_back from "../../Assets/images/signup_back.svg";
 
 const defaultProps = {};
 const propTypes = {};
@@ -38,12 +39,15 @@ class SignUpPage extends Component {
       isPwdValid: true,
       isRepwdValid: true,
       isNameValid: true,
-      isStatusValid: true
+      isStatusValid: true,
+      isSignUpSuc: false
     };
   }
 
   render() {
     const {
+      usertype,
+      name,
       helpEmail,
       helpPwd,
       helpRePwd,
@@ -56,10 +60,40 @@ class SignUpPage extends Component {
       isPwdValid,
       isRepwdValid,
       isNameValid,
-      isStatusValid
+      isStatusValid,
+      isSignUpSuc
     } = this.state;
 
     let slide_header;
+    let SignupSuccess = (
+      <div
+        className="signupPage__success"
+        style={{
+          backgroundImage: `url(${signup_back})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center center"
+        }}
+      >
+        <div className="signupPage__success-head">
+          Hello! {usertype} {name}!
+        </div>
+        <div className="signupPage__success-logo">
+          {usertype === "Sketcher" ? (
+            <img src={logo_sketcher} width="130px" />
+          ) : (
+            <img src={logo_creator} width="130px" />
+          )}
+        </div>
+        <div className="signupPage__success-desc">
+          {usertype === "sketcher"
+            ? "Login and Sketch your creative idea."
+            : "Login and Create your own work."}
+        </div>
+
+        <MainButton text="Sign In!" onClick={this.handleSignIn} />
+      </div>
+    );
 
     if (!(infoOpen || profileOpen)) {
       slide_header = (
@@ -108,151 +142,157 @@ class SignUpPage extends Component {
       <div className="signupPage">
         <NavBar isActive="SignUp" />
 
-        {slide_header}
+        {isSignUpSuc ? (
+          SignupSuccess
+        ) : (
+          <div>
+            {slide_header}
 
-        <Slide
-          direction="up"
-          in={!infoOpen}
-          timeout={{ appear: 1000, enter: 750, exit: 750 }}
-        >
-          <div className="signupPage__type">
-            <div className="signupPage__type-btn">
-              <TypeButton
-                title="Sketcher"
-                value="sketcher"
-                content="Share your artisic idea."
-                logo={logo_sketcher}
-                onClick={this.handleTypeSketcher}
-              />
-              <TypeButton
-                title="Creator"
-                value="sketcher"
-                content="Share your creation."
-                logo={logo_creator}
-                onClick={this.handleTypeCreator}
-              />
-            </div>
-          </div>
-        </Slide>
-
-        <Slide
-          direction="up"
-          in={infoOpen}
-          mountOnEnter
-          timeout={{ appear: 1000, enter: 750, exit: 750 }}
-        >
-          <div className="signupPage__info">
-            <div className="signupPage__info-input">
-              <SignupInput
-                label="Email"
-                type="email"
-                width="210px"
-                onChange={this.handleEmailCheck}
-                error={!isEmailValid}
-                helperText={helpEmail}
-              />
-            </div>
-            <div className="signupPage__info-input">
-              <SignupInput
-                disabled={!isEmailValid || this.state.email === ""}
-                label="Password"
-                type="password"
-                width="210px"
-                onChange={this.handlePwdCheck}
-                error={!isPwdValid}
-                helperText={helpPwd}
-              />
-            </div>
-            <div className="signupPage__info-input">
-              <SignupInput
-                disabled={
-                  !isPwdValid || !isEmailValid || this.state.password === ""
-                }
-                label="Re-password"
-                type="password"
-                width="210px"
-                onChange={this.handleRepwdCheck}
-                onKeyPress={this.handleEnterKey}
-                error={!isRepwdValid}
-                helperText={isRepwdValid ? " " : helpRePwd}
-              />
-            </div>
-            <div className="signupPage__info-next">
-              <MainButton
-                disabled={!isInfoNext}
-                text="Next"
-                onClick={this.handleProfile}
-              />
-            </div>
-          </div>
-        </Slide>
-        <Slide
-          direction="up"
-          in={profileOpen}
-          mountOnEnter
-          timeout={{ appear: 1000, enter: 750, exit: 750 }}
-        >
-          <div className="signupPage__info">
-            <div className="signupPage__info__img">
-              <Avatar
-                className="signupPage__info__img-preview"
-                src={
-                  this.state.profileImgUrl
-                    ? this.state.profileImgUrl
-                    : default_profile
-                }
-                style={{ width: "120px", height: "120px" }}
-              />
-              <div className="signupPage__info__img-upload">
-                <input
-                  accept="image/*"
-                  type="file"
-                  style={{ display: "none" }}
-                  id="profile-upload"
-                  name="img"
-                  onChange={this.handleProfileImg}
-                />
-                <label htmlFor="profile-upload">
-                  <MainButton
-                    size="small"
-                    component="span"
-                    text="Choose Image"
+            <Slide
+              direction="up"
+              in={!infoOpen}
+              timeout={{ appear: 1000, enter: 750, exit: 750 }}
+            >
+              <div className="signupPage__type">
+                <div className="signupPage__type-btn">
+                  <TypeButton
+                    title="Sketcher"
+                    value="sketcher"
+                    content="Share your artisic idea."
+                    logo={logo_sketcher}
+                    onClick={this.handleTypeSketcher}
                   />
-                </label>
+                  <TypeButton
+                    title="Creator"
+                    value="sketcher"
+                    content="Share your creation."
+                    logo={logo_creator}
+                    onClick={this.handleTypeCreator}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="signupPage__info-input">
-              <SignupInput
-                id="standard-basic"
-                label="name"
-                type="text"
-                width="210px"
-                onChange={this.handleNameCheck}
-                error={!isNameValid}
-                helperText={helpName}
-              />
-            </div>
-            <div className="signupPage__info-input">
-              <SignupInput
-                id="standard-basic"
-                label="status"
-                type="text"
-                width="210px"
-                onChange={this.handleStatusCheck}
-                onKeyPress={this.handleEnterKey}
-                error={!isStatusValid}
-              />
-            </div>
+            </Slide>
 
-            <div className="signupPage__info-signup">
-              <MainButton
-                disabled={!isSignupNext}
-                text="Sign Up"
-                onClick={this.handleSignup}
-              />
-            </div>
+            <Slide
+              direction="up"
+              in={infoOpen}
+              mountOnEnter
+              timeout={{ appear: 1000, enter: 750, exit: 750 }}
+            >
+              <div className="signupPage__info">
+                <div className="signupPage__info-input">
+                  <SignupInput
+                    label="Email"
+                    type="email"
+                    width="210px"
+                    onChange={this.handleEmailCheck}
+                    error={!isEmailValid}
+                    helperText={helpEmail}
+                  />
+                </div>
+                <div className="signupPage__info-input">
+                  <SignupInput
+                    disabled={!isEmailValid || this.state.email === ""}
+                    label="Password"
+                    type="password"
+                    width="210px"
+                    onChange={this.handlePwdCheck}
+                    error={!isPwdValid}
+                    helperText={helpPwd}
+                  />
+                </div>
+                <div className="signupPage__info-input">
+                  <SignupInput
+                    disabled={
+                      !isPwdValid || !isEmailValid || this.state.password === ""
+                    }
+                    label="Re-password"
+                    type="password"
+                    width="210px"
+                    onChange={this.handleRepwdCheck}
+                    onKeyPress={this.handleEnterKey}
+                    error={!isRepwdValid}
+                    helperText={isRepwdValid ? " " : helpRePwd}
+                  />
+                </div>
+                <div className="signupPage__info-next">
+                  <MainButton
+                    disabled={!isInfoNext}
+                    text="Next"
+                    onClick={this.handleProfile}
+                  />
+                </div>
+              </div>
+            </Slide>
+            <Slide
+              direction="up"
+              in={profileOpen}
+              mountOnEnter
+              timeout={{ appear: 1000, enter: 750, exit: 750 }}
+            >
+              <div className="signupPage__info">
+                <div className="signupPage__info__img">
+                  <Avatar
+                    className="signupPage__info__img-preview"
+                    src={
+                      this.state.profileImgUrl
+                        ? this.state.profileImgUrl
+                        : default_profile
+                    }
+                    style={{ width: "120px", height: "120px" }}
+                  />
+                  <div className="signupPage__info__img-upload">
+                    <input
+                      accept="image/*"
+                      type="file"
+                      style={{ display: "none" }}
+                      id="profile-upload"
+                      name="img"
+                      onChange={this.handleProfileImg}
+                    />
+                    <label htmlFor="profile-upload">
+                      <MainButton
+                        size="small"
+                        component="span"
+                        text="Choose Image"
+                      />
+                    </label>
+                  </div>
+                </div>
+                <div className="signupPage__info-input">
+                  <SignupInput
+                    id="standard-basic"
+                    label="name"
+                    type="text"
+                    width="210px"
+                    onChange={this.handleNameCheck}
+                    error={!isNameValid}
+                    helperText={helpName}
+                  />
+                </div>
+                <div className="signupPage__info-input">
+                  <SignupInput
+                    id="standard-basic"
+                    label="status"
+                    type="text"
+                    width="210px"
+                    onChange={this.handleStatusCheck}
+                    onKeyPress={this.handleEnterKey}
+                    error={!isStatusValid}
+                  />
+                </div>
+
+                <div className="signupPage__info-signup">
+                  <MainButton
+                    disabled={!isSignupNext}
+                    text="Sign Up"
+                    onClick={this.handleSignup}
+                  />
+                </div>
+              </div>
+            </Slide>
           </div>
-        </Slide>
+        )}
       </div>
     );
   }
@@ -451,10 +491,11 @@ class SignUpPage extends Component {
     return axios
       .post("http://127.0.0.1:4000/signup", formData)
       .then(res => {
-        alert("signup success!");
+        this.setState({ isSignUpSuc: true });
       })
       .catch(err => {
         alert("signup fail!: " + err);
+        this.setState({ isSignUpSuc: false });
       });
   };
 
@@ -515,6 +556,12 @@ class SignUpPage extends Component {
   handleStatusCheck = e => {
     this.setState({ status: e.target.value }, () => {
       this.setState({ isStatusValid: this.state.status.length <= 100 });
+    });
+  };
+
+  handleSignIn = () => {
+    this.props.history.push({
+      pathname: "/"
     });
   };
 }
