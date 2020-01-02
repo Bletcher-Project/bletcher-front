@@ -10,13 +10,20 @@ import { purple } from "@material-ui/core/colors";
 const defaultProps = {};
 const propTypes = {};
 
-const PurpleInput = withStyles({ //TODO Need to Fix styles
+const PurpleInput = withStyles({
   root: {
     "& label.Mui-focused": {
       color: purple[700]
     },
     "& .MuiInput-underline:after": {
       borderBottomColor: purple[700]
+    },
+    "& .MuiFormLabel-root.Mui-error": {
+      color: purple[700]
+    },
+    "& .MuiFormHelperText-root": {
+      fontSize: "0.7rem",
+      textAlign: "right"
     }
   }
 })(TextField);
@@ -29,11 +36,13 @@ class MainInput extends Component {
 
   render() {
     const {
+      disabled,
       label,
       type,
       name,
       width,
       onChange,
+      onKeyPress,
       error,
       required,
       helperText
@@ -41,11 +50,13 @@ class MainInput extends Component {
     return (
       <div className="mainInput">
         <PurpleInput
+          disabled={disabled}
           label={label}
           type={type}
           name={name}
           style={{ width: width }}
           onChange={onChange}
+          onKeyPress={onKeyPress}
           error={error}
           required={required}
           helperText={helperText}

@@ -23,9 +23,10 @@ class SignUpPage extends Component {
       repassword: "",
       name: "",
       status: "",
-      helpEmail: " ",
-      helpPwd: " ",
-      helpRePwd: " ",
+      helpEmail: "Enter your email address please",
+      helpPwd: "Enter your password",
+      helpRePwd: "",
+      helpName: "Enter your name please",
       usertype: null,
       profileImg: null,
       profileImgUrl: null,
@@ -46,6 +47,7 @@ class SignUpPage extends Component {
       helpEmail,
       helpPwd,
       helpRePwd,
+      helpName,
       infoOpen,
       profileOpen,
       isInfoNext,
@@ -146,28 +148,32 @@ class SignUpPage extends Component {
                 type="email"
                 width="210px"
                 onChange={this.handleEmailCheck}
-                // error={!isEmailValid}
-                helperText={helpEmail} //TODO Make helperText return result e.g. {this.state.helpEmail}
+                error={!isEmailValid}
+                helperText={helpEmail}
               />
             </div>
             <div className="signupPage__info-input">
               <SignupInput
+                disabled={!isEmailValid || this.state.email === ""}
                 label="Password"
                 type="password"
                 width="210px"
                 onChange={this.handlePwdCheck}
-                // error={!isPwdValid}
-                helperText={isPwdValid ? " " : helpPwd}
+                error={!isPwdValid}
+                helperText={helpPwd}
               />
             </div>
             <div className="signupPage__info-input">
               <SignupInput
+                disabled={
+                  !isPwdValid || !isEmailValid || this.state.password === ""
+                }
                 label="Re-password"
                 type="password"
                 width="210px"
                 onChange={this.handleRepwdCheck}
                 onKeyPress={this.handleEnterKey}
-                // error={!isRepwdValid}
+                error={!isRepwdValid}
                 helperText={isRepwdValid ? " " : helpRePwd}
               />
             </div>
@@ -223,6 +229,7 @@ class SignUpPage extends Component {
                 width="210px"
                 onChange={this.handleNameCheck}
                 error={!isNameValid}
+                helperText={helpName}
               />
             </div>
             <div className="signupPage__info-input">
@@ -232,6 +239,7 @@ class SignUpPage extends Component {
                 type="text"
                 width="210px"
                 onChange={this.handleStatusCheck}
+                onKeyPress={this.handleEnterKey}
                 error={!isStatusValid}
               />
             </div>
@@ -250,41 +258,57 @@ class SignUpPage extends Component {
   }
 
   handlePwdCheck = e => {
-    const regExp = /\S[0-9a-zA-Z]{7,15}$/;
+    const regExp = /\S[0-9a-zA-Z]{7,16}$/;
 
     const condition = () => {
-      const password = this.state.password;
       const Isnum = /\S[0-9]/;
       const IsChar = /\S[a-zA-Z]/;
-      const IsSpeical = /\S[\D\W]/;
-      const a = msg => {
-        this.setState({ helpPwd: msg }, () => {
-          this.setState({ isPwdValid: false }, () => {
+      const IsSpeical = /\W/g;
+      const a = (bool, msg) => {
+        this.setState({ isPwdValid: bool }, () => {
+          this.setState({ helpPwd: msg }, () => {
             this.handleInfoNext();
           });
         });
       };
-      if (IsChar.test(password) & !Isnum.test(password)) {
-        a("Num should be contained");
-      } else if (Isnum.test(password) & !IsChar.test(password)) {
-        a("Alphabet should be contained");
-      } else if ((password !== "") & IsSpeical.test(password)) {
-        //TODO Fix : not working as well e.g. starts with just "a" or "1" => condition allowed.
-        a("Special character not allowed");
-      } else if ((password !== "") & (password.length < 8)) {
-        a("Should be more than 8 words");
-      } else if (password === "") {
-        a("Enter password please");
-      } else {
-        this.setState({ helpPwd: " " });
+      if (
+        (this.state.password !== "") &
+        (8 <= this.state.password.length) &
+        (this.state.password.length <= 16)
+      ) {
+        if (
+          IsChar.test(this.state.password) & !Isnum.test(this.state.password)
+        ) {
+          return a(false, "Num should be contained");
+        } else if (
+          !IsChar.test(this.state.password) & Isnum.test(this.state.password)
+        ) {
+          return a(false, "Alphabet should be contained");
+        } else if (IsSpeical.test(this.state.password)) {
+          return a(false, "Special character not allowed");
+        }
+      } else if (
+        (this.state.password !== "") &
+        (this.state.password.length < 8)
+      ) {
+        return a(false, "Should be more than 8 words");
+      } else if (
+        (this.state.password !== "") &
+        (this.state.password.length > 16)
+      ) {
+        return a(false, "Should no greater than 16 words");
+      } else if (this.state.password === "") {
+        return a(true, "Enter password please");
       }
     };
 
     this.setState({ password: e.target.value }, () => {
-      if (this.state.password === "" || regExp.test(this.state.password)) {
+      if (regExp.test(this.state.password)) {
         this.setState({ isPwdValid: true }, () => {
-          this.handleInfoNext();
-          condition();
+          this.setState({ helpPwd: "Allowed password" }, () => {
+            this.handleInfoNext();
+            condition();
+          });
         });
       } else {
         this.setState({ isPwdValid: false }, () => {
@@ -306,7 +330,9 @@ class SignUpPage extends Component {
         });
       } else {
         this.setState({ isRepwdValid: false }, () => {
-          this.handleInfoNext();
+          this.setState({ helpRePwd: "Enter same password above" }, () => {
+            this.handleInfoNext();
+          });
         });
       }
     });
@@ -335,11 +361,9 @@ class SignUpPage extends Component {
             email: this.state.email
           })
           .then(res => {
-            console.log("available email!");
             a(true, "Allowed Email address");
           })
           .catch(err => {
-            console.log("exist email!");
             a(false, "Already exists email!");
           });
       }
@@ -368,37 +392,51 @@ class SignUpPage extends Component {
     }
   };
 
-  handleNameCheck = e => {
-    const regExp = /^\S([0-9a-zA-z][\_\.]?){2,29}$/;
-    this.setState({ name: e.target.value }, () => {
-      if (regExp.test(this.state.name)) {
-        //TODO Need to check server-side repeat check after entring name. not during entring name.
-        axios
-          .post("http://127.0.0.1:4000/users/name", { name: this.state.name })
-          .then(res => {
-            console.log("available name!");
-            this.setState({ isNameValid: true }, () => {
-              this.handleSignupBtn();
-            });
-          })
-          .catch(err => {
-            console.log("exist name!");
-            this.setState({ isNameValid: false }, () => {
-              this.handleSignupBtn();
-            });
-          });
-      } else {
-        this.setState({ isNameValid: false }, () => {
-          this.handleSignupBtn();
-        });
-      }
-    });
-  };
-
   handleSignupBtn = () => {
     if (this.state.isNameValid & (this.state.name !== "")) {
       this.setState({ isSignupNext: true });
+    } else {
+      this.setState({ isSignupNext: false });
     }
+  };
+
+  handleNameCheck = e => {
+    const regExp = /^[A-Za-z0-9_.]{3,30}$/;
+
+    const a = (bool, msg) => {
+      this.setState({ isNameValid: bool }, () => {
+        this.setState({ helpName: msg }, () => {
+          this.handleSignupBtn();
+        });
+      });
+    };
+
+    const repeatChk = () => {
+      axios
+        .post("http://127.0.0.1:4000/users/name", { name: this.state.name })
+        .then(res => {
+          a(true, "Allowed name");
+        })
+        .catch(err => {
+          a(false, "Already exists name");
+        });
+    };
+
+    this.setState({ name: e.target.value }, () => {
+      if (regExp.test(this.state.name)) {
+        repeatChk();
+      } else {
+        if ((this.state.name !== "") & (this.state.name.length < 3)) {
+          a(false, "Should be more then 3 words");
+        } else if (this.state.name.length > 30) {
+          a(false, "Should no greater than 30 words");
+        } else if ((this.state.name !== "") & !regExp.test(this.state.name)) {
+          a(false, "Only '_' or '.' special character allowed");
+        } else if (this.state.name === "") {
+          a(true, "Enter your name please");
+        }
+      }
+    });
   };
 
   handleSignup = () => {
@@ -465,6 +503,12 @@ class SignUpPage extends Component {
         this.state.isRepwdValid)
     ) {
       this.handleProfile();
+    } else if (
+      (e.charCode === 13) &
+      (this.state.profileOpen === true) &
+      this.state.isNameValid
+    ) {
+      this.handleSignup();
     }
   };
 
