@@ -46,7 +46,8 @@
     height: 100%;
     background-color: white;
 
-    &-head { //TODO redesign back button css style
+    &-head {
+      //TODO redesign back button css style
       // border: solid 3px blue;
       margin-top: 10%;
       margin-bottom: 36px;
@@ -55,7 +56,7 @@
       font-size: 2.5rem;
       .back {
         position: fixed;
-        left: 30%;
+        left: 22%;
         border: none;
         background-color: none;
         cursor: pointer;
@@ -67,7 +68,7 @@
 
     &-input {
       text-align: center;
-      margin-bottom: 5px;
+      margin-bottom: 1px;
     }
 
     &__img {
@@ -112,14 +113,14 @@
         transform: translatey(0px);
       }
     }
-    //border: solid 3px red;
+    // border: solid 3px red;
     height: 100%;
     display: flex;
     flex-direction: column;
-    text-align: center;
+    align-items: center;
+    justify-content: center;
 
     &-head {
-      margin-top: 260px;
       margin-bottom: 48px;
       font-size: 3rem;
     }
