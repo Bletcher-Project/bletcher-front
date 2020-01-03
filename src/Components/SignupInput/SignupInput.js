@@ -45,7 +45,8 @@ class MainInput extends Component {
       onKeyPress,
       error,
       required,
-      helperText
+      helperText,
+      InputProps
     } = this.props;
     return (
       <div className="mainInput">
@@ -60,6 +61,7 @@ class MainInput extends Component {
           error={error}
           required={required}
           helperText={helperText}
+          InputProps={InputProps}
         />
       </div>
     );

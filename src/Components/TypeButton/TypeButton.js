@@ -1,16 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles, transitions } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
 const styles = {
   root: {
     display: "block",
     width: "280px",
-    height: "340px",
-    margin: "0 10px 0 10px",
+    height: "360px",
+    margin: "0 10px 30px 10px",
     padding: "20px 0 0 0",
-    border: "3px solid",
+    border: "solid 2px",
     borderColor: "#8e24aa",
     borderRadius: "20px",
     textTransform: "unset",
