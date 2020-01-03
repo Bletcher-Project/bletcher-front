@@ -18,7 +18,6 @@
   &__type {
     // border: solid 3px black;
     display: flex;
-    position: absolute;
     width: 100%;
     height: 100%;
     flex-direction: column;
@@ -27,7 +26,7 @@
 
     &-head {
       // border: solid 3px red;
-      // margin-top: 10%;
+      margin-top: 150px;
       display: flex;
       @include content-center;
       font-size: 2.5rem;
@@ -46,66 +45,65 @@
   &__info {
     //border: solid 3px green;
     display: flex;
-    align-items: center;
     justify-content: center;
-    position: absolute;
     width: 100%;
     height: 100%;
 
     &__container {
-      //border: solid 3px green;
+      // border: solid 3px green;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       width: 650px;
       height: 100%;
-      //height: 60%;
       background-color: white;
 
       &-head {
-        //border: solid 3px blue;
+        // border: solid 1px blue;
         width: 650px;
-        margin-bottom: 36px;
+        margin-top: 150px;
+        margin-bottom: 10px;
         justify-content: center;
-        font-size: 2.5rem;
+        font-size: 2.3rem;
         .back {
+          position: fixed;
           border: none;
           background-color: none;
           cursor: pointer;
         }
         .title {
           //border: solid 3px yellow;
-          margin: 0;
           text-align: center;
         }
       }
 
       &-input {
+        // border: solid 1px red;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        margin-bottom: 1px;
-      }
-
-      &-next {
-        text-align: center;
-        margin-top: 1.5%;
+        margin-bottom: 4px;
       }
 
       &__img {
-        //border: solid 3px purple;
+        // border: solid 3px purple;
         justify-content: center;
-        align-self: center;
+        // align-self: center;
         width: 400px;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        align-items: center;
+        align-items: flex-end;
         justify-content: space-evenly;
 
         &__profile {
-          //border: solid 3px blue;
+          // border: solid 1px blue;
+          display: flex;
+          flex-direction: column;
+          text-align: center;
+
+          // align-items: flex-end;
           &-preview {
             border: solid #7b1fa2 2px;
             border-radius: 40%;
@@ -113,12 +111,16 @@
 
           &-upload {
             margin-top: 10px;
+
+            label {
+              margin: 0;
+            }
           }
         }
 
         &__input {
-          //border: solid 3px red;
-          margin-bottom: 1px;
+          // border: solid 1px red;
+          margin: 0;
         }
 
         &-signup {

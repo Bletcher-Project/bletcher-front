@@ -23,7 +23,9 @@ const PurpleInput = withStyles({
     },
     "& .MuiFormHelperText-root": {
       fontSize: "0.7rem",
-      textAlign: "right"
+      textAlign: "right",
+      marginTop: "3px",
+      marginBottom: "5px"
     }
   }
 })(TextField);
@@ -39,6 +41,7 @@ class MainInput extends Component {
       disabled,
       label,
       type,
+      value,
       name,
       width,
       onChange,
@@ -54,6 +57,7 @@ class MainInput extends Component {
           disabled={disabled}
           label={label}
           type={type}
+          value={value}
           name={name}
           style={{ width: width }}
           onChange={onChange}
