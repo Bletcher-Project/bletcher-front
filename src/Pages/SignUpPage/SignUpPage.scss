@@ -15,6 +15,10 @@
   width: 100%;
   height: 100%;
 
+  &__step {
+    margin-top: 100px;
+  }
+
   &__type {
     // border: solid 3px black;
     display: flex;
@@ -26,7 +30,7 @@
 
     &-head {
       // border: solid 3px red;
-      margin-top: 150px;
+      // margin-top: 150px;
       display: flex;
       @include content-center;
       font-size: 2.5rem;
@@ -36,7 +40,7 @@
       //border: solid 3px green;
       display: flex;
       flex-flow: row wrap;
-      margin-top: 30px;
+      margin-top: 10px;
       @include content-center;
       background-color: white;
     }
@@ -61,7 +65,7 @@
       &-head {
         // border: solid 1px blue;
         width: 650px;
-        margin-top: 150px;
+        // margin-top: 150px;
         margin-bottom: 10px;
         justify-content: center;
         font-size: 2.3rem;
@@ -78,11 +82,16 @@
       }
 
       &-input {
-        // border: solid 1px red;
+        // border: solid 1px grey;
+        // border-radius: 1%;
+        // box-shadow: 2px 2px 2px grey;
+        width: 360px;
+        height: 270px;
+        padding-top: 8px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        // justify-content: center;
         margin-bottom: 4px;
       }
 

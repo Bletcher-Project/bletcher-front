@@ -1,13 +1,18 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { NavBar, TypeButton, SignupInput, MainButton } from "../../Components";
+import {
+  NavBar,
+  TypeButton,
+  SignupInput,
+  MainButton,
+  SignupStep
+} from "../../Components";
 
 import Slide from "@material-ui/core/Slide";
 import Fade from "@material-ui/core/Fade";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import Avatar from "@material-ui/core/Avatar";
 import CheckIcon from "@material-ui/icons/Check";
-import Paper from "@material-ui/core/Paper";
 import { purple } from "@material-ui/core/colors";
 
 import logo_sketcher from "../../Assets/images/logo_sketcher.png";
@@ -43,7 +48,8 @@ class SignUpPage extends Component {
       isRepwdValid: true,
       isNameValid: true,
       isStatusValid: true,
-      isSignUpSuc: false
+      isSignUpSuc: false,
+      Activestep: 0
     };
   }
 
@@ -66,9 +72,11 @@ class SignUpPage extends Component {
       isRepwdValid,
       isNameValid,
       isStatusValid,
-      isSignUpSuc
+      isSignUpSuc,
+      Activestep
     } = this.state;
 
+    let signup_step = <SignupStep />;
     let type_page;
     let info_page;
     let profile_page;
@@ -107,7 +115,7 @@ class SignUpPage extends Component {
         <Fade
           // direction="up"
           in={true}
-          timeout={{ appear: 1000, enter: 750, exit: 750 }}
+          timeout={{ appear: 1200, enter: 1200, exit: 750 }}
         >
           <div className="signupPage__type">
             <div className="signupPage__type-head">
@@ -147,7 +155,7 @@ class SignUpPage extends Component {
                   <a>
                     <NavigateBeforeIcon
                       style={{ color: "#bdbdbd", fontSize: 60 }}
-                      onClick={this.handleInfo}
+                      onClick={this.handleStepInfoBack}
                     />
                   </a>
                 </div>
@@ -236,13 +244,6 @@ class SignUpPage extends Component {
                   onClick={this.handleProfile}
                 />
               </div>
-              {/* <div className="signupPage__info__container-next">
-                <MainButton
-                  disabled={!isInfoNext}
-                  text="Next"
-                  onClick={this.handleProfile}
-                />
-              </div> */}
             </div>
           </div>
         </Fade>
@@ -262,7 +263,7 @@ class SignUpPage extends Component {
                   <a>
                     <NavigateBeforeIcon
                       style={{ color: "#bdbdbd", fontSize: 60 }}
-                      onClick={this.handleProfile}
+                      onClick={this.handleStepProfileBack}
                     />
                   </a>
                 </div>
@@ -359,9 +360,14 @@ class SignUpPage extends Component {
         <NavBar isActive="SignUp" />
 
         {isSignUpSuc ? (
-          SignupSuccess
+          <Fade in={true} timeout={3000}>
+            {SignupSuccess}
+          </Fade>
         ) : (
           <div>
+            <div className="signupPage__step">
+              <SignupStep activestep={Activestep} />
+            </div>
             {type_page}
             {info_page}
             {profile_page}
@@ -584,25 +590,14 @@ class SignUpPage extends Component {
   handleTypeSketcher = () => {
     this.setState({ usertype: "Sketcher" }, () => {
       this.handleInfo();
+      this.handleStepNext();
     });
   };
 
   handleTypeCreator = () => {
     this.setState({ usertype: "Creator" }, () => {
       this.handleInfo();
-    });
-  };
-
-  handleInfo = () => {
-    this.setState({
-      infoOpen: !this.state.infoOpen
-    });
-  };
-
-  handleProfile = () => {
-    this.setState({
-      infoOpen: !this.state.infoOpen,
-      profileOpen: !this.state.profileOpen
+      this.handleStepNext();
     });
   };
 
@@ -617,7 +612,6 @@ class SignUpPage extends Component {
   };
 
   handleEnterKey = e => {
-    //TODO Need to add profile enter key case condition (after adding signup function)
     if (
       (e.charCode === 13) &
       (this.state.profileOpen === false) &
@@ -645,6 +639,44 @@ class SignUpPage extends Component {
     this.props.history.push({
       pathname: "/"
     });
+  };
+
+  handleStepNext = () => {
+    // setActiveStep(prevActiveStep => prevActiveStep + 1);
+    this.setState({ Activestep: this.state.Activestep + 1 });
+  };
+
+  handleStepInfoBack = () => {
+    // setActiveStep(prevActiveStep => prevActiveStep - 1);
+    this.setState({
+      infoOpen: !this.state.infoOpen,
+      Activestep: this.state.Activestep - 1
+    });
+  };
+
+  handleStepProfileBack = () => {
+    // setActiveStep(prevActiveStep => prevActiveStep - 1);
+    this.setState({
+      infoOpen: !this.state.infoOpen,
+      profileOpen: !this.state.profileOpen,
+      Activestep: this.state.Activestep - 1
+    });
+  };
+
+  handleInfo = () => {
+    this.setState({ infoOpen: !this.state.infoOpen });
+  };
+
+  handleProfile = () => {
+    this.setState(
+      {
+        infoOpen: !this.state.infoOpen,
+        profileOpen: !this.state.profileOpen
+      },
+      () => {
+        this.handleStepNext();
+      }
+    );
   };
 }
 
