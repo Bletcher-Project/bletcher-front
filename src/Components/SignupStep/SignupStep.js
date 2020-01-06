@@ -9,14 +9,7 @@ import Typography from "@material-ui/core/Typography";
 
 const Styles = {
   root: {
-    width: "100%"
-  },
-  backButton: {
-    // marginRight: theme.spacing(1)
-  },
-  instructions: {
-    // marginTop: theme.spacing(1),
-    // marginBottom: theme.spacing(1)
+    width: "70%"
   }
 };
 

@@ -12,7 +12,7 @@ import Slide from "@material-ui/core/Slide";
 import Fade from "@material-ui/core/Fade";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import Avatar from "@material-ui/core/Avatar";
-import CheckIcon from "@material-ui/icons/Check";
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { purple } from "@material-ui/core/colors";
 
 import logo_sketcher from "../../Assets/images/logo_sketcher.png";
@@ -32,8 +32,8 @@ class SignUpPage extends Component {
       repassword: "",
       name: "",
       status: "",
-      helpEmail: "Enter your email address please",
-      helpPwd: "Enter your password",
+      helpEmail: " ",
+      helpPwd: " ",
       helpRePwd: "",
       helpName: "Enter your name please",
       usertype: null,
@@ -76,7 +76,6 @@ class SignUpPage extends Component {
       Activestep
     } = this.state;
 
-    let signup_step = <SignupStep />;
     let type_page;
     let info_page;
     let profile_page;
@@ -182,7 +181,7 @@ class SignUpPage extends Component {
                       ? {
                           endAdornment: (
                             <Fade in={true} timeout={350}>
-                              <CheckIcon />
+                              <CheckCircleOutlineIcon style={{ color: purple[700] }} />
                             </Fade>
                           )
                         }
@@ -205,7 +204,7 @@ class SignUpPage extends Component {
                       ? {
                           endAdornment: (
                             <Fade in={true} timeout={350}>
-                              <CheckIcon />
+                              <CheckCircleOutlineIcon style={{ color: purple[700] }} />
                             </Fade>
                           )
                         }
@@ -231,7 +230,7 @@ class SignUpPage extends Component {
                       ? {
                           endAdornment: (
                             <Fade in={true} timeout={350}>
-                              <CheckIcon />
+                              <CheckCircleOutlineIcon style={{ color: purple[700] }} />
                             </Fade>
                           )
                         }
@@ -324,7 +323,7 @@ class SignUpPage extends Component {
                         ? {
                             endAdornment: (
                               <Fade in={true} timeout={350}>
-                                <CheckIcon />
+                                <CheckCircleOutlineIcon style={{ color: purple[700] }} />
                               </Fade>
                             )
                           }
@@ -471,7 +470,8 @@ class SignUpPage extends Component {
     this.setState({ email: e.target.value }, () => {
       this.handleInfoNext();
       if (this.state.email === "") {
-        a(true, "Enter email address please");
+        a(true, "Enter your email address please");
+        //a(true, " ");
       } else if ((this.state.email !== "") & !regExp.test(this.state.email)) {
         a(false, "Incorrect Email Form");
       }
@@ -642,12 +642,10 @@ class SignUpPage extends Component {
   };
 
   handleStepNext = () => {
-    // setActiveStep(prevActiveStep => prevActiveStep + 1);
     this.setState({ Activestep: this.state.Activestep + 1 });
   };
 
   handleStepInfoBack = () => {
-    // setActiveStep(prevActiveStep => prevActiveStep - 1);
     this.setState({
       infoOpen: !this.state.infoOpen,
       Activestep: this.state.Activestep - 1
@@ -655,7 +653,6 @@ class SignUpPage extends Component {
   };
 
   handleStepProfileBack = () => {
-    // setActiveStep(prevActiveStep => prevActiveStep - 1);
     this.setState({
       infoOpen: !this.state.infoOpen,
       profileOpen: !this.state.profileOpen,
