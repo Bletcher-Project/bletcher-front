@@ -12,7 +12,9 @@ import Slide from "@material-ui/core/Slide";
 import Fade from "@material-ui/core/Fade";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import Avatar from "@material-ui/core/Avatar";
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+import Fab from "@material-ui/core/Fab";
 import { purple } from "@material-ui/core/colors";
 
 import logo_sketcher from "../../Assets/images/logo_sketcher.png";
@@ -34,8 +36,8 @@ class SignUpPage extends Component {
       status: "",
       helpEmail: " ",
       helpPwd: " ",
-      helpRePwd: "",
-      helpName: "Enter your name please",
+      helpRePwd: " ",
+      helpName: " ",
       usertype: null,
       profileImg: null,
       profileImgUrl: null,
@@ -181,7 +183,9 @@ class SignUpPage extends Component {
                       ? {
                           endAdornment: (
                             <Fade in={true} timeout={350}>
-                              <CheckCircleOutlineIcon style={{ color: purple[700] }} />
+                              <CheckCircleOutlineIcon
+                                style={{ color: purple[700] }}
+                              />
                             </Fade>
                           )
                         }
@@ -204,7 +208,9 @@ class SignUpPage extends Component {
                       ? {
                           endAdornment: (
                             <Fade in={true} timeout={350}>
-                              <CheckCircleOutlineIcon style={{ color: purple[700] }} />
+                              <CheckCircleOutlineIcon
+                                style={{ color: purple[700] }}
+                              />
                             </Fade>
                           )
                         }
@@ -230,7 +236,9 @@ class SignUpPage extends Component {
                       ? {
                           endAdornment: (
                             <Fade in={true} timeout={350}>
-                              <CheckCircleOutlineIcon style={{ color: purple[700] }} />
+                              <CheckCircleOutlineIcon
+                                style={{ color: purple[700] }}
+                              />
                             </Fade>
                           )
                         }
@@ -284,29 +292,44 @@ class SignUpPage extends Component {
                       style={{
                         width: "130px",
                         height: "130px",
-                        borderRadius: "40%"
+                        borderRadius: "40%",
+                        border: "solid 2px purple"
                       }}
                     ></Avatar>
-                  </div>
-
-                  <div className="signupPage__info__container__img__profile-upload">
                     <input
                       accept="image/*"
                       type="file"
-                      // value={this.state.profileImg}
                       style={{ display: "none" }}
                       id="profile-upload"
                       name="img"
                       onChange={this.handleProfileImg}
                     />
-                    <label htmlFor="profile-upload">
-                      <MainButton
-                        size="small"
-                        component="span"
-                        text="Profile Upload"
-                      />
-                    </label>
+                    <Fab
+                      color="primary"
+                      style={{
+                        width: "36px",
+                        height: "36px",
+                        position: "relative",
+                        top: "-38px",
+                        right: "-48px",
+                        outline: "none"
+                      }}
+                    >
+                      <label
+                        htmlFor="profile-upload"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          cursor: "pointer",
+                          margin: "0"
+                        }}
+                      >
+                        <PhotoCameraIcon />
+                      </label>
+                    </Fab>
                   </div>
+
+                  <div className="signupPage__info__container__img__profile-upload"></div>
                 </div>
                 <div className="signupPage__info__container__img__input">
                   <SignupInput
@@ -323,7 +346,9 @@ class SignUpPage extends Component {
                         ? {
                             endAdornment: (
                               <Fade in={true} timeout={350}>
-                                <CheckCircleOutlineIcon style={{ color: purple[700] }} />
+                                <CheckCircleOutlineIcon
+                                  style={{ color: purple[700] }}
+                                />
                               </Fade>
                             )
                           }

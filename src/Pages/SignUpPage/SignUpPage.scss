@@ -59,30 +59,39 @@
     height: 100%;
 
     &__container {
-      // border: solid 3px green;
+      //border: solid 3px green;
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 650px;
+
       height: 100%;
       background-color: white;
 
       &-head {
-        // border: solid 1px blue;
+        //border: solid 1px blue;
         width: 650px;
+        height: 120px;
         // margin-top: 150px;
         margin-bottom: 10px;
         justify-content: center;
         font-size: 2.3rem;
         .back {
-          position: fixed;
+          border: solid 1px red;
+          position: relative;
+          left: -20px;
+          z-index: 3;
+          width: 60px;
+          margin: 0;
           border: none;
-          background-color: none;
           cursor: pointer;
         }
         .title {
           //border: solid 3px yellow;
           text-align: center;
+          position: relative;
+          top: -55px;
+          z-index: 2;
         }
       }
 
@@ -119,11 +128,13 @@
 
           // align-items: flex-end;
           &-preview {
-            border: solid #7b1fa2 2px;
+            //border: solid #7b1fa2 2px;
+            height: 120px;
             border-radius: 40%;
           }
 
           &-upload {
+            display: none;
             margin-top: 10px;
 
             label {
