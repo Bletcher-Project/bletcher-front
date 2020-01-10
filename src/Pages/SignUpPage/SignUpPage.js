@@ -13,7 +13,7 @@ import Fade from "@material-ui/core/Fade";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import Avatar from "@material-ui/core/Avatar";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 import Fab from "@material-ui/core/Fab";
 import { purple } from "@material-ui/core/colors";
 
@@ -292,7 +292,7 @@ class SignUpPage extends Component {
                       style={{
                         width: "130px",
                         height: "130px",
-                        borderRadius: "40%",
+                        borderRadius: "50%",
                         border: "solid 2px purple"
                       }}
                     ></Avatar>
@@ -367,7 +367,7 @@ class SignUpPage extends Component {
                   />
                 </div>
               </div>
-              <div className="signupPage__info__container__img-signup">
+              <div className="signupPage__info__container-signup">
                 <MainButton
                   disabled={!isSignupNext}
                   text="Sign Up"
@@ -516,43 +516,6 @@ class SignUpPage extends Component {
     });
   };
 
-  handleInfoNext = () => {
-    const nextCondition = () => {
-      if (
-        (this.state.email !== "") &
-        (this.state.password !== "") &
-        (this.state.repassword !== "") &
-        (this.state.isEmailValid &
-          this.state.isPwdValid &
-          this.state.isRepwdValid)
-      ) {
-        this.setState({ isInfoNext: true });
-      } else {
-        this.setState({ isInfoNext: false });
-      }
-    };
-    if ((this.state.password !== "") & (this.state.repassword !== "")) {
-      if (this.state.password === this.state.repassword) {
-        this.setState({ isRepwdValid: true }, () => {
-          nextCondition();
-        });
-      } else {
-        this.setState({ isRepwdValid: false, isInfoNext: false }, () => {
-          nextCondition();
-        });
-      }
-    }
-    nextCondition();
-  };
-
-  handleSignupBtn = () => {
-    if (this.state.isNameValid & (this.state.name !== "")) {
-      this.setState({ isSignupNext: true });
-    } else {
-      this.setState({ isSignupNext: false });
-    }
-  };
-
   handleNameCheck = e => {
     const regExp = /^[A-Za-z0-9_.]{3,30}$/;
 
@@ -590,6 +553,43 @@ class SignUpPage extends Component {
         }
       }
     });
+  };
+
+  handleInfoNext = () => {
+    const nextCondition = () => {
+      if (
+        (this.state.email !== "") &
+        (this.state.password !== "") &
+        (this.state.repassword !== "") &
+        (this.state.isEmailValid &
+          this.state.isPwdValid &
+          this.state.isRepwdValid)
+      ) {
+        this.setState({ isInfoNext: true });
+      } else {
+        this.setState({ isInfoNext: false });
+      }
+    };
+    if ((this.state.password !== "") & (this.state.repassword !== "")) {
+      if (this.state.password === this.state.repassword) {
+        this.setState({ isRepwdValid: true }, () => {
+          nextCondition();
+        });
+      } else {
+        this.setState({ isRepwdValid: false, isInfoNext: false }, () => {
+          nextCondition();
+        });
+      }
+    }
+    nextCondition();
+  };
+
+  handleSignupBtn = () => {
+    if (this.state.isNameValid & (this.state.name !== "")) {
+      this.setState({ isSignupNext: true });
+    } else {
+      this.setState({ isSignupNext: false });
+    }
   };
 
   handleSignup = () => {

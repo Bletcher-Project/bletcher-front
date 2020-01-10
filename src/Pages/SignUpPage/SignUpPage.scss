@@ -109,16 +109,21 @@
         margin-bottom: 4px;
       }
 
+      &-signup {
+        text-align: center;
+        margin-top: 40px;
+      }
+
       &__img {
         // border: solid 3px purple;
         justify-content: center;
-        // align-self: center;
         width: 400px;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         align-items: flex-end;
         justify-content: space-evenly;
+        margin-top: -30px;
 
         &__profile {
           // border: solid 1px blue;
@@ -148,10 +153,7 @@
           margin: 0;
         }
 
-        &-signup {
-          text-align: center;
-          margin-top: 40px;
-        }
+       
       }
     }
   }
