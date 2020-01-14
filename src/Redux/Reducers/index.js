@@ -1,17 +1,4 @@
-  
-import { SUCCEED_TO_SIGNUP, FAILED_TO_SIGNUP } from "../Constants/action-types";
+import { combineReducers } from "redux";
+import signupReducer from "./signupReducer";
 
-const initialState = {
-  isSignIn: false
-};
-
-function rootReducer(state = initialState, action) {
-  if (action.type === SUCCEED_TO_SIGNUP) {
-    return Object.assign({}, state, {
-      isSignIn: true
-    });
-  }
-  return state;
-}
-
-export default rootReducer;
+export default combineReducers({ signupReducer });
