@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as AuthAction from "../../Redux/Actions/AuthAction";
 import axios from "axios";
 
 import { SignupInput, MainButton } from "../../Components";
@@ -11,11 +13,27 @@ import { purple } from "@material-ui/core/colors";
 const defaultProps = {};
 const propTypes = {};
 
+const mapStateToProps = state => {
+  return {
+    usertype: state.signupReducer.usertype,
+    email: state.signupReducer.email,
+    password: state.signupReducer.password
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateSignupStep: stepname =>
+      dispatch(AuthAction.updateSignupStep(stepname)),
+    updateSignupInfo: info => dispatch(AuthAction.updateSignupInfo(info))
+  };
+};
+
 class SignUpInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
+      email: this.props.email,
       password: "",
       repassword: "",
       helpEmail: " ",
@@ -40,6 +58,8 @@ class SignUpInfo extends Component {
       isInfoNext
     } = this.state;
 
+    const { usertype } = this.props;
+
     return (
       <Fade
         in={true}
@@ -53,14 +73,14 @@ class SignUpInfo extends Component {
                 <a>
                   <NavigateBeforeIcon
                     style={{ color: "#bdbdbd", fontSize: 60 }}
-                    onClick={this.handleStepInfoBack}
+                    onClick={this.hanldePrevStep}
                   />
                 </a>
               </div>
 
               <div className="title">
                 <p>
-                  Hello, {this.state.usertype}! <br />
+                  Hello, {usertype}! <br />
                   Enter your personal information.
                 </p>
               </div>
@@ -145,7 +165,7 @@ class SignUpInfo extends Component {
               <MainButton
                 disabled={!isInfoNext}
                 text="Next"
-                onClick={this.handleProfile}
+                onClick={this.handleNextStep}
               />
             </div>
           </div>
@@ -153,6 +173,18 @@ class SignUpInfo extends Component {
       </Fade>
     );
   }
+
+  handleNextStep = () => {
+    this.props.updateSignupStep("profilePage");
+    this.props.updateSignupInfo({
+      email: this.state.email,
+      password: this.state.password
+    });
+  };
+
+  hanldePrevStep = () => {
+    this.props.updateSignupStep("typePage");
+  };
 
   handleInfoNext = () => {
     const nextCondition = () => {
@@ -302,4 +334,4 @@ class SignUpInfo extends Component {
 SignUpInfo.defaultProps = defaultProps;
 SignUpInfo.propTypes = propTypes;
 
-export default SignUpInfo;
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpInfo);

@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as AuthAction from "../../Redux/Actions/AuthAction";
 import { NavBar } from "../../Components";
 
 import { SignUpType, SignUpInfo, SignUpProfile, SignUpSuccess } from "../";
@@ -6,24 +8,32 @@ import { SignUpType, SignUpInfo, SignUpProfile, SignUpSuccess } from "../";
 const defaultProps = {};
 const propTypes = {};
 
+const mapStateToProps = state => {
+  return { SignUpStep: state.signupReducer.SignUpStep };
+};
+
 class SignUpPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      Activestep: 0
-    };
+    this.state = {};
   }
 
   render() {
-    const { Activestep } = this.state;
+    const {} = this.state;
+    const { SignUpStep } = this.props;
 
     return (
       <div className="signupPage">
         <NavBar isActive="SignUp" />
-        <SignUpType />
-        {/* <SignUpInfo /> */}
-        {/* <SignUpProfile /> */}
-        {/* <SignUpSuccess /> */}
+        {SignUpStep === "typePage" ? (
+          <SignUpType />
+        ) : SignUpStep === "infoPage" ? (
+          <SignUpInfo />
+        ) : SignUpStep === "profilePage" ? (
+          <SignUpProfile />
+        ) : SignUpStep === "successPage" ? (
+          <SignUpSuccess />
+        ) : null}
       </div>
     );
   }
@@ -32,4 +42,4 @@ class SignUpPage extends Component {
 SignUpPage.defaultProps = defaultProps;
 SignUpPage.propTypes = propTypes;
 
-export default SignUpPage;
+export default connect(mapStateToProps)(SignUpPage);

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { connect } from "react-redux";
+import * as AuthAction from "../../Redux/Actions/AuthAction";
 
 import { SignupInput, MainButton } from "../../Components";
 
@@ -16,6 +18,22 @@ import default_profile from "../../Assets/images/default_profile.svg";
 const defaultProps = {};
 const propTypes = {};
 
+const mapStateToProps = state => {
+  return {
+    usertype: state.signupReducer.usertype,
+    email: state.signupReducer.email,
+    password: state.signupReducer.password
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateSignupStep: stepname =>
+      dispatch(AuthAction.updateSignupStep(stepname)),
+    updateSignupInfo: params => dispatch(AuthAction.updateSignupInfo(params))
+  };
+};
+
 class SignUpProfile extends Component {
   constructor(props) {
     super(props);
@@ -27,8 +45,7 @@ class SignUpProfile extends Component {
       profileImgUrl: null,
       isSignupNext: false,
       isNameValid: true,
-      isStatusValid: true,
-      isSignUpSuc: false
+      isStatusValid: true
     };
   }
 
@@ -56,7 +73,7 @@ class SignUpProfile extends Component {
                 <a>
                   <NavigateBeforeIcon
                     style={{ color: "#bdbdbd", fontSize: 60 }}
-                    onClick={this.handleStepProfileBack}
+                    onClick={this.handlePrevStep}
                   />
                 </a>
               </div>
@@ -166,6 +183,10 @@ class SignUpProfile extends Component {
     );
   }
 
+  handlePrevStep = () => {
+    this.props.updateSignupStep("infoPage");
+  };
+
   handleNameCheck = e => {
     const regExp = /^[A-Za-z0-9_.]{3,30}$/;
 
@@ -230,18 +251,19 @@ class SignUpProfile extends Component {
   };
 
   handleSignup = () => {
+    this.props.updateSignupInfo({ name: this.state.name });
     const formData = new FormData();
-    formData.append("email", this.state.email);
+    formData.append("email", this.props.email);
     formData.append("name", this.state.name);
-    formData.append("password", this.state.password);
+    formData.append("password", this.props.password);
     formData.append("status", this.state.status);
-    formData.append("type", this.state.usertype);
+    formData.append("type", this.props.usertype);
     formData.append("img", this.state.profileImg);
 
     return axios
       .post("http://127.0.0.1:4000/signup", formData)
       .then(res => {
-        this.setState({ isSignUpSuc: true });
+        this.props.updateSignupStep("successPage");
       })
       .catch(err => {
         alert("signup fail!: " + err);
@@ -253,4 +275,4 @@ class SignUpProfile extends Component {
 SignUpProfile.defaultProps = defaultProps;
 SignUpProfile.propTypes = propTypes;
 
-export default SignUpProfile;
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpProfile);

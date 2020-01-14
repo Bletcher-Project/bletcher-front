@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import axios from "axios";
+import { connect } from "react-redux";
+
 import { MainButton } from "../../Components";
 
 import logo_sketcher from "../../Assets/images/logo_sketcher.png";
@@ -7,6 +8,13 @@ import logo_creator from "../../Assets/images/logo_creator.png";
 
 const defaultProps = {};
 const propTypes = {};
+
+const mapStateToProps = state => {
+  return {
+    usertype: state.signupReducer.usertype,
+    name: state.signupReducer.name
+  };
+};
 
 class SignUpProfile extends Component {
   constructor(props) {
@@ -19,15 +27,7 @@ class SignUpProfile extends Component {
     const { usertype, name } = this.props;
 
     return (
-      <div
-        className="signupPage__success"
-        // style={{
-        //   backgroundImage: `url(${signup_back})`,
-        //   backgroundRepeat: "no-repeat",
-        //   backgroundSize: "cover",
-        //   backgroundPosition: "center center"
-        // }}
-      >
+      <div className="signupPage__success">
         <div className="signupPage__success-head">
           Hello! {usertype} {name}!
         </div>
@@ -48,92 +48,9 @@ class SignUpProfile extends Component {
       </div>
     );
   }
-
-  handleNameCheck = e => {
-    const regExp = /^[A-Za-z0-9_.]{3,30}$/;
-
-    const a = (bool, msg) => {
-      this.setState({ isNameValid: bool }, () => {
-        this.setState({ helpName: msg }, () => {
-          this.handleSignupBtn();
-        });
-      });
-    };
-
-    const repeatChk = () => {
-      axios
-        .post("http://127.0.0.1:4000/users/name", { name: this.state.name })
-        .then(res => {
-          a(true, " "); //Allowed name
-        })
-        .catch(err => {
-          a(false, "Already exists name");
-        });
-    };
-
-    this.setState({ name: e.target.value }, () => {
-      if (regExp.test(this.state.name)) {
-        repeatChk();
-      } else {
-        if ((this.state.name !== "") & (this.state.name.length < 3)) {
-          a(false, "Should be more then 3 words");
-        } else if (this.state.name.length > 30) {
-          a(false, "Should no greater than 30 words");
-        } else if ((this.state.name !== "") & !regExp.test(this.state.name)) {
-          a(false, "Only '_' or '.' special character allowed");
-        } else if (this.state.name === "") {
-          a(true, "Enter your name please");
-        }
-      }
-    });
-  };
-
-  handleProfileImg = e => {
-    this.setState({ profileImg: e.target.files[0] }, () => {
-      if (this.state.profileImg) {
-        this.setState({
-          profileImgUrl: URL.createObjectURL(this.state.profileImg)
-        });
-      }
-    });
-  };
-
-  handleStatusCheck = e => {
-    this.setState({ status: e.target.value }, () => {
-      this.setState({ isStatusValid: this.state.status.length <= 100 });
-    });
-  };
-
-  handleSignupBtn = () => {
-    if (this.state.isNameValid & (this.state.name !== "")) {
-      this.setState({ isSignupNext: true });
-    } else {
-      this.setState({ isSignupNext: false });
-    }
-  };
-
-  handleSignup = () => {
-    const formData = new FormData();
-    formData.append("email", this.state.email);
-    formData.append("name", this.state.name);
-    formData.append("password", this.state.password);
-    formData.append("status", this.state.status);
-    formData.append("type", this.state.usertype);
-    formData.append("img", this.state.profileImg);
-
-    return axios
-      .post("http://127.0.0.1:4000/signup", formData)
-      .then(res => {
-        this.setState({ isSignUpSuc: true });
-      })
-      .catch(err => {
-        alert("signup fail!: " + err);
-        this.setState({ isSignUpSuc: false });
-      });
-  };
 }
 
 SignUpProfile.defaultProps = defaultProps;
 SignUpProfile.propTypes = propTypes;
 
-export default SignUpProfile;
+export default connect(mapStateToProps)(SignUpProfile);
