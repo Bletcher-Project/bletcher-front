@@ -9,15 +9,11 @@
 }
 
 .signupPage {
-  // border: solid 5px red;
-  //top: 18%;
-  position: fixed;
+  // position: fixed;
   width: 100%;
   height: 100%;
 
   &__step {
-    //border: solid 3px black;
-
     display: flex;
     justify-content: center;
     margin-top: 80px;
@@ -25,59 +21,56 @@
   }
 
   &__type {
-    //border: solid 3px black;
     display: flex;
     width: 100%;
     height: 100%;
+    margin-top: 150px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
 
-    &-head {
-      // border: solid 3px red;
-      // margin-top: 150px;
-      display: flex;
-      @include content-center;
-      font-size: 2.5rem;
-    }
-
-    &-btn {
-      //border: solid 3px green;
-      display: flex;
-      flex-flow: row wrap;
-      margin-top: 10px;
-      @include content-center;
+    &__container {
       background-color: white;
+
+      &-head {
+        font-size: 2.5rem;
+      }
+
+      &-btn {
+        display: flex;
+        flex-flow: row wrap;
+        margin-top: 10px;
+        background-color: white;
+      }
     }
   }
 
   &__info {
-    //border: solid 3px green;
     display: flex;
     justify-content: center;
     width: 100%;
     height: 100%;
 
     &__container {
-      //border: solid 3px green;
       display: flex;
       flex-direction: column;
       align-items: center;
+      text-align: center;
       width: 650px;
 
       height: 100%;
       background-color: white;
 
-      &-head {
-        //border: solid 1px blue;
+      &__head {
         width: 650px;
         height: 120px;
         margin-top: 150px;
         margin-bottom: 10px;
         justify-content: center;
         font-size: 2.3rem;
-        .back {
-          border: solid 1px red;
+
+        &-back {
           position: relative;
           left: -20px;
           z-index: 3;
@@ -86,8 +79,8 @@
           border: none;
           cursor: pointer;
         }
-        .title {
-          //border: solid 3px yellow;
+
+        &-title {
           text-align: center;
           position: relative;
           top: -55px;
@@ -95,65 +88,29 @@
         }
       }
 
-      &-input {
-        // border: solid 1px grey;
-        // border-radius: 1%;
-        // box-shadow: 2px 2px 2px grey;
+      &__content {
         width: 360px;
-        height: 270px;
+        height: 400px;
         padding-top: 8px;
+        text-align: center;
         display: flex;
         flex-direction: column;
         align-items: center;
-        // justify-content: center;
-        margin-bottom: 4px;
-      }
-
-      &-signup {
-        text-align: center;
-        margin-top: 40px;
-      }
-
-      &__img {
-        // border: solid 3px purple;
         justify-content: center;
-        width: 400px;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: flex-end;
-        justify-content: space-evenly;
-        margin-top: -30px;
+        margin-bottom: 4px;
 
-        &__profile {
-          // border: solid 1px blue;
-          display: flex;
-          flex-direction: column;
-          text-align: center;
+        &__propic {
+          margin-top: -150px;
 
-          // align-items: flex-end;
           &-preview {
-            //border: solid #7b1fa2 2px;
             height: 120px;
             border-radius: 40%;
           }
 
-          &-upload {
-            display: none;
-            margin-top: 10px;
-
-            label {
-              margin: 0;
-            }
+          &-label {
+            margin: 0;
           }
         }
-
-        &__input {
-          // border: solid 1px red;
-          margin: 0;
-        }
-
-       
       }
     }
   }
@@ -170,12 +127,12 @@
         transform: translatey(0px);
       }
     }
-    // border: solid 3px red;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 150px;
 
     &-head {
       margin-bottom: 48px;
