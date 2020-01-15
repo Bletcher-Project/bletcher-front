@@ -10,10 +10,9 @@ import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { purple } from "@material-ui/core/colors";
 import Avatar from "@material-ui/core/Avatar";
-import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
-import Fab from "@material-ui/core/Fab";
 
 import default_profile from "../../Assets/images/default_profile.svg";
+import back_icon from "../../Assets/images/signup_back.svg";
 
 const defaultProps = {};
 const propTypes = {};
@@ -41,6 +40,7 @@ class SignUpProfile extends Component {
       name: "",
       status: "",
       helpName: " ",
+      helpStatus: " ",
       profileImg: null,
       profileImgUrl: null,
       isSignupNext: false,
@@ -55,6 +55,7 @@ class SignUpProfile extends Component {
       status,
       isNameValid,
       helpName,
+      helpStatus,
       isStatusValid,
       isSignupNext
     } = this.state;
@@ -68,24 +69,28 @@ class SignUpProfile extends Component {
       >
         <div className="signupPage__info">
           <div className="signupPage__info__container">
-            <div className="signupPage__info__container-head">
-              <div className="back">
+            <div className="signupPage__info__container__head">
+              <div className="signupPage__info__container__head-back">
                 <a>
-                  <NavigateBeforeIcon
+                  {/* <NavigateBeforeIcon
                     style={{ color: "#bdbdbd", fontSize: 60 }}
+                    onClick={this.handlePrevStep}
+                  /> */}
+                  <img
+                    src={back_icon}
+                    width="35px"
                     onClick={this.handlePrevStep}
                   />
                 </a>
               </div>
-              <div className="title">
-                {/* <p></p> */}
+              <div className="signupPage__info__container__head-title">
                 <p>Complete your profile.</p>
               </div>
               <div style={{ width: "60px" }}></div>
             </div>
-            <div className="signupPage__info__container__img">
-              <div className="signupPage__info__container__img__profile">
-                <div className="signupPage__info__container__img__profile-preview">
+            <div className="signupPage__info__container__content">
+              <div className="signupPage__info__container__content__propic">
+                <div className="signupPage__info__container__content__propic-preview">
                   <Avatar
                     src={
                       this.state.profileImgUrl
@@ -93,10 +98,9 @@ class SignUpProfile extends Component {
                         : default_profile
                     }
                     style={{
-                      width: "130px",
-                      height: "130px",
-                      borderRadius: "50%",
-                      border: "solid 2px purple"
+                      width: "110px",
+                      height: "110px",
+                      borderRadius: "50%"
                     }}
                   ></Avatar>
                   <input
@@ -107,36 +111,23 @@ class SignUpProfile extends Component {
                     name="img"
                     onChange={this.handleProfileImg}
                   />
-                  <Fab
-                    color="primary"
+                </div>
+                <div className="signupPage__info__container__content__propic-label">
+                  <label
+                    htmlFor="profile-upload"
                     style={{
-                      width: "36px",
-                      height: "36px",
-                      position: "relative",
-                      top: "-38px",
-                      right: "-48px",
-                      outline: "none"
+                      width: "100%",
+                      height: "100%",
+                      cursor: "pointer",
+                      margin: "0"
                     }}
                   >
-                    <label
-                      htmlFor="profile-upload"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        cursor: "pointer",
-                        margin: "0"
-                      }}
-                    >
-                      <PhotoCameraIcon />
-                    </label>
-                  </Fab>
+                    Edit Photo
+                  </label>
                 </div>
-
-                <div className="signupPage__info__container__img__profile-upload"></div>
               </div>
-              <div className="signupPage__info__container__img__input">
+              <div className="signupPage__info__container__content__input">
                 <SignupInput
-                  id="standard-basic"
                   label="name"
                   type="text"
                   value={name}
@@ -150,7 +141,7 @@ class SignUpProfile extends Component {
                           endAdornment: (
                             <Fade in={true} timeout={350}>
                               <CheckCircleOutlineIcon
-                                style={{ color: purple[700] }}
+                                style={{ color: purple[700], width: "0.8em" }}
                               />
                             </Fade>
                           )
@@ -159,7 +150,6 @@ class SignUpProfile extends Component {
                   }
                 />
                 <SignupInput
-                  id="standard-basic"
                   label="status (optional)"
                   type="text"
                   value={status}
@@ -167,15 +157,14 @@ class SignUpProfile extends Component {
                   onChange={this.handleStatusCheck}
                   onKeyPress={this.handleEnterKey}
                   error={!isStatusValid}
+                  helperText={helpStatus}
+                />
+                <MainButton
+                  disabled={!isSignupNext}
+                  text="Sign Up"
+                  onClick={this.handleSignup}
                 />
               </div>
-            </div>
-            <div className="signupPage__info__container-signup">
-              <MainButton
-                disabled={!isSignupNext}
-                text="Sign Up"
-                onClick={this.handleSignup}
-              />
             </div>
           </div>
         </div>
@@ -238,12 +227,36 @@ class SignUpProfile extends Component {
 
   handleStatusCheck = e => {
     this.setState({ status: e.target.value }, () => {
-      this.setState({ isStatusValid: this.state.status.length <= 100 });
+      if (this.state.status.length > 100) {
+        this.setState(
+          {
+            isStatusValid: false,
+            helpStatus: "Should be less than 100 words."
+          },
+          () => {
+            this.handleSignupBtn();
+          }
+        );
+      } else {
+        this.setState(
+          {
+            isStatusValid: true,
+            helpStatus: " "
+          },
+          () => {
+            this.handleSignupBtn();
+          }
+        );
+      }
     });
   };
 
   handleSignupBtn = () => {
-    if (this.state.isNameValid & (this.state.name !== "")) {
+    if (
+      this.state.isNameValid &
+      (this.state.name !== "") &
+      this.state.isStatusValid
+    ) {
       this.setState({ isSignupNext: true });
     } else {
       this.setState({ isSignupNext: false });

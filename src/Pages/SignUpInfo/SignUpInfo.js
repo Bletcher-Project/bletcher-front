@@ -10,6 +10,9 @@ import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { purple } from "@material-ui/core/colors";
 
+import back_icon from "../../Assets/images/signup_back.svg";
+
+
 const defaultProps = {};
 const propTypes = {};
 
@@ -68,17 +71,22 @@ class SignUpInfo extends Component {
       >
         <div className="signupPage__info">
           <div className="signupPage__info__container">
-            <div className="signupPage__info__container-head">
-              <div className="back">
+            <div className="signupPage__info__container__head">
+              <div className="signupPage__info__container__head-back">
                 <a>
-                  <NavigateBeforeIcon
+                  {/* <NavigateBeforeIcon
                     style={{ color: "#bdbdbd", fontSize: 60 }}
                     onClick={this.hanldePrevStep}
+                  /> */}
+                  <img
+                    src={back_icon}
+                    width="35px"
+                    onClick={this.handlePrevStep}
                   />
                 </a>
               </div>
 
-              <div className="title">
+              <div className="signupPage__info__container__head-title">
                 <p>
                   Hello, {usertype}! <br />
                   Enter your personal information.
@@ -86,7 +94,7 @@ class SignUpInfo extends Component {
               </div>
               <div style={{ width: "60px" }}></div>
             </div>
-            <div className="signupPage__info__container-input">
+            <div className="signupPage__info__container__input">
               <SignupInput
                 label="Email"
                 type="email"
@@ -101,7 +109,7 @@ class SignUpInfo extends Component {
                         endAdornment: (
                           <Fade in={true} timeout={350}>
                             <CheckCircleOutlineIcon
-                              style={{ color: purple[700] }}
+                              style={{ color: purple[700], width: "0.8em" }}
                             />
                           </Fade>
                         )
@@ -126,7 +134,7 @@ class SignUpInfo extends Component {
                         endAdornment: (
                           <Fade in={true} timeout={350}>
                             <CheckCircleOutlineIcon
-                              style={{ color: purple[700] }}
+                              style={{ color: purple[700], width: "0.8em" }}
                             />
                           </Fade>
                         )
@@ -154,7 +162,7 @@ class SignUpInfo extends Component {
                         endAdornment: (
                           <Fade in={true} timeout={350}>
                             <CheckCircleOutlineIcon
-                              style={{ color: purple[700] }}
+                              style={{ color: purple[700], width: "0.8em" }}
                             />
                           </Fade>
                         )
@@ -182,7 +190,7 @@ class SignUpInfo extends Component {
     });
   };
 
-  hanldePrevStep = () => {
+  handlePrevStep = () => {
     this.props.updateSignupStep("typePage");
   };
 
