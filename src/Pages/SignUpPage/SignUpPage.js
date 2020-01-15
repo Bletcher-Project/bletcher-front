@@ -34,6 +34,7 @@ class SignUpPage extends Component {
         ) : SignUpStep === "successPage" ? (
           <SignUpSuccess />
         ) : null}
+        {/* <SignUpProfile /> */}
       </div>
     );
   }

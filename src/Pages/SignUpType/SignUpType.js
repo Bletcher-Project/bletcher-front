@@ -35,24 +35,26 @@ class SignUpType extends Component {
     return (
       <Fade in={true} timeout={{ appear: 1200, enter: 1200, exit: 750 }}>
         <div className="signupPage__type">
-          <div className="signupPage__type-head">
-            <p>Choose your Art type.</p>
-          </div>
-          <div className="signupPage__type-btn">
-            <TypeButton
-              title="Sketcher"
-              value="sketcher"
-              content="Share your artisic idea."
-              logo={logo_sketcher}
-              onClick={this.handleTypeSketcher}
-            />
-            <TypeButton
-              title="Creator"
-              value="sketcher"
-              content="Share your creation."
-              logo={logo_creator}
-              onClick={this.handleTypeCreator}
-            />
+          <div className="signupPage__type__container">
+            <div className="signupPage__type__container-head">
+              <p>Choose your Art type.</p>
+            </div>
+            <div className="signupPage__type__container-btn">
+              <TypeButton
+                title="Sketcher"
+                value="sketcher"
+                content="Share your artisic idea."
+                logo={logo_sketcher}
+                onClick={this.handleTypeSketcher}
+              />
+              <TypeButton
+                title="Creator"
+                value="sketcher"
+                content="Share your creation."
+                logo={logo_creator}
+                onClick={this.handleTypeCreator}
+              />
+            </div>
           </div>
         </div>
       </Fade>
