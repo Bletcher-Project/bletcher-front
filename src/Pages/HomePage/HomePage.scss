@@ -1,3 +1,12 @@
 /*
   Home Page Styling
 */
+
+.homePage {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+
+  &__post {
+  }
+}

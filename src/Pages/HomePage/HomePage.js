@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { NavBar, Post } from "../../Components";
+
 const defaultProps = {};
 const propTypes = {};
 
@@ -10,7 +12,11 @@ class HomePage extends Component {
   }
 
   render() {
-    return <div>This is Home Page</div>;
+    return (
+      <div className="homePage">
+        <NavBar /> <Post className="homePage__post" />
+      </div>
+    );
   }
 }
 
