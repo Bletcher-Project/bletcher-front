@@ -12,7 +12,6 @@ import { purple } from "@material-ui/core/colors";
 
 import back_icon from "../../Assets/images/signup_back.svg";
 
-
 const defaultProps = {};
 const propTypes = {};
 
@@ -36,7 +35,7 @@ class SignUpInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: this.props.email,
+      email: this.props.email ? this.props.email : "",
       password: "",
       repassword: "",
       helpEmail: " ",
@@ -235,21 +234,21 @@ class SignUpInfo extends Component {
     this.setState({ email: e.target.value }, () => {
       this.handleInfoNext();
       if (this.state.email === "") {
-        a(true, "Enter your email address please");
+        a(false, "Enter your email address please");
         //a(true, " ");
       } else if ((this.state.email !== "") & !regExp.test(this.state.email)) {
         a(false, "Incorrect Email Form");
       }
 
       if (regExp.test(this.state.email)) {
+        const email = this.state.email;
         axios
-          .post("http://127.0.0.1:4000/users/email", {
-            email: this.state.email
-          })
+          .get("http://127.0.0.1:4000/api/auth/signup/".concat(email))
           .then(res => {
             a(true, " "); //Allowed email
           })
           .catch(err => {
+            console.log(err);
             a(false, "Already exists email!");
           });
       }
