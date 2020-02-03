@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as AuthAction from "../../Redux/Actions/AuthAction";
-import { NavBar } from "../../Components";
+import { NavBar, SignUpStepper } from "../../Components";
+
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { SignUpType, SignUpInfo, SignUpProfile, SignUpSuccess } from "../";
 
@@ -26,6 +28,14 @@ class SignUpPage extends Component {
       <div className="signupPage">
         <NavBar isActive="SignUp" />
         {SignUpStep === "typePage" ? (
+          <SignUpStepper className="signupPage__step" step={SignUpStep} />
+        ) : SignUpStep === "infoPage" ? (
+          <SignUpStepper className="signupPage__step" step={SignUpStep} />
+        ) : SignUpStep === "profilePage" ? (
+          <SignUpStepper className="signupPage__step" step={SignUpStep} />
+        ) : null}
+
+        {SignUpStep === "typePage" ? (
           <SignUpType />
         ) : SignUpStep === "infoPage" ? (
           <SignUpInfo />
@@ -33,8 +43,11 @@ class SignUpPage extends Component {
           <SignUpProfile />
         ) : SignUpStep === "successPage" ? (
           <SignUpSuccess />
+        ) : SignUpStep === "loadingPage" ? (
+          <div className="signupPage__info">
+            <CircularProgress className="signupPage__info-loading" size={200} disableShrink />
+          </div>
         ) : null}
-        {/* <SignUpProfile /> */}
       </div>
     );
   }

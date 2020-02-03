@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as AuthAction from "../../Redux/Actions/AuthAction";
-import { TypeButton } from "../../Components";
+import { TypeButton, SignupStep } from "../../Components";
 
 import Fade from "@material-ui/core/Fade";
 

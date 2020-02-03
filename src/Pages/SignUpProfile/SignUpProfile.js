@@ -6,10 +6,10 @@ import * as AuthAction from "../../Redux/Actions/AuthAction";
 import { SignupInput, MainButton } from "../../Components";
 
 import Fade from "@material-ui/core/Fade";
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { purple } from "@material-ui/core/colors";
 import Avatar from "@material-ui/core/Avatar";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import default_profile from "../../Assets/images/default_profile.svg";
 import back_icon from "../../Assets/images/signup_back.svg";
@@ -43,6 +43,7 @@ class SignUpProfile extends Component {
       helpStatus: " ",
       profileImg: null,
       profileImgUrl: null,
+      SignupClicked: false,
       isSignupNext: false,
       isNameValid: true,
       isStatusValid: true
@@ -56,26 +57,22 @@ class SignUpProfile extends Component {
       isNameValid,
       helpName,
       helpStatus,
+      SignupClicked,
       isStatusValid,
       isSignupNext
     } = this.state;
 
     return (
-      <Fade
-        // direction="up"
-        in={true}
-        mountOnEnter
-        timeout={{ appear: 1000, enter: 750, exit: 750 }}
-      >
-        <div className="signupPage__info">
+      <div className="signupPage__info">
+        <Fade
+          in={true}
+          mountOnEnter
+          timeout={{ appear: 1000, enter: 750, exit: 750 }}
+        >
           <div className="signupPage__info__container">
             <div className="signupPage__info__container__head">
               <div className="signupPage__info__container__head-back">
                 <a>
-                  {/* <NavigateBeforeIcon
-                    style={{ color: "#bdbdbd", fontSize: 60 }}
-                    onClick={this.handlePrevStep}
-                  /> */}
                   <img
                     src={back_icon}
                     width="35px"
@@ -167,8 +164,8 @@ class SignUpProfile extends Component {
               </div>
             </div>
           </div>
-        </div>
-      </Fade>
+        </Fade>
+      </div>
     );
   }
 
@@ -188,8 +185,9 @@ class SignUpProfile extends Component {
     };
 
     const repeatChk = () => {
+      const name = this.state.name;
       axios
-        .post("http://127.0.0.1:4000/users/name", { name: this.state.name })
+        .get("http://127.0.0.1:4000/api/users?name=".concat(name))
         .then(res => {
           a(true, " "); //Allowed name
         })
@@ -264,6 +262,7 @@ class SignUpProfile extends Component {
   };
 
   handleSignup = () => {
+    this.setState({ SignupClicked: true });
     this.props.updateSignupInfo({ name: this.state.name });
     const formData = new FormData();
     formData.append("email", this.props.email);
@@ -273,15 +272,17 @@ class SignUpProfile extends Component {
     formData.append("type", this.props.usertype);
     formData.append("img", this.state.profileImg);
 
-    return axios
-      .post("http://127.0.0.1:4000/signup", formData)
-      .then(res => {
-        this.props.updateSignupStep("successPage");
-      })
-      .catch(err => {
-        alert("signup fail!: " + err);
-        this.setState({ isSignUpSuc: false });
-      });
+    this.props.updateSignupStep("loadingPage");
+    setTimeout(() => {
+      return axios
+        .post("http://127.0.0.1:4000/api/users", formData)
+        .then(res => {
+          this.props.updateSignupStep("successPage");
+        })
+        .catch(err => {
+          alert("signup fail!: " + err);
+        });
+    }, 2000);
   };
 }
 

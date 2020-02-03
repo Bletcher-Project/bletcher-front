@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 
 import { MainButton } from "../../Components";
 
+import Fade from "@material-ui/core/Fade";
+
 import logo_sketcher from "../../Assets/images/logo_sketcher.png";
 import logo_creator from "../../Assets/images/logo_creator.png";
 
@@ -27,25 +29,31 @@ class SignUpProfile extends Component {
     const { usertype, name } = this.props;
 
     return (
-      <div className="signupPage__success">
-        <div className="signupPage__success-head">
-          Hello! {usertype} {name}!
-        </div>
-        <div className="signupPage__success-logo">
-          {usertype === "Sketcher" ? (
-            <img src={logo_sketcher} width="130px" />
-          ) : (
-            <img src={logo_creator} width="130px" />
-          )}
-        </div>
-        <div className="signupPage__success-desc">
-          {usertype === "Sketcher"
-            ? "Login and Sketch your creative idea."
-            : "Login and Create your own work."}
-        </div>
+      <Fade
+        in={true}
+        mountOnEnter
+        timeout={{ appear: 5000, enter: 5000, exit: 750 }}
+      >
+        <div className="signupPage__success">
+          <div className="signupPage__success-head">
+            Hello! {usertype} {name}!
+          </div>
+          <div className="signupPage__success-logo">
+            {usertype === "Sketcher" ? (
+              <img src={logo_sketcher} width="130px" />
+            ) : (
+              <img src={logo_creator} width="130px" />
+            )}
+          </div>
+          <div className="signupPage__success-desc">
+            {usertype === "Sketcher"
+              ? "Login and Sketch your creative idea."
+              : "Login and Create your own work."}
+          </div>
 
-        <MainButton text="Sign In!" onClick={this.handleSignIn} />
-      </div>
+          <MainButton text="Sign In!" onClick={this.handleSignIn} />
+        </div>
+      </Fade>
     );
   }
 }

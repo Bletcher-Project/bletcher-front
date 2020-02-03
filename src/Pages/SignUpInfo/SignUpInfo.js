@@ -243,7 +243,7 @@ class SignUpInfo extends Component {
       if (regExp.test(this.state.email)) {
         const email = this.state.email;
         axios
-          .get("http://127.0.0.1:4000/api/auth/signup/".concat(email))
+          .get("http://127.0.0.1:4000/api/users?email=".concat(email))
           .then(res => {
             a(true, " "); //Allowed email
           })
