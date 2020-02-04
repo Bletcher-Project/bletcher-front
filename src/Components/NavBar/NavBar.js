@@ -17,32 +17,37 @@ class NavBar extends Component {
     const { isActive } = this.props;
     return (
       <Navbar
-        className={cx(null, {
-          navBar__main: isActive === "main",
-          navBar__shadow: isActive !== "main"
-        })}
+        className={cx("navBar", { "navBar__primary": isActive !== "main" })}
+        light
+        fixed
+        expand="md"
       >
-        <NavbarBrand className="navBar__logo " fixed="top">
-          <NavLink className="navBar__logo-img" href="/">
-            <img src={logo} width="33px" alt="logo" />
-          </NavLink>
-          {isActive !== "main" ? (
-            <p className="navBar__logo-text">Bletcher</p>
-          ) : null}
+        <NavbarBrand className="navBar__logo col-2 ml-5" href="/">
+          <img src={logo} width="33px" alt="logo" />
+          {isActive === "main" ? null : <span>Bletcher</span>}
         </NavbarBrand>
-        <Nav className="navBar__items">
-          {isActive === "main" ? (
-            <NavItem className="navBar__items__item">
+        {isActive === "main" ? (
+          <Nav className="ml-auto mr-5" navbar>
+            <NavItem>
               <NavLink href="/signup">Sign Up</NavLink>
-              <NavLink href="/about">About</NavLink>
             </NavItem>
-          ) : (
-            <NavItem className="navBar__items__item">
-              <NavLink href="">Feed</NavLink>
-              <NavLink href="">MyPage</NavLink>
+            <NavItem>
+              <NavLink href="#">About</NavLink>
             </NavItem>
+          </Nav>
+        ) : (
+            <Nav className="ml-auto mr-3" navbar>
+              <NavItem>
+                <NavLink href="#">Feed</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="#">MyPage</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="#">SignOut</NavLink>
+              </NavItem>
+            </Nav>
           )}
-        </Nav>
       </Navbar>
     );
   }
