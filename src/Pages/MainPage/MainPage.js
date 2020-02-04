@@ -8,6 +8,7 @@ import WOW from "wowjs";
 
 import bgImage1 from "../../Assets/bg-image/bg-1.jpg";
 import bgImage2 from "../../Assets/bg-image/bg-2.jpg";
+import bgImage3 from "../../Assets/bg-image/bg-3.jpg";
 
 const defaultProps = {};
 const propTypes = {};
@@ -30,12 +31,12 @@ class MainPage extends Component {
       <div className="mainPage">
         <NavBar isActive="main" />
         <BackgroundSlider
-          images={[bgImage1, bgImage2]}
+          images={[bgImage1, bgImage2, bgImage3]}
           duration={10}
           transition={2}
         />
         <div className="mainPage__header">
-          <div className="mainPage__header__intro wow flipInY" ref={this.Intro}>
+          <div className="mainPage__header__intro" ref={this.Intro}>
             <h1 className="mainPage__header__intro-head">Bletcher</h1>
             <p className="mainPage__header__intro-describe">
               Sketch and Create your own art.
