@@ -4,32 +4,33 @@
 
 .post {
   width: 500px;
-  //height: 600px;
-  border: 2px solid black;
   display: flex;
   flex-direction: column;
 
   &__header {
     display: flex;
-    //flex-direction: row;
     align-items: center;
     width: 100%;
-    height: 70px;
     padding-left: 3px;
     padding-right: 3px;
-    border: 2px solid black;
 
     &-profile {
       display: flex;
       width: 50px;
-      height: 50px;
-      border-radius: 50%;
+      height: 50px;      
       margin-left: 3px;
       margin-right: 3px;
       text-align: center;
       justify-content: center;
       align-items: center;
-      border: 2px solid black;
+
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+
+      }
     }
 
     &-name {
@@ -40,7 +41,6 @@
       margin-right: 3px;
       align-items: center;
       justify-content: center;
-      border: 2px solid black;
     }
 
     &-option {
@@ -49,50 +49,31 @@
       margin-left: auto;
       align-items: center;
       justify-content: center;
-      border: 2px solid black;
     }
   }
 
   &__content {
-    display: flex;
     width: 100%;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid black;
   }
 
   &__desc {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 12px 20px 12px 20px;
     width: 100%;
-    height: 80px;
-    border: 2px solid black;
   }
 
   &__share {
-    display: flex;
     width: 100%;
-    height: 40px;
-    border: 2px solid black;
 
     &-like {
       margin: 5px;
-      height: 25px;
-      border: 2px solid black;
     }
 
     &-comment {
       margin: 5px;
-      height: 25px;
-      border: 2px solid black;
     }
   }
 
   &__comments {
-    display: flex;
-    height: 50px;
-    border: 2px solid black;
     padding: 3px;
   }
 }
