@@ -63,13 +63,13 @@ class Post extends Component {
             >
               <MoreVertIcon style={{ color: "grey" }} />
             </DropdownToggle>
-            <DropdownMenu style={{ minWidth: "50px" }}>
+            <DropdownMenu style={{ minWidth: "50px", left: "-28px" }}>
               <DropdownItem>Modify</DropdownItem>
               <DropdownItem>Delete</DropdownItem>
             </DropdownMenu>
           </ButtonDropdown>
         </CardHeader>
-        <CardBody className="post__body">
+        <CardBody className="post__body pt-0 pb-1">
           <CardImg src={posts[0].postImg}></CardImg>
           <CardText className="ml-3 mt-3">{posts[0].postDate}</CardText>
           <CardText className="ml-3 mt-3">{posts[0].postDesc}</CardText>
@@ -77,15 +77,15 @@ class Post extends Component {
         <CardFooter className="post__footer">
           <CardText>
             <img
-              className="ml-0 mr-1"
+              className="mr-1"
               src={likeIcon}
               onClick={this.handleLike}
-              width="28px"
+              width="26px"
             ></img>
-            <img className="ml-1 mr-1" src={commentIcon} width="24px"></img>
+            <img className="ml-2" src={commentIcon} width="25px"></img>
           </CardText>
           <CardText>
-            {posts[0].postComments[0].author} /{" "}
+            <strong className="mr-2">{posts[0].postComments[0].author}</strong>
             {posts[0].postComments[0].comment}
           </CardText>
         </CardFooter>
