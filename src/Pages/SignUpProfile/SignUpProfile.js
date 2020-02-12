@@ -29,7 +29,8 @@ const mapDispatchToProps = dispatch => {
   return {
     updateSignupStep: stepname =>
       dispatch(AuthAction.updateSignupStep(stepname)),
-    updateSignupInfo: params => dispatch(AuthAction.updateSignupInfo(params))
+    updateSignupInfo: params => dispatch(AuthAction.updateSignupInfo(params)),
+    postSignup: params => dispatch(AuthAction.postSignup(params))
   };
 };
 
@@ -261,7 +262,7 @@ class SignUpProfile extends Component {
     }
   };
 
-  handleSignup = () => {
+  handleSignup = async () => {
     this.setState({ SignupClicked: true });
     this.props.updateSignupInfo({ name: this.state.name });
     const formData = new FormData();
@@ -272,17 +273,10 @@ class SignUpProfile extends Component {
     formData.append("type", this.props.usertype);
     formData.append("img", this.state.profileImg);
 
-    this.props.updateSignupStep("loadingPage");
-    setTimeout(() => {
-      return axios
-        .post("http://127.0.0.1:4000/api/users", formData)
-        .then(res => {
-          this.props.updateSignupStep("successPage");
-        })
-        .catch(err => {
-          alert("signup fail!: " + err);
-        });
-    }, 2000);
+    const postSignup = await this.props.postSignup(formData);
+    if (postSignup) {
+      this.props.updateSignupStep("successPage");
+    }
   };
 }
 
