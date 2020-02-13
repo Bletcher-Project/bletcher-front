@@ -15,7 +15,7 @@ const initialState = {
   status: ""
 };
 
-export default function signupReducer(state = initialState, action) {
+export default function UserReducer(state = initialState, action) {
   if (action.type === SUCCEED_TO_SIGNUP) {
     return Object.assign({}, state, {
       isSignIn: true

@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import * as AuthAction from "../../Redux/Actions/AuthAction";
+import * as UserAction from "../../Redux/Actions/UserAction";
 import axios from "axios";
 
 import { SignUpInput, MainButton } from "../../Components";
 
 import Fade from "@material-ui/core/Fade";
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { purple } from "@material-ui/core/colors";
 
@@ -17,17 +16,17 @@ const propTypes = {};
 
 const mapStateToProps = state => {
   return {
-    usertype: state.signupReducer.usertype,
-    email: state.signupReducer.email,
-    password: state.signupReducer.password
+    usertype: state.UserReducer.usertype,
+    email: state.UserReducer.email,
+    password: state.UserReducer.password
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     updateSignupStep: stepname =>
-      dispatch(AuthAction.updateSignupStep(stepname)),
-    updateSignupInfo: info => dispatch(AuthAction.updateSignupInfo(info))
+      dispatch(UserAction.updateSignupStep(stepname)),
+    updateSignupInfo: info => dispatch(UserAction.updateSignupInfo(info))
   };
 };
 

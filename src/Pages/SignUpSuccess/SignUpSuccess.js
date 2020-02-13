@@ -13,8 +13,8 @@ const propTypes = {};
 
 const mapStateToProps = state => {
   return {
-    usertype: state.signupReducer.usertype,
-    name: state.signupReducer.name
+    usertype: state.UserReducer.usertype,
+    name: state.UserReducer.name
   };
 };
 

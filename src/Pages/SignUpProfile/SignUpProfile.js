@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
-import * as AuthAction from "../../Redux/Actions/AuthAction";
+import * as UserAction from "../../Redux/Actions/UserAction";
 
 import { SignUpInput, MainButton } from "../../Components";
 
@@ -9,7 +9,6 @@ import Fade from "@material-ui/core/Fade";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { purple } from "@material-ui/core/colors";
 import Avatar from "@material-ui/core/Avatar";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import default_profile from "../../Assets/images/default_profile.svg";
 import back_icon from "../../Assets/images/signup_back.svg";
@@ -19,18 +18,18 @@ const propTypes = {};
 
 const mapStateToProps = state => {
   return {
-    usertype: state.signupReducer.usertype,
-    email: state.signupReducer.email,
-    password: state.signupReducer.password
+    usertype: state.UserReducer.usertype,
+    email: state.UserReducer.email,
+    password: state.UserReducer.password
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     updateSignupStep: stepname =>
-      dispatch(AuthAction.updateSignupStep(stepname)),
-    updateSignupInfo: params => dispatch(AuthAction.updateSignupInfo(params)),
-    postSignup: params => dispatch(AuthAction.postSignup(params))
+      dispatch(UserAction.updateSignupStep(stepname)),
+    updateSignupInfo: params => dispatch(UserAction.updateSignupInfo(params)),
+    postSignup: params => dispatch(UserAction.postSignup(params))
   };
 };
 

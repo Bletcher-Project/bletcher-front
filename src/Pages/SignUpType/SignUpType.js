@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import * as AuthAction from "../../Redux/Actions/AuthAction";
+import * as UserAction from "../../Redux/Actions/UserAction";
 import { TypeButton, SignupStep } from "../../Components";
 
 import Fade from "@material-ui/core/Fade";
@@ -12,14 +12,14 @@ const defaultProps = {};
 const propTypes = {};
 
 const mapStateToProps = state => {
-  return { usertype: state.signupReducer.usertype };
+  return { usertype: state.UserReducer.usertype };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateUserType: usertype => dispatch(AuthAction.updateUserType(usertype)),
+    updateUserType: usertype => dispatch(UserAction.updateUserType(usertype)),
     updateSignupStep: stepname =>
-      dispatch(AuthAction.updateSignupStep(stepname))
+      dispatch(UserAction.updateSignupStep(stepname))
   };
 };
 
