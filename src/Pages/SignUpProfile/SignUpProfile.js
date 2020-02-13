@@ -3,7 +3,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import * as AuthAction from "../../Redux/Actions/AuthAction";
 
-import { SignupInput, MainButton } from "../../Components";
+import { SignUpInput, MainButton } from "../../Components";
 
 import Fade from "@material-ui/core/Fade";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
@@ -125,7 +125,7 @@ class SignUpProfile extends Component {
                 </div>
               </div>
               <div className="signupPage__info__container__content__input">
-                <SignupInput
+                <SignUpInput
                   label="name"
                   type="text"
                   value={name}
@@ -147,7 +147,7 @@ class SignUpProfile extends Component {
                       : null
                   }
                 />
-                <SignupInput
+                <SignUpInput
                   label="status (optional)"
                   type="text"
                   value={status}

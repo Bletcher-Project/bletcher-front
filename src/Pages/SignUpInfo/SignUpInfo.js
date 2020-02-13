@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import * as AuthAction from "../../Redux/Actions/AuthAction";
 import axios from "axios";
 
-import { SignupInput, MainButton } from "../../Components";
+import { SignUpInput, MainButton } from "../../Components";
 
 import Fade from "@material-ui/core/Fade";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
@@ -94,7 +94,7 @@ class SignUpInfo extends Component {
               <div style={{ width: "60px" }}></div>
             </div>
             <div className="signupPage__info__container__input">
-              <SignupInput
+              <SignUpInput
                 label="Email"
                 type="email"
                 value={email}
@@ -118,7 +118,7 @@ class SignUpInfo extends Component {
               />
               {/* </div>
               <div className="signupPage__info__container-input"> */}
-              <SignupInput
+              <SignUpInput
                 disabled={!isEmailValid || this.state.email === ""}
                 label="Password"
                 type="password"
@@ -143,7 +143,7 @@ class SignUpInfo extends Component {
               />
               {/* </div>
               <div className="signupPage__info__container-input"> */}
-              <SignupInput
+              <SignUpInput
                 disabled={
                   !isPwdValid || !isEmailValid || this.state.password === ""
                 }
