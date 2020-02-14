@@ -14,6 +14,12 @@ const PurpleInput = withStyles({
     },
     "& .MuiInput-underline:after": {
       borderBottomColor: purple[700]
+    },
+    "& label.Mui-error": {
+      color: "red"
+    },
+    "& .Mui-error:after": {
+      borderBottomColor: "red"
     }
   }
 })(TextField);
@@ -25,7 +31,7 @@ class MainInput extends Component {
   }
 
   render() {
-    const { label, type, name, width, onChange } = this.props;
+    const { label, type, name, width, onChange, onKeyPress, error, helperText } = this.props;
     return (
       <div className="mainInput">
         <PurpleInput
@@ -34,6 +40,9 @@ class MainInput extends Component {
           name={name}
           style={{ width: width }}
           onChange={onChange}
+          onKeyPress={onKeyPress}
+          error={error}
+          helperText={helperText}
         />
       </div>
     );

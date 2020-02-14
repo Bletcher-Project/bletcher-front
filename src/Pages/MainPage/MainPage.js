@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 
+import { connect } from "react-redux";
+import * as AuthAction from "../../Redux/Actions/AuthAction";
+
 import { NavBar, MainButton, MainInput } from "../../Components";
 import BackgroundSlider from "react-background-slider";
 import cx from "classnames";
-import "animate.css";
-import WOW from "wowjs";
 
 import bgImage1 from "../../Assets/bg-image/bg-1.jpg";
 import bgImage2 from "../../Assets/bg-image/bg-2.jpg";
@@ -13,20 +14,22 @@ import bgImage3 from "../../Assets/bg-image/bg-3.jpg";
 const defaultProps = {};
 const propTypes = {};
 
+const mapStateToProps = state => {
+  return {
+    isLogin: ""
+  };
+};
+
 class MainPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { isClicked: false, email: "", password: "" };
+    this.state = { isClicked: false, isIdValid: true, isPwValid: true, idErrMsg: "", pwErrMsg: "", id: "", password: "" };
     this.SignIn = React.createRef();
     this.Intro = React.createRef();
   }
 
-  componentDidMount() {
-    new WOW.WOW().init();
-  }
-
   render() {
-    const { email, password } = this.state;
+    const { id, password } = this.state;
     return (
       <div className="mainPage">
         <NavBar isActive="main" />
@@ -51,17 +54,19 @@ class MainPage extends Component {
               <div
                 className={cx("mainPage__header__signIn__part-container", {
                   "mainPage__header__signIn__part-container-on":
-                    email !== "" || password !== ""
+                    id !== "" || password !== ""
                 })}
               >
                 <div className="mainPage__header__signIn__part__email">
                   <MainInput
                     className="mainPage__header__signIn__part__email__input"
                     label="Email / Name"
-                    type="email"
-                    name="email"
+                    type="text"
                     width={250}
-                    onChange={e => this.setState({ email: e.target.value })}
+                    onChange={e => this.setState({ id: e.target.value, isIdValid: true, idErrMsg: "" })}
+                    onKeyPress={this.handleEnter}
+                    error={!this.state.isIdValid}
+                    helperText={this.state.idErrMsg}
                   />
                 </div>
                 <div className="mainPage__header__signIn__part__password">
@@ -71,7 +76,10 @@ class MainPage extends Component {
                     type="password"
                     name="password"
                     width={250}
-                    onChange={e => this.setState({ password: e.target.value })}
+                    onChange={e => this.setState({ password: e.target.value, isPwValid: true, pwErrMsg: "" })}
+                    onKeyPress={this.handleEnter}
+                    error={!this.state.isPwValid}
+                    helperText={this.state.pwErrMsg}
                   />
                 </div>
                 <div className="mainPage__header__signIn__part-btn">
@@ -95,12 +103,35 @@ class MainPage extends Component {
     });
   };
 
+  handleEnter = e => {
+    if (e.key === "Enter") {
+      this.handleSignIn();
+    }
+  }
+
   handleSignIn = () => {
-    // Sign In Action
+    const { id, password } = this.state;
+    if (id === "" && password === "") {
+      this.setState({ isIdValid: false, idErrMsg: "Fill this field.", isPwValid: false, pwErrMsg: "Fill this field." })
+    } else if (id === "") {
+      this.setState({ isIdValid: false, idErrMsg: "Fill this field." })
+    } else if (password === "") {
+      this.setState({ isPwValid: false, pwErrMsg: "Fill this field." })
+    } else {
+      const params = { id: id, password: password };
+      this.props.dispatch(AuthAction.postSignIn(params)).then(async result => {
+        if (result === "failed") {
+          alert("Login Failed!");
+        } else {
+          alert("SUCCESS TO SIGN IN");
+          console.log(result);
+        }
+      });
+    }
   };
 }
 
 MainPage.defaultProps = defaultProps;
 MainPage.propTypes = propTypes;
 
-export default MainPage;
+export default connect(mapStateToProps)(MainPage);
