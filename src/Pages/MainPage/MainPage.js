@@ -23,7 +23,7 @@ const mapStateToProps = state => {
 class MainPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { isClicked: false, id: "", password: "" };
+    this.state = { isClicked: false, isIdValid: true, isPwValid: true, idErrMsg: "", pwErrMsg: "", id: "", password: "" };
     this.SignIn = React.createRef();
     this.Intro = React.createRef();
   }
@@ -62,9 +62,11 @@ class MainPage extends Component {
                     className="mainPage__header__signIn__part__email__input"
                     label="Email / Name"
                     type="text"
-                    name="id"
                     width={250}
-                    onChange={e => this.setState({ id: e.target.value })}
+                    onChange={e => this.setState({ id: e.target.value, isIdValid: true, idErrMsg: "" })}
+                    onKeyPress={this.handleEnter}
+                    error={!this.state.isIdValid}
+                    helperText={this.state.idErrMsg}
                   />
                 </div>
                 <div className="mainPage__header__signIn__part__password">
@@ -74,7 +76,10 @@ class MainPage extends Component {
                     type="password"
                     name="password"
                     width={250}
-                    onChange={e => this.setState({ password: e.target.value })}
+                    onChange={e => this.setState({ password: e.target.value, isPwValid: true, pwErrMsg: "" })}
+                    onKeyPress={this.handleEnter}
+                    error={!this.state.isPwValid}
+                    helperText={this.state.pwErrMsg}
                   />
                 </div>
                 <div className="mainPage__header__signIn__part-btn">
@@ -98,16 +103,31 @@ class MainPage extends Component {
     });
   };
 
+  handleEnter = e => {
+    if (e.key === "Enter") {
+      this.handleSignIn();
+    }
+  }
+
   handleSignIn = () => {
-    const params = { id: this.state.id, password: this.state.password };
-    this.props.dispatch(AuthAction.postSignIn(params)).then(async result => {
-      if (result === "failed") {
-        alert("Login Failed!");
-      } else {
-        alert("SUCCESS TO SIGN IN");
-        console.log(result);
-      }
-    })
+    const { id, password } = this.state;
+    if (id === "" && password === "") {
+      this.setState({ isIdValid: false, idErrMsg: "Fill this field.", isPwValid: false, pwErrMsg: "Fill this field." })
+    } else if (id === "") {
+      this.setState({ isIdValid: false, idErrMsg: "Fill this field." })
+    } else if (password === "") {
+      this.setState({ isPwValid: false, pwErrMsg: "Fill this field." })
+    } else {
+      const params = { id: id, password: password };
+      this.props.dispatch(AuthAction.postSignIn(params)).then(async result => {
+        if (result === "failed") {
+          alert("Login Failed!");
+        } else {
+          alert("SUCCESS TO SIGN IN");
+          console.log(result);
+        }
+      });
+    }
   };
 }
 
