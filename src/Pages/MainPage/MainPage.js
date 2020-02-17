@@ -123,8 +123,11 @@ class MainPage extends Component {
         if (result === "failed") {
           alert("Login Failed!");
         } else {
-          alert("SUCCESS TO SIGN IN");
-          console.log(result);
+          const userInfo = await this.props.dispatch(AuthAction.getUser(result));
+          console.log(userInfo);
+          await this.props.history.push({
+            pathname: "/home"
+          });
         }
       });
     }
