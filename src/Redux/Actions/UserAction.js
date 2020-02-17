@@ -1,3 +1,5 @@
+import { ServerEndPoint } from "../../Configs/Server";
+
 import axios from "axios";
 import {
   SUCCEED_TO_SIGNUP,
@@ -21,7 +23,7 @@ export function updateSignupInfo(payload) {
 
 export function postSignup(payload) {
   axios
-    .post("http://127.0.0.1:4000/api/users", payload)
+    .post(ServerEndPoint + "api/users", payload)
     .then(res => {
       return res;
     })
