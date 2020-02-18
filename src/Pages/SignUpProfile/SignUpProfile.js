@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
+import { ServerEndPoint } from "../../Configs/Server";
 import * as UserAction from "../../Redux/Actions/UserAction";
 
 import { SignUpInput, MainButton } from "../../Components";
@@ -12,6 +13,7 @@ import Avatar from "@material-ui/core/Avatar";
 
 import default_profile from "../../Assets/images/default_profile.svg";
 import back_icon from "../../Assets/images/signup_back.svg";
+import { isEmptyString } from "is-what";
 
 const defaultProps = {};
 const propTypes = {};
@@ -57,7 +59,6 @@ class SignUpProfile extends Component {
       isNameValid,
       helpName,
       helpStatus,
-      SignupClicked,
       isStatusValid,
       isSignupNext
     } = this.state;
@@ -88,18 +89,6 @@ class SignUpProfile extends Component {
             <div className="signupPage__info__container__content">
               <div className="signupPage__info__container__content__propic">
                 <div className="signupPage__info__container__content__propic-preview">
-                  <Avatar
-                    src={
-                      this.state.profileImgUrl
-                        ? this.state.profileImgUrl
-                        : default_profile
-                    }
-                    style={{
-                      width: "110px",
-                      height: "110px",
-                      borderRadius: "50%"
-                    }}
-                  ></Avatar>
                   <input
                     accept="image/*"
                     type="file"
@@ -108,6 +97,21 @@ class SignUpProfile extends Component {
                     name="img"
                     onChange={this.handleProfileImg}
                   />
+                  <label htmlFor="profile-upload">
+                    <Avatar
+                      src={
+                        this.state.profileImgUrl
+                          ? this.state.profileImgUrl
+                          : default_profile
+                      }
+                      style={{
+                        width: "110px",
+                        height: "110px",
+                        cursor: "pointer",
+                        borderRadius: "50%"
+                      }}
+                    ></Avatar>
+                  </label>
                 </div>
                 <div className="signupPage__info__container__content__propic-label">
                   <label
@@ -133,7 +137,7 @@ class SignUpProfile extends Component {
                   error={!isNameValid}
                   helperText={helpName}
                   InputProps={
-                    (name !== "") & isNameValid
+                    !isEmptyString(name) & isNameValid
                       ? {
                           endAdornment: (
                             <Fade in={true} timeout={350}>
@@ -175,38 +179,42 @@ class SignUpProfile extends Component {
 
   handleNameCheck = e => {
     const regExp = /^[A-Za-z0-9_.]{3,30}$/;
+    const nonAlphabet = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]$/;
+    const nonSepcial = /[_.]$/;
 
     const a = (bool, msg) => {
-      this.setState({ isNameValid: bool }, () => {
-        this.setState({ helpName: msg }, () => {
-          this.handleSignupBtn();
-        });
+      this.setState({ isNameValid: bool, helpName: msg }, () => {
+        this.handleSignupBtn();
       });
     };
 
-    const repeatChk = () => {
-      const name = this.state.name;
-      axios
-        .get("http://127.0.0.1:4000/api/users?name=".concat(name))
-        .then(res => {
-          a(true, " "); //Allowed name
-        })
-        .catch(err => {
-          a(false, "Already exists name");
-        });
-    };
-
     this.setState({ name: e.target.value }, () => {
-      if (regExp.test(this.state.name)) {
-        repeatChk();
+      const name = this.state.name;
+      if (regExp.test(name)) {
+        window.setTimeout(() => {
+          return Object.is(this.state.name, name)
+            ? axios
+                .get(ServerEndPoint + "api/users?name=" + name)
+                .then(res => {
+                  a(true, " "); //Allowed name
+                })
+                .catch(err => {
+                  a(false, "Already exists name");
+                })
+            : null;
+        }, 200);
       } else {
-        if ((this.state.name !== "") & (this.state.name.length < 3)) {
-          a(false, "Should be more then 3 words");
-        } else if (this.state.name.length > 30) {
+        if (!isEmptyString(name) & (name.length < 3)) {
+          a(false, "Should be more than 3 words");
+        } else if (name.length > 30) {
           a(false, "Should no greater than 30 words");
-        } else if ((this.state.name !== "") & !regExp.test(this.state.name)) {
-          a(false, "Only '_' or '.' special character allowed");
-        } else if (this.state.name === "") {
+        } else if (!isEmptyString(name) & !regExp.test(name)) {
+          if (nonAlphabet.test(name)) {
+            a(false, "Only alphabet chracter allowed");
+          } else if (!nonSepcial.test(name)) {
+            a(false, "Only '_' or '.' special character allowed");
+          }
+        } else if (isEmptyString(name)) {
           a(true, "Enter your name please");
         }
       }
@@ -215,50 +223,44 @@ class SignUpProfile extends Component {
 
   handleProfileImg = e => {
     this.setState({ profileImg: e.target.files[0] }, () => {
-      if (this.state.profileImg) {
-        this.setState({
-          profileImgUrl: URL.createObjectURL(this.state.profileImg)
-        });
-      }
+      return this.state.profileImg
+        ? this.setState({
+            profileImgUrl: URL.createObjectURL(this.state.profileImg)
+          })
+        : null;
     });
   };
 
   handleStatusCheck = e => {
     this.setState({ status: e.target.value }, () => {
-      if (this.state.status.length > 100) {
-        this.setState(
-          {
-            isStatusValid: false,
-            helpStatus: "Should be less than 100 words."
-          },
-          () => {
-            this.handleSignupBtn();
-          }
-        );
-      } else {
-        this.setState(
-          {
-            isStatusValid: true,
-            helpStatus: " "
-          },
-          () => {
-            this.handleSignupBtn();
-          }
-        );
-      }
+      return this.state.status.length > 100
+        ? this.setState(
+            {
+              isStatusValid: false,
+              helpStatus: "Should be less than 100 words."
+            },
+            () => {
+              this.handleSignupBtn();
+            }
+          )
+        : this.setState(
+            {
+              isStatusValid: true,
+              helpStatus: " "
+            },
+            () => {
+              this.handleSignupBtn();
+            }
+          );
     });
   };
 
   handleSignupBtn = () => {
-    if (
-      this.state.isNameValid &
-      (this.state.name !== "") &
+    return this.state.isNameValid &
+      !isEmptyString(this.state.name) &
       this.state.isStatusValid
-    ) {
-      this.setState({ isSignupNext: true });
-    } else {
-      this.setState({ isSignupNext: false });
-    }
+      ? this.setState({ isSignupNext: true })
+      : this.setState({ isSignupNext: false });
   };
 
   handleSignup = async () => {
@@ -271,11 +273,8 @@ class SignUpProfile extends Component {
     formData.append("status", this.state.status);
     formData.append("type", this.props.usertype);
     formData.append("img", this.state.profileImg);
-
     const postSignup = await this.props.postSignup(formData);
-    if (postSignup) {
-      this.props.updateSignupStep("successPage");
-    }
+    return postSignup ? this.props.updateSignupStep("successPage") : null;
   };
 }
 

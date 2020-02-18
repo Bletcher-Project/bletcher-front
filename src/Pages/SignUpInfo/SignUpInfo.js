@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { ServerEndPoint } from "../../Configs/Server";
 import * as UserAction from "../../Redux/Actions/UserAction";
 import axios from "axios";
 
@@ -10,6 +11,7 @@ import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { purple } from "@material-ui/core/colors";
 
 import back_icon from "../../Assets/images/signup_back.svg";
+import { isEmptyString } from "is-what";
 
 const defaultProps = {};
 const propTypes = {};
@@ -72,10 +74,6 @@ class SignUpInfo extends Component {
             <div className="signupPage__info__container__head">
               <div className="signupPage__info__container__head-back">
                 <a>
-                  {/* <NavigateBeforeIcon
-                    style={{ color: "#bdbdbd", fontSize: 60 }}
-                    onClick={this.hanldePrevStep}
-                  /> */}
                   <img
                     src={back_icon}
                     width="35px"
@@ -102,7 +100,7 @@ class SignUpInfo extends Component {
                 error={!isEmailValid}
                 helperText={helpEmail}
                 InputProps={
-                  (email !== "") & isEmailValid
+                  !isEmptyString(email) & isEmailValid
                     ? {
                         endAdornment: (
                           <Fade in={true} timeout={350}>
@@ -115,10 +113,7 @@ class SignUpInfo extends Component {
                     : null
                 }
               />
-              {/* </div>
-              <div className="signupPage__info__container-input"> */}
               <SignUpInput
-                disabled={!isEmailValid || this.state.email === ""}
                 label="Password"
                 type="password"
                 value={this.state.password}
@@ -127,7 +122,7 @@ class SignUpInfo extends Component {
                 error={!isPwdValid}
                 helperText={helpPwd}
                 InputProps={
-                  (this.state.password !== "") & isPwdValid
+                  !isEmptyString(this.state.password) & isPwdValid
                     ? {
                         endAdornment: (
                           <Fade in={true} timeout={350}>
@@ -140,12 +135,7 @@ class SignUpInfo extends Component {
                     : null
                 }
               />
-              {/* </div>
-              <div className="signupPage__info__container-input"> */}
               <SignUpInput
-                disabled={
-                  !isPwdValid || !isEmailValid || this.state.password === ""
-                }
                 label="Password Confirm"
                 type="password"
                 value={this.state.repassword}
@@ -155,7 +145,7 @@ class SignUpInfo extends Component {
                 error={!isRepwdValid}
                 helperText={isRepwdValid ? " " : helpRePwd}
                 InputProps={
-                  (this.state.repassword !== "") & isRepwdValid
+                  !isEmptyString(this.state.repassword) & isRepwdValid
                     ? {
                         endAdornment: (
                           <Fade in={true} timeout={350}>
@@ -192,23 +182,26 @@ class SignUpInfo extends Component {
     this.props.updateSignupStep("typePage");
   };
 
-  handleInfoNext = () => {
+  handleNextBtn = () => {
     const nextCondition = () => {
       if (
-        (this.state.email !== "") &
-        (this.state.password !== "") &
-        (this.state.repassword !== "") &
-        (this.state.isEmailValid &
-          this.state.isPwdValid &
-          this.state.isRepwdValid)
+        !isEmptyString(this.state.email) &
+        !isEmptyString(this.state.password) &
+        !isEmptyString(this.state.repassword) &
+        this.state.isEmailValid &
+        this.state.isPwdValid &
+        this.state.isRepwdValid
       ) {
         this.setState({ isInfoNext: true });
       } else {
         this.setState({ isInfoNext: false });
       }
     };
-    if ((this.state.password !== "") & (this.state.repassword !== "")) {
-      if (this.state.password === this.state.repassword) {
+    if (
+      !isEmptyString(this.state.password) &
+      !isEmptyString(this.state.repassword)
+    ) {
+      if (Object.is(this.state.password, this.state.repassword)) {
         this.setState({ isRepwdValid: true }, () => {
           nextCondition();
         });
@@ -224,32 +217,32 @@ class SignUpInfo extends Component {
   handleEmailCheck = e => {
     const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     const a = (bool, msg) => {
-      this.setState({ isEmailValid: bool }, () => {
-        this.setState({ helpEmail: msg }, () => {
-          this.handleInfoNext();
-        });
+      this.setState({ isEmailValid: bool, helpEmail: msg }, () => {
+        this.handleNextBtn();
       });
     };
     this.setState({ email: e.target.value }, () => {
-      this.handleInfoNext();
-      if (this.state.email === "") {
+      const email = this.state.email;
+      if (isEmptyString(email)) {
         a(false, "Enter your email address please");
-        //a(true, " ");
-      } else if ((this.state.email !== "") & !regExp.test(this.state.email)) {
+      } else if (!isEmptyString(email) & !regExp.test(email)) {
         a(false, "Incorrect Email Form");
       }
 
-      if (regExp.test(this.state.email)) {
-        const email = this.state.email;
-        axios
-          .get("http://127.0.0.1:4000/api/users?email=".concat(email))
-          .then(res => {
-            a(true, " "); //Allowed email
-          })
-          .catch(err => {
-            console.log(err);
-            a(false, "Already exists email!");
-          });
+      if (regExp.test(email)) {
+        window.setTimeout(() => {
+          return Object.is(this.state.email, email)
+            ? axios
+                .get(ServerEndPoint + "api/users?email=" + email)
+                .then(res => {
+                  a(true, " "); //Allowed email
+                })
+                .catch(err => {
+                  console.log(err);
+                  a(false, "Already exists email!");
+                })
+            : null;
+        }, 200);
       }
     });
   };
@@ -262,14 +255,12 @@ class SignUpInfo extends Component {
       const IsChar = /\S[a-zA-Z]/;
       const IsSpeical = /\W/g;
       const a = (bool, msg) => {
-        this.setState({ isPwdValid: bool }, () => {
-          this.setState({ helpPwd: msg }, () => {
-            this.handleInfoNext();
-          });
+        this.setState({ isPwdValid: bool, helpPwd: msg }, () => {
+          this.handleNextBtn();
         });
       };
       if (
-        (this.state.password !== "") &
+        !isEmptyString(this.state.password) &
         (8 <= this.state.password.length) &
         (this.state.password.length <= 16)
       ) {
@@ -285,32 +276,30 @@ class SignUpInfo extends Component {
           return a(false, "Special character not allowed");
         }
       } else if (
-        (this.state.password !== "") &
+        !isEmptyString(this.state.password) &
         (this.state.password.length < 8)
       ) {
         return a(false, "Should be more than 8 words");
       } else if (
-        (this.state.password !== "") &
+        !isEmptyString(this.state.password) &
         (this.state.password.length > 16)
       ) {
         return a(false, "Should no greater than 16 words");
-      } else if (this.state.password === "") {
+      } else if (isEmptyString(this.state.password)) {
         return a(true, "Enter password please");
       }
     };
 
     this.setState({ password: e.target.value }, () => {
       if (regExp.test(this.state.password)) {
-        this.setState({ isPwdValid: true }, () => {
-          this.setState({ helpPwd: " " }, () => {
-            //Allowed password
-            this.handleInfoNext();
-            condition();
-          });
+        this.setState({ isPwdValid: true, helpPwd: " " }, () => {
+          //Allowed password
+          this.handleNextBtn();
+          condition();
         });
       } else {
         this.setState({ isPwdValid: false }, () => {
-          this.handleInfoNext();
+          this.handleNextBtn();
           condition();
         });
       }
@@ -320,18 +309,19 @@ class SignUpInfo extends Component {
   handleRepwdCheck = e => {
     this.setState({ repassword: e.target.value }, () => {
       if (
-        this.state.repassword === "" ||
-        this.state.password === this.state.repassword
+        isEmptyString(this.state.repassword) ||
+        Object.is(this.state.password, this.state.repassword)
       ) {
         this.setState({ isRepwdValid: true }, () => {
-          this.handleInfoNext();
+          this.handleNextBtn();
         });
       } else {
-        this.setState({ isRepwdValid: false }, () => {
-          this.setState({ helpRePwd: "Enter same password above" }, () => {
-            this.handleInfoNext();
-          });
-        });
+        this.setState(
+          { isRepwdValid: false, helpRePwd: "Enter same password above" },
+          () => {
+            this.handleNextBtn();
+          }
+        );
       }
     });
   };
