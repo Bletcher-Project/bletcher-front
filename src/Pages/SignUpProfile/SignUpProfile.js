@@ -271,7 +271,7 @@ class SignUpProfile extends Component {
     formData.append("name", this.state.name);
     formData.append("password", this.props.password);
     formData.append("status", this.state.status);
-    formData.append("type", this.props.usertype);
+    formData.append("type", this.props.usertype === "Sketcher" ? 0 : 1);
     formData.append("img", this.state.profileImg);
     const postSignup = await this.props.postSignup(formData);
     return postSignup ? this.props.updateSignupStep("successPage") : null;
