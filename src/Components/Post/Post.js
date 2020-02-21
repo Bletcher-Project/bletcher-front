@@ -13,8 +13,10 @@ import {
   DropdownItem
 } from "reactstrap";
 import timediff from "timediff";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import Avatar from "@material-ui/core/Avatar";
 
+import defaultProfile from "../../Assets/images/default_profile.svg";
 import likeIcon from "../../Assets/images/like.png";
 import filledLikeIcon from "../../Assets/images/like-filled.png";
 import commentIcon from "../../Assets/images/comment.png";
@@ -29,43 +31,38 @@ class Post extends Component {
     this.state = {
       dropdownOpen: false,
       likeClicked: false,
-      likeIcon: likeIcon,
-      posts: [
-        {
-          profileImg:
-            "https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2018/06/cat-217679.jpg?h=c4ed616d&itok=3qHaqQ56",
-          profileName: "Jay",
-          profileType: 0,
-          postImg:
-            "https://colorlib.com/wp/wp-content/uploads/sites/2/featured-horizontal-poster-mockup.jpg",
-          postDesc: "DESCRIPTION - user describe about post",
-          postDate: "2020-02-19 17:00:00",
-          postComments: [{ author: "Jay", comment: "test comment." }]
-        }
-      ]
+      likeIcon: likeIcon
     };
   }
 
   render() {
-    const { posts, dropdownOpen, likeIcon } = this.state;
+    const { dropdownOpen, likeIcon } = this.state;
+    const {
+      posterName,
+      posterProfile,
+      posterType,
+      postContent,
+      postHashTags,
+      postImg,
+      postDate,
+      postComments
+    } = this.props;
     return (
-      <Card className="post">
+      <Card className="post mb-3">
         <CardHeader className="post__header">
-          <img
-            src={posts[0].profileImg}
-            width="60px"
-            height="60px"
-            style={{ borderRadius: "50%" }}
-          ></img>
+          <Avatar
+            style={{ width: "60px", height: "60px" }}
+            src={posterProfile ? posterProfile : defaultProfile}
+          ></Avatar>
           <CardText className="mb-0 ml-2">
-            <span className="post__header-name">{posts[0].profileName}</span>
+            <span className="post__header-name">{posterName}</span>
             <br></br>
             <span className="post__header-type">
-              {posts[0].profileType === 0 ? "Sketcher" : "Creator"}
+              {posterType === 0 ? "Sketcher" : "Creator"}
             </span>
             <span className="post__header-type ml-2">
               <img className="mr-1" src={clockIcon} width="13px"></img>
-              {this.handlePostTime(posts[0].postDate)}
+              {this.handlePostTime(postDate)}
             </span>
           </CardText>
 
@@ -79,7 +76,7 @@ class Post extends Component {
               focus="none"
               style={({ backgroundColor: "white" }, { boxShadow: "none" })}
             >
-              <MoreVertIcon style={{ color: "grey" }} />
+              <MoreHorizIcon style={{ color: "grey", fontSize: "2.1rem" }} />
             </DropdownToggle>
             <DropdownMenu style={{ minWidth: "50px", left: "-28px" }}>
               <DropdownItem>Modify</DropdownItem>
@@ -88,8 +85,22 @@ class Post extends Component {
           </ButtonDropdown>
         </CardHeader>
         <CardBody className="post__body pt-0 pb-1 pr-0">
-          <CardImg src={posts[0].postImg}></CardImg>
-          <CardText className="ml-3 mt-3">{posts[0].postDesc}</CardText>
+          <CardImg src={postImg}></CardImg>
+          <CardText className="ml-3 mt-3">{postContent}</CardText>
+          <CardText className="ml-3 mt-3">
+            {postHashTags.map(hashtags => (
+              <span
+                style={{
+                  cursor: "pointer",
+                  color: "#8e24aa",
+                  fontSize: "0.9rem",
+                  fontWeight: "600"
+                }}
+              >
+                #{hashtags}{" "}
+              </span>
+            ))}
+          </CardText>
         </CardBody>
         <CardFooter className="post__footer">
           <CardText>
@@ -102,8 +113,13 @@ class Post extends Component {
             <img className="ml-2" src={commentIcon} width="25px"></img>
           </CardText>
           <CardText>
-            <strong className="mr-2">{posts[0].postComments[0].author}</strong>
-            {posts[0].postComments[0].comment}
+            {postComments.map(comment => (
+              <span>
+                <strong className="mr-2">{comment.author}</strong>
+                <span>{comment.comment}</span>
+                <br></br>
+              </span>
+            ))}
           </CardText>
         </CardFooter>
       </Card>
@@ -126,7 +142,6 @@ class Post extends Component {
 
   handlePostTime = time => {
     const timePass = timediff(time, new Date());
-    console.log(timePass);
     const postDate = new Date(time);
     return timePass.weeks >= 1
       ? "" +
