@@ -33,7 +33,9 @@ class HomePage extends Component {
           postDate: "2020-02-15 13:00:00",
           postComments: [
             { author: "Endrew", comment: "good good" },
+            { author: "Jay", comment: "niceee!" },
             { author: "Jay", comment: "niceee!" }
+
           ]
         },
         {

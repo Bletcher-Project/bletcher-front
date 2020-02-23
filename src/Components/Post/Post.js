@@ -31,12 +31,13 @@ class Post extends Component {
     this.state = {
       dropdownOpen: false,
       likeClicked: false,
+      moreCommentClicked: false,
       likeIcon: likeIcon
     };
   }
 
   render() {
-    const { dropdownOpen, likeIcon } = this.state;
+    const { dropdownOpen, likeIcon, moreCommentClicked } = this.state;
     const {
       posterName,
       posterProfile,
@@ -113,18 +114,44 @@ class Post extends Component {
             <img className="ml-2" src={commentIcon} width="25px"></img>
           </CardText>
           <CardText>
-            {postComments.map(comment => (
-              <span>
-                <strong className="mr-2">{comment.author}</strong>
-                <span>{comment.comment}</span>
-                <br></br>
-              </span>
-            ))}
+            {(postComments.length <= 2) & !moreCommentClicked
+              ? postComments.map(comment => (
+                  <span>
+                    <strong className="mr-2">{comment.author}</strong>
+                    <span>{comment.comment}</span>
+                    <br></br>
+                  </span>
+                ))
+              : (postComments.length > 2) & moreCommentClicked
+              ? postComments.map(comment => (
+                  <span>
+                    <strong className="mr-2">{comment.author}</strong>
+                    <span>{comment.comment}</span>
+                    <br></br>
+                  </span>
+                ))
+              : postComments.slice(0, 2).map(comment => (
+                  <span>
+                    <strong className="mr-2">{comment.author}</strong>
+                    <span>{comment.comment}</span>
+                    <br></br>
+                  </span>
+                ))}
+            <span onClick={this.toggleMoreComment}>
+              {postComments.length > 2
+                ? moreCommentClicked
+                  ? `close comment`
+                  : `more comment`
+                : null}
+            </span>
           </CardText>
         </CardFooter>
       </Card>
     );
   }
+  toggleMoreComment = () => {
+    this.setState({ moreCommentClicked: !this.state.moreCommentClicked });
+  };
 
   toggle = () => {
     this.setState({ dropdownOpen: !this.state.dropdownOpen });
