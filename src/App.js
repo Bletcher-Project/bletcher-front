@@ -4,13 +4,36 @@ import React, { Component } from "react";
 // React Router
 import { Route, withRouter, Switch } from "react-router-dom";
 
+import { connect } from "react-redux";
+
 // Pages
-import { MainPage, HomePage, UserPage, GuidePage, SignUpPage } from "./Pages";
+import { MainPage, HomePage, SignUpPage } from "./Pages";
+
+const mapStateToProps = state => {
+  console.log(state.authReducer.isLogin, state.authReducer.token);
+  return {
+    isLogin: state.authReducer.isLogin
+  };
+};
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  componentWillMount() {
+    const { history, isLogin } = this.props;
+    if (!isLogin) {
+      history.push({
+        pathname: "/"
+      });
+    } else {
+      // getUser
+      history.push({
+        pathname: "/home"
+      });
+    }
   }
 
   render() {
@@ -26,4 +49,4 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+export default withRouter(connect(mapStateToProps)(App));

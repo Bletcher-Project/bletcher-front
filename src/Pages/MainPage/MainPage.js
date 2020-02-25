@@ -16,14 +16,22 @@ const propTypes = {};
 
 const mapStateToProps = state => {
   return {
-    isLogin: ""
+    // isLogin: ""
   };
 };
 
 class MainPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { isClicked: false, isIdValid: true, isPwValid: true, idErrMsg: "", pwErrMsg: "", id: "", password: "" };
+    this.state = {
+      isClicked: false,
+      isIdValid: true,
+      isPwValid: true,
+      idErrMsg: "",
+      pwErrMsg: "",
+      id: "",
+      password: ""
+    };
     this.SignIn = React.createRef();
     this.Intro = React.createRef();
   }
@@ -110,6 +118,7 @@ class MainPage extends Component {
   }
 
   handleSignIn = () => {
+    const { dispatch, history } = this.props;
     const { id, password } = this.state;
     if (id === "" && password === "") {
       this.setState({ isIdValid: false, idErrMsg: "Fill this field.", isPwValid: false, pwErrMsg: "Fill this field." })
@@ -119,13 +128,13 @@ class MainPage extends Component {
       this.setState({ isPwValid: false, pwErrMsg: "Fill this field." })
     } else {
       const params = { id: id, password: password };
-      this.props.dispatch(AuthAction.postSignIn(params)).then(async result => {
+      dispatch(AuthAction.postSignIn(params)).then(async result => {
         if (result === "failed") {
+          // 로그인 fail 시 코드 작성
           alert("Login Failed!");
         } else {
-          const userInfo = await this.props.dispatch(AuthAction.getUser(result));
-          console.log(userInfo);
-          await this.props.history.push({
+          await dispatch(AuthAction.getUser(result));
+          await history.push({
             pathname: "/home"
           });
         }

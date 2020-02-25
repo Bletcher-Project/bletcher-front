@@ -4,7 +4,8 @@ import {
   SUCCEED_TO_SIGNIN,
   FAILED_TO_SIGNIN,
   SUCCEED_TO_GETUSER,
-  FAILED_TO_GETUSER
+  FAILED_TO_GETUSER,
+  SUCCEED_TO_SIGNOUT
 } from "../Constants/action-types";
 
 export const postSignIn = params => {
@@ -73,4 +74,12 @@ export const getUser = token => {
       });
     }
   }
+}
+
+export const signOut = () => {
+  return async dispatch => {
+    await dispatch({
+      type: SUCCEED_TO_SIGNOUT
+    });
+  };
 }
