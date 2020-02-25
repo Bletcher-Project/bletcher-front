@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { MainInput } from "../../Components";
+import Button from "@material-ui/core/Button";
 
 import {
   Card,
@@ -32,13 +34,20 @@ class Post extends Component {
       dropdownOpen: false,
       likeClicked: false,
       moreCommentClicked: false,
+      writeComment: false,
       likeIcon: likeIcon
     };
   }
 
   render() {
-    const { dropdownOpen, likeIcon, moreCommentClicked } = this.state;
     const {
+      dropdownOpen,
+      likeIcon,
+      moreCommentClicked,
+      writeComment
+    } = this.state;
+    const {
+      isMyPost,
       posterName,
       posterProfile,
       posterType,
@@ -46,6 +55,7 @@ class Post extends Component {
       postHashTags,
       postImg,
       postDate,
+      postLike,
       postComments
     } = this.props;
     return (
@@ -66,24 +76,25 @@ class Post extends Component {
               {this.handlePostTime(postDate)}
             </span>
           </CardText>
-
-          <ButtonDropdown
-            className="ml-auto"
-            isOpen={dropdownOpen}
-            toggle={this.toggle}
-          >
-            <DropdownToggle
-              color="none"
-              focus="none"
-              style={({ backgroundColor: "white" }, { boxShadow: "none" })}
+          {isMyPost ? (
+            <ButtonDropdown
+              className="ml-auto"
+              isOpen={dropdownOpen}
+              toggle={this.toggleDropMenu}
             >
-              <MoreHorizIcon style={{ color: "grey", fontSize: "2.1rem" }} />
-            </DropdownToggle>
-            <DropdownMenu style={{ minWidth: "50px", left: "-28px" }}>
-              <DropdownItem>Modify</DropdownItem>
-              <DropdownItem>Delete</DropdownItem>
-            </DropdownMenu>
-          </ButtonDropdown>
+              <DropdownToggle
+                color="none"
+                focus="none"
+                style={({ backgroundColor: "white" }, { boxShadow: "none" })}
+              >
+                <MoreHorizIcon style={{ color: "grey", fontSize: "2.1rem" }} />
+              </DropdownToggle>
+              <DropdownMenu style={{ minWidth: "50px", left: "-28px" }}>
+                <DropdownItem>Modify</DropdownItem>
+                <DropdownItem>Delete</DropdownItem>
+              </DropdownMenu>
+            </ButtonDropdown>
+          ) : null}
         </CardHeader>
         <CardBody className="post__body pt-0 pb-1 pr-0">
           <CardImg src={postImg}></CardImg>
@@ -108,56 +119,82 @@ class Post extends Component {
             <img
               className="mr-1"
               src={likeIcon}
-              onClick={this.handleLike}
+              onClick={this.toggleLike}
               width="26px"
             ></img>
-            <img className="ml-2" src={commentIcon} width="25px"></img>
+            {isMyPost ? (
+              <span style={{ fontSize: "0.8rem" }}>
+                {" "}
+                {this.handlePostLike(postLike)} Likes
+              </span>
+            ) : null}
+            <img
+              className="ml-2"
+              src={commentIcon}
+              onClick={this.toggleComment}
+              width="25px"
+            ></img>
           </CardText>
           <CardText>
-            {(postComments.length <= 2) & !moreCommentClicked
-              ? postComments.map(comment => (
-                  <span>
-                    <strong className="mr-2">{comment.author}</strong>
-                    <span>{comment.comment}</span>
-                    <br></br>
-                  </span>
-                ))
-              : (postComments.length > 2) & moreCommentClicked
-              ? postComments.map(comment => (
-                  <span>
-                    <strong className="mr-2">{comment.author}</strong>
-                    <span>{comment.comment}</span>
-                    <br></br>
-                  </span>
-                ))
-              : postComments.slice(0, 2).map(comment => (
-                  <span>
-                    <strong className="mr-2">{comment.author}</strong>
-                    <span>{comment.comment}</span>
-                    <br></br>
-                  </span>
-                ))}
-            <span onClick={this.toggleMoreComment}>
+            {postComments
+              .slice(
+                0,
+                moreCommentClicked & (postComments.length > 2)
+                  ? postComments.length
+                  : !moreCommentClicked & (postComments.length > 2)
+                  ? 2
+                  : postComments.length
+              )
+              .map(comment => (
+                <span>
+                  <strong className="mr-2">{comment.author}</strong>
+                  <span>{comment.comment}</span>
+                  <br></br>
+                </span>
+              ))}
+            <span
+              className="small"
+              style={{ cursor: "pointer" }}
+              onClick={this.toggleMoreComment}
+            >
               {postComments.length > 2
                 ? moreCommentClicked
-                  ? `close comment`
-                  : `more comment`
+                  ? `close comment...`
+                  : `more comment...`
                 : null}
             </span>
           </CardText>
+          {writeComment ? (
+            <div className="post__footer-postComment">
+              <MainInput
+                label="Write Comment"
+                type="text"
+                name="comment"
+                width="380px"
+              />
+              <Button
+                variant="contained"
+                size="small"
+                style={{ height: "36px", marginTop: "10px" }}
+              >
+                post
+              </Button>
+            </div>
+          ) : null}
         </CardFooter>
       </Card>
     );
   }
+
   toggleMoreComment = () => {
     this.setState({ moreCommentClicked: !this.state.moreCommentClicked });
   };
 
-  toggle = () => {
+  toggleDropMenu = () => {
     this.setState({ dropdownOpen: !this.state.dropdownOpen });
   };
 
-  handleLike = () => {
+  toggleLike = () => {
     this.setState({ likeClicked: !this.state.likeClicked }, () => {
       if (this.state.likeClicked) {
         this.setState({ likeIcon: filledLikeIcon });
@@ -165,6 +202,18 @@ class Post extends Component {
         this.setState({ likeIcon: likeIcon });
       }
     });
+  };
+
+  toggleComment = () => {
+    this.setState({ writeComment: !this.state.writeComment });
+  };
+
+  handlePostLike = like => {
+    return (1000 < like) & (like < 1000000)
+      ? (like / 1000).toFixed(2).concat("k")
+      : (1000000 <= like) & (like < 1000000000000)
+      ? (like / 1000000).toFixed(2).concat("m")
+      : like;
   };
 
   handlePostTime = time => {

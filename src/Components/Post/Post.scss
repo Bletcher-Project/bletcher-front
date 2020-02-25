@@ -36,5 +36,14 @@
     img {
       cursor: pointer;
     }
+
+    &-postComment {
+      display: flex;
+      flex-direction: row;
+
+      button {
+        margin-left: auto;
+      }
+    }
   }
 }
