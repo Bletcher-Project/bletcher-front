@@ -3,8 +3,7 @@ import {
   FAILED_TO_SIGNIN,
   SUCCEED_TO_GETUSER,
   FAILED_TO_GETUSER,
-  SUCCEED_TO_SIGNOUT,
-  SUCCEED_TO_SIGNUP
+  SUCCEED_TO_SIGNOUT
 } from "../Constants/action-types";
 
 const initialState = {

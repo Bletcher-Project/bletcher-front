@@ -118,7 +118,6 @@ class MainPage extends Component {
   }
 
   handleSignIn = () => {
-    const { dispatch, history } = this.props;
     const { id, password } = this.state;
     if (id === "" && password === "") {
       this.setState({ isIdValid: false, idErrMsg: "Fill this field.", isPwValid: false, pwErrMsg: "Fill this field." })
@@ -128,15 +127,12 @@ class MainPage extends Component {
       this.setState({ isPwValid: false, pwErrMsg: "Fill this field." })
     } else {
       const params = { id: id, password: password };
-      dispatch(AuthAction.postSignIn(params)).then(async result => {
+      this.props.dispatch(AuthAction.postSignIn(params)).then(async result => {
         if (result === "failed") {
           // 로그인 fail 시 코드 작성
           alert("Login Failed!");
         } else {
-          await dispatch(AuthAction.getUser(result));
-          await history.push({
-            pathname: "/home"
-          });
+          await this.props.dispatch(AuthAction.getUser(result));
         }
       });
     }

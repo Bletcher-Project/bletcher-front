@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 
 // React Router
-import { Route, withRouter, Switch } from "react-router-dom";
+import { Route, withRouter, Switch, Redirect } from "react-router-dom";
 
 import { connect } from "react-redux";
 
@@ -22,27 +22,17 @@ class App extends Component {
     this.state = {};
   }
 
-  componentWillMount() {
-    const { history, isLogin } = this.props;
-    if (!isLogin) {
-      history.push({
-        pathname: "/"
-      });
-    } else {
-      // getUser
-      history.push({
-        pathname: "/home"
-      });
-    }
-  }
-
   render() {
     return (
       <div className="app">
         <Switch>
-          <Route exact path="/" component={MainPage} />
+          <Route exact path="/">
+            {this.props.isLogin ? <Redirect to="/home" /> : <MainPage />}
+          </Route>
           <Route exact path="/signup" component={SignUpPage} />
-          <Route exact path="/home" component={HomePage} />
+          <Route exact path="/home">
+            {!this.props.isLogin ? <Redirect to="/" /> : <HomePage />}
+          </Route>
         </Switch>
       </div>
     );
