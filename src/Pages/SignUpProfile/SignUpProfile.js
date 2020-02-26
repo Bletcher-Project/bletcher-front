@@ -20,7 +20,7 @@ const propTypes = {};
 
 const mapStateToProps = state => {
   return {
-    usertype: state.UserReducer.usertype,
+    userType: state.UserReducer.userType,
     email: state.UserReducer.email,
     password: state.UserReducer.password
   };
@@ -182,7 +182,7 @@ class SignUpProfile extends Component {
     const nonAlphabet = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]$/;
     const nonSepcial = /[_.]$/;
 
-    const a = (bool, msg) => {
+    const changeNameStatus = (bool, msg) => {
       this.setState({ isNameValid: bool, helpName: msg }, () => {
         this.handleSignupBtn();
       });
@@ -196,26 +196,26 @@ class SignUpProfile extends Component {
             ? axios
                 .get(ServerEndPoint + "api/users?name=" + name)
                 .then(res => {
-                  a(true, " "); //Allowed name
+                  changeNameStatus(true, " "); //Allowed name
                 })
                 .catch(err => {
-                  a(false, "Already exists name");
+                  changeNameStatus(false, "Already exists name");
                 })
             : null;
         }, 200);
       } else {
         if (!isEmptyString(name) & (name.length < 3)) {
-          a(false, "Should be more than 3 words");
+          changeNameStatus(false, "Should be more than 3 words");
         } else if (name.length > 30) {
-          a(false, "Should no greater than 30 words");
+          changeNameStatus(false, "Should no greater than 30 words");
         } else if (!isEmptyString(name) & !regExp.test(name)) {
           if (nonAlphabet.test(name)) {
-            a(false, "Only alphabet chracter allowed");
+            changeNameStatus(false, "Only alphabet chracter allowed");
           } else if (!nonSepcial.test(name)) {
-            a(false, "Only '_' or '.' special character allowed");
+            changeNameStatus(false, "Only '_' or '.' special character allowed");
           }
         } else if (isEmptyString(name)) {
-          a(true, "Enter your name please");
+          changeNameStatus(true, "Enter your name please");
         }
       }
     });
@@ -271,7 +271,7 @@ class SignUpProfile extends Component {
     formData.append("name", this.state.name);
     formData.append("password", this.props.password);
     formData.append("status", this.state.status);
-    formData.append("type", this.props.usertype === "Sketcher" ? 0 : 1);
+    formData.append("type", this.props.userType === "Sketcher" ? 0 : 1);
     formData.append("img", this.state.profileImg);
     const postSignup = await this.props.postSignup(formData);
     return postSignup ? this.props.updateSignupStep("successPage") : null;

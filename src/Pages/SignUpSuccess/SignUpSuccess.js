@@ -13,7 +13,7 @@ const propTypes = {};
 
 const mapStateToProps = state => {
   return {
-    usertype: state.UserReducer.usertype,
+    userType: state.UserReducer.userType,
     name: state.UserReducer.name
   };
 };
@@ -26,7 +26,7 @@ class SignUpProfile extends Component {
 
   render() {
     const {} = this.state;
-    const { usertype, name } = this.props;
+    const { userType, name } = this.props;
 
     return (
       <Fade
@@ -36,17 +36,17 @@ class SignUpProfile extends Component {
       >
         <div className="signupPage__success">
           <div className="signupPage__success-head">
-            Hello! {usertype} {name}!
+            Hello! {userType} {name}!
           </div>
           <div className="signupPage__success-logo">
-            {usertype === "Sketcher" ? (
+            {userType === "Sketcher" ? (
               <img src={logo_sketcher} width="130px" />
             ) : (
               <img src={logo_creator} width="130px" />
             )}
           </div>
           <div className="signupPage__success-desc">
-            {usertype === "Sketcher"
+            {userType === "Sketcher"
               ? "Login and Sketch your creative idea."
               : "Login and Create your own work."}
           </div>

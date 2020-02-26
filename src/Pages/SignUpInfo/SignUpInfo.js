@@ -18,7 +18,7 @@ const propTypes = {};
 
 const mapStateToProps = state => {
   return {
-    usertype: state.UserReducer.usertype,
+    userType: state.UserReducer.userType,
     email: state.UserReducer.email,
     password: state.UserReducer.password
   };
@@ -61,7 +61,7 @@ class SignUpInfo extends Component {
       isInfoNext
     } = this.state;
 
-    const { usertype } = this.props;
+    const { userType } = this.props;
 
     return (
       <Fade
@@ -84,7 +84,7 @@ class SignUpInfo extends Component {
 
               <div className="signupPage__info__container__head-title">
                 <p>
-                  Hello, {usertype}! <br />
+                  Hello, {userType}! <br />
                   Enter your personal information.
                 </p>
               </div>
@@ -216,7 +216,7 @@ class SignUpInfo extends Component {
 
   handleEmailCheck = e => {
     const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-    const a = (bool, msg) => {
+    const changeEmailStatus = (bool, msg) => {
       this.setState({ isEmailValid: bool, helpEmail: msg }, () => {
         this.handleNextBtn();
       });
@@ -224,9 +224,9 @@ class SignUpInfo extends Component {
     this.setState({ email: e.target.value }, () => {
       const email = this.state.email;
       if (isEmptyString(email)) {
-        a(false, "Enter your email address please");
+        changeEmailStatus(false, "Enter your email address please");
       } else if (!isEmptyString(email) & !regExp.test(email)) {
-        a(false, "Incorrect Email Form");
+        changeEmailStatus(false, "Incorrect Email Form");
       }
 
       if (regExp.test(email)) {
@@ -235,11 +235,11 @@ class SignUpInfo extends Component {
             ? axios
                 .get(ServerEndPoint + "api/users?email=" + email)
                 .then(res => {
-                  a(true, " "); //Allowed email
+                  changeEmailStatus(true, " "); //Allowed email
                 })
                 .catch(err => {
                   console.log(err);
-                  a(false, "Already exists email!");
+                  changeEmailStatus(false, "Already exists email!");
                 })
             : null;
         }, 200);
@@ -254,7 +254,7 @@ class SignUpInfo extends Component {
       const Isnum = /\S[0-9]/;
       const IsChar = /\S[a-zA-Z]/;
       const IsSpeical = /\W/g;
-      const a = (bool, msg) => {
+      const changePwdStatus = (bool, msg) => {
         this.setState({ isPwdValid: bool, helpPwd: msg }, () => {
           this.handleNextBtn();
         });
@@ -267,26 +267,26 @@ class SignUpInfo extends Component {
         if (
           IsChar.test(this.state.password) & !Isnum.test(this.state.password)
         ) {
-          return a(false, "Num should be contained");
+          return changePwdStatus(false, "Num should be contained");
         } else if (
           !IsChar.test(this.state.password) & Isnum.test(this.state.password)
         ) {
-          return a(false, "Alphabet should be contained");
+          return changePwdStatus(false, "Alphabet should be contained");
         } else if (IsSpeical.test(this.state.password)) {
-          return a(false, "Special character not allowed");
+          return changePwdStatus(false, "Special character not allowed");
         }
       } else if (
         !isEmptyString(this.state.password) &
         (this.state.password.length < 8)
       ) {
-        return a(false, "Should be more than 8 words");
+        return changePwdStatus(false, "Should be more than 8 words");
       } else if (
         !isEmptyString(this.state.password) &
         (this.state.password.length > 16)
       ) {
-        return a(false, "Should no greater than 16 words");
+        return changePwdStatus(false, "Should no greater than 16 words");
       } else if (isEmptyString(this.state.password)) {
-        return a(true, "Enter password please");
+        return changePwdStatus(true, "Enter password please");
       }
     };
 

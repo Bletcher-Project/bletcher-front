@@ -10,7 +10,7 @@ const defaultProps = {};
 const propTypes = {};
 
 const mapStateToProps = state => {
-  return { SignUpStep: state.UserReducer.SignUpStep };
+  return { signUpStep: state.UserReducer.signUpStep };
 };
 
 class SignUpPage extends Component {
@@ -21,31 +21,27 @@ class SignUpPage extends Component {
 
   render() {
     const {} = this.state;
-    const { SignUpStep } = this.props;
+    const { signUpStep } = this.props;
 
     return (
       <div className="signupPage">
         <NavBar isActive="SignUp" />
-        {SignUpStep === "typePage" ? (
-          <SignUpStepper className="signupPage__step" step={SignUpStep} />
-        ) : SignUpStep === "infoPage" ? (
-          <SignUpStepper className="signupPage__step" step={SignUpStep} />
-        ) : SignUpStep === "profilePage" ? (
-          <SignUpStepper className="signupPage__step" step={SignUpStep} />
+        {signUpStep === "typePage" ? (
+          <SignUpStepper className="signupPage__step" step={signUpStep} />
+        ) : signUpStep === "infoPage" ? (
+          <SignUpStepper className="signupPage__step" step={signUpStep} />
+        ) : signUpStep === "profilePage" ? (
+          <SignUpStepper className="signupPage__step" step={signUpStep} />
         ) : null}
 
-        {SignUpStep === "typePage" ? (
+        {signUpStep === "typePage" ? (
           <SignUpType />
-        ) : SignUpStep === "infoPage" ? (
+        ) : signUpStep === "infoPage" ? (
           <SignUpInfo />
-        ) : SignUpStep === "profilePage" ? (
+        ) : signUpStep === "profilePage" ? (
           <SignUpProfile />
-        ) : SignUpStep === "successPage" ? (
+        ) : signUpStep === "successPage" ? (
           <SignUpSuccess />
-        ) : SignUpStep === "loadingPage" ? (
-          <div className="signupPage__info">
-            <CircularProgress className="signupPage__info-loading" size={200} disableShrink />
-          </div>
         ) : null}
       </div>
     );

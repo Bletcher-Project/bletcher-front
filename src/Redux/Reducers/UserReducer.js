@@ -7,8 +7,8 @@ import {
 } from "../Constants/action-types";
 
 const initialState = {
-  SignUpStep: "typePage",
-  usertype: "",
+  signUpStep: "typePage",
+  userType: "",
   email: "",
   name: "",
   password: "",
@@ -23,12 +23,12 @@ export default function UserReducer(state = initialState, action) {
   }
   if (action.type === USERTYPE_UPDATED) {
     return Object.assign({}, state, {
-      usertype: action.payload
+      userType: action.payload
     });
   }
   if (action.type === SIGNUPSTEP_UPDATED) {
     return Object.assign({}, state, {
-      SignUpStep: action.payload
+      signUpStep: action.payload
     });
   }
   if (action.type === SIGNUP_INFO_UPDATED) {

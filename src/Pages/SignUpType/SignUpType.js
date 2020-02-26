@@ -12,12 +12,12 @@ const defaultProps = {};
 const propTypes = {};
 
 const mapStateToProps = state => {
-  return { usertype: state.UserReducer.usertype };
+  return { userType: state.UserReducer.userType };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateUserType: usertype => dispatch(UserAction.updateUserType(usertype)),
+    updateUserType: userType => dispatch(UserAction.updateUserType(userType)),
     updateSignupStep: stepname =>
       dispatch(UserAction.updateSignupStep(stepname))
   };
