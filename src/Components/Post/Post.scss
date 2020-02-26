@@ -4,6 +4,46 @@
 
 .post {
   width: 500px;
-  height: 500px;
-  border: 2px solid black;
+  display: flex;
+  box-shadow: 3px 4px 7px 5px rgba(0, 0, 0, 0.1);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    border: none;
+
+    &-name {
+      font-family: sans-serif bold, cursive;
+    }
+    &-type {
+      font-size: 0.8rem;
+      color: gray;
+    }
+  }
+
+  &__body {
+    font-family: "Noto Sans", sans-serif;
+    padding-left: 0;
+    padding-right: 0;
+
+    * {
+      width: 100%;
+    }
+  }
+
+  &__footer {
+    border: none;
+    img {
+      cursor: pointer;
+    }
+
+    &-postComment {
+      display: flex;
+      flex-direction: row;
+
+      button {
+        margin-left: auto;
+      }
+    }
+  }
 }
