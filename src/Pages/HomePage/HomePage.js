@@ -21,6 +21,7 @@ class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = { feed: null, feedLoading: true };
+<<<<<<< HEAD
     this.state = {
       posts: [
         {
@@ -104,6 +105,8 @@ class HomePage extends Component {
         }
       ]
     };
+=======
+>>>>>>> HomePage
   }
 
   componentWillMount() {
@@ -127,6 +130,7 @@ class HomePage extends Component {
           }
         </div>
         {/* <Post className="homePage__post" /> */}
+<<<<<<< HEAD
         {posts.map(post => (
           <Post
             className="homePage__post mb-2 mt-2"
@@ -142,6 +146,8 @@ class HomePage extends Component {
             postComments={post.postComments}
           />
         ))}
+=======
+>>>>>>> HomePage
       </div>
     );
   }
