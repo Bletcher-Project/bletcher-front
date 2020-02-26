@@ -1,26 +1,12 @@
 import { ServerEndPoint } from "../../Configs/Server";
 
 import {
-  SUCCEED_TO_SIGNUP,
-  FAILED_TO_SIGNUP,
-  USERTYPE_UPDATED,
-  SIGNUPSTEP_UPDATED,
-  SIGNUP_INFO_UPDATED,
   SUCCEED_TO_SIGNIN,
-  FAILED_TO_SIGNIN
+  FAILED_TO_SIGNIN,
+  SUCCEED_TO_GETUSER,
+  FAILED_TO_GETUSER,
+  SUCCEED_TO_SIGNOUT
 } from "../Constants/action-types";
-
-export function updateUserType(payload) {
-  return { type: USERTYPE_UPDATED, payload };
-}
-
-export function updateSignupStep(payload) {
-  return { type: SIGNUPSTEP_UPDATED, payload };
-}
-
-export function updateSignupInfo(payload) {
-  return { type: SIGNUP_INFO_UPDATED, payload };
-}
 
 export const postSignIn = params => {
   return async dispatch => {
@@ -56,4 +42,44 @@ export const postSignIn = params => {
       });
     }
   }
+}
+
+export const getUser = token => {
+  return async dispatch => {
+    try {
+      let response = await fetch(ServerEndPoint + "api/auth/user", {
+        method: "GET",
+        headers: {
+          "x-access-token": token
+        }
+      });
+      if (response.status === 200) {
+        let result = await response.json();
+        await dispatch({
+          type: SUCCEED_TO_GETUSER,
+          payload: result.userInfo
+        });
+        return result.userInfo;
+      } else {
+        await dispatch({
+          type: FAILED_TO_GETUSER,
+          payload: null
+        });
+        return "failed";
+      }
+    } catch (error) {
+      dispatch({
+        type: FAILED_TO_GETUSER,
+        payload: { data: "NETWORK_ERROR" }
+      });
+    }
+  }
+}
+
+export const signOut = () => {
+  return async dispatch => {
+    await dispatch({
+      type: SUCCEED_TO_SIGNOUT
+    });
+  };
 }

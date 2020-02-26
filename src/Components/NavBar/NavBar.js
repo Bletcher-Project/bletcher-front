@@ -1,4 +1,9 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+
+import { connect } from "react-redux";
+import * as AuthAction from "../../Redux/Actions/AuthAction";
+
 import cx from "classnames";
 import logo from "../../logo.svg";
 
@@ -6,6 +11,11 @@ import { Nav, Navbar, NavItem, NavLink, NavbarBrand } from "reactstrap";
 
 const defaultProps = {};
 const propTypes = {};
+
+const mapStateToProps = state => {
+  return {
+  };
+};
 
 class NavBar extends Component {
   constructor(props) {
@@ -44,16 +54,22 @@ class NavBar extends Component {
                 <NavLink href="#">MyPage</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="#">SignOut</NavLink>
+                <NavLink href="#" onClick={this.handleSignOut}>SignOut</NavLink>
               </NavItem>
             </Nav>
           )}
       </Navbar>
     );
   }
+
+  handleSignOut = () => {
+    this.props.dispatch(AuthAction.signOut()).then(async result => {
+      this.props.history.push({ pathname: "/" });
+    });
+  }
 }
 
 NavBar.defaultProps = defaultProps;
 NavBar.propTypes = propTypes;
 
-export default NavBar;
+export default withRouter(connect(mapStateToProps)(NavBar));

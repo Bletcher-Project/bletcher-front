@@ -16,14 +16,22 @@ const propTypes = {};
 
 const mapStateToProps = state => {
   return {
-    isLogin: ""
+    // isLogin: ""
   };
 };
 
 class MainPage extends Component {
   constructor(props) {
     super(props);
-    this.state = { isClicked: false, isIdValid: true, isPwValid: true, idErrMsg: "", pwErrMsg: "", id: "", password: "" };
+    this.state = {
+      isClicked: false,
+      isIdValid: true,
+      isPwValid: true,
+      idErrMsg: "",
+      pwErrMsg: "",
+      id: "",
+      password: ""
+    };
     this.SignIn = React.createRef();
     this.Intro = React.createRef();
   }
@@ -121,10 +129,10 @@ class MainPage extends Component {
       const params = { id: id, password: password };
       this.props.dispatch(AuthAction.postSignIn(params)).then(async result => {
         if (result === "failed") {
+          // 로그인 fail 시 코드 작성
           alert("Login Failed!");
         } else {
-          alert("SUCCESS TO SIGN IN");
-          console.log(result);
+          await this.props.dispatch(AuthAction.getUser(result));
         }
       });
     }

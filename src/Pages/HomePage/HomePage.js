@@ -1,9 +1,18 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import { NavBar, Post } from "../../Components";
 
 const defaultProps = {};
 const propTypes = {};
+
+const mapStateToProps = state => {
+  return {
+    isLogin: state.authReducer.isLogin,
+    token: state.authReducer.token,
+    user: state.authReducer.user
+  };
+};
 
 class HomePage extends Component {
   constructor(props) {
@@ -121,4 +130,4 @@ class HomePage extends Component {
 HomePage.defaultProps = defaultProps;
 HomePage.propTypes = propTypes;
 
-export default HomePage;
+export default connect(mapStateToProps)(HomePage);
