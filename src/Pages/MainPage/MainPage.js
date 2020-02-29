@@ -26,7 +26,6 @@ class MainPage extends Component {
     super(props);
     this.state = {
       isScreenIntro: true,
-      isClicked: false,
       isIdValid: true,
       isPwValid: true,
       idErrMsg: "",
@@ -53,13 +52,16 @@ class MainPage extends Component {
               "animated slideOutUp": !isScreenIntro
             })}
           >
-            <h1 className="mainPage__screen__intro-logo">Bletcher</h1>
-            <p className="mainPage__screen__intro-text">
-              Sketch and Create your own art.
+            <div className="mainPage__screen__intro__part">
+              <h1 className="mainPage__screen__intro__part-logo">Bletcher</h1>
+              <p className="mainPage__screen__intro__part-text">
+                Sketch and Create your own art.
             </p>
-            <div className="mainPage__screen__intro-btn">
-              <MainButton text="Getting Start" onClick={this.handleStart} />
+              <div className="mainPage__screen__intro__part-btn">
+                <MainButton text="Getting Start" onClick={this.handleStart} />
+              </div>
             </div>
+
           </div>
 
           <div
