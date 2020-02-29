@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-import * as AuthAction from "../../Redux/Actions/AuthAction";
 import * as PostAction from "../../Redux/Actions/PostAction";
 
 import { NavBar, Post } from "../../Components";
@@ -11,10 +10,7 @@ const propTypes = {};
 
 const mapStateToProps = state => {
   return {
-    isLogin: state.authReducer.isLogin,
-    token: state.authReducer.token,
-    user: state.authReducer.user,
-    feed: state.postReducer.feed
+    user: state.authReducer.user
   };
 };
 
@@ -27,8 +23,7 @@ class HomePage extends Component {
     };
   }
 
-  componentWillMount() {
-    this.props.dispatch(AuthAction.getUser(this.props.token));
+  componentDidMount() {
     this.getAllPosts();
   }
 
@@ -44,8 +39,8 @@ class HomePage extends Component {
                   <Post
                     className="homePage__post"
                     isMyPost={this.props.user.id === data.UserId}
-                    userName={"Seogeurim"}
-                    userProfile={""}
+                    userName={data.User.name}
+                    userProfile={data.User.profileImgName}
                     userType={1}
                     postContent={data.content}
                     postHashTags={["flower", "sunny"]}
