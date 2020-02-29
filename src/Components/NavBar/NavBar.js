@@ -29,7 +29,7 @@ class NavBar extends Component {
       <Navbar
         className={cx("navBar", { "navBar__primary": isActive !== "main" })}
         light
-        fixed
+        fixed="true"
         expand="md"
       >
         <NavbarBrand className="navBar__logo col-2 ml-5" href="/">

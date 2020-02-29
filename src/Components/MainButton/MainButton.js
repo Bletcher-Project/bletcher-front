@@ -40,7 +40,7 @@ class MainButton extends Component {
     return (
       <div className="mainButton">
         <PurpleButton
-          variant="contained"
+          variant="extended"
           color="primary"
           size={size ? size : "large"}
           disabled={disabled}

@@ -34,9 +34,10 @@ class HomePage extends Component {
         <div className="homePage__postList">
           {
             !this.state.feedLoading && this.props.user
-              ? this.state.feed.map((data, index) => {
+              ? this.state.feed.map((data) => {
                 return (
                   <Post
+                    key={data.id}
                     className="homePage__post"
                     isMyPost={this.props.user.id === data.UserId}
                     userName={data.User.name}
