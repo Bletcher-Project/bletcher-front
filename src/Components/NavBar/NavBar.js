@@ -45,19 +45,28 @@ class NavBar extends Component {
               <NavLink href="#">About</NavLink>
             </NavItem>
           </Nav>
+        ) : isActive === "signUp" ? (
+          <Nav className="ml-auto mr-5" navbar>
+            <NavItem>
+              <NavLink href="/signin">Sign In</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="#">About</NavLink>
+            </NavItem>
+          </Nav>
         ) : (
-            <Nav className="ml-auto mr-3" navbar>
-              <NavItem>
-                <NavLink href="#">Feed</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="#">MyPage</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="#" onClick={this.handleSignOut}>SignOut</NavLink>
-              </NavItem>
-            </Nav>
-          )}
+              <Nav className="ml-auto mr-3" navbar>
+                <NavItem>
+                  <NavLink href="#">Feed</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="#">MyPage</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="#" onClick={this.handleSignOut}>SignOut</NavLink>
+                </NavItem>
+              </Nav>
+            )}
       </Navbar>
     );
   }

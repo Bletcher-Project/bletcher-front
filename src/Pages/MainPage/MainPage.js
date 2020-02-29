@@ -19,7 +19,7 @@ const mapStateToProps = state => {
   return {
     // isLogin: ""
   };
-};
+}
 
 class MainPage extends Component {
   constructor(props) {
@@ -33,6 +33,11 @@ class MainPage extends Component {
       id: "",
       password: "",
     };
+  }
+
+  componentDidMount() {
+    const { isSignIn } = this.props;
+    this.setState({ isScreenIntro: !isSignIn });
   }
 
   render() {
@@ -155,8 +160,12 @@ class MainPage extends Component {
       const params = { id: id, password: password };
       this.props.dispatch(AuthAction.postSignIn(params)).then(async result => {
         if (result === "failed") {
-          // 로그인 fail 시 코드 작성
-          alert("Login Failed!");
+          this.setState({
+            isIdValid: false,
+            idErrMsg: "Please check your account again.",
+            isPwValid: false,
+            pwErrMsg: "Please check your account again."
+          });
         } else {
           await this.props.dispatch(AuthAction.getUser(result));
         }

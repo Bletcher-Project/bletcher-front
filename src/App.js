@@ -39,6 +39,9 @@ class App extends Component {
           <Route exact path="/">
             {this.props.isLogin ? <Redirect to="/home" /> : <MainPage />}
           </Route>
+          <Route path="/signin">
+            {this.props.isLogin ? <Redirect to="/home" /> : <MainPage isSignIn={true} />}
+          </Route>
           <Route exact path="/signup" component={SignUpPage} />
           <Route exact path="/home">
             {!this.props.isLogin ? <Redirect to="/" /> : <HomePage />}
