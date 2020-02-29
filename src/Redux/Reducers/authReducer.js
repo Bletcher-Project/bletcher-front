@@ -1,4 +1,5 @@
 import {
+  TOKEN_EXPIRED,
   SUCCEED_TO_SIGNIN,
   FAILED_TO_SIGNIN,
   SUCCEED_TO_GETUSER,
@@ -14,6 +15,11 @@ const initialState = {
 
 export default function authReducer(state = initialState, action) {
   switch (action.type) {
+    case TOKEN_EXPIRED:
+      return Object.assign({}, state, {
+        isLogin: false,
+        token: null
+      });
     case SUCCEED_TO_SIGNIN:
       localStorage.setItem("token", action.payload);
       return Object.assign({}, state, {
@@ -23,7 +29,7 @@ export default function authReducer(state = initialState, action) {
     case FAILED_TO_SIGNIN:
       return Object.assign({}, state, {
         isLogin: false,
-        token: ""
+        token: null
       });
     case SUCCEED_TO_SIGNOUT:
       localStorage.removeItem("token");

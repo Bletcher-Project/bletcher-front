@@ -5,7 +5,8 @@ import {
   FAILED_TO_SIGNIN,
   SUCCEED_TO_GETUSER,
   FAILED_TO_GETUSER,
-  SUCCEED_TO_SIGNOUT
+  SUCCEED_TO_SIGNOUT,
+  TOKEN_EXPIRED
 } from "../Constants/action-types";
 
 export const postSignIn = params => {
@@ -60,6 +61,14 @@ export const getUser = token => {
           payload: result.userInfo
         });
         return result.userInfo;
+      } else if (response.status === 403) {
+        let result = await response.json();
+        if (result.message === "jwt expired") {
+          await dispatch({
+            type: TOKEN_EXPIRED,
+            payload: null
+          });
+        }
       } else {
         await dispatch({
           type: FAILED_TO_GETUSER,
