@@ -4,13 +4,13 @@ import React, { Component } from "react";
 // React Router
 import { Route, withRouter, Switch, Redirect } from "react-router-dom";
 
+// Redux
 import { connect } from "react-redux";
 
 // Pages
 import { MainPage, HomePage, SignUpPage } from "./Pages";
 
 const mapStateToProps = state => {
-  console.log(state.authReducer.isLogin, state.authReducer.token);
   return {
     isLogin: state.authReducer.isLogin
   };

@@ -9,7 +9,7 @@ import {
 const initialState = {
   isLogin: !!localStorage.getItem("token"),
   token: localStorage.getItem("token"),
-  user: {}
+  user: null
 };
 
 export default function authReducer(state = initialState, action) {

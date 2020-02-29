@@ -48,9 +48,9 @@ class Post extends Component {
     } = this.state;
     const {
       isMyPost,
-      posterName,
-      posterProfile,
-      posterType,
+      userName,
+      userProfile,
+      userType,
       postContent,
       postHashTags,
       postImg,
@@ -63,13 +63,13 @@ class Post extends Component {
         <CardHeader className="post__header">
           <Avatar
             style={{ width: "60px", height: "60px" }}
-            src={posterProfile ? posterProfile : defaultProfile}
+            src={userProfile ? userProfile : defaultProfile}
           ></Avatar>
           <CardText className="mb-0 ml-2">
-            <span className="post__header-name">{posterName}</span>
+            <span className="post__header-name">{userName}</span>
             <br></br>
             <span className="post__header-type">
-              {posterType === 0 ? "Sketcher" : "Creator"}
+              {userType === 0 ? "Sketcher" : "Creator"}
             </span>
             <span className="post__header-type ml-2">
               <img className="mr-1" src={clockIcon} width="13px"></img>
@@ -142,8 +142,8 @@ class Post extends Component {
                 moreCommentClicked & (postComments.length > 2)
                   ? postComments.length
                   : !moreCommentClicked & (postComments.length > 2)
-                  ? 2
-                  : postComments.length
+                    ? 2
+                    : postComments.length
               )
               .map(comment => (
                 <span>
@@ -212,8 +212,8 @@ class Post extends Component {
     return (1000 < like) & (like < 1000000)
       ? (like / 1000).toFixed(2).concat("k")
       : (1000000 <= like) & (like < 1000000000000)
-      ? (like / 1000000).toFixed(2).concat("m")
-      : like;
+        ? (like / 1000000).toFixed(2).concat("m")
+        : like;
   };
 
   handlePostTime = time => {
@@ -221,16 +221,16 @@ class Post extends Component {
     const postDate = new Date(time);
     return timePass.weeks >= 1
       ? "" +
-          postDate.getFullYear() +
-          "-" +
-          (postDate.getMonth() + 1) +
-          "-" +
-          postDate.getDate()
+      postDate.getFullYear() +
+      "-" +
+      (postDate.getMonth() + 1) +
+      "-" +
+      postDate.getDate()
       : (1 <= timePass.days) & (timePass.days < 7)
-      ? timePass.days + " days ago"
-      : timePass.days < 1
-      ? timePass.hours + " hours ago"
-      : timePass.minutes + " min ago";
+        ? timePass.days + " days ago"
+        : timePass.days < 1
+          ? timePass.hours + " hours ago"
+          : timePass.minutes + " min ago";
   };
 }
 
