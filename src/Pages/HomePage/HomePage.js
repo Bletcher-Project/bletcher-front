@@ -33,7 +33,7 @@ class HomePage extends Component {
         <NavBar />
         <div className="homePage__postList">
           {
-            !this.state.feedLoading
+            !this.state.feedLoading && this.props.user
               ? this.state.feed.map((data, index) => {
                 return (
                   <Post
