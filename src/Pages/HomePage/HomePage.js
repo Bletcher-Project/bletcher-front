@@ -30,10 +30,11 @@ class HomePage extends Component {
   render() {
     return (
       <div className="homePage">
-        <NavBar />
+        <NavBar isActive="feed" />
         <div className="homePage__postList">
-          {!this.state.feedLoading && this.props.user
-            ? this.state.feed.map(data => {
+          {
+            !this.state.feedLoading && this.props.user && this.state.feed
+              ? this.state.feed.map((data) => {
                 return (
                   <Post
                     key={data.id}

@@ -14,6 +14,7 @@ const propTypes = {};
 
 const mapStateToProps = state => {
   return {
+    user: state.authReducer.user
   };
 };
 
@@ -57,10 +58,10 @@ class NavBar extends Component {
         ) : (
               <Nav className="ml-auto mr-3" navbar>
                 <NavItem>
-                  <NavLink href="#">Feed</NavLink>
+                  <NavLink href="/home" active={isActive === "feed"}>Feed</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="#">MyPage</NavLink>
+                  <NavLink href="#" active={isActive === "user"} onClick={this.handleUserPage}>MyPage</NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink href="#" onClick={this.handleSignOut}>SignOut</NavLink>
@@ -69,6 +70,10 @@ class NavBar extends Component {
             )}
       </Navbar>
     );
+  }
+
+  handleUserPage = () => {
+    this.props.history.push({ pathname: "/" + this.props.user.name })
   }
 
   handleSignOut = () => {
