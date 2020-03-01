@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { NavBar } from "../../Components";
+
 const defaultProps = {};
 const propTypes = {};
 
@@ -10,7 +12,7 @@ class UserPage extends Component {
   }
 
   render() {
-    return <div>This is User Page</div>;
+    return <div className="userPage"><NavBar isActive="user" /></div>;
   }
 }
 
