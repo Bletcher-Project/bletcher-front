@@ -20,12 +20,12 @@ class SignUpPage extends Component {
   }
 
   render() {
-    const {} = this.state;
+    const { } = this.state;
     const { signUpStep } = this.props;
 
     return (
       <div className="signupPage">
-        <NavBar isActive="SignUp" />
+        <NavBar isActive="signUp" />
         {signUpStep === "typePage" ? (
           <SignUpStepper className="signupPage__step" step={signUpStep} />
         ) : signUpStep === "infoPage" ? (

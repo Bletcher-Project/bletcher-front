@@ -10,17 +10,13 @@
   left: 0;
 }
 
-.mainPage__header::-webkit-scrollbar {
-  background: transparent;
-}
-
 .mainPage {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
 
-  &__header {
+  &__screen {
     @include content-full;
     display: flex;
     flex-direction: column;
@@ -28,45 +24,55 @@
     align-content: center;
     text-align: center;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
 
     &__intro {
       @include content-full;
       height: 100%;
-      padding-top: 15%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-      &-head {
-        font-family: "Mansalva", cursive;
-        font-weight: 400;
-        font-style: normal;
-        font-size: 8rem;
-        padding: 0;
-        margin: 0;
-      }
+      &__part{
+        margin-top: -5%;
 
-      &-describe {
-        padding-top: 0.5%;
-        margin: 0;
-        font-size: 1.7rem;
-      }
+        &-logo {
+          font-family: "Mansalva", cursive;
+          font-weight: 400;
+          font-style: normal;
+          font-size: 7.8rem;
+          padding: 0;
+          margin: 0;
+        }
 
-      &-btn {
-        padding-top: 2%;
+        &-text {
+          padding-top: 0.5%;
+          margin: 0;
+          font-size: 1.6rem;
+        }
+
+        &-btn {
+          padding-top: 3%;
+        }
       }
     }
 
     &__signIn {
       @include content-full;
       height: 100%;
-      top: 100%;
-      padding-top: 10%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &-none {
+        visibility: hidden;
+      }
 
       &__part {
-        display: flex;
-        justify-content: center;
+        margin-top: -3%;
 
-        &-container {
-          padding: 6.5% 4.5%;
+        &__container {
+          padding: 100px 65px 90px 65px;
           transition: 0.5s;
           &:hover,
           &-on {
@@ -85,7 +91,7 @@
 
         &-btn {
           padding-top: 10%;
-          margin-bottom: 1.5%;
+          margin-bottom: 2%;
         }
 
         &__signUpLink a {
