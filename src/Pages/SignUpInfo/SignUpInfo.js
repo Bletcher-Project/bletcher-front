@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { ServerEndPoint } from "../../Configs/Server";
-import * as UserAction from "../../Redux/Actions/UserAction";
 import axios from "axios";
 
 import { SignUpInput, MainButton } from "../../Components";
@@ -15,22 +13,6 @@ import { isEmptyString } from "is-what";
 
 const defaultProps = {};
 const propTypes = {};
-
-const mapStateToProps = state => {
-  return {
-    userType: state.UserReducer.userType,
-    email: state.UserReducer.email,
-    password: state.UserReducer.password
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    updateSignupStep: stepname =>
-      dispatch(UserAction.updateSignupStep(stepname)),
-    updateSignupInfo: info => dispatch(UserAction.updateSignupInfo(info))
-  };
-};
 
 class SignUpInfo extends Component {
   constructor(props) {
@@ -171,15 +153,15 @@ class SignUpInfo extends Component {
   }
 
   handleNextStep = () => {
-    this.props.updateSignupStep("profilePage");
-    this.props.updateSignupInfo({
-      email: this.state.email,
-      password: this.state.password
-    });
+    const info = {};
+    info.email = this.state.email;
+    info.password = this.state.password;
+    this.props.handleSignUpStep("profilePage");
+    this.props.handleUserInfo(info);
   };
 
   handlePrevStep = () => {
-    this.props.updateSignupStep("typePage");
+    this.props.handleSignUpStep("typePage");
   };
 
   handleNextBtn = () => {
@@ -330,4 +312,4 @@ class SignUpInfo extends Component {
 SignUpInfo.defaultProps = defaultProps;
 SignUpInfo.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpInfo);
+export default SignUpInfo;

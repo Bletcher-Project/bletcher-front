@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 
 import { MainButton } from "../../Components";
 
@@ -10,13 +9,6 @@ import logo_creator from "../../Assets/images/logo_creator.png";
 
 const defaultProps = {};
 const propTypes = {};
-
-const mapStateToProps = state => {
-  return {
-    userType: state.UserReducer.userType,
-    name: state.UserReducer.name
-  };
-};
 
 class SignUpProfile extends Component {
   constructor(props) {
@@ -60,4 +52,4 @@ class SignUpProfile extends Component {
 SignUpProfile.defaultProps = defaultProps;
 SignUpProfile.propTypes = propTypes;
 
-export default connect(mapStateToProps)(SignUpProfile);
+export default SignUpProfile;

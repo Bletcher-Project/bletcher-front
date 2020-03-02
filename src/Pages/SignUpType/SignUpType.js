@@ -11,18 +11,6 @@ import logo_creator from "../../Assets/images/logo_creator.png";
 const defaultProps = {};
 const propTypes = {};
 
-const mapStateToProps = state => {
-  return { userType: state.UserReducer.userType };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    updateUserType: userType => dispatch(UserAction.updateUserType(userType)),
-    updateSignupStep: stepname =>
-      dispatch(UserAction.updateSignupStep(stepname))
-  };
-};
-
 class SignUpType extends Component {
   render() {
     return (
@@ -55,17 +43,17 @@ class SignUpType extends Component {
   }
 
   handleTypeSketcher = () => {
-    this.props.updateUserType("Sketcher");
-    this.props.updateSignupStep("infoPage");
+    this.props.handleSignUpStep("infoPage");
+    this.props.handleUserInfo({ userType: "Sketcher" });
   };
 
   handleTypeCreator = () => {
-    this.props.updateUserType("Creator");
-    this.props.updateSignupStep("infoPage");
+    this.props.handleSignUpStep("infoPage");
+    this.props.handleUserInfo({ userType: "Creator" });
   };
 }
 
 SignUpType.defaultProps = defaultProps;
 SignUpType.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpType);
+export default SignUpType;

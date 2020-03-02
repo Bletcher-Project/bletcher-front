@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import axios from "axios";
 import { connect } from "react-redux";
+import axios from "axios";
 import { ServerEndPoint } from "../../Configs/Server";
 import * as UserAction from "../../Redux/Actions/UserAction";
 
@@ -18,19 +18,8 @@ import { isEmptyString } from "is-what";
 const defaultProps = {};
 const propTypes = {};
 
-const mapStateToProps = state => {
-  return {
-    userType: state.UserReducer.userType,
-    email: state.UserReducer.email,
-    password: state.UserReducer.password
-  };
-};
-
 const mapDispatchToProps = dispatch => {
   return {
-    updateSignupStep: stepname =>
-      dispatch(UserAction.updateSignupStep(stepname)),
-    updateSignupInfo: params => dispatch(UserAction.updateSignupInfo(params)),
     postSignup: params => dispatch(UserAction.postSignup(params))
   };
 };
@@ -45,7 +34,6 @@ class SignUpProfile extends Component {
       helpStatus: " ",
       profileImg: null,
       profileImgUrl: null,
-      SignupClicked: false,
       isSignupNext: false,
       isNameValid: true,
       isStatusValid: true
@@ -174,7 +162,7 @@ class SignUpProfile extends Component {
   }
 
   handlePrevStep = () => {
-    this.props.updateSignupStep("infoPage");
+    this.props.handleSignUpStep("infoPage");
   };
 
   handleNameCheck = e => {
@@ -266,22 +254,21 @@ class SignUpProfile extends Component {
       : this.setState({ isSignupNext: false });
   };
 
-  handleSignup = async () => {
-    this.setState({ SignupClicked: true });
-    this.props.updateSignupInfo({ name: this.state.name });
-    const formData = new FormData();
-    formData.append("email", this.props.email);
-    formData.append("name", this.state.name);
-    formData.append("password", this.props.password);
-    formData.append("status", this.state.status);
-    formData.append("type", this.props.userType === "Sketcher" ? 0 : 1);
-    formData.append("img", this.state.profileImg);
-    const postSignup = await this.props.postSignup(formData);
-    return postSignup ? this.props.updateSignupStep("successPage") : null;
+  handleSignup = () => {
+    this.props.handleUserInfo(
+      {
+        name: this.state.name,
+        status: this.state.status,
+        profileImg: this.state.profileImg
+      },
+      () => {
+        this.props.handleSignUp(); //TODO signup doesn't work 
+      }
+    );
   };
 }
 
 SignUpProfile.defaultProps = defaultProps;
 SignUpProfile.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpProfile);
+export default connect(mapDispatchToProps)(SignUpProfile);
