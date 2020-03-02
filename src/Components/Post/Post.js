@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { MainInput } from "../../Components";
+import { MainInput, Thumbnail } from "../../Components";
 import Button from "@material-ui/core/Button";
 
 import {
@@ -16,9 +16,7 @@ import {
 } from "reactstrap";
 import timediff from "timediff";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import Avatar from "@material-ui/core/Avatar";
 
-import defaultProfile from "../../Assets/images/default_profile.svg";
 import likeIcon from "../../Assets/images/like.png";
 import filledLikeIcon from "../../Assets/images/like-filled.png";
 import commentIcon from "../../Assets/images/comment.png";
@@ -58,13 +56,11 @@ class Post extends Component {
       postLike,
       postComments
     } = this.props;
+    console.log(userProfile);
     return (
       <Card className="post mb-3">
         <CardHeader className="post__header">
-          <Avatar
-            style={{ width: "60px", height: "60px" }}
-            src={userProfile ? userProfile : defaultProfile}
-          ></Avatar>
+          <Thumbnail size="60" src={userProfile} />
           <CardText className="mb-0 ml-2">
             <span className="post__header-name">{userName}</span>
             <br></br>

@@ -1,0 +1,11 @@
+/*
+  Thumbnail Component Styling
+*/
+
+.thumbnail {
+  display: contents;
+
+  &__image {
+    border-radius: 50%;
+  }
+}

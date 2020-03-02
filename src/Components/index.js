@@ -5,5 +5,6 @@ import MainInput from "./MainInput/MainInput";
 import SignUpInput from "./SignUpInput/SignUpInput";
 import SignUpStepper from "./SignUpStepper/SignUpStepper";
 import Post from "./Post/Post";
+import Thumbnail from "./Thumbnail/Thumbnail"
 
-export { NavBar, MainButton, TypeButton, Post, MainInput, SignUpInput, SignUpStepper };
+export { NavBar, MainButton, TypeButton, Post, MainInput, SignUpInput, SignUpStepper, Thumbnail };
