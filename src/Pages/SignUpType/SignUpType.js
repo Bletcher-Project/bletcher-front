@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as UserAction from "../../Redux/Actions/UserAction";
+
 import { TypeButton } from "../../Components";
 
 import Fade from "@material-ui/core/Fade";
 
-import logo_sketcher from "../../Assets/images/logo_sketcher.png";
-import logo_creator from "../../Assets/images/logo_creator.png";
+import logoSketcher from "../../Assets/images/logo_sketcher.png";
+import logoCreator from "../../Assets/images/logo_creator.png";
 
 const defaultProps = {};
 const propTypes = {};
@@ -15,24 +14,24 @@ class SignUpType extends Component {
   render() {
     return (
       <Fade in={true} timeout={{ appear: 1200, enter: 1200, exit: 750 }}>
-        <div className="signupPage__type">
-          <div className="signupPage__type__container">
-            <div className="signupPage__type__container-head">
+        <div className="signUpPage__type">
+          <div className="signUpPage__type__container">
+            <div className="signUpPage__type__container-head">
               <p>Choose your Art type.</p>
             </div>
-            <div className="signupPage__type__container-btn">
+            <div className="signUpPage__type__container-btn">
               <TypeButton
                 title="Sketcher"
                 value="sketcher"
                 content="Share your artisic idea."
-                logo={logo_sketcher}
+                logo={logoSketcher}
                 onClick={this.handleTypeSketcher}
               />
               <TypeButton
                 title="Creator"
                 value="sketcher"
                 content="Share your creation."
-                logo={logo_creator}
+                logo={logoCreator}
                 onClick={this.handleTypeCreator}
               />
             </div>
@@ -44,12 +43,12 @@ class SignUpType extends Component {
 
   handleTypeSketcher = () => {
     this.props.handleSignUpStep("infoPage");
-    this.props.handleUserInfo({ userType: "Sketcher" });
+    this.props.handleUserInfo({ type: "Sketcher" });
   };
 
   handleTypeCreator = () => {
     this.props.handleSignUpStep("infoPage");
-    this.props.handleUserInfo({ userType: "Creator" });
+    this.props.handleUserInfo({ type: "Creator" });
   };
 }
 

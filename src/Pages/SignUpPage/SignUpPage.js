@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+
+import { SignUpType, SignUpInfo, SignUpProfile, SignUpSuccess } from "../";
 import { NavBar, SignUpStepper } from "../../Components";
 
 import * as UserAction from "../../Redux/Actions/UserAction";
-
-import { SignUpType, SignUpInfo, SignUpProfile, SignUpSuccess } from "../";
+import { isEmptyString } from "is-what";
 
 const defaultProps = {};
 const propTypes = {};
@@ -20,7 +21,7 @@ class SignUpPage extends Component {
     super(props);
     this.state = {
       signUpStep: "typePage",
-      userType: "",
+      type: "",
       email: "",
       name: "",
       password: "",
@@ -29,15 +30,14 @@ class SignUpPage extends Component {
     };
   }
   render() {
-    console.log(this.state);
-    const { signUpStep, userType, name } = this.state;
+    const { signUpStep, type, email, name } = this.state;
 
     return (
-      <div className="signupPage">
+      <div className="signUpPage">
         <NavBar isActive="signUp" />
         {signUpStep === "typePage" ? (
           <div>
-            <SignUpStepper className="signupPage__step" step={signUpStep} />
+            <SignUpStepper className="signUpPage__step" step={signUpStep} />
             <SignUpType
               handleSignUpStep={this.handleSignUpStep}
               handleUserInfo={this.handleUserInfo}
@@ -45,16 +45,17 @@ class SignUpPage extends Component {
           </div>
         ) : signUpStep === "infoPage" ? (
           <div>
-            <SignUpStepper className="signupPage__step" step={signUpStep} />
+            <SignUpStepper className="signUpPage__step" step={signUpStep} />
             <SignUpInfo
-              userType={userType}
+              type={type}
+              email={email}
               handleSignUpStep={this.handleSignUpStep}
               handleUserInfo={this.handleUserInfo}
             />
           </div>
         ) : signUpStep === "profilePage" ? (
           <div>
-            <SignUpStepper className="signupPage__step" step={signUpStep} />
+            <SignUpStepper className="signUpPage__step" step={signUpStep} />
             <SignUpProfile
               handleSignUpStep={this.handleSignUpStep}
               handleUserInfo={this.handleUserInfo}
@@ -62,7 +63,7 @@ class SignUpPage extends Component {
             />
           </div>
         ) : signUpStep === "successPage" ? (
-          <SignUpSuccess userType={userType} name={name} />
+          <SignUpSuccess type={type} name={name} />
         ) : null}
       </div>
     );
@@ -73,26 +74,31 @@ class SignUpPage extends Component {
   };
 
   handleUserInfo = info => {
-    this.setState({
-      userType: info.userType ? info.userType : this.state.userType,
-      email: info.email ? info.email : this.state.email,
-      name: info.name ? info.name : this.state.name,
-      password: info.password ? info.password : this.state.password,
-      status: info.status ? info.status : this.state.status,
-      profileImg: info.profileImg ? info.profileImg : this.state.profileImg
-    });
+    this.setState(
+      {
+        type: info.type ? info.type : this.state.type,
+        email: info.email ? info.email : this.state.email,
+        name: info.name ? info.name : this.state.name,
+        password: info.password ? info.password : this.state.password,
+        status: info.status ? info.status : this.state.status,
+        profileImg: info.profileImg ? info.profileImg : this.state.profileImg
+      },
+      () => {
+        return !isEmptyString(this.state.name) ? this.handleSignUp() : null;
+      }
+    );
   };
 
   handleSignUp = async () => {
-    const formData = new FormData();
-    formData.append("email", this.state.email);
-    formData.append("name", this.state.name);
-    formData.append("password", this.state.password);
-    formData.append("status", this.state.status);
-    formData.append("type", this.state.userType === "Sketcher" ? 0 : 1);
-    formData.append("img", this.state.profileImg);
-    const postSignup = await this.props.postSignup(formData);
-    return postSignup ? this.handleSignUpStep("successPage") : null;
+    const params = new FormData();
+    params.append("email", this.state.email);
+    params.append("name", this.state.name);
+    params.append("password", this.state.password);
+    params.append("status", this.state.status);
+    params.append("type", this.state.type === "Sketcher" ? 0 : 1);
+    params.append("img", this.state.profileImg);
+    const postSignUp = await this.props.postSignup(params);
+    return postSignUp ? this.handleSignUpStep("successPage") : null;
   };
 }
 

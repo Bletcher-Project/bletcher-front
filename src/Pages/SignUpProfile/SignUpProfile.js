@@ -1,28 +1,20 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import axios from "axios";
-import { ServerEndPoint } from "../../Configs/Server";
-import * as UserAction from "../../Redux/Actions/UserAction";
 
 import { SignUpInput, MainButton } from "../../Components";
 
-import Fade from "@material-ui/core/Fade";
+import { ServerEndPoint } from "../../Configs/Server";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { purple } from "@material-ui/core/colors";
 import Avatar from "@material-ui/core/Avatar";
-
-import default_profile from "../../Assets/images/default_profile.svg";
-import back_icon from "../../Assets/images/signup_back.svg";
+import Fade from "@material-ui/core/Fade";
 import { isEmptyString } from "is-what";
+import axios from "axios";
+
+import defaultProfile from "../../Assets/images/default_profile.svg";
+import backIcon from "../../Assets/images/signup_back.svg";
 
 const defaultProps = {};
 const propTypes = {};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    postSignup: params => dispatch(UserAction.postSignup(params))
-  };
-};
 
 class SignUpProfile extends Component {
   constructor(props) {
@@ -34,7 +26,7 @@ class SignUpProfile extends Component {
       helpStatus: " ",
       profileImg: null,
       profileImgUrl: null,
-      isSignupNext: false,
+      isSignUpNext: false,
       isNameValid: true,
       isStatusValid: true
     };
@@ -44,45 +36,44 @@ class SignUpProfile extends Component {
     const {
       name,
       status,
-      isNameValid,
       helpName,
       helpStatus,
+      isNameValid,
       isStatusValid,
-      isSignupNext
+      isSignUpNext
     } = this.state;
 
     return (
-      <div className="signupPage__info">
+      <div className="signUpPage__info">
         <Fade
           in={true}
           mountOnEnter
           timeout={{ appear: 1000, enter: 750, exit: 750 }}
         >
-          <div className="signupPage__info__container">
-            <div className="signupPage__info__container__head">
-              <div className="signupPage__info__container__head-back">
+          <div className="signUpPage__info__container">
+            <div className="signUpPage__info__container__head">
+              <div className="signUpPage__info__container__head-back">
                 <img
                   alt="back"
-                  src={back_icon}
+                  src={backIcon}
                   width="35px"
-                  onClick={this.handlePrevStep}
                   style={{ cursor: "pointer" }}
+                  onClick={this.handlePrevStep}
                 />
               </div>
-              <div className="signupPage__info__container__head-title">
+              <div className="signUpPage__info__container__head-title">
                 <p>Complete your profile.</p>
               </div>
-              <div style={{ width: "60px" }}></div>
             </div>
-            <div className="signupPage__info__container__content">
-              <div className="signupPage__info__container__content__propic">
-                <div className="signupPage__info__container__content__propic-preview">
+            <div className="signUpPage__info__container__content">
+              <div className="signUpPage__info__container__content__propic">
+                <div className="signUpPage__info__container__content__propic-preview">
                   <input
                     accept="image/*"
                     type="file"
-                    style={{ display: "none" }}
-                    id="profile-upload"
                     name="img"
+                    id="profile-upload"
+                    style={{ display: "none" }}
                     onChange={this.handleProfileImg}
                   />
                   <label htmlFor="profile-upload">
@@ -90,7 +81,7 @@ class SignUpProfile extends Component {
                       src={
                         this.state.profileImgUrl
                           ? this.state.profileImgUrl
-                          : default_profile
+                          : defaultProfile
                       }
                       style={{
                         width: "110px",
@@ -101,7 +92,7 @@ class SignUpProfile extends Component {
                     ></Avatar>
                   </label>
                 </div>
-                <div className="signupPage__info__container__content__propic-label">
+                <div className="signUpPage__info__container__content__propic-label">
                   <label
                     htmlFor="profile-upload"
                     style={{
@@ -115,7 +106,7 @@ class SignUpProfile extends Component {
                   </label>
                 </div>
               </div>
-              <div className="signupPage__info__container__content__input">
+              <div className="signUpPage__info__container__content__input">
                 <SignUpInput
                   label="name"
                   type="text"
@@ -149,9 +140,9 @@ class SignUpProfile extends Component {
                   helperText={helpStatus}
                 />
                 <MainButton
-                  disabled={!isSignupNext}
+                  disabled={!isSignUpNext}
                   text="Sign Up"
-                  onClick={this.handleSignup}
+                  onClick={this.handleSignUp}
                 />
               </div>
             </div>
@@ -169,15 +160,15 @@ class SignUpProfile extends Component {
     const regExp = /^[A-Za-z0-9_.]{3,30}$/;
     const nonAlphabet = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]$/;
     const nonSepcial = /[_.]$/;
-
     const changeNameStatus = (bool, msg) => {
       this.setState({ isNameValid: bool, helpName: msg }, () => {
-        this.handleSignupBtn();
+        this.handleSignUpBtn();
       });
     };
 
     this.setState({ name: e.target.value }, () => {
       const name = this.state.name;
+
       if (regExp.test(name)) {
         window.setTimeout(() => {
           return Object.is(this.state.name, name)
@@ -231,7 +222,7 @@ class SignUpProfile extends Component {
               helpStatus: "Should be less than 100 words."
             },
             () => {
-              this.handleSignupBtn();
+              this.handleSignUpBtn();
             }
           )
         : this.setState(
@@ -240,35 +231,30 @@ class SignUpProfile extends Component {
               helpStatus: " "
             },
             () => {
-              this.handleSignupBtn();
+              this.handleSignUpBtn();
             }
           );
     });
   };
 
-  handleSignupBtn = () => {
+  handleSignUpBtn = () => {
     return this.state.isNameValid &
       !isEmptyString(this.state.name) &
       this.state.isStatusValid
-      ? this.setState({ isSignupNext: true })
-      : this.setState({ isSignupNext: false });
+      ? this.setState({ isSignUpNext: true })
+      : this.setState({ isSignUpNext: false });
   };
 
-  handleSignup = () => {
-    this.props.handleUserInfo(
-      {
-        name: this.state.name,
-        status: this.state.status,
-        profileImg: this.state.profileImg
-      },
-      () => {
-        this.props.handleSignUp(); //TODO signup doesn't work 
-      }
-    );
+  handleSignUp = () => {
+    this.props.handleUserInfo({
+      name: this.state.name,
+      status: this.state.status,
+      profileImg: this.state.profileImg
+    });
   };
 }
 
 SignUpProfile.defaultProps = defaultProps;
 SignUpProfile.propTypes = propTypes;
 
-export default connect(mapDispatchToProps)(SignUpProfile);
+export default SignUpProfile;
