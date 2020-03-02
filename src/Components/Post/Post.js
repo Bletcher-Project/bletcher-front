@@ -70,14 +70,8 @@ class Post extends Component {
 
     return (
       <Card className="post mb-3">
-        <CardHeader
-          className="post__header"
-          style={{ backgroundColor: "#fff" }}
-        >
-          <Avatar
-            style={{ width: "60px", height: "60px" }}
-            src={userProfile ? userProfile : defaultProfile}
-          ></Avatar>
+        <CardHeader className="post__header">
+          <Thumbnail size="60" src={userProfile} />
           <CardText className="mb-0 ml-2">
             <strong className="post__header-name">{userName}</strong>
             <br></br>

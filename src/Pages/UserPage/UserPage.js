@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { NavBar } from "../../Components";
+import { NavBar, Thumbnail } from "../../Components";
 
 const defaultProps = {};
 const propTypes = {};
@@ -12,7 +12,14 @@ class UserPage extends Component {
   }
 
   render() {
-    return <div className="userPage"><NavBar isActive="user" /></div>;
+    return (
+      <div className="userPage">
+        <NavBar isActive="user" />
+        <div className="mt-5 pt-5 ml-5">
+          <Thumbnail size="150" src={null} />
+        </div>
+      </div>
+    );
   }
 }
 

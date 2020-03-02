@@ -6,6 +6,7 @@ import SignUpInput from "./SignUpInput/SignUpInput";
 import CommentInput from "./CommentInput/CommentInput";
 import SignUpStepper from "./SignUpStepper/SignUpStepper";
 import Post from "./Post/Post";
+import Thumbnail from "./Thumbnail/Thumbnail"
 
 export {
   NavBar,
@@ -15,5 +16,6 @@ export {
   MainInput,
   SignUpInput,
   CommentInput,
-  SignUpStepper
+  SignUpStepper,
+  Thumbnail
 };
