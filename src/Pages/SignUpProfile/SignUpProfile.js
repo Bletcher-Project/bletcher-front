@@ -73,13 +73,13 @@ class SignUpProfile extends Component {
           <div className="signupPage__info__container">
             <div className="signupPage__info__container__head">
               <div className="signupPage__info__container__head-back">
-                <a>
-                  <img
-                    src={back_icon}
-                    width="35px"
-                    onClick={this.handlePrevStep}
-                  />
-                </a>
+                <img
+                  alt="back"
+                  src={back_icon}
+                  width="35px"
+                  onClick={this.handlePrevStep}
+                  style={{ cursor: "pointer" }}
+                />
               </div>
               <div className="signupPage__info__container__head-title">
                 <p>Complete your profile.</p>
@@ -212,7 +212,10 @@ class SignUpProfile extends Component {
           if (nonAlphabet.test(name)) {
             changeNameStatus(false, "Only alphabet chracter allowed");
           } else if (!nonSepcial.test(name)) {
-            changeNameStatus(false, "Only '_' or '.' special character allowed");
+            changeNameStatus(
+              false,
+              "Only '_' or '.' special character allowed"
+            );
           }
         } else if (isEmptyString(name)) {
           changeNameStatus(true, "Enter your name please");

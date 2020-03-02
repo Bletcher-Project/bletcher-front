@@ -72,7 +72,7 @@ class Post extends Component {
               {userType === 0 ? "Sketcher" : "Creator"}
             </span>
             <span className="post__header-type ml-2">
-              <img className="mr-1" src={clockIcon} width="13px"></img>
+              <img alt="time" className="mr-1" src={clockIcon} width="13px" />
               {this.handlePostTime(postDate)}
             </span>
           </CardText>
@@ -117,11 +117,12 @@ class Post extends Component {
         <CardFooter className="post__footer">
           <CardText>
             <img
+              alt="like"
               className="mr-1"
               src={likeIcon}
               onClick={this.toggleLike}
               width="26px"
-            ></img>
+            />
             {isMyPost ? (
               <span style={{ fontSize: "0.8rem" }}>
                 {" "}
@@ -129,11 +130,12 @@ class Post extends Component {
               </span>
             ) : null}
             <img
+              alt="comment"
               className="ml-2"
               src={commentIcon}
               onClick={this.toggleComment}
               width="25px"
-            ></img>
+            />
           </CardText>
           <CardText>
             {postComments
@@ -142,8 +144,8 @@ class Post extends Component {
                 moreCommentClicked & (postComments.length > 2)
                   ? postComments.length
                   : !moreCommentClicked & (postComments.length > 2)
-                    ? 2
-                    : postComments.length
+                  ? 2
+                  : postComments.length
               )
               .map(comment => (
                 <span>
@@ -212,8 +214,8 @@ class Post extends Component {
     return (1000 < like) & (like < 1000000)
       ? (like / 1000).toFixed(2).concat("k")
       : (1000000 <= like) & (like < 1000000000000)
-        ? (like / 1000000).toFixed(2).concat("m")
-        : like;
+      ? (like / 1000000).toFixed(2).concat("m")
+      : like;
   };
 
   handlePostTime = time => {
@@ -221,16 +223,16 @@ class Post extends Component {
     const postDate = new Date(time);
     return timePass.weeks >= 1
       ? "" +
-      postDate.getFullYear() +
-      "-" +
-      (postDate.getMonth() + 1) +
-      "-" +
-      postDate.getDate()
+          postDate.getFullYear() +
+          "-" +
+          (postDate.getMonth() + 1) +
+          "-" +
+          postDate.getDate()
       : (1 <= timePass.days) & (timePass.days < 7)
-        ? timePass.days + " days ago"
-        : timePass.days < 1
-          ? timePass.hours + " hours ago"
-          : timePass.minutes + " min ago";
+      ? timePass.days + " days ago"
+      : timePass.days < 1
+      ? timePass.hours + " hours ago"
+      : timePass.minutes + " min ago";
   };
 }
 

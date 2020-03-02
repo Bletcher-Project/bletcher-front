@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as UserAction from "../../Redux/Actions/UserAction";
-import { TypeButton, SignupStep } from "../../Components";
+import { TypeButton } from "../../Components";
 
 import Fade from "@material-ui/core/Fade";
 
@@ -24,14 +24,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 class SignUpType extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
-    const {} = this.state;
-
     return (
       <Fade in={true} timeout={{ appear: 1200, enter: 1200, exit: 750 }}>
         <div className="signupPage__type">

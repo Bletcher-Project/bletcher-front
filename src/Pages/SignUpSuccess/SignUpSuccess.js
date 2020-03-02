@@ -25,7 +25,6 @@ class SignUpProfile extends Component {
   }
 
   render() {
-    const {} = this.state;
     const { userType, name } = this.props;
 
     return (
@@ -40,9 +39,9 @@ class SignUpProfile extends Component {
           </div>
           <div className="signupPage__success-logo">
             {userType === "Sketcher" ? (
-              <img src={logo_sketcher} width="130px" />
+              <img alt="sketcher" src={logo_sketcher} width="130px" />
             ) : (
-              <img src={logo_creator} width="130px" />
+              <img alt="creator" src={logo_creator} width="130px" />
             )}
           </div>
           <div className="signupPage__success-desc">

@@ -73,13 +73,13 @@ class SignUpInfo extends Component {
           <div className="signupPage__info__container">
             <div className="signupPage__info__container__head">
               <div className="signupPage__info__container__head-back">
-                <a>
-                  <img
-                    src={back_icon}
-                    width="35px"
-                    onClick={this.handlePrevStep}
-                  />
-                </a>
+                <img
+                  alt="back"
+                  src={back_icon}
+                  width="35px"
+                  onClick={this.handlePrevStep}
+                  style={{ cursor: "pointer" }}
+                />
               </div>
 
               <div className="signupPage__info__container__head-title">
@@ -215,7 +215,7 @@ class SignUpInfo extends Component {
   };
 
   handleEmailCheck = e => {
-    const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    const regExp = /^[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     const changeEmailStatus = (bool, msg) => {
       this.setState({ isEmailValid: bool, helpEmail: msg }, () => {
         this.handleNextBtn();

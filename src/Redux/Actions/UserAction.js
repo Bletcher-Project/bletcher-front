@@ -29,6 +29,7 @@ export function postSignup(payload) {
     })
     .catch(err => {
       alert("signup fail!: " + err);
+      return { type: FAILED_TO_SIGNUP };
     });
 
   return { type: SUCCEED_TO_SIGNUP };

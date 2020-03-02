@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { NavBar, SignUpStepper } from "../../Components";
 
-import CircularProgress from "@material-ui/core/CircularProgress";
-
 import { SignUpType, SignUpInfo, SignUpProfile, SignUpSuccess } from "../";
 
 const defaultProps = {};
@@ -14,13 +12,7 @@ const mapStateToProps = state => {
 };
 
 class SignUpPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
-    const { } = this.state;
     const { signUpStep } = this.props;
 
     return (

@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import MobileStepper from "@material-ui/core/MobileStepper";
 
 const useStyles = makeStyles({
@@ -12,7 +12,6 @@ const useStyles = makeStyles({
 
 export default function SignupStep(props) {
   const classes = useStyles();
-  const theme = useTheme();
   const step = props.step;
   return (
     <div className={props.className}>
