@@ -14,14 +14,13 @@ import {
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
-import timediff from "timediff";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import Avatar from "@material-ui/core/Avatar";
 
 import defaultProfile from "../../Assets/images/default_profile.svg";
-import likeIcon from "../../Assets/images/like.png";
-import filledLikeIcon from "../../Assets/images/like-filled.png";
-import commentIcon from "../../Assets/images/comment.png";
+import likeIcon from "../../Assets/images/like.svg";
+import filledLikeIcon from "../../Assets/images/like-filled.svg";
+import commentIcon from "../../Assets/images/comment.svg";
 import clockIcon from "../../Assets/images/clock.png";
 
 const defaultProps = {};
@@ -60,7 +59,10 @@ class Post extends Component {
     } = this.props;
     return (
       <Card className="post mb-3">
-        <CardHeader className="post__header">
+        <CardHeader
+          className="post__header"
+          style={{ backgroundColor: "#fff" }}
+        >
           <Avatar
             style={{ width: "60px", height: "60px" }}
             src={userProfile ? userProfile : defaultProfile}
@@ -73,7 +75,7 @@ class Post extends Component {
             </span>
             <span className="post__header-type ml-2">
               <img alt="time" className="mr-1" src={clockIcon} width="13px" />
-              {this.handlePostTime(postDate)}
+              {postDate.slice(0, 10)}
             </span>
           </CardText>
           {isMyPost ? (
@@ -97,7 +99,11 @@ class Post extends Component {
           ) : null}
         </CardHeader>
         <CardBody className="post__body pt-0 pb-1 pr-0">
-          <CardImg src={postImg}></CardImg>
+          <CardImg
+            alt="post image"
+            src={postImg}
+            style={{ borderRadius: "0" }}
+          ></CardImg>
           <CardText className="ml-3 mt-3">{postContent}</CardText>
           <CardText className="ml-3 mt-3">
             {postHashTags.map(hashtags => (
@@ -114,27 +120,29 @@ class Post extends Component {
             ))}
           </CardText>
         </CardBody>
-        <CardFooter className="post__footer">
+        <CardFooter
+          className="post__footer"
+          style={{ backgroundColor: "#fff" }}
+        >
           <CardText>
             <img
               alt="like"
-              className="mr-1"
+              className="post__footer-like mr-0"
               src={likeIcon}
               onClick={this.toggleLike}
-              width="26px"
+              width="32px"
             />
             {isMyPost ? (
-              <span style={{ fontSize: "0.8rem" }}>
-                {" "}
-                {this.handlePostLike(postLike)} Likes
+              <span className="mr-1" style={{ fontSize: "0.8rem" }}>
+                {postLike} Likes
               </span>
             ) : null}
             <img
               alt="comment"
-              className="ml-2"
+              className="post__footer-comment ml-0"
               src={commentIcon}
               onClick={this.toggleComment}
-              width="25px"
+              width="32px"
             />
           </CardText>
           <CardText>
@@ -208,31 +216,6 @@ class Post extends Component {
 
   toggleComment = () => {
     this.setState({ writeComment: !this.state.writeComment });
-  };
-
-  handlePostLike = like => {
-    return (1000 < like) & (like < 1000000)
-      ? (like / 1000).toFixed(2).concat("k")
-      : (1000000 <= like) & (like < 1000000000000)
-      ? (like / 1000000).toFixed(2).concat("m")
-      : like;
-  };
-
-  handlePostTime = time => {
-    const timePass = timediff(time, new Date());
-    const postDate = new Date(time);
-    return timePass.weeks >= 1
-      ? "" +
-          postDate.getFullYear() +
-          "-" +
-          (postDate.getMonth() + 1) +
-          "-" +
-          postDate.getDate()
-      : (1 <= timePass.days) & (timePass.days < 7)
-      ? timePass.days + " days ago"
-      : timePass.days < 1
-      ? timePass.hours + " hours ago"
-      : timePass.minutes + " min ago";
   };
 }
 
