@@ -120,11 +120,21 @@ class Post extends Component {
             ))}
           </CardText>
         </CardBody>
+        <div
+          style={{
+            backgroundColor: "rgba(0,0,0,0.05)",
+            width: "95%",
+            height: "2px",
+            alignSelf: "center",
+            marginBottom: "0",
+            marginTop: "7px"
+          }}
+        ></div>
         <CardFooter
           className="post__footer"
           style={{ backgroundColor: "#fff" }}
         >
-          <CardText>
+          <CardText className="mb-2">
             <img
               alt="like"
               className="post__footer-like mr-0"
