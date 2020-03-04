@@ -42,7 +42,7 @@ class SignUpProfile extends Component {
               : "Login and Create your own work."}
           </div>
 
-          <MainButton text="Sign In!" href="/" />
+          <MainButton text="Sign In!" href="/signin" />
         </div>
       </Fade>
     );
