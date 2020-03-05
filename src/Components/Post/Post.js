@@ -1,6 +1,6 @@
 import React, { Component } from "react";
+
 import { MainInput } from "../../Components";
-import Button from "@material-ui/core/Button";
 
 import {
   Card,
@@ -15,13 +15,14 @@ import {
   DropdownItem
 } from "reactstrap";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
+import commaNumber from "comma-number";
 
 import defaultProfile from "../../Assets/images/default_profile.svg";
 import likeIcon from "../../Assets/images/like.svg";
 import filledLikeIcon from "../../Assets/images/like-filled.svg";
 import commentIcon from "../../Assets/images/comment.svg";
-import clockIcon from "../../Assets/images/clock.png";
 
 const defaultProps = {};
 const propTypes = {};
@@ -68,13 +69,12 @@ class Post extends Component {
             src={userProfile ? userProfile : defaultProfile}
           ></Avatar>
           <CardText className="mb-0 ml-2">
-            <span className="post__header-name">{userName}</span>
+            <strong className="post__header-name">{userName}</strong>
             <br></br>
             <span className="post__header-type">
               {userType === 0 ? "Sketcher" : "Creator"}
             </span>
             <span className="post__header-type ml-2">
-              <img alt="time" className="mr-1" src={clockIcon} width="13px" />
               {postDate.slice(0, 10)}
             </span>
           </CardText>
@@ -102,7 +102,7 @@ class Post extends Component {
           <CardImg
             alt="post image"
             src={postImg}
-            style={{ borderRadius: "0" }}
+            style={{ borderRadius: "0", fontSize: "0.8rem" }}
           ></CardImg>
           <CardText className="ml-3 mt-3">{postContent}</CardText>
           <CardText className="ml-3 mt-3">
@@ -111,7 +111,7 @@ class Post extends Component {
                 style={{
                   cursor: "pointer",
                   color: "#8e24aa",
-                  fontSize: "0.9rem",
+                  fontSize: "0.8rem",
                   fontWeight: "600"
                 }}
               >
@@ -143,8 +143,8 @@ class Post extends Component {
               width="32px"
             />
             {isMyPost ? (
-              <span className="mr-1" style={{ fontSize: "0.8rem" }}>
-                {postLike} Likes
+              <span className="ml-1 mr-2" style={{ fontSize: "0.7rem" }}>
+                {commaNumber(postLike)}
               </span>
             ) : null}
             <img
@@ -152,7 +152,7 @@ class Post extends Component {
               className="post__footer-comment ml-0"
               src={commentIcon}
               onClick={this.toggleComment}
-              width="32px"
+              width="26px"
             />
           </CardText>
           <CardText>
@@ -166,7 +166,7 @@ class Post extends Component {
                   : postComments.length
               )
               .map(comment => (
-                <span>
+                <span style={{ fontSize: "0.9rem" }}>
                   <strong className="mr-2">{comment.author}</strong>
                   <span>{comment.comment}</span>
                   <br></br>
