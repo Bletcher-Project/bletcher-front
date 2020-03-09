@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { MainInput } from "../../Components";
+import { CommentInput } from "../../Components";
 
 import {
   Card,
@@ -14,9 +14,10 @@ import {
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import Collapse from "@material-ui/core/Collapse";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import commaNumber from "comma-number";
 
 import defaultProfile from "../../Assets/images/default_profile.svg";
@@ -58,6 +59,7 @@ class Post extends Component {
       postLike,
       postComments
     } = this.props;
+
     return (
       <Card className="post mb-3">
         <CardHeader
@@ -184,23 +186,18 @@ class Post extends Component {
                 : null}
             </span>
           </CardText>
-          {writeComment ? (
+          <Collapse in={writeComment}>
             <div className="post__footer-postComment">
-              <MainInput
-                label="Write Comment"
+              <CommentInput
+                placeholder="write comment..."
                 type="text"
                 name="comment"
-                width="380px"
               />
-              <Button
-                variant="contained"
-                size="small"
-                style={{ height: "36px", marginTop: "10px" }}
-              >
+              <Button size="small" style={{ height: "36px", outline: "none" }}>
                 post
               </Button>
             </div>
-          ) : null}
+          </Collapse>
         </CardFooter>
       </Card>
     );
