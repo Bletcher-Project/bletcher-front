@@ -71,7 +71,7 @@ class Post extends Component {
     return (
       <Card className="post mb-3">
         <CardHeader className="post__header">
-          <Thumbnail size="60" src={userProfile} />
+          <Thumbnail size="60" src={userProfile} type={userType} />
           <CardText className="mb-0 ml-2">
             <strong className="post__header-name">{userName}</strong>
             <br></br>
@@ -167,8 +167,8 @@ class Post extends Component {
                 moreCommentClicked & (postComments.length > 2)
                   ? postComments.length
                   : !moreCommentClicked & (postComments.length > 2)
-                  ? 2
-                  : postComments.length
+                    ? 2
+                    : postComments.length
               )
               .map(comment => (
                 <span key={comment.id} style={{ fontSize: "0.9rem" }}>
