@@ -60,7 +60,7 @@ class Post extends Component {
     return (
       <Card className="post mb-3">
         <CardHeader className="post__header">
-          <Thumbnail size="60" src={userProfile} />
+          <Thumbnail size="60" src={userProfile} type={userType} />
           <CardText className="mb-0 ml-2">
             <span className="post__header-name">{userName}</span>
             <br></br>
@@ -140,8 +140,8 @@ class Post extends Component {
                 moreCommentClicked & (postComments.length > 2)
                   ? postComments.length
                   : !moreCommentClicked & (postComments.length > 2)
-                  ? 2
-                  : postComments.length
+                    ? 2
+                    : postComments.length
               )
               .map(comment => (
                 <span>
@@ -210,8 +210,8 @@ class Post extends Component {
     return (1000 < like) & (like < 1000000)
       ? (like / 1000).toFixed(2).concat("k")
       : (1000000 <= like) & (like < 1000000000000)
-      ? (like / 1000000).toFixed(2).concat("m")
-      : like;
+        ? (like / 1000000).toFixed(2).concat("m")
+        : like;
   };
 
   handlePostTime = time => {
@@ -219,16 +219,16 @@ class Post extends Component {
     const postDate = new Date(time);
     return timePass.weeks >= 1
       ? "" +
-          postDate.getFullYear() +
-          "-" +
-          (postDate.getMonth() + 1) +
-          "-" +
-          postDate.getDate()
+      postDate.getFullYear() +
+      "-" +
+      (postDate.getMonth() + 1) +
+      "-" +
+      postDate.getDate()
       : (1 <= timePass.days) & (timePass.days < 7)
-      ? timePass.days + " days ago"
-      : timePass.days < 1
-      ? timePass.hours + " hours ago"
-      : timePass.minutes + " min ago";
+        ? timePass.days + " days ago"
+        : timePass.days < 1
+          ? timePass.hours + " hours ago"
+          : timePass.minutes + " min ago";
   };
 }
 
