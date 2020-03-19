@@ -1,3 +1,76 @@
 /*
   User Page Styling
 */
+
+.userPage{
+  margin-top: 60px;
+
+  &__contents{
+    display: flex;
+    justify-content: center;
+    padding: 50px 30px;
+
+    &__header{
+      display: flex;
+      width: 50%;
+
+      &__profile{
+        margin-left: 20px;
+
+        &-name{
+          display: inline-block;
+
+          & h1{
+            margin: 0;
+            margin-bottom: -15px;
+            padding-left: 13px;
+            padding-right: 20px;
+            font-family: 'DM Serif Text', serif;
+            font-size: 40px;
+            color: #3d3d3d;
+          }
+
+          & #nameUnderBar{
+            width: inherit;
+            height: 17px;
+            background-image: linear-gradient(to right, rgba(154, 122, 243, 0.5), rgba(255, 158, 174, 0.5));
+          }
+        }
+
+        &-status{
+          padding: 5px 10px;
+          min-height: 60px;
+          
+          & p{
+            margin: 0;
+            font-size: 18px;
+            color: #4a4a4a;
+          }
+        }
+
+        &-follow{
+          display: flex;
+          padding: 0 10px;
+
+          & .followBox{
+            font-size: 22px;
+
+            & .followTitle{
+              font-weight: 600;
+              color: #4a4a4a;
+              margin-right: 10px;
+            }
+          }
+
+          & .followBox:first-child{
+            margin-right: 20px;
+          }
+
+        }
+
+      }
+    }
+  }
+  
+}
+
