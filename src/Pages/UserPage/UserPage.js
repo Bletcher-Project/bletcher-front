@@ -5,6 +5,8 @@ import * as AuthAction from "../../Redux/Actions/AuthAction";
 
 import { NavBar, Thumbnail } from "../../Components";
 
+import settingIcon from "../../Assets/icon/setting.png";
+
 const defaultProps = {};
 const propTypes = {};
 
@@ -31,9 +33,14 @@ class UserPage extends Component {
             <div className="userPage__contents__header">
               <Thumbnail size="150" src={null} type={user.type} />
               <div className="userPage__contents__header__profile">
-                <div className="userPage__contents__header__profile-name">
-                  <h1>{user.name}</h1>
-                  <div id="nameUnderBar"></div>
+                <div className="userPage__contents__header__profile-name-set">
+                  <div className="nameArea">
+                    <h1>{user.name}</h1>
+                    <div id="nameUnderBar"></div>
+                  </div>
+                  <div className="settingArea">
+                    <img src={settingIcon} alt="setting" />
+                  </div>
                 </div>
                 <div className="userPage__contents__header__profile-status">
                   <p>{user.status}</p>
