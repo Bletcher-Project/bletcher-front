@@ -7,12 +7,14 @@
 
   &__contents{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     padding: 50px 30px;
 
     &__header{
       display: flex;
       width: 50%;
+      margin-bottom: 50px;
 
       &__profile{
         margin-left: 20px;
@@ -83,6 +85,10 @@
         }
       }
     } /* end header css */
+
+    &__body{
+      width: 60%;
+    }
 
   }
   
