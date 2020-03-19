@@ -5,7 +5,10 @@ import * as AuthAction from "../../Redux/Actions/AuthAction";
 
 import { NavBar, Thumbnail } from "../../Components";
 
+import Gallery from "react-photo-gallery";
+
 import settingIcon from "../../Assets/icon/setting.png";
+import { photos } from "./testPhotos";
 
 const defaultProps = {};
 const propTypes = {};
@@ -54,6 +57,10 @@ class UserPage extends Component {
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div className="userPage__contents__body">
+              <Gallery photos={photos} direction="column" columns={3} margin={5} />
             </div>
           </div>
         ) : null}
