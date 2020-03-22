@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as PostAction from "../../Redux/Actions/PostAction";
 
-import { NavBar, Post } from "../../Components";
+import { NavBar, Post, Upload } from "../../Components";
 
 const defaultProps = {};
 const propTypes = {};
@@ -61,6 +61,7 @@ class HomePage extends Component {
               })
               : null}
         </div>
+        <Upload style={{ position: "fixed", right: "30px", bottom: "30px" }} />
       </div>
     );
   }

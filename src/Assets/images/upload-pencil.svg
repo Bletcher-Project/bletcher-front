@@ -1,0 +1,18 @@
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <circle id="svg_2" r="32" fill="#77B3D4" cy="32" cx="32"/>
+  <path opacity="0.2" id="svg_4" fill="#231F20" d="m37,14l-10,0c-1.657,0 -3,1.343 -3,3l0,5l0,1l0,23l5.333,8l2.667,4l2.667,-4l5.333,-8l0,-23l0,-1l0,-5c0,-1.657 -1.343,-3 -3,-3z"/>
+  <path id="svg_6" fill="#C75C5C" d="m40,21c0,1.657 -1.343,3 -3,3l-10,0c-1.657,0 -3,-1.343 -3,-3l0,-6c0,-1.657 1.343,-3 3,-3l10,0c1.657,0 3,1.343 3,3l0,6z"/>
+  <rect id="svg_8" y="20" x="24" width="4" height="24" fill="#E0995E"/>
+  <rect id="svg_10" y="20" x="28" width="8" height="26" fill="#F5CF87"/>
+  <rect id="svg_12" y="20" x="36" width="4" height="24" fill="#E0995E"/>
+  <polygon id="svg_15" points="32,56 34.667,52 29.333,52    " fill="#4F5D73"/>
+  <polygon id="svg_17" points="24,44 29.333,52 34.667,52 40,44 38,44 36,42 32,46 28,42 26,44    " fill="#FFFFFF"/>
+ </g>
+</svg>
