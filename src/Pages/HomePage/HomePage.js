@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as PostAction from "../../Redux/Actions/PostAction";
 
-import { NavBar, Post } from "../../Components";
+import { NavBar, Post, Upload } from "../../Components";
 
 const defaultProps = {};
 const propTypes = {};
@@ -32,9 +32,8 @@ class HomePage extends Component {
       <div className="homePage">
         <NavBar />
         <div className="homePage__postList">
-          {
-            !this.state.feedLoading && this.props.user
-              ? this.state.feed.map((data) => {
+          {!this.state.feedLoading && this.props.user
+            ? this.state.feed.map(data => {
                 return (
                   <Post
                     key={data.id}
@@ -55,9 +54,9 @@ class HomePage extends Component {
                   />
                 );
               })
-              : null
-          }
+            : null}
         </div>
+        <Upload style={{ position: "fixed", right: "30px", bottom: "30px" }} />
       </div>
     );
   }
@@ -66,7 +65,7 @@ class HomePage extends Component {
     this.props.dispatch(PostAction.getAllPosts()).then(result => {
       this.setState({ feed: result, feedLoading: false });
     });
-  }
+  };
 }
 
 HomePage.defaultProps = defaultProps;
