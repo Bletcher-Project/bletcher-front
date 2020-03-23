@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as PostAction from "../../Redux/Actions/PostAction";
 
 import { CommentInput } from "../../Components";
 
@@ -9,7 +11,7 @@ import {
   CardBody,
   CardText,
   CardImg,
-  ButtonDropdown,
+  Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem
@@ -27,6 +29,12 @@ import commentIcon from "../../Assets/images/comment.svg";
 
 const defaultProps = {};
 const propTypes = {};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    deletePost: id => dispatch(PostAction.deletePost(id))
+  };
+};
 
 class Post extends Component {
   constructor(props) {
@@ -81,7 +89,7 @@ class Post extends Component {
             </span>
           </CardText>
           {isMyPost ? (
-            <ButtonDropdown
+            <Dropdown
               className="ml-auto"
               isOpen={dropdownOpen}
               toggle={this.toggleDropMenu}
@@ -95,9 +103,9 @@ class Post extends Component {
               </DropdownToggle>
               <DropdownMenu style={{ minWidth: "50px", left: "-28px" }}>
                 <DropdownItem>Modify</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
+                <DropdownItem onClick={this.toggleDelete}>Delete</DropdownItem>
               </DropdownMenu>
-            </ButtonDropdown>
+            </Dropdown>
           ) : null}
         </CardHeader>
         <CardBody className="post__body pt-0 pb-1 pr-0">
@@ -225,9 +233,18 @@ class Post extends Component {
   toggleComment = () => {
     this.setState({ writeComment: !this.state.writeComment });
   };
+
+  toggleDelete = () => {
+    this.deletePost(JSON.stringify(this.props.postId));
+  };
+
+  deletePost = async id => {
+    const postDelete = await this.props.deletePost(id);
+    return postDelete ? window.location.reload() : alert("delete failed!");
+  };
 }
 
 Post.defaultProps = defaultProps;
 Post.propTypes = propTypes;
 
-export default Post;
+export default connect(null, mapDispatchToProps)(Post);

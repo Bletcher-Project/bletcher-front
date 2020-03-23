@@ -37,12 +37,17 @@ class HomePage extends Component {
                 return (
                   <Post
                     key={data.id}
+                    postId={data.id}
                     className="homePage__post"
                     isMyPost={this.props.user.id === data.UserId}
                     userName={data.User.name}
-                    userProfile={ServerEndPoint.concat("image?profile=").concat(
+                    userProfile={
                       data.User.profileImgName
-                    )}
+                        ? ServerEndPoint.concat("image?profile=").concat(
+                            data.User.profileImgName
+                          )
+                        : null
+                    }
                     userType={1}
                     postContent={data.content}
                     postHashTags={[
