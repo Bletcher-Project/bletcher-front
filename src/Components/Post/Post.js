@@ -110,6 +110,7 @@ class Post extends Component {
           <CardText className="ml-3 mt-3">
             {postHashTags.map(hashtags => (
               <span
+                key={hashtags.id}
                 style={{
                   cursor: "pointer",
                   color: "#8e24aa",
@@ -117,7 +118,7 @@ class Post extends Component {
                   fontWeight: "600"
                 }}
               >
-                #{hashtags}{" "}
+                #{hashtags.tags}{" "}
               </span>
             ))}
           </CardText>
@@ -168,7 +169,7 @@ class Post extends Component {
                   : postComments.length
               )
               .map(comment => (
-                <span style={{ fontSize: "0.9rem" }}>
+                <span key={comment.id} style={{ fontSize: "0.9rem" }}>
                   <strong className="mr-2">{comment.author}</strong>
                   <span>{comment.comment}</span>
                   <br></br>

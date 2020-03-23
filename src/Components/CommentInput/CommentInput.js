@@ -36,7 +36,6 @@ class CommentInput extends Component {
       label,
       type,
       name,
-      width,
       onChange,
       onKeyPress,
       error,
