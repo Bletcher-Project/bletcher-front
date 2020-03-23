@@ -5,7 +5,8 @@
 .post {
   width: 500px;
   display: flex;
-  box-shadow: 3px 4px 7px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 3px 4px 7px 5px rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0);
 
   &__header {
     display: flex;
@@ -16,7 +17,7 @@
       font-family: sans-serif bold, cursive;
     }
     &-type {
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       color: gray;
     }
   }
@@ -42,7 +43,7 @@
       flex-direction: row;
 
       button {
-        margin-left: auto;
+       //margin-left: auto;
       }
     }
   }

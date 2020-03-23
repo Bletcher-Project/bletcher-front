@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { ServerEndPoint } from "../../Configs/Server";
-import * as UserAction from "../../Redux/Actions/UserAction";
 import axios from "axios";
 
 import { SignUpInput, MainButton } from "../../Components";
@@ -10,27 +8,11 @@ import Fade from "@material-ui/core/Fade";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { purple } from "@material-ui/core/colors";
 
-import back_icon from "../../Assets/images/signup_back.svg";
+import backIcon from "../../Assets/images/signup_back.svg";
 import { isEmptyString } from "is-what";
 
 const defaultProps = {};
 const propTypes = {};
-
-const mapStateToProps = state => {
-  return {
-    userType: state.UserReducer.userType,
-    email: state.UserReducer.email,
-    password: state.UserReducer.password
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    updateSignupStep: stepname =>
-      dispatch(UserAction.updateSignupStep(stepname)),
-    updateSignupInfo: info => dispatch(UserAction.updateSignupInfo(info))
-  };
-};
 
 class SignUpInfo extends Component {
   constructor(props) {
@@ -45,11 +27,12 @@ class SignUpInfo extends Component {
       isInfoNext: false,
       isEmailValid: true,
       isPwdValid: true,
-      isRepwdValid: true
+      isRePwdValid: true
     };
   }
 
   render() {
+    const { type } = this.props;
     const {
       email,
       helpEmail,
@@ -57,11 +40,9 @@ class SignUpInfo extends Component {
       helpRePwd,
       isEmailValid,
       isPwdValid,
-      isRepwdValid,
+      isRePwdValid,
       isInfoNext
     } = this.state;
-
-    const { userType } = this.props;
 
     return (
       <Fade
@@ -69,28 +50,27 @@ class SignUpInfo extends Component {
         mountOnEnter
         timeout={{ appear: 1000, enter: 750, exit: 750 }}
       >
-        <div className="signupPage__info">
-          <div className="signupPage__info__container">
-            <div className="signupPage__info__container__head">
-              <div className="signupPage__info__container__head-back">
+        <div className="signUpPage__info">
+          <div className="signUpPage__info__container">
+            <div className="signUpPage__info__container__head">
+              <div className="signUpPage__info__container__head-back">
                 <img
                   alt="back"
-                  src={back_icon}
+                  src={backIcon}
                   width="35px"
-                  onClick={this.handlePrevStep}
                   style={{ cursor: "pointer" }}
+                  onClick={this.handlePrevStep}
                 />
               </div>
 
-              <div className="signupPage__info__container__head-title">
+              <div className="signUpPage__info__container__head-title">
                 <p>
-                  Hello, {userType}! <br />
+                  Hello, {type}! <br />
                   Enter your personal information.
                 </p>
               </div>
-              <div style={{ width: "60px" }}></div>
             </div>
-            <div className="signupPage__info__container__input">
+            <div className="signUpPage__info__container__input">
               <SignUpInput
                 label="Email"
                 type="email"
@@ -142,10 +122,10 @@ class SignUpInfo extends Component {
                 width="210px"
                 onChange={this.handleRepwdCheck}
                 onKeyPress={this.handleEnterKey}
-                error={!isRepwdValid}
-                helperText={isRepwdValid ? " " : helpRePwd}
+                error={!isRePwdValid}
+                helperText={isRePwdValid ? " " : helpRePwd}
                 InputProps={
-                  !isEmptyString(this.state.repassword) & isRepwdValid
+                  !isEmptyString(this.state.repassword) & isRePwdValid
                     ? {
                         endAdornment: (
                           <Fade in={true} timeout={350}>
@@ -171,15 +151,15 @@ class SignUpInfo extends Component {
   }
 
   handleNextStep = () => {
-    this.props.updateSignupStep("profilePage");
-    this.props.updateSignupInfo({
+    this.props.handleSignUpStep("profilePage");
+    this.props.handleUserInfo({
       email: this.state.email,
       password: this.state.password
     });
   };
 
   handlePrevStep = () => {
-    this.props.updateSignupStep("typePage");
+    this.props.handleSignUpStep("typePage");
   };
 
   handleNextBtn = () => {
@@ -190,23 +170,24 @@ class SignUpInfo extends Component {
         !isEmptyString(this.state.repassword) &
         this.state.isEmailValid &
         this.state.isPwdValid &
-        this.state.isRepwdValid
+        this.state.isRePwdValid
       ) {
         this.setState({ isInfoNext: true });
       } else {
         this.setState({ isInfoNext: false });
       }
     };
+
     if (
       !isEmptyString(this.state.password) &
       !isEmptyString(this.state.repassword)
     ) {
       if (Object.is(this.state.password, this.state.repassword)) {
-        this.setState({ isRepwdValid: true }, () => {
+        this.setState({ isRePwdValid: true }, () => {
           nextCondition();
         });
       } else {
-        this.setState({ isRepwdValid: false, isInfoNext: false }, () => {
+        this.setState({ isRePwdValid: false, isInfoNext: false }, () => {
           nextCondition();
         });
       }
@@ -221,6 +202,7 @@ class SignUpInfo extends Component {
         this.handleNextBtn();
       });
     };
+
     this.setState({ email: e.target.value }, () => {
       const email = this.state.email;
       if (isEmptyString(email)) {
@@ -259,6 +241,7 @@ class SignUpInfo extends Component {
           this.handleNextBtn();
         });
       };
+
       if (
         !isEmptyString(this.state.password) &
         (8 <= this.state.password.length) &
@@ -312,12 +295,12 @@ class SignUpInfo extends Component {
         isEmptyString(this.state.repassword) ||
         Object.is(this.state.password, this.state.repassword)
       ) {
-        this.setState({ isRepwdValid: true }, () => {
+        this.setState({ isRePwdValid: true }, () => {
           this.handleNextBtn();
         });
       } else {
         this.setState(
-          { isRepwdValid: false, helpRePwd: "Enter same password above" },
+          { isRePwdValid: false, helpRePwd: "Enter same password above" },
           () => {
             this.handleNextBtn();
           }
@@ -330,4 +313,4 @@ class SignUpInfo extends Component {
 SignUpInfo.defaultProps = defaultProps;
 SignUpInfo.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpInfo);
+export default SignUpInfo;

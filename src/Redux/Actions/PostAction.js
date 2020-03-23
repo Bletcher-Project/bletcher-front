@@ -1,8 +1,11 @@
 import { ServerEndPoint } from "../../Configs/Server";
 
+import axios from "axios";
 import {
   SUCCEED_TO_GET_ALLPOST,
-  FAILED_TO_GET_ALLPOST
+  FAILED_TO_GET_ALLPOST,
+  SUCCEED_TO_DELETE_POST,
+  FAILED_TO_DELETE_POST
 } from "../Constants/action-types";
 
 export const getAllPosts = () => {
@@ -30,5 +33,18 @@ export const getAllPosts = () => {
         payload: { data: "NETWORK_ERROR" }
       });
     }
-  }
-}
+  };
+};
+
+export const deletePost = id => {
+  axios
+    .delete(ServerEndPoint + "api/posts/" + id)
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      return { type: FAILED_TO_DELETE_POST };
+    });
+
+  return { type: SUCCEED_TO_DELETE_POST };
+};

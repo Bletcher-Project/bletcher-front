@@ -1,22 +1,14 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 
 import { MainButton } from "../../Components";
 
 import Fade from "@material-ui/core/Fade";
 
-import logo_sketcher from "../../Assets/images/logo_sketcher.png";
-import logo_creator from "../../Assets/images/logo_creator.png";
+import logoSketcher from "../../Assets/images/logo_sketcher.png";
+import logoCreator from "../../Assets/images/logo_creator.png";
 
 const defaultProps = {};
 const propTypes = {};
-
-const mapStateToProps = state => {
-  return {
-    userType: state.UserReducer.userType,
-    name: state.UserReducer.name
-  };
-};
 
 class SignUpProfile extends Component {
   constructor(props) {
@@ -25,7 +17,7 @@ class SignUpProfile extends Component {
   }
 
   render() {
-    const { userType, name } = this.props;
+    const { type, name } = this.props;
 
     return (
       <Fade
@@ -33,24 +25,24 @@ class SignUpProfile extends Component {
         mountOnEnter
         timeout={{ appear: 5000, enter: 5000, exit: 750 }}
       >
-        <div className="signupPage__success">
-          <div className="signupPage__success-head">
-            Hello! {userType} {name}!
+        <div className="signUpPage__success">
+          <div className="signUpPage__success-head">
+            Hello! {type} {name}!
           </div>
-          <div className="signupPage__success-logo">
-            {userType === "Sketcher" ? (
-              <img alt="sketcher" src={logo_sketcher} width="130px" />
+          <div className="signUpPage__success-logo">
+            {type === "Sketcher" ? (
+              <img alt="sketcher" src={logoSketcher} width="130px" />
             ) : (
-              <img alt="creator" src={logo_creator} width="130px" />
+              <img alt="creator" src={logoCreator} width="130px" />
             )}
           </div>
-          <div className="signupPage__success-desc">
-            {userType === "Sketcher"
+          <div className="signUpPage__success-desc">
+            {type === "Sketcher"
               ? "Login and Sketch your creative idea."
               : "Login and Create your own work."}
           </div>
 
-          <MainButton text="Sign In!" href="/" />
+          <MainButton text="Sign In!" href="/signin" />
         </div>
       </Fade>
     );
@@ -60,4 +52,4 @@ class SignUpProfile extends Component {
 SignUpProfile.defaultProps = defaultProps;
 SignUpProfile.propTypes = propTypes;
 
-export default connect(mapStateToProps)(SignUpProfile);
+export default SignUpProfile;

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { MainInput } from "../../Components";
-import Button from "@material-ui/core/Button";
+import { connect } from "react-redux";
+import * as PostAction from "../../Redux/Actions/PostAction";
+
+import { CommentInput } from "../../Components";
 
 import {
   Card,
@@ -9,23 +11,30 @@ import {
   CardBody,
   CardText,
   CardImg,
-  ButtonDropdown,
+  Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
-import timediff from "timediff";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import Collapse from "@material-ui/core/Collapse";
+import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import commaNumber from "comma-number";
 
 import defaultProfile from "../../Assets/images/default_profile.svg";
-import likeIcon from "../../Assets/images/like.png";
-import filledLikeIcon from "../../Assets/images/like-filled.png";
-import commentIcon from "../../Assets/images/comment.png";
-import clockIcon from "../../Assets/images/clock.png";
+import likeIcon from "../../Assets/images/like.svg";
+import filledLikeIcon from "../../Assets/images/like-filled.svg";
+import commentIcon from "../../Assets/images/comment.svg";
 
 const defaultProps = {};
 const propTypes = {};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    deletePost: id => dispatch(PostAction.deletePost(id))
+  };
+};
 
 class Post extends Component {
   constructor(props) {
@@ -58,26 +67,29 @@ class Post extends Component {
       postLike,
       postComments
     } = this.props;
+
     return (
       <Card className="post mb-3">
-        <CardHeader className="post__header">
+        <CardHeader
+          className="post__header"
+          style={{ backgroundColor: "#fff" }}
+        >
           <Avatar
             style={{ width: "60px", height: "60px" }}
             src={userProfile ? userProfile : defaultProfile}
           ></Avatar>
           <CardText className="mb-0 ml-2">
-            <span className="post__header-name">{userName}</span>
+            <strong className="post__header-name">{userName}</strong>
             <br></br>
             <span className="post__header-type">
               {userType === 0 ? "Sketcher" : "Creator"}
             </span>
             <span className="post__header-type ml-2">
-              <img alt="time" className="mr-1" src={clockIcon} width="13px" />
-              {this.handlePostTime(postDate)}
+              {postDate.slice(0, 10)}
             </span>
           </CardText>
           {isMyPost ? (
-            <ButtonDropdown
+            <Dropdown
               className="ml-auto"
               isOpen={dropdownOpen}
               toggle={this.toggleDropMenu}
@@ -91,50 +103,67 @@ class Post extends Component {
               </DropdownToggle>
               <DropdownMenu style={{ minWidth: "50px", left: "-28px" }}>
                 <DropdownItem>Modify</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
+                <DropdownItem onClick={this.toggleDelete}>Delete</DropdownItem>
               </DropdownMenu>
-            </ButtonDropdown>
+            </Dropdown>
           ) : null}
         </CardHeader>
         <CardBody className="post__body pt-0 pb-1 pr-0">
-          <CardImg src={postImg}></CardImg>
+          <CardImg
+            alt="post image"
+            src={postImg}
+            style={{ borderRadius: "0", fontSize: "0.8rem" }}
+          ></CardImg>
           <CardText className="ml-3 mt-3">{postContent}</CardText>
           <CardText className="ml-3 mt-3">
             {postHashTags.map(hashtags => (
               <span
+                key={hashtags.id}
                 style={{
                   cursor: "pointer",
                   color: "#8e24aa",
-                  fontSize: "0.9rem",
+                  fontSize: "0.8rem",
                   fontWeight: "600"
                 }}
               >
-                #{hashtags}{" "}
+                #{hashtags.tags}{" "}
               </span>
             ))}
           </CardText>
         </CardBody>
-        <CardFooter className="post__footer">
-          <CardText>
+        <div
+          style={{
+            backgroundColor: "rgba(0,0,0,0.05)",
+            width: "95%",
+            height: "2px",
+            alignSelf: "center",
+            marginBottom: "0",
+            marginTop: "7px"
+          }}
+        ></div>
+        <CardFooter
+          className="post__footer"
+          style={{ backgroundColor: "#fff" }}
+        >
+          <CardText className="mb-2">
             <img
               alt="like"
-              className="mr-1"
+              className="post__footer-like mr-0"
               src={likeIcon}
               onClick={this.toggleLike}
-              width="26px"
+              width="32px"
             />
             {isMyPost ? (
-              <span style={{ fontSize: "0.8rem" }}>
-                {" "}
-                {this.handlePostLike(postLike)} Likes
+              <span className="ml-1 mr-2" style={{ fontSize: "0.7rem" }}>
+                {commaNumber(postLike)}
               </span>
             ) : null}
             <img
               alt="comment"
-              className="ml-2"
+              className="post__footer-comment ml-0"
               src={commentIcon}
               onClick={this.toggleComment}
-              width="25px"
+              width="26px"
             />
           </CardText>
           <CardText>
@@ -148,7 +177,7 @@ class Post extends Component {
                   : postComments.length
               )
               .map(comment => (
-                <span>
+                <span key={comment.id} style={{ fontSize: "0.9rem" }}>
                   <strong className="mr-2">{comment.author}</strong>
                   <span>{comment.comment}</span>
                   <br></br>
@@ -166,23 +195,18 @@ class Post extends Component {
                 : null}
             </span>
           </CardText>
-          {writeComment ? (
+          <Collapse in={writeComment}>
             <div className="post__footer-postComment">
-              <MainInput
-                label="Write Comment"
+              <CommentInput
+                placeholder="write comment..."
                 type="text"
                 name="comment"
-                width="380px"
               />
-              <Button
-                variant="contained"
-                size="small"
-                style={{ height: "36px", marginTop: "10px" }}
-              >
+              <Button size="small" style={{ height: "36px", outline: "none" }}>
                 post
               </Button>
             </div>
-          ) : null}
+          </Collapse>
         </CardFooter>
       </Card>
     );
@@ -210,33 +234,17 @@ class Post extends Component {
     this.setState({ writeComment: !this.state.writeComment });
   };
 
-  handlePostLike = like => {
-    return (1000 < like) & (like < 1000000)
-      ? (like / 1000).toFixed(2).concat("k")
-      : (1000000 <= like) & (like < 1000000000000)
-      ? (like / 1000000).toFixed(2).concat("m")
-      : like;
+  toggleDelete = () => {
+    this.deletePost(JSON.stringify(this.props.postId));
   };
 
-  handlePostTime = time => {
-    const timePass = timediff(time, new Date());
-    const postDate = new Date(time);
-    return timePass.weeks >= 1
-      ? "" +
-          postDate.getFullYear() +
-          "-" +
-          (postDate.getMonth() + 1) +
-          "-" +
-          postDate.getDate()
-      : (1 <= timePass.days) & (timePass.days < 7)
-      ? timePass.days + " days ago"
-      : timePass.days < 1
-      ? timePass.hours + " hours ago"
-      : timePass.minutes + " min ago";
+  deletePost = async id => {
+    const postDelete = await this.props.deletePost(id);
+    return postDelete ? window.location.reload() : alert("delete failed!");
   };
 }
 
 Post.defaultProps = defaultProps;
 Post.propTypes = propTypes;
 
-export default Post;
+export default connect(null, mapDispatchToProps)(Post);
