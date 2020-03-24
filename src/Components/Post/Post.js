@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+
 import { connect } from "react-redux";
 import * as PostAction from "../../Redux/Actions/PostAction";
 
-import { CommentInput } from "../../Components";
+import { CommentInput, Thumbnail } from "../../Components";
 
 import {
   Card,
@@ -18,11 +19,9 @@ import {
 } from "reactstrap";
 import Collapse from "@material-ui/core/Collapse";
 import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import commaNumber from "comma-number";
 
-import defaultProfile from "../../Assets/images/default_profile.svg";
 import likeIcon from "../../Assets/images/like.svg";
 import filledLikeIcon from "../../Assets/images/like-filled.svg";
 import commentIcon from "../../Assets/images/comment.svg";
