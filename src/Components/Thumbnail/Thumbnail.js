@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-import userCreatorImage from "../../Assets/icon/Creator.png";
-import userSketcherImage from "../../Assets/icon/Sketcher.png";
+import userCreatorImage from "../../Assets/icons/Creator.png";
+import userSketcherImage from "../../Assets/icons/Sketcher.png";
 
 const defaultProps = {};
 const propTypes = {};
@@ -31,7 +31,7 @@ class Thumbnail extends Component {
         ) : (
             <img
               className="thumbnail__image"
-              src={`http://localhost:4000/image/${imageURL}`}
+              src={imageURL}
               onError={this.handleError}
               width={size}
               height={size}
