@@ -8,7 +8,7 @@ import Fade from "@material-ui/core/Fade";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { purple } from "@material-ui/core/colors";
 
-import backIcon from "../../Assets/images/signup_back.svg";
+import backIcon from "../../Assets/icons/signup_back.svg";
 import { isEmptyString } from "is-what";
 
 const defaultProps = {};
@@ -82,14 +82,14 @@ class SignUpInfo extends Component {
                 InputProps={
                   !isEmptyString(email) & isEmailValid
                     ? {
-                        endAdornment: (
-                          <Fade in={true} timeout={350}>
-                            <CheckCircleOutlineIcon
-                              style={{ color: purple[700], width: "0.8em" }}
-                            />
-                          </Fade>
-                        )
-                      }
+                      endAdornment: (
+                        <Fade in={true} timeout={350}>
+                          <CheckCircleOutlineIcon
+                            style={{ color: purple[700], width: "0.8em" }}
+                          />
+                        </Fade>
+                      )
+                    }
                     : null
                 }
               />
@@ -104,14 +104,14 @@ class SignUpInfo extends Component {
                 InputProps={
                   !isEmptyString(this.state.password) & isPwdValid
                     ? {
-                        endAdornment: (
-                          <Fade in={true} timeout={350}>
-                            <CheckCircleOutlineIcon
-                              style={{ color: purple[700], width: "0.8em" }}
-                            />
-                          </Fade>
-                        )
-                      }
+                      endAdornment: (
+                        <Fade in={true} timeout={350}>
+                          <CheckCircleOutlineIcon
+                            style={{ color: purple[700], width: "0.8em" }}
+                          />
+                        </Fade>
+                      )
+                    }
                     : null
                 }
               />
@@ -127,14 +127,14 @@ class SignUpInfo extends Component {
                 InputProps={
                   !isEmptyString(this.state.repassword) & isRePwdValid
                     ? {
-                        endAdornment: (
-                          <Fade in={true} timeout={350}>
-                            <CheckCircleOutlineIcon
-                              style={{ color: purple[700], width: "0.8em" }}
-                            />
-                          </Fade>
-                        )
-                      }
+                      endAdornment: (
+                        <Fade in={true} timeout={350}>
+                          <CheckCircleOutlineIcon
+                            style={{ color: purple[700], width: "0.8em" }}
+                          />
+                        </Fade>
+                      )
+                    }
                     : null
                 }
               />
@@ -215,14 +215,14 @@ class SignUpInfo extends Component {
         window.setTimeout(() => {
           return Object.is(this.state.email, email)
             ? axios
-                .get(ServerEndPoint + "api/users?email=" + email)
-                .then(res => {
-                  changeEmailStatus(true, " "); //Allowed email
-                })
-                .catch(err => {
-                  console.log(err);
-                  changeEmailStatus(false, "Already exists email!");
-                })
+              .get(ServerEndPoint + "api/users?email=" + email)
+              .then(res => {
+                changeEmailStatus(true, " "); //Allowed email
+              })
+              .catch(err => {
+                console.log(err);
+                changeEmailStatus(false, "Already exists email!");
+              })
             : null;
         }, 200);
       }

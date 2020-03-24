@@ -11,7 +11,7 @@ import { isEmptyString } from "is-what";
 import axios from "axios";
 
 import defaultProfile from "../../Assets/images/default_profile.svg";
-import backIcon from "../../Assets/images/signup_back.svg";
+import backIcon from "../../Assets/icons/signup_back.svg";
 
 const defaultProps = {};
 const propTypes = {};
@@ -118,14 +118,14 @@ class SignUpProfile extends Component {
                   InputProps={
                     !isEmptyString(name) & isNameValid
                       ? {
-                          endAdornment: (
-                            <Fade in={true} timeout={350}>
-                              <CheckCircleOutlineIcon
-                                style={{ color: purple[700], width: "0.8em" }}
-                              />
-                            </Fade>
-                          )
-                        }
+                        endAdornment: (
+                          <Fade in={true} timeout={350}>
+                            <CheckCircleOutlineIcon
+                              style={{ color: purple[700], width: "0.8em" }}
+                            />
+                          </Fade>
+                        )
+                      }
                       : null
                   }
                 />
@@ -173,13 +173,13 @@ class SignUpProfile extends Component {
         window.setTimeout(() => {
           return Object.is(this.state.name, name)
             ? axios
-                .get(ServerEndPoint + "api/users?name=" + name)
-                .then(res => {
-                  changeNameStatus(true, " "); //Allowed name
-                })
-                .catch(err => {
-                  changeNameStatus(false, "Already exists name");
-                })
+              .get(ServerEndPoint + "api/users?name=" + name)
+              .then(res => {
+                changeNameStatus(true, " "); //Allowed name
+              })
+              .catch(err => {
+                changeNameStatus(false, "Already exists name");
+              })
             : null;
         }, 200);
       } else {
@@ -207,8 +207,8 @@ class SignUpProfile extends Component {
     this.setState({ profileImg: e.target.files[0] }, () => {
       return this.state.profileImg
         ? this.setState({
-            profileImgUrl: URL.createObjectURL(this.state.profileImg)
-          })
+          profileImgUrl: URL.createObjectURL(this.state.profileImg)
+        })
         : null;
     });
   };
@@ -217,23 +217,23 @@ class SignUpProfile extends Component {
     this.setState({ status: e.target.value }, () => {
       return this.state.status.length > 100
         ? this.setState(
-            {
-              isStatusValid: false,
-              helpStatus: "Should be less than 100 words."
-            },
-            () => {
-              this.handleSignUpBtn();
-            }
-          )
+          {
+            isStatusValid: false,
+            helpStatus: "Should be less than 100 words."
+          },
+          () => {
+            this.handleSignUpBtn();
+          }
+        )
         : this.setState(
-            {
-              isStatusValid: true,
-              helpStatus: " "
-            },
-            () => {
-              this.handleSignUpBtn();
-            }
-          );
+          {
+            isStatusValid: true,
+            helpStatus: " "
+          },
+          () => {
+            this.handleSignUpBtn();
+          }
+        );
     });
   };
 

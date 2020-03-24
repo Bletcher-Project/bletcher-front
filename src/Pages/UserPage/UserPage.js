@@ -7,7 +7,7 @@ import { NavBar, Thumbnail } from "../../Components";
 
 import Gallery from "react-photo-gallery";
 
-import settingIcon from "../../Assets/icon/setting.png";
+import settingIcon from "../../Assets/icons/setting.png";
 import { photos } from "./testPhotos";
 
 const defaultProps = {};

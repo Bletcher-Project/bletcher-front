@@ -1,6 +1,6 @@
 import React, { Component } from "react";
+
 import { connect } from "react-redux";
-import { ServerEndPoint } from "../../Configs/Server";
 import * as PostAction from "../../Redux/Actions/PostAction";
 
 import { NavBar, Post } from "../../Components";
@@ -41,33 +41,25 @@ class HomePage extends Component {
                     postId={data.id}
                     className="homePage__post"
                     isMyPost={this.props.user.id === data.UserId}
+                    userProfileImg={data.User.profileImgName}
                     userName={data.User.name}
-                    userProfile={
-                      data.User.profileImgName
-                        ? ServerEndPoint.concat("image?profile=").concat(
-                            data.User.profileImgName
-                          )
-                        : null
-                    }
-                    userType={1}
+                    userType={data.User.type}
                     postContent={data.content}
                     postHashTags={[
                       { id: 1, tags: "flower" },
                       { id: 2, tags: "sunny" }
-                    ]}
-                    postImg={ServerEndPoint.concat("image?post=").concat(
-                      data.postImgName
-                    )}
+                    ]}//////
+                    postImg={data.postImgName}
                     postDate={data.createdAt}
-                    postLike={135440}
+                    postLike={135440}//////
                     postComments={[
                       { id: 1, author: "Endrew", comment: "good job" },
                       { id: 2, author: "Sdi_dk", comment: "awesome" }
-                    ]}
+                    ]}//////
                   />
                 );
               })
-            : null}
+              : null}
         </div>
       </div>
     );
