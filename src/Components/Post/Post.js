@@ -1,55 +1,45 @@
 import React, { Component } from "react";
-import { MainInput } from "../../Components";
-import Button from "@material-ui/core/Button";
 
-import {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardBody,
-  CardText,
-  CardImg,
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from "reactstrap";
-import timediff from "timediff";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import Avatar from "@material-ui/core/Avatar";
+import { connect } from "react-redux";
+import { ServerEndPoint } from "../../Configs/Server";
+import * as PostAction from "../../Redux/Actions/PostAction";
 
-import defaultProfile from "../../Assets/images/default_profile.svg";
-import likeIcon from "../../Assets/images/like.png";
-import filledLikeIcon from "../../Assets/images/like-filled.png";
-import commentIcon from "../../Assets/images/comment.png";
-import clockIcon from "../../Assets/images/clock.png";
+import { Thumbnail } from "../../Components";
+
+import moment from "moment";
+import commaNumber from "comma-number";
+
+import likeIcon from "../../Assets/icons/heart.png";
+import filledLikeIcon from "../../Assets/icons/heart-filled.png";
+import commentIcon from "../../Assets/icons/comment.png";
+import scrapIcon from "../../Assets/icons/scrap.png";
+import filledScrapIcon from "../../Assets/icons/scrap-filled.png";
 
 const defaultProps = {};
 const propTypes = {};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    deletePost: id => dispatch(PostAction.deletePost(id))
+  };
+};
 
 class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dropdownOpen: false,
       likeClicked: false,
-      moreCommentClicked: false,
-      writeComment: false,
-      likeIcon: likeIcon
+      likeIcon: likeIcon,
+      scrapClicked: false,
+      scrapIcon: scrapIcon
     };
   }
 
   render() {
     const {
-      dropdownOpen,
-      likeIcon,
-      moreCommentClicked,
-      writeComment
-    } = this.state;
-    const {
       isMyPost,
+      userProfileImg,
       userName,
-      userProfile,
       userType,
       postContent,
       postHashTags,
@@ -58,143 +48,116 @@ class Post extends Component {
       postLike,
       postComments
     } = this.props;
+    const {
+      likeIcon,
+      scrapIcon
+    } = this.state;
+
     return (
-      <Card className="post mb-3">
-        <CardHeader className="post__header">
-          <Avatar
-            style={{ width: "60px", height: "60px" }}
-            src={userProfile ? userProfile : defaultProfile}
-          ></Avatar>
-          <CardText className="mb-0 ml-2">
-            <span className="post__header-name">{userName}</span>
-            <br></br>
-            <span className="post__header-type">
-              {userType === 0 ? "Sketcher" : "Creator"}
-            </span>
-            <span className="post__header-type ml-2">
-              <img alt="time" className="mr-1" src={clockIcon} width="13px" />
-              {this.handlePostTime(postDate)}
-            </span>
-          </CardText>
-          {isMyPost ? (
-            <ButtonDropdown
-              className="ml-auto"
-              isOpen={dropdownOpen}
-              toggle={this.toggleDropMenu}
-            >
-              <DropdownToggle
-                color="none"
-                focus="none"
-                style={({ backgroundColor: "white" }, { boxShadow: "none" })}
-              >
-                <MoreHorizIcon style={{ color: "grey", fontSize: "2.1rem" }} />
-              </DropdownToggle>
-              <DropdownMenu style={{ minWidth: "50px", left: "-28px" }}>
-                <DropdownItem>Modify</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
-              </DropdownMenu>
-            </ButtonDropdown>
-          ) : null}
-        </CardHeader>
-        <CardBody className="post__body pt-0 pb-1 pr-0">
-          <CardImg src={postImg}></CardImg>
-          <CardText className="ml-3 mt-3">{postContent}</CardText>
-          <CardText className="ml-3 mt-3">
+      <div className="post mb-3">
+        <div className="post__header">
+          <Thumbnail
+            className="post__header__userProfile"
+            size="50"
+            src={userProfileImg !== null ? `${ServerEndPoint}image/profile/${userProfileImg}` : null}
+            type={userType}
+          />
+          <div className="post__header__postInfo">
+            <div>
+              <span className="post__header__postInfo__userName">{userName}</span>
+              <span className="post__header__postInfo__userType">
+                [{userType === "0" ? "Sketcher" : "Creator"}]
+              </span>
+            </div>
+
+            <div className="post__header__postInfo__postDate">
+              {moment(postDate).format("YYYY-MM-DD HH:mm:ss")}
+            </div>
+          </div>
+        </div>
+
+        <div className="post__body">
+          <img
+            className="post__body__postImage"
+            src={`${ServerEndPoint}image/post/${postImg}`}
+            alt="postImage"
+          />
+        </div>
+
+        <div className="post__footer">
+          <div className="post__footer__postContent">{postContent}</div>
+          <div className="post__footer__postHashtag">
             {postHashTags.map(hashtags => (
-              <span
-                style={{
-                  cursor: "pointer",
-                  color: "#8e24aa",
-                  fontSize: "0.9rem",
-                  fontWeight: "600"
-                }}
-              >
-                #{hashtags}{" "}
-              </span>
+              <div className="post__footer__postHashtag-tagbox">
+                <span key={hashtags.id}>#{hashtags.tags}</span>
+              </div>
             ))}
-          </CardText>
-        </CardBody>
-        <CardFooter className="post__footer">
-          <CardText>
-            <img
-              alt="like"
-              className="mr-1"
-              src={likeIcon}
-              onClick={this.toggleLike}
-              width="26px"
-            />
-            {isMyPost ? (
-              <span style={{ fontSize: "0.8rem" }}>
-                {" "}
-                {this.handlePostLike(postLike)} Likes
-              </span>
-            ) : null}
-            <img
-              alt="comment"
-              className="ml-2"
-              src={commentIcon}
-              onClick={this.toggleComment}
-              width="25px"
-            />
-          </CardText>
-          <CardText>
-            {postComments
-              .slice(
-                0,
-                moreCommentClicked & (postComments.length > 2)
-                  ? postComments.length
-                  : !moreCommentClicked & (postComments.length > 2)
+          </div>
+
+          <div className="post__footer__communicateArea">
+            <div className="post__footer__communicateArea__like" onClick={this.toggleLike}>
+              <img
+                src={likeIcon}
+                width="25px"
+                height="25px"
+                alt="likeIcon"
+              />
+              {isMyPost ? (
+                <span className="post__footer__communicateArea__like-num">{commaNumber(postLike)}</span>
+              ) : null}
+            </div>
+
+            <div className="post__footer__communicateArea__comment" onClick={this.toggleComment}>
+              <img
+                src={commentIcon}
+                width="25px"
+                height="25px"
+                alt="commentIcon"
+              />
+              <span className="post__footer__communicateArea__comment-num">{commaNumber(postComments.length)}</span>
+            </div>
+
+            <div className="post__footer__communicateArea__scrap" onClick={this.toggleScrap}>
+              <img
+                src={scrapIcon}
+                width="25px"
+                height="25px"
+                alt="scrapIcon"
+              />
+            </div>
+          </div>
+          {/* 
+          {postComments
+            .slice(
+              0,
+              moreCommentClicked & (postComments.length > 2)
+                ? postComments.length
+                : !moreCommentClicked & (postComments.length > 2)
                   ? 2
                   : postComments.length
-              )
-              .map(comment => (
-                <span>
-                  <strong className="mr-2">{comment.author}</strong>
-                  <span>{comment.comment}</span>
-                  <br></br>
-                </span>
-              ))}
-            <span
-              className="small"
-              style={{ cursor: "pointer" }}
-              onClick={this.toggleMoreComment}
-            >
-              {postComments.length > 2
-                ? moreCommentClicked
-                  ? `close comment...`
-                  : `more comment...`
-                : null}
-            </span>
-          </CardText>
-          {writeComment ? (
-            <div className="post__footer-postComment">
-              <MainInput
-                label="Write Comment"
-                type="text"
-                name="comment"
-                width="380px"
-              />
-              <Button
-                variant="contained"
-                size="small"
-                style={{ height: "36px", marginTop: "10px" }}
-              >
-                post
-              </Button>
-            </div>
-          ) : null}
-        </CardFooter>
-      </Card>
+            )
+            .map(comment => (
+              <span key={comment.id} style={{ fontSize: "0.9rem" }}>
+                <strong className="mr-2">{comment.author}</strong>
+                <span>{comment.comment}</span>
+                <br></br>
+              </span>
+            ))}
+          <span
+            className="small"
+            style={{ cursor: "pointer" }}
+            onClick={this.toggleMoreComment}
+          >
+            {postComments.length > 2
+              ? moreCommentClicked
+                ? `close comment...`
+                : `more comment...`
+              : null}
+          </span> */}
+        </div>
+      </div>
     );
   }
-
-  toggleMoreComment = () => {
-    this.setState({ moreCommentClicked: !this.state.moreCommentClicked });
-  };
-
-  toggleDropMenu = () => {
-    this.setState({ dropdownOpen: !this.state.dropdownOpen });
-  };
 
   toggleLike = () => {
     this.setState({ likeClicked: !this.state.likeClicked }, () => {
@@ -210,33 +173,24 @@ class Post extends Component {
     this.setState({ writeComment: !this.state.writeComment });
   };
 
-  handlePostLike = like => {
-    return (1000 < like) & (like < 1000000)
-      ? (like / 1000).toFixed(2).concat("k")
-      : (1000000 <= like) & (like < 1000000000000)
-      ? (like / 1000000).toFixed(2).concat("m")
-      : like;
+  toggleScrap = () => {
+    this.setState({ scrapClicked: !this.state.scrapClicked }, () => {
+      if (this.state.scrapClicked) {
+        this.setState({ scrapIcon: filledScrapIcon });
+      } else {
+        this.setState({ scrapIcon: scrapIcon });
+      }
+    });
   };
 
-  handlePostTime = time => {
-    const timePass = timediff(time, new Date());
-    const postDate = new Date(time);
-    return timePass.weeks >= 1
-      ? "" +
-          postDate.getFullYear() +
-          "-" +
-          (postDate.getMonth() + 1) +
-          "-" +
-          postDate.getDate()
-      : (1 <= timePass.days) & (timePass.days < 7)
-      ? timePass.days + " days ago"
-      : timePass.days < 1
-      ? timePass.hours + " hours ago"
-      : timePass.minutes + " min ago";
+  handleDelete = async () => {
+    const postDelete = await this.props.deletePost(this.props.postId);
+    return postDelete ? window.location.reload() : alert("delete failed!");
   };
+
 }
 
 Post.defaultProps = defaultProps;
 Post.propTypes = propTypes;
 
-export default Post;
+export default connect(null, mapDispatchToProps)(Post);

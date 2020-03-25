@@ -30,31 +30,37 @@ class HomePage extends Component {
   render() {
     return (
       <div className="homePage">
-        <NavBar />
+        <NavBar isActive="feed" />
         <div className="homePage__postList">
-          {!this.state.feedLoading && this.props.user
-            ? this.state.feed.map(data => {
+          {
+            !this.state.feedLoading && this.props.user && this.state.feed
+              ? this.state.feed.map((data) => {
                 return (
                   <Post
                     key={data.id}
+                    postId={data.id}
                     className="homePage__post"
                     isMyPost={this.props.user.id === data.UserId}
+                    userProfileImg={data.User.profileImgName}
                     userName={data.User.name}
-                    userProfile={data.User.profileImgName}
-                    userType={1}
+                    userType={data.User.type}
                     postContent={data.content}
-                    postHashTags={["flower", "sunny"]}
+                    postHashTags={[
+                      { id: 1, tags: "flower" },
+                      { id: 2, tags: "sunny" }
+                    ]}//////
                     postImg={data.postImgName}
                     postDate={data.createdAt}
-                    postLike={135440}
+                    postLike={135440}//////
                     postComments={[
-                      { author: "Endrew", comment: "good job" },
-                      { author: "Sdi_dk", comment: "awesome" }
-                    ]}
+                      { id: 1, author: "Endrew", comment: "good job" },
+                      { id: 2, author: "Sdi_dk", comment: "awesome" }
+                    ]}//////
                   />
                 );
               })
-            : null}
+              : null
+          }
         </div>
         <Upload style={{ position: "fixed", right: "30px", bottom: "30px" }} />
       </div>

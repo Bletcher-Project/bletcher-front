@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import * as AuthAction from "./Redux/Actions/AuthAction";
 
 // Pages
-import { MainPage, HomePage, SignUpPage } from "./Pages";
+import { MainPage, HomePage, SignUpPage, UserPage } from "./Pages";
 
 const mapStateToProps = state => {
   return {
@@ -46,6 +46,7 @@ class App extends Component {
           <Route exact path="/home">
             {!this.props.isLogin ? <Redirect to="/" /> : <HomePage />}
           </Route>
+          <Route exact path="/:username" component={UserPage} />
         </Switch>
       </div>
     );
