@@ -2,3 +2,20 @@
   Upload Component Styling
 */
 
+.postUpload {
+  width: 500px;
+
+  &__creator {
+    &-picture {
+      width: 70%;
+      margin: auto;
+      label {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__upload {
+    text-align: center;
+  }
+}
