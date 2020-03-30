@@ -37,6 +37,7 @@ class HomePage extends Component {
         {newPostClicked ? (
           <div className="homePage__postInput">
             <Upload
+              userId={this.props.user.id}
               userProfileImg={this.props.user.profileImgName}
               userType={this.props.user.type}
               handlePrevStep={this.toggleNewPost}
