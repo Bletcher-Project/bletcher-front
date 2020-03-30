@@ -1,25 +1,32 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import { ServerEndPoint } from "../../Configs/Server";
+import * as PostAction from "../../Redux/Actions/PostAction";
 
-import { Thumbnail } from "../../Components";
-
-import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
 import backIcon from "../../Assets/icons/signup_back.svg";
+import defaultUpload from "../../Assets/icons/creator-upload.png";
+
+const mapDispatchToProps = dispatch => {
+  return {
+    uploadPost: params => dispatch(PostAction.uploadPost(params))
+  };
+};
 
 class Upload extends Component {
   constructor(props) {
     super(props);
     this.state = {
       pictureImg: null,
-      pictureImgUrl: null
+      pictureImgUrl: null,
+      content: ""
     };
   }
 
   render() {
+    const { content } = this.state;
     return (
       <div className="postUpload">
         <img
@@ -43,45 +50,76 @@ class Upload extends Component {
             <div className="postUpload__creator-picture">
               <label htmlFor="art-upload">
                 <img
+                  alt="post image"
                   src={
                     this.state.pictureImgUrl
                       ? this.state.pictureImgUrl
-                      : "https://cdn1.iconfinder.com/data/icons/hawcons/32/699085-icon-93-inbox-upload-512.png"
+                      : defaultUpload
                   }
                   width="100%"
                 />
               </label>
             </div>
-            <TextField
-              id="outlined-multiline"
-              placeholder="Type your art..."
-              multiline
-              rows="3"
-              rowsMax="10"
-              variant="outlined"
-              fullWidth
-            />
+            <div className="postUpload__creator-content">
+              <TextField
+                id="outlined-multiline"
+                placeholder="Type your art..."
+                value={content}
+                multiline
+                rows="3"
+                rowsMax="10"
+                variant="outlined"
+                fullWidth
+                onChange={this.handleContent}
+              />
+            </div>
           </div>
         ) : (
           <div className="postUpload__sketcher">It's for Sketcher</div>
         )}
 
         <div className="postUpload__upload">
-          <Button size="small">Upload</Button>
+          <Button size="small" onClick={this.handlePostUpload}>
+            Upload
+          </Button>
         </div>
       </div>
     );
   }
 
   handlePictureImg = e => {
-    this.setState({ pictureImg: e.target.files[0] }, () => {
-      return this.state.pictureImg
-        ? this.setState({
-            pictureImgUrl: URL.createObjectURL(this.state.pictureImg)
-          })
-        : null;
-    });
+    this.setState(
+      {
+        pictureImg: this.state.pictureImg
+          ? this.state.pictureImg
+          : e.target.files[0]
+      },
+      () => {
+        return this.state.pictureImg
+          ? this.setState({
+              pictureImgUrl: URL.createObjectURL(this.state.pictureImg)
+            })
+          : null;
+      }
+    );
+  };
+
+  handleContent = e => {
+    this.setState({ content: e.target.value });
+  };
+
+  handlePostUpload = async () => {
+    if (this.state.pictureImg) {
+      const params = new FormData();
+      params.append("img", this.state.pictureImg);
+      params.append("content", this.state.content);
+      params.append("UserId", this.props.userId);
+      const postUpload = await this.props.uploadPost(params);
+      return postUpload ? window.location.reload() : alert("upload failed!");
+    } else {
+      alert("Please upload your art first :)");
+    }
   };
 }
 
-export default Upload;
+export default connect(null, mapDispatchToProps)(Upload);

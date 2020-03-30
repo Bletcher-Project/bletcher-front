@@ -4,6 +4,8 @@ import axios from "axios";
 import {
   SUCCEED_TO_GET_ALLPOST,
   FAILED_TO_GET_ALLPOST,
+  SUCCEED_TO_UPLOAD_POST,
+  FAILED_TO_UPLOAD_POST,
   SUCCEED_TO_DELETE_POST,
   FAILED_TO_DELETE_POST
 } from "../Constants/action-types";
@@ -34,6 +36,20 @@ export const getAllPosts = () => {
       });
     }
   };
+};
+
+export const uploadPost = payload => {
+  axios
+    .post(ServerEndPoint + "api/posts", payload)
+    .then(res => {
+      return { res };
+    })
+    .catch(err => {
+      alert("post upload failed!: " + err);
+      return { type: FAILED_TO_UPLOAD_POST };
+    });
+
+  return { type: SUCCEED_TO_UPLOAD_POST };
 };
 
 export const deletePost = id => {
