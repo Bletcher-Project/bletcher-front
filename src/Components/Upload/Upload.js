@@ -50,7 +50,7 @@ class Upload extends Component {
             <div className="postUpload__creator-picture">
               <label htmlFor="art-upload">
                 <img
-                  alt="post image"
+                  alt="post"
                   src={
                     this.state.pictureImgUrl
                       ? this.state.pictureImgUrl
@@ -90,16 +90,15 @@ class Upload extends Component {
   handlePictureImg = e => {
     this.setState(
       {
-        pictureImg: this.state.pictureImg
-          ? this.state.pictureImg
-          : e.target.files[0]
+        pictureImg:
+          e.target.files[0] !== undefined
+            ? e.target.files[0]
+            : this.state.pictureImg
       },
       () => {
-        return this.state.pictureImg
-          ? this.setState({
-              pictureImgUrl: URL.createObjectURL(this.state.pictureImg)
-            })
-          : null;
+        this.setState({
+          pictureImgUrl: URL.createObjectURL(this.state.pictureImg)
+        });
       }
     );
   };
@@ -115,6 +114,7 @@ class Upload extends Component {
       params.append("content", this.state.content);
       params.append("UserId", this.props.userId);
       const postUpload = await this.props.uploadPost(params);
+
       return postUpload ? window.location.reload() : alert("upload failed!");
     } else {
       alert("Please upload your art first :)");
