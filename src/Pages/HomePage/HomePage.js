@@ -35,14 +35,12 @@ class HomePage extends Component {
         <NavBar isActive="feed" />
 
         {newPostClicked ? (
-          <div className="homePage__postInput">
             <Upload
               userId={this.props.user.id}
               userProfileImg={this.props.user.profileImgName}
               userType={this.props.user.type}
               handlePrevStep={this.toggleNewPost}
             />
-          </div>
         ) : (
           <div>
             <div className="homePage__newPost" onClick={this.toggleNewPost}>What are you thinking now?</div>

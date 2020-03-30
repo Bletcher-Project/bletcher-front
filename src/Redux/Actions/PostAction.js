@@ -39,17 +39,16 @@ export const getAllPosts = () => {
 };
 
 export const uploadPost = payload => {
-  axios
-    .post(ServerEndPoint + "api/posts", payload)
-    .then(res => {
-      return { res };
-    })
-    .catch(err => {
-      alert("post upload failed!: " + err);
-      return { type: FAILED_TO_UPLOAD_POST };
-    });
+  return async dispatch => {
+    await axios
+      .post(ServerEndPoint + "api/posts", payload)
+      .then(res => {})
+      .catch(err => {
+        dispatch({ type: FAILED_TO_UPLOAD_POST });
+      });
 
-  return { type: SUCCEED_TO_UPLOAD_POST };
+    return { type: SUCCEED_TO_UPLOAD_POST };
+  };
 };
 
 export const deletePost = id => {
