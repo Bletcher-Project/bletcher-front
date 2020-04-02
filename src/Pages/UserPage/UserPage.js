@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-import * as AuthAction from "../../Redux/Actions/AuthAction";
+import { ServerEndPoint } from "../../Configs/Server";
+// import * as AuthAction from "../../Redux/Actions/AuthAction";
+import * as PostAction from "../../Redux/Actions/PostAction";
 
 import { NavBar, Thumbnail } from "../../Components";
 
@@ -22,19 +24,36 @@ const mapStateToProps = state => {
 class UserPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      myPostImgs: [{
+        src: "https://source.unsplash.com/2ShvY8Lf6l0/800x599",
+        width: 4,
+        height: 3,
+        key: "0"
+      }]
+    };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.user) {
+      this.getUserPost(prevState);
+    }
   }
 
   render() {
     const { user } = this.props;
+    const { myPostImgs } = this.state;
     console.log(user);
+    console.log(myPostImgs);
     return (
       <div className="userPage">
         <NavBar isActive="user" />
         {user ? (
           <div className="userPage__contents">
             <div className="userPage__contents__header">
-              <Thumbnail size="150" src={null} type={user.type} />
+              <div className="userPage__contents__header__thumb">
+                <Thumbnail size="100" src={null} type={user.type} />
+              </div>
               <div className="userPage__contents__header__profile">
                 <div className="userPage__contents__header__profile-name-set">
                   <div className="nameArea">
@@ -60,7 +79,13 @@ class UserPage extends Component {
             </div>
 
             <div className="userPage__contents__body">
-              <Gallery photos={photos} direction="column" columns={3} margin={5} />
+              <Gallery
+                photos={myPostImgs}
+                direction="column"
+                columns={3}
+                margin={5}
+                onClick={this.handleClickPost}
+              />
             </div>
           </div>
         ) : null}
@@ -68,6 +93,28 @@ class UserPage extends Component {
 
       </div>
     );
+  }
+
+  getUserPost = async (prevState) => {
+    const { dispatch, user } = this.props;
+    const { myPostImgs } = this.state;
+    const postImg = [];
+    await dispatch(PostAction.getPostByUserId(user.id)).then(posts => {
+      posts.forEach(post => {
+        postImg.push({ src: `${ServerEndPoint}image/post/${post.postImgName}`, width: 3, height: 4, key: String(post.id) });
+      });
+    });
+    if (myPostImgs === prevState.myPostImgs) {
+      this.setState({ myPostImgs: myPostImgs.concat(postImg) });
+    }
+  }
+
+  handleClickPost = (e, { photo, index }) => {
+    const { dispatch } = this.props;
+    console.log(photo, index);
+    dispatch(PostAction.getPostByPostId(photo.key)).then(post => {
+      console.log(post);
+    });
   }
 }
 
