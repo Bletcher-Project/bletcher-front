@@ -7,5 +7,16 @@ import SignUpStepper from "./SignUpStepper/SignUpStepper";
 import Post from "./Post/Post";
 import Upload from "./Upload/Upload";
 import Thumbnail from "./Thumbnail/Thumbnail"
+import Upload from "./Upload/Upload";
 
-export { NavBar, MainButton, TypeButton, Post, MainInput, SignUpInput, SignUpStepper, Thumbnail, Upload };
+export {
+  NavBar,
+  MainButton,
+  MainInput,
+  TypeButton,
+  SignUpInput,
+  SignUpStepper,
+  Post,
+  Thumbnail,
+  Upload
+};

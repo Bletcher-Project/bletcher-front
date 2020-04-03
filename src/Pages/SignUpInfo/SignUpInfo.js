@@ -217,11 +217,14 @@ class SignUpInfo extends Component {
             ? axios
               .get(ServerEndPoint + "api/users?email=" + email)
               .then(res => {
-                changeEmailStatus(true, " "); //Allowed email
+                if (res.status === 200) {
+                  changeEmailStatus(false, "Already exists email!");
+                } else if (res.status === 204) {
+                  changeEmailStatus(true, " "); //Allowed email
+                }
               })
               .catch(err => {
                 console.log(err);
-                changeEmailStatus(false, "Already exists email!");
               })
             : null;
         }, 200);
