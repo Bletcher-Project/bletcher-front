@@ -61,6 +61,7 @@ class Post extends Component {
             size="50"
             src={userProfileImg !== null ? `${ServerEndPoint}image/profile/${userProfileImg}` : null}
             type={userType}
+            userName={userName}
           />
           <div className="post__header__postInfo">
             <div>

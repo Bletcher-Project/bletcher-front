@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { connect } from "react-redux";
 import { ServerEndPoint } from "../../Configs/Server";
-// import * as AuthAction from "../../Redux/Actions/AuthAction";
+import * as UserAction from "../../Redux/Actions/UserAction";
 import * as PostAction from "../../Redux/Actions/PostAction";
 
 import { NavBar, Thumbnail, Post } from "../../Components";
@@ -25,70 +25,78 @@ class UserPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      myPostImgs: [],
+      isMyPage: false,
+      userInfo: null,
+      userPostImgs: [],
       selectedPost: null,
       openModal: false
     };
   }
 
-  componentDidMount() {
+  componentDidMount = async () => {
     if (this.props.user) {
-      this.getUserPost();
+      await this.setUser();
+      await this.getUserPost();
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.user && this.props.user !== prevProps.user) {
-      this.getUserPost();
+  componentDidUpdate = async (prevProps, prevState) => {
+    if ((this.props.user && this.props.user !== prevProps.user)
+      || prevProps.match.params.username !== this.props.match.params.username) {
+      await this.setUser();
+      await this.getUserPost();
     }
   }
 
   render() {
-    const { user } = this.props;
-    const { myPostImgs, selectedPost, openModal } = this.state;
-    // console.log(user);
-    // console.log(myPostImgs);
+    const { isMyPage, userInfo, userPostImgs, selectedPost, openModal } = this.state;
     return (
       <div className="userPage">
-        <NavBar isActive="user" />
-        {user ? (
+
+        <NavBar isActive={isMyPage ? "user" : null} />
+        {userInfo ? (
           <div className="userPage__contents">
             <div className="userPage__contents__header">
               <div className="userPage__contents__header__thumb">
                 <Thumbnail
                   size="100"
-                  src={user.profileImgName !== null ? `${ServerEndPoint}image/profile/${user.profileImgName}` : null}
-                  type={user.type}
+                  src={userInfo.profileImgName !== null ? `${ServerEndPoint}image/profile/${userInfo.profileImgName}` : null}
+                  type={userInfo.type}
+                  userName={userInfo.name}
                 />
               </div>
               <div className="userPage__contents__header__profile">
                 <div className="userPage__contents__header__profile-name-set">
                   <div className="nameArea">
-                    <h1>{user.name}</h1>
+                    <h1>{userInfo.name}</h1>
                     <div id="nameUnderBar"></div>
                   </div>
-                  <div className="settingArea">
-                    <img src={settingIcon} alt="setting" />
-                  </div>
+                  {isMyPage ?
+                    <div className="settingArea">
+                      <img src={settingIcon} alt="setting" />
+                    </div>
+                    : null}
                 </div>
                 <div className="userPage__contents__header__profile-status">
-                  <p>{user.status}</p>
+                  <p>{userInfo.status}</p>
                 </div>
-                <div className="userPage__contents__header__profile-follow">
-                  <div className="followBox">
-                    <span className="followTitle">Followers</span><span id="followerNum">0</span>
+                {isMyPage ?
+                  <div className="userPage__contents__header__profile-follow">
+                    <div className="followBox">
+                      <span className="followTitle">Followers</span><span id="followerNum">0</span>
+                    </div>
+                    <div className="followBox">
+                      <span className="followTitle">Following</span><span id="followingNum">0</span>
+                    </div>
                   </div>
-                  <div className="followBox">
-                    <span className="followTitle">Following</span><span id="followingNum">0</span>
-                  </div>
-                </div>
+                  : null}
               </div>
             </div>
 
             <div className="userPage__contents__body">
-              {myPostImgs.length > 0 ?
+              {userPostImgs.length > 0 ?
                 <Gallery
-                  photos={myPostImgs}
+                  photos={userPostImgs}
                   direction="column"
                   columns={3}
                   margin={5}
@@ -103,7 +111,7 @@ class UserPage extends Component {
           {selectedPost ?
             <Modal isOpen={openModal} toggle={() => this.setState({ openModal: !openModal })} centered={true}>
               <Post
-                isMyPost={true}
+                isMyPost={isMyPage}
                 userProfileImg={selectedPost.User.profileImgName}
                 userName={selectedPost.User.name}
                 userType={selectedPost.User.type}
@@ -128,16 +136,27 @@ class UserPage extends Component {
     );
   }
 
+  setUser = async () => {
+    const { match, dispatch, user } = this.props;
+    if (match.params.username === user.name) {
+      this.setState({ userInfo: user, isMyPage: true, userPostImgs: [] });
+    } else {
+      await dispatch(UserAction.getUserByUserName(match.params.username)).then(userInfo => {
+        this.setState({ userInfo: userInfo, isMyPage: false, userPostImgs: [] });
+      })
+    }
+  }
+
   getUserPost = async () => {
-    const { dispatch, user } = this.props;
-    const { myPostImgs } = this.state;
+    const { dispatch } = this.props;
+    const { userInfo, userPostImgs } = this.state;
     const postImg = [];
-    await dispatch(PostAction.getPostByUserId(user.id)).then(posts => {
+    await dispatch(PostAction.getPostByUserId(userInfo.id)).then(posts => {
       posts.forEach(post => {
         postImg.push({ src: `${ServerEndPoint}image/post/${post.postImgName}`, width: parseInt(post.postImgWidth), height: parseInt(post.postImgHeight), key: String(post.id) });
       });
     });
-    this.setState({ myPostImgs: myPostImgs.concat(postImg) });
+    this.setState({ userPostImgs: userPostImgs.concat(postImg) });
   }
 
   handleClickPost = (e, { photo, index }) => {

@@ -3,8 +3,8 @@ import { ServerEndPoint } from "../../Configs/Server";
 import {
   SUCCEED_TO_SIGNIN,
   FAILED_TO_SIGNIN,
-  SUCCEED_TO_GETUSER,
-  FAILED_TO_GETUSER,
+  SUCCEED_TO_GET_USER,
+  FAILED_TO_GET_USER,
   SUCCEED_TO_SIGNOUT,
   TOKEN_EXPIRED
 } from "../Constants/action-types";
@@ -57,7 +57,7 @@ export const getUser = token => {
       if (response.status === 200) {
         let result = await response.json();
         await dispatch({
-          type: SUCCEED_TO_GETUSER,
+          type: SUCCEED_TO_GET_USER,
           payload: result.userInfo
         });
         return result.userInfo;
@@ -71,14 +71,14 @@ export const getUser = token => {
         }
       } else {
         await dispatch({
-          type: FAILED_TO_GETUSER,
+          type: FAILED_TO_GET_USER,
           payload: null
         });
         return "failed";
       }
     } catch (error) {
       dispatch({
-        type: FAILED_TO_GETUSER,
+        type: FAILED_TO_GET_USER,
         payload: { data: "NETWORK_ERROR" }
       });
     }

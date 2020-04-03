@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 
 import userCreatorImage from "../../Assets/icons/Creator.png";
 import userSketcherImage from "../../Assets/icons/Sketcher.png";
@@ -19,7 +20,7 @@ class Thumbnail extends Component {
     const { size } = this.props;
     const { defaultImage, imageURL } = this.state;
     return (
-      <div className="thumbnail">
+      <div className="thumbnail" onClick={this.handleUserPage}>
         {imageURL === null || imageURL === undefined ? (
           <img
             className="thumbnail__image"
@@ -45,9 +46,13 @@ class Thumbnail extends Component {
   handleError = () => {
     this.setState({ imageURL: this.state.defaultImage });
   };
+
+  handleUserPage = () => {
+    this.props.history.push({ pathname: "/" + this.props.userName });
+  }
 }
 
 Thumbnail.defaultProps = defaultProps;
 Thumbnail.propTypes = propTypes;
 
-export default Thumbnail;
+export default withRouter(Thumbnail);
