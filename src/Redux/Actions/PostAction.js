@@ -4,6 +4,8 @@ import axios from "axios";
 import {
   SUCCEED_TO_GET_ALLPOST,
   FAILED_TO_GET_ALLPOST,
+  SUCCEED_TO_UPLOAD_POST,
+  FAILED_TO_UPLOAD_POST,
   SUCCEED_TO_DELETE_POST,
   FAILED_TO_DELETE_POST
 } from "../Constants/action-types";
@@ -33,6 +35,19 @@ export const getAllPosts = () => {
         payload: { data: "NETWORK_ERROR" }
       });
     }
+  };
+};
+
+export const uploadPost = payload => {
+  return async dispatch => {
+    await axios
+      .post(ServerEndPoint + "api/posts", payload)
+      .then(res => {})
+      .catch(err => {
+        dispatch({ type: FAILED_TO_UPLOAD_POST });
+      });
+
+    return { type: SUCCEED_TO_UPLOAD_POST };
   };
 };
 

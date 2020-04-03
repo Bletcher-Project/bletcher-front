@@ -1,0 +1,36 @@
+/*
+  Upload Component Styling
+*/
+
+.postUpload {
+  width: 500px;
+
+  &__creator {
+    &-picture {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 80%;
+      min-height: 300px;
+      margin: auto;
+      border: 2px dotted #ccd0d5;
+      border-radius: 4px;
+      margin-bottom: 20px;
+
+      label {
+        cursor: pointer;
+        margin: auto;
+      }
+    }
+
+    &-content {
+      width: 80%;
+      margin: auto;
+    }
+  }
+
+  &__upload {
+    margin-top: 20px;
+    text-align: center;
+  }
+}
