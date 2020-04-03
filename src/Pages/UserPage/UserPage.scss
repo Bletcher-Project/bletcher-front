@@ -16,6 +16,10 @@
       width: 50%;
       margin-bottom: 50px;
 
+      &__thumb{
+        margin: 10px 20px 0 20px;
+      }
+
       &__profile{
         margin-left: 20px;
 
@@ -28,49 +32,52 @@
 
             & h1{
               margin: 0;
-              margin-bottom: -15px;
-              padding-left: 13px;
-              padding-right: 20px;
+              margin-bottom: -14px;
+              padding-left: 10px;
+              padding-right: 18px;
               font-family: 'DM Serif Text', serif;
-              font-size: 40px;
+              font-size: 35px;
               color: #3d3d3d;
             }
 
             & #nameUnderBar{
               width: inherit;
-              height: 17px;
+              height: 12px;
               background-image: linear-gradient(to right, rgba(154, 122, 243, 0.5), rgba(255, 158, 174, 0.5));
             }
           }
 
           & .settingArea{
             margin-left: 17px;
+            margin-bottom: 2px;
             cursor: pointer;
 
             & img{
-              width: 37px;
-              height: 37px;
+              width: 30px;
+              height: 30px;
+              transform: rotate(30deg);
             }
           }
         }
 
         &-status{
-          padding: 5px 10px;
-          min-height: 60px;
+          padding: 5px;
+          min-height: 50px;
           
           & p{
             margin: 0;
             font-size: 18px;
             color: #4a4a4a;
+            word-break: break-all;
           }
         }
 
         &-follow{
           display: flex;
-          padding: 0 10px;
+          padding: 0 5px;
 
           & .followBox{
-            font-size: 22px;
+            font-size: 19px;
 
             & .followTitle{
               font-weight: 600;
