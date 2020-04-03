@@ -10,7 +10,6 @@ import { NavBar, Thumbnail } from "../../Components";
 import Gallery from "react-photo-gallery";
 
 import settingIcon from "../../Assets/icons/setting.png";
-import { photos } from "./testPhotos";
 
 const defaultProps = {};
 const propTypes = {};
@@ -34,9 +33,15 @@ class UserPage extends Component {
     };
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidMount() {
     if (this.props.user) {
-      this.getUserPost(prevState);
+      this.getUserPost();
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.user && this.props.user !== prevProps.user) {
+      this.getUserPost();
     }
   }
 
@@ -95,7 +100,7 @@ class UserPage extends Component {
     );
   }
 
-  getUserPost = async (prevState) => {
+  getUserPost = async () => {
     const { dispatch, user } = this.props;
     const { myPostImgs } = this.state;
     const postImg = [];
@@ -104,9 +109,7 @@ class UserPage extends Component {
         postImg.push({ src: `${ServerEndPoint}image/post/${post.postImgName}`, width: 3, height: 4, key: String(post.id) });
       });
     });
-    if (myPostImgs === prevState.myPostImgs) {
-      this.setState({ myPostImgs: myPostImgs.concat(postImg) });
-    }
+    this.setState({ myPostImgs: myPostImgs.concat(postImg) });
   }
 
   handleClickPost = (e, { photo, index }) => {
