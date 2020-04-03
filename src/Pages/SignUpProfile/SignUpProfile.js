@@ -175,10 +175,14 @@ class SignUpProfile extends Component {
             ? axios
               .get(ServerEndPoint + "api/users?name=" + name)
               .then(res => {
-                changeNameStatus(true, " "); //Allowed name
+                if (res.status === 200) {
+                  changeNameStatus(false, "Already exists name!");
+                } else if (res.status === 204) {
+                  changeNameStatus(true, " "); //Allowed name
+                }
               })
               .catch(err => {
-                changeNameStatus(false, "Already exists name");
+                console.log(err);
               })
             : null;
         }, 200);
