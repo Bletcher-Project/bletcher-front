@@ -55,7 +55,11 @@ class UserPage extends Component {
           <div className="userPage__contents">
             <div className="userPage__contents__header">
               <div className="userPage__contents__header__thumb">
-                <Thumbnail size="100" src={null} type={user.type} />
+                <Thumbnail
+                  size="100"
+                  src={user.profileImgName !== null ? `${ServerEndPoint}image/profile/${user.profileImgName}` : null}
+                  type={user.type}
+                />
               </div>
               <div className="userPage__contents__header__profile">
                 <div className="userPage__contents__header__profile-name-set">
@@ -130,7 +134,7 @@ class UserPage extends Component {
     const postImg = [];
     await dispatch(PostAction.getPostByUserId(user.id)).then(posts => {
       posts.forEach(post => {
-        postImg.push({ src: `${ServerEndPoint}image/post/${post.postImgName}`, width: 3, height: 4, key: String(post.id) });
+        postImg.push({ src: `${ServerEndPoint}image/post/${post.postImgName}`, width: post.postImgWidth, height: post.postImgHeight, key: String(post.id) });
       });
     });
     this.setState({ myPostImgs: myPostImgs.concat(postImg) });
