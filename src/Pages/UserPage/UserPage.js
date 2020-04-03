@@ -5,9 +5,10 @@ import { ServerEndPoint } from "../../Configs/Server";
 // import * as AuthAction from "../../Redux/Actions/AuthAction";
 import * as PostAction from "../../Redux/Actions/PostAction";
 
-import { NavBar, Thumbnail } from "../../Components";
+import { NavBar, Thumbnail, Post } from "../../Components";
 
 import Gallery from "react-photo-gallery";
+import { Modal } from "reactstrap";
 
 import settingIcon from "../../Assets/icons/setting.png";
 
@@ -24,12 +25,9 @@ class UserPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      myPostImgs: [{
-        src: "https://source.unsplash.com/2ShvY8Lf6l0/800x599",
-        width: 4,
-        height: 3,
-        key: "0"
-      }]
+      myPostImgs: [],
+      selectedPost: null,
+      openModal: false
     };
   }
 
@@ -47,9 +45,9 @@ class UserPage extends Component {
 
   render() {
     const { user } = this.props;
-    const { myPostImgs } = this.state;
-    console.log(user);
-    console.log(myPostImgs);
+    const { myPostImgs, selectedPost, openModal } = this.state;
+    // console.log(user);
+    // console.log(myPostImgs);
     return (
       <div className="userPage">
         <NavBar isActive="user" />
@@ -84,17 +82,43 @@ class UserPage extends Component {
             </div>
 
             <div className="userPage__contents__body">
-              <Gallery
-                photos={myPostImgs}
-                direction="column"
-                columns={3}
-                margin={5}
-                onClick={this.handleClickPost}
-              />
+              {myPostImgs.length > 0 ?
+                <Gallery
+                  photos={myPostImgs}
+                  direction="column"
+                  columns={3}
+                  margin={5}
+                  onClick={this.handleClickPost}
+                />
+                : null}
             </div>
           </div>
         ) : null}
 
+        <div className="userPage__modal">
+          {selectedPost ?
+            <Modal isOpen={openModal} toggle={() => this.setState({ openModal: !openModal })} centered={true}>
+              <Post
+                isMyPost={true}
+                userProfileImg={selectedPost.User.profileImgName}
+                userName={selectedPost.User.name}
+                userType={selectedPost.User.type}
+                postContent={selectedPost.content}
+                postHashTags={[
+                  { id: 1, tags: "flower" },
+                  { id: 2, tags: "sunny" }
+                ]} //////
+                postImg={selectedPost.postImgName}
+                postDate={selectedPost.createdAt}
+                postLike={135440} //////
+                postComments={[
+                  { id: 1, author: "Endrew", comment: "good job" },
+                  { id: 2, author: "Sdi_dk", comment: "awesome" }
+                ]} ////// 
+              />
+            </Modal>
+            : null}
+        </div>
 
       </div>
     );
@@ -114,9 +138,8 @@ class UserPage extends Component {
 
   handleClickPost = (e, { photo, index }) => {
     const { dispatch } = this.props;
-    console.log(photo, index);
     dispatch(PostAction.getPostByPostId(photo.key)).then(post => {
-      console.log(post);
+      this.setState({ selectedPost: post, openModal: true });
     });
   }
 }

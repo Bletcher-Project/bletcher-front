@@ -54,7 +54,7 @@ class Post extends Component {
     } = this.state;
 
     return (
-      <div className="post mb-3">
+      <div className="post">
         <div className="post__header">
           <Thumbnail
             className="post__header__userProfile"
@@ -88,8 +88,8 @@ class Post extends Component {
           <div className="post__footer__postContent">{postContent}</div>
           <div className="post__footer__postHashtag">
             {postHashTags.map(hashtags => (
-              <div className="post__footer__postHashtag-tagbox">
-                <span key={hashtags.id}>#{hashtags.tags}</span>
+              <div className="post__footer__postHashtag-tagbox" key={hashtags.id}>
+                <span>#{hashtags.tags}</span>
               </div>
             ))}
           </div>
