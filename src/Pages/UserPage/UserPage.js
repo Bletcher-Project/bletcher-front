@@ -134,7 +134,7 @@ class UserPage extends Component {
     const postImg = [];
     await dispatch(PostAction.getPostByUserId(user.id)).then(posts => {
       posts.forEach(post => {
-        postImg.push({ src: `${ServerEndPoint}image/post/${post.postImgName}`, width: post.postImgWidth, height: post.postImgHeight, key: String(post.id) });
+        postImg.push({ src: `${ServerEndPoint}image/post/${post.postImgName}`, width: parseInt(post.postImgWidth), height: parseInt(post.postImgHeight), key: String(post.id) });
       });
     });
     this.setState({ myPostImgs: myPostImgs.concat(postImg) });

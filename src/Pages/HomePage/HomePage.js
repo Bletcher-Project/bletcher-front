@@ -48,9 +48,8 @@ class HomePage extends Component {
                 {!this.state.feedLoading && this.props.user && this.state.feed
                   ? this.state.feed.map(data => {
                     return (
-                      <div className="homePage__post mb-3">
+                      <div className="homePage__post mb-3" key={data.id}>
                         <Post
-                          key={data.id}
                           postId={data.id}
                           isMyPost={this.props.user.id === data.UserId}
                           userProfileImg={data.User.profileImgName}
