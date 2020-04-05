@@ -39,6 +39,7 @@ class Post extends Component {
     this.state = {
       likeClicked: this.props.isLiked,
       likeIcon: likeIcon,
+      likeActionCount: 0,
       scrapClicked: false,
       scrapIcon: scrapIcon
     };
@@ -60,6 +61,7 @@ class Post extends Component {
     const {
       likeClicked,
       likeIcon,
+      likeActionCount,
       scrapIcon
     } = this.state;
 
@@ -113,8 +115,10 @@ class Post extends Component {
                 height="25px"
                 alt="likeIcon"
               />
-              {isMyPost ? (
-                <span className="post__footer__communicateArea__like-num">{commaNumber(postLike)}</span>
+              {isMyPost && (postLike + likeActionCount > 0) ? (
+                <span className="post__footer__communicateArea__like-num">
+                  {commaNumber(postLike + likeActionCount)}
+                </span>
               ) : null}
             </div>
 
@@ -174,8 +178,10 @@ class Post extends Component {
     const { likePost, deleteLikePost, postId, token } = this.props;
     this.setState({ likeClicked: !this.state.likeClicked }, () => {
       if (this.state.likeClicked) {
+        this.setState({ likeActionCount: this.state.likeActionCount + 1 });
         likePost(postId, token);
       } else {
+        this.setState({ likeActionCount: this.state.likeActionCount - 1 });
         deleteLikePost(postId, token);
       }
     });

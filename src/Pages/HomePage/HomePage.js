@@ -63,8 +63,8 @@ class HomePage extends Component {
                           ]} //////
                           postImg={data.postImgName}
                           postDate={data.createdAt}
-                          isLiked={data.Likes.length > 0}
-                          postLike={135440} //////
+                          isLiked={data.isLiked}
+                          postLike={data.likeCount}
                           postComments={[
                             { id: 1, author: "Endrew", comment: "good job" },
                             { id: 2, author: "Sdi_dk", comment: "awesome" }
