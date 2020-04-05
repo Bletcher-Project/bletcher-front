@@ -42,7 +42,7 @@ class UserPage extends Component {
   }
 
   componentDidUpdate = async (prevProps, prevState) => {
-    if ((this.props.user && this.props.user !== prevProps.user)
+    if ((this.props.token && this.props.user !== prevProps.user)
       || prevProps.match.params.username !== this.props.match.params.username) {
       await this.setUser();
       await this.getUserPost();
