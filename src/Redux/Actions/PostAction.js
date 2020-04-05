@@ -13,7 +13,9 @@ import {
   SUCCEED_TO_DELETE_POST,
   FAILED_TO_DELETE_POST,
   SUCCEED_TO_POST_LIKE,
-  FAILED_TO_POST_LIKE
+  FAILED_TO_POST_LIKE,
+  SUCCEED_TO_DELETE_LIKE,
+  FAILED_TO_DELETE_LIKE
 } from "../Constants/action-types";
 
 export const getAllPosts = token => {
@@ -147,7 +149,7 @@ export const postLike = (postId, token) => {
           type: SUCCEED_TO_POST_LIKE,
           payload: result
         });
-        return result.post;
+        return result;
       } else {
         await dispatch({
           type: FAILED_TO_POST_LIKE,
@@ -157,6 +159,37 @@ export const postLike = (postId, token) => {
     } catch (error) {
       dispatch({
         type: FAILED_TO_POST_LIKE,
+        payload: { data: "NETWORK_ERROR" }
+      });
+    }
+  };
+}
+
+export const deleteLike = (postId, token) => {
+  return async dispatch => {
+    try {
+      let response = await fetch(ServerEndPoint + `api/posts/like/${postId}`, {
+        method: "DELETE",
+        headers: {
+          "x-access-token": token
+        }
+      });
+      if (response.status === 200) {
+        let result = await response.json();
+        await dispatch({
+          type: SUCCEED_TO_DELETE_LIKE,
+          payload: result
+        });
+        return result;
+      } else {
+        await dispatch({
+          type: FAILED_TO_DELETE_LIKE,
+          payload: null
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: FAILED_TO_DELETE_LIKE,
         payload: { data: "NETWORK_ERROR" }
       });
     }

@@ -28,7 +28,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     deletePost: id => dispatch(PostAction.deletePost(id)),
-    likePost: (postId, token) => dispatch(PostAction.postLike(postId, token))
+    likePost: (postId, token) => dispatch(PostAction.postLike(postId, token)),
+    deleteLikePost: (postId, token) => dispatch(PostAction.deleteLike(postId, token))
   };
 };
 
@@ -36,7 +37,7 @@ class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      likeClicked: false,
+      likeClicked: this.props.isLiked,
       likeIcon: likeIcon,
       scrapClicked: false,
       scrapIcon: scrapIcon
@@ -53,11 +54,11 @@ class Post extends Component {
       postHashTags,
       postImg,
       postDate,
-      isLiked,
       postLike,
       postComments
     } = this.props;
     const {
+      likeClicked,
       likeIcon,
       scrapIcon
     } = this.state;
@@ -107,7 +108,7 @@ class Post extends Component {
           <div className="post__footer__communicateArea">
             <div className="post__footer__communicateArea__like" onClick={this.toggleLike}>
               <img
-                src={isLiked ? filledLikeIcon : likeIcon}
+                src={likeClicked ? filledLikeIcon : likeIcon}
                 width="25px"
                 height="25px"
                 alt="likeIcon"
@@ -170,13 +171,12 @@ class Post extends Component {
   }
 
   toggleLike = () => {
-    const { likePost, postId, token } = this.props;
+    const { likePost, deleteLikePost, postId, token } = this.props;
     this.setState({ likeClicked: !this.state.likeClicked }, () => {
       if (this.state.likeClicked) {
-        this.setState({ likeIcon: filledLikeIcon });
         likePost(postId, token);
       } else {
-        this.setState({ likeIcon: likeIcon });
+        deleteLikePost(postId, token);
       }
     });
   };
