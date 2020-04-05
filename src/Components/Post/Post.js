@@ -53,6 +53,7 @@ class Post extends Component {
       postHashTags,
       postImg,
       postDate,
+      isLiked,
       postLike,
       postComments
     } = this.props;
@@ -106,7 +107,7 @@ class Post extends Component {
           <div className="post__footer__communicateArea">
             <div className="post__footer__communicateArea__like" onClick={this.toggleLike}>
               <img
-                src={likeIcon}
+                src={isLiked ? filledLikeIcon : likeIcon}
                 width="25px"
                 height="25px"
                 alt="likeIcon"

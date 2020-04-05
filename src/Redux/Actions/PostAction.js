@@ -16,11 +16,14 @@ import {
   FAILED_TO_POST_LIKE
 } from "../Constants/action-types";
 
-export const getAllPosts = () => {
+export const getAllPosts = token => {
   return async dispatch => {
     try {
       let response = await fetch(ServerEndPoint + "api/posts", {
-        method: "GET"
+        method: "GET",
+        headers: {
+          "x-access-token": token
+        }
       });
       if (response.status === 200) {
         let result = await response.json();
@@ -44,11 +47,14 @@ export const getAllPosts = () => {
   };
 };
 
-export const getPostByUserId = userId => {
+export const getPostByUserId = (userId, token) => {
   return async dispatch => {
     try {
       let response = await fetch(ServerEndPoint + `api/posts/${userId}`, {
-        method: "GET"
+        method: "GET",
+        headers: {
+          "x-access-token": token
+        }
       });
       if (response.status === 200) {
         let result = await response.json();

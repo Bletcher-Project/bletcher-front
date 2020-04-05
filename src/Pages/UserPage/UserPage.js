@@ -17,6 +17,7 @@ const propTypes = {};
 
 const mapStateToProps = state => {
   return {
+    token: state.authReducer.token,
     user: state.authReducer.user
   };
 };
@@ -148,10 +149,10 @@ class UserPage extends Component {
   }
 
   getUserPost = async () => {
-    const { dispatch } = this.props;
+    const { dispatch, token } = this.props;
     const { userInfo, userPostImgs } = this.state;
     const postImg = [];
-    await dispatch(PostAction.getPostByUserId(userInfo.id)).then(posts => {
+    await dispatch(PostAction.getPostByUserId(userInfo.id, token)).then(posts => {
       posts.forEach(post => {
         postImg.push({ src: `${ServerEndPoint}image/post/${post.postImgName}`, width: parseInt(post.postImgWidth), height: parseInt(post.postImgHeight), key: String(post.id) });
       });
