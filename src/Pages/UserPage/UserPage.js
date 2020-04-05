@@ -112,6 +112,7 @@ class UserPage extends Component {
           {selectedPost ?
             <Modal isOpen={openModal} toggle={() => this.setState({ openModal: !openModal })} centered={true}>
               <Post
+                postId={selectedPost.id}
                 isMyPost={isMyPage}
                 userProfileImg={selectedPost.User.profileImgName}
                 userName={selectedPost.User.name}
@@ -123,6 +124,7 @@ class UserPage extends Component {
                 ]} //////
                 postImg={selectedPost.postImgName}
                 postDate={selectedPost.createdAt}
+                isLiked={selectedPost.Likes.length > 0}
                 postLike={135440} //////
                 postComments={[
                   { id: 1, author: "Endrew", comment: "good job" },
@@ -161,8 +163,8 @@ class UserPage extends Component {
   }
 
   handleClickPost = (e, { photo, index }) => {
-    const { dispatch } = this.props;
-    dispatch(PostAction.getPostByPostId(photo.key)).then(post => {
+    const { dispatch, token } = this.props;
+    dispatch(PostAction.getPostByPostId(photo.key, token)).then(post => {
       this.setState({ selectedPost: post, openModal: true });
     });
   }

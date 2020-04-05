@@ -80,11 +80,14 @@ export const getPostByUserId = (userId, token) => {
   };
 };
 
-export const getPostByPostId = postId => {
+export const getPostByPostId = (postId, token) => {
   return async dispatch => {
     try {
       let response = await fetch(ServerEndPoint + `api/posts/one/${postId}`, {
-        method: "GET"
+        method: "GET",
+        headers: {
+          "x-access-token": token
+        }
       });
       if (response.status === 200) {
         let result = await response.json();
