@@ -10,6 +10,7 @@ const propTypes = {};
 
 const mapStateToProps = state => {
   return {
+    token: state.authReducer.token,
     user: state.authReducer.user
   };
 };
@@ -62,7 +63,8 @@ class HomePage extends Component {
                           ]} //////
                           postImg={data.postImgName}
                           postDate={data.createdAt}
-                          postLike={135440} //////
+                          isLiked={data.isLiked}
+                          postLike={data.likeCount}
                           postComments={[
                             { id: 1, author: "Endrew", comment: "good job" },
                             { id: 2, author: "Sdi_dk", comment: "awesome" }
@@ -80,7 +82,7 @@ class HomePage extends Component {
   }
 
   getAllPosts = () => {
-    this.props.dispatch(PostAction.getAllPosts()).then(result => {
+    this.props.dispatch(PostAction.getAllPosts(this.props.token)).then(result => {
       this.setState({ feed: result, feedLoading: false });
     });
   };

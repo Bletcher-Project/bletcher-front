@@ -18,9 +18,18 @@ import filledScrapIcon from "../../Assets/icons/scrap-filled.png";
 const defaultProps = {};
 const propTypes = {};
 
+const mapStateToProps = state => {
+  return {
+    token: state.authReducer.token,
+    user: state.authReducer.user
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
-    deletePost: id => dispatch(PostAction.deletePost(id))
+    deletePost: id => dispatch(PostAction.deletePost(id)),
+    likePost: (postId, token) => dispatch(PostAction.postLike(postId, token)),
+    deleteLikePost: (postId, token) => dispatch(PostAction.deleteLike(postId, token))
   };
 };
 
@@ -28,8 +37,9 @@ class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      likeClicked: false,
+      likeClicked: this.props.isLiked,
       likeIcon: likeIcon,
+      likeActionCount: 0,
       scrapClicked: false,
       scrapIcon: scrapIcon
     };
@@ -49,7 +59,9 @@ class Post extends Component {
       postComments
     } = this.props;
     const {
+      likeClicked,
       likeIcon,
+      likeActionCount,
       scrapIcon
     } = this.state;
 
@@ -98,13 +110,15 @@ class Post extends Component {
           <div className="post__footer__communicateArea">
             <div className="post__footer__communicateArea__like" onClick={this.toggleLike}>
               <img
-                src={likeIcon}
+                src={likeClicked ? filledLikeIcon : likeIcon}
                 width="25px"
                 height="25px"
                 alt="likeIcon"
               />
-              {isMyPost ? (
-                <span className="post__footer__communicateArea__like-num">{commaNumber(postLike)}</span>
+              {isMyPost && (postLike + likeActionCount > 0) ? (
+                <span className="post__footer__communicateArea__like-num">
+                  {commaNumber(postLike + likeActionCount)}
+                </span>
               ) : null}
             </div>
 
@@ -161,11 +175,14 @@ class Post extends Component {
   }
 
   toggleLike = () => {
+    const { likePost, deleteLikePost, postId, token } = this.props;
     this.setState({ likeClicked: !this.state.likeClicked }, () => {
       if (this.state.likeClicked) {
-        this.setState({ likeIcon: filledLikeIcon });
+        this.setState({ likeActionCount: this.state.likeActionCount + 1 });
+        likePost(postId, token);
       } else {
-        this.setState({ likeIcon: likeIcon });
+        this.setState({ likeActionCount: this.state.likeActionCount - 1 });
+        deleteLikePost(postId, token);
       }
     });
   };
@@ -194,4 +211,4 @@ class Post extends Component {
 Post.defaultProps = defaultProps;
 Post.propTypes = propTypes;
 
-export default connect(null, mapDispatchToProps)(Post);
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

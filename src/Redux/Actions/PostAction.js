@@ -11,14 +11,21 @@ import {
   SUCCEED_TO_UPLOAD_POST,
   FAILED_TO_UPLOAD_POST,
   SUCCEED_TO_DELETE_POST,
-  FAILED_TO_DELETE_POST
+  FAILED_TO_DELETE_POST,
+  SUCCEED_TO_POST_LIKE,
+  FAILED_TO_POST_LIKE,
+  SUCCEED_TO_DELETE_LIKE,
+  FAILED_TO_DELETE_LIKE
 } from "../Constants/action-types";
 
-export const getAllPosts = () => {
+export const getAllPosts = token => {
   return async dispatch => {
     try {
       let response = await fetch(ServerEndPoint + "api/posts", {
-        method: "GET"
+        method: "GET",
+        headers: {
+          "x-access-token": token
+        }
       });
       if (response.status === 200) {
         let result = await response.json();
@@ -42,11 +49,14 @@ export const getAllPosts = () => {
   };
 };
 
-export const getPostByUserId = userId => {
+export const getPostByUserId = (userId, token) => {
   return async dispatch => {
     try {
       let response = await fetch(ServerEndPoint + `api/posts/${userId}`, {
-        method: "GET"
+        method: "GET",
+        headers: {
+          "x-access-token": token
+        }
       });
       if (response.status === 200) {
         let result = await response.json();
@@ -70,11 +80,14 @@ export const getPostByUserId = userId => {
   };
 };
 
-export const getPostByPostId = postId => {
+export const getPostByPostId = (postId, token) => {
   return async dispatch => {
     try {
       let response = await fetch(ServerEndPoint + `api/posts/one/${postId}`, {
-        method: "GET"
+        method: "GET",
+        headers: {
+          "x-access-token": token
+        }
       });
       if (response.status === 200) {
         let result = await response.json();
@@ -123,3 +136,65 @@ export const deletePost = id => {
 
   return { type: SUCCEED_TO_DELETE_POST };
 };
+
+export const postLike = (postId, token) => {
+  return async dispatch => {
+    try {
+      let response = await fetch(ServerEndPoint + `api/posts/like/${postId}`, {
+        method: "POST",
+        headers: {
+          "x-access-token": token
+        }
+      });
+      if (response.status === 200) {
+        let result = await response.json();
+        await dispatch({
+          type: SUCCEED_TO_POST_LIKE,
+          payload: result
+        });
+        return result;
+      } else {
+        await dispatch({
+          type: FAILED_TO_POST_LIKE,
+          payload: null
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: FAILED_TO_POST_LIKE,
+        payload: { data: "NETWORK_ERROR" }
+      });
+    }
+  };
+}
+
+export const deleteLike = (postId, token) => {
+  return async dispatch => {
+    try {
+      let response = await fetch(ServerEndPoint + `api/posts/like/${postId}`, {
+        method: "DELETE",
+        headers: {
+          "x-access-token": token
+        }
+      });
+      if (response.status === 200) {
+        let result = await response.json();
+        await dispatch({
+          type: SUCCEED_TO_DELETE_LIKE,
+          payload: result
+        });
+        return result;
+      } else {
+        await dispatch({
+          type: FAILED_TO_DELETE_LIKE,
+          payload: null
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: FAILED_TO_DELETE_LIKE,
+        payload: { data: "NETWORK_ERROR" }
+      });
+    }
+  };
+}
