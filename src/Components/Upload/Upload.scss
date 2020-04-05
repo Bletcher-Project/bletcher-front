@@ -6,7 +6,32 @@
   width: 500px;
 
   &__creator {
-    &-picture {
+    &-uploadPic {
+      width: 80%;
+      margin: auto;
+      margin-bottom: 5px;
+
+      label {
+        width: 100%;
+        margin: 0;
+        cursor: pointer;
+      }
+    }
+
+    &-ratioSelect {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      margin-bottom: 5px;
+
+      div {
+        border: 1px solid #ccd0d5;
+        cursor: pointer;
+        padding: 2px;
+      }
+    }
+
+    &-previewPic {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -16,11 +41,6 @@
       border: 2px dotted #ccd0d5;
       border-radius: 4px;
       margin-bottom: 20px;
-
-      label {
-        cursor: pointer;
-        margin: auto;
-      }
     }
 
     &-content {

@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 
 import * as PostAction from "../../Redux/Actions/PostAction";
 
+import ReactCrop from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
@@ -21,12 +23,17 @@ class Upload extends Component {
     this.state = {
       pictureImg: null,
       pictureImgUrl: null,
-      content: ""
+      content: "",
+      crop: {
+        unit: "%",
+        width: 60,
+        aspect: 16 / 9
+      }
     };
   }
 
   render() {
-    const { content } = this.state;
+    const { content, crop } = this.state;
     return (
       <div className="postUpload">
         <img
@@ -47,19 +54,41 @@ class Upload extends Component {
               style={{ display: "none" }}
               onChange={this.handlePictureImg}
             />
-            <div className="postUpload__creator-picture">
-              <label htmlFor="art-upload">
-                <img
-                  alt="post"
-                  src={
-                    this.state.pictureImgUrl
-                      ? this.state.pictureImgUrl
-                      : defaultUpload
-                  }
-                  width="100%"
-                />
-              </label>
+            <div className="postUpload__creator-uploadPic">
+              <Button
+                size="small"
+                fullWidth
+                disableRipple={true}
+                disableFocusRipple={true}
+              >
+                <label htmlFor="art-upload">select image</label>
+              </Button>
             </div>
+            {this.state.pictureImgUrl === null ? null : (
+              <div>
+                //TODO 비율 선택 함수 여러개 만들지 말고 한 개로 함축하기
+                <div className="postUpload__creator-ratioSelect">
+                  <Button onClick={this.handleCropRatio1to1}>1:1</Button>
+                  <Button onClick={this.handleCropRatio4to3}>4:3</Button>
+                  <Button onClick={this.handleCropRatio16to9}>16:9</Button>
+                  <Button onClick={this.handleCropRatioFree}>Free</Button>
+                </div>
+                <div className="postUpload__creator-previewPic">
+                  <ReactCrop
+                    alt="post"
+                    src={
+                      this.state.pictureImgUrl
+                        ? this.state.pictureImgUrl
+                        : defaultUpload
+                    }
+                    crop={crop}
+                    ruleOfThirds
+                    onChange={this.onCropChange}
+                    width="100%"
+                  />
+                </div>
+              </div>
+            )}
             <div className="postUpload__creator-content">
               <TextField
                 id="outlined-multiline"
@@ -86,6 +115,33 @@ class Upload extends Component {
       </div>
     );
   }
+
+  onCropChange = (crop, percentCrop) => {
+    // You could also use percentCrop:
+    // this.setState({ crop: percentCrop });
+    this.setState({ crop });
+  };
+
+  handleCropRatio1to1 = v => {
+    this.setState({
+      crop: Object.assign({}, this.state.crop, { aspect: 1 / 1 })
+    });
+  };
+  handleCropRatio4to3 = v => {
+    this.setState({
+      crop: Object.assign({}, this.state.crop, { aspect: 4 / 3 })
+    });
+  };
+  handleCropRatio16to9 = v => {
+    this.setState({
+      crop: Object.assign({}, this.state.crop, { aspect: 16 / 9 })
+    });
+  };
+  handleCropRatioFree = v => {
+    this.setState({
+      crop: Object.assign({}, this.state.crop, { aspect: null })
+    });
+  };
 
   handlePictureImg = e => {
     this.setState(
