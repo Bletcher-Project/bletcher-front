@@ -18,9 +18,17 @@ import filledScrapIcon from "../../Assets/icons/scrap-filled.png";
 const defaultProps = {};
 const propTypes = {};
 
+const mapStateToProps = state => {
+  return {
+    token: state.authReducer.token,
+    user: state.authReducer.user
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
-    deletePost: id => dispatch(PostAction.deletePost(id))
+    deletePost: id => dispatch(PostAction.deletePost(id)),
+    likePost: (postId, token) => dispatch(PostAction.postLike(postId, token))
   };
 };
 
@@ -161,9 +169,11 @@ class Post extends Component {
   }
 
   toggleLike = () => {
+    const { likePost, postId, token } = this.props;
     this.setState({ likeClicked: !this.state.likeClicked }, () => {
       if (this.state.likeClicked) {
         this.setState({ likeIcon: filledLikeIcon });
+        likePost(postId, token);
       } else {
         this.setState({ likeIcon: likeIcon });
       }
@@ -194,4 +204,4 @@ class Post extends Component {
 Post.defaultProps = defaultProps;
 Post.propTypes = propTypes;
 
-export default connect(null, mapDispatchToProps)(Post);
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

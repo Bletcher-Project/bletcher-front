@@ -11,7 +11,9 @@ import {
   SUCCEED_TO_UPLOAD_POST,
   FAILED_TO_UPLOAD_POST,
   SUCCEED_TO_DELETE_POST,
-  FAILED_TO_DELETE_POST
+  FAILED_TO_DELETE_POST,
+  SUCCEED_TO_POST_LIKE,
+  FAILED_TO_POST_LIKE
 } from "../Constants/action-types";
 
 export const getAllPosts = () => {
@@ -123,3 +125,34 @@ export const deletePost = id => {
 
   return { type: SUCCEED_TO_DELETE_POST };
 };
+
+export const postLike = (postId, token) => {
+  return async dispatch => {
+    try {
+      let response = await fetch(ServerEndPoint + `api/posts/like/${postId}`, {
+        method: "POST",
+        headers: {
+          "x-access-token": token
+        }
+      });
+      if (response.status === 200) {
+        let result = await response.json();
+        await dispatch({
+          type: SUCCEED_TO_POST_LIKE,
+          payload: result
+        });
+        return result.post;
+      } else {
+        await dispatch({
+          type: FAILED_TO_POST_LIKE,
+          payload: null
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: FAILED_TO_POST_LIKE,
+        payload: { data: "NETWORK_ERROR" }
+      });
+    }
+  };
+}

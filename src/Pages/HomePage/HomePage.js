@@ -10,6 +10,7 @@ const propTypes = {};
 
 const mapStateToProps = state => {
   return {
+    token: state.authReducer.token,
     user: state.authReducer.user
   };
 };
@@ -80,7 +81,7 @@ class HomePage extends Component {
   }
 
   getAllPosts = () => {
-    this.props.dispatch(PostAction.getAllPosts()).then(result => {
+    this.props.dispatch(PostAction.getAllPosts(this.props.token)).then(result => {
       this.setState({ feed: result, feedLoading: false });
     });
   };
