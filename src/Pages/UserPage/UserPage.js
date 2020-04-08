@@ -17,6 +17,7 @@ const propTypes = {};
 
 const mapStateToProps = state => {
   return {
+    token: state.authReducer.token,
     user: state.authReducer.user
   };
 };
@@ -41,7 +42,7 @@ class UserPage extends Component {
   }
 
   componentDidUpdate = async (prevProps, prevState) => {
-    if ((this.props.user && this.props.user !== prevProps.user)
+    if ((this.props.token && this.props.user !== prevProps.user)
       || prevProps.match.params.username !== this.props.match.params.username) {
       await this.setUser();
       await this.getUserPost();
@@ -111,6 +112,7 @@ class UserPage extends Component {
           {selectedPost ?
             <Modal isOpen={openModal} toggle={() => this.setState({ openModal: !openModal })} centered={true}>
               <Post
+                postId={selectedPost.id}
                 isMyPost={isMyPage}
                 userProfileImg={selectedPost.User.profileImgName}
                 userName={selectedPost.User.name}
@@ -122,7 +124,8 @@ class UserPage extends Component {
                 ]} //////
                 postImg={selectedPost.postImgName}
                 postDate={selectedPost.createdAt}
-                postLike={135440} //////
+                isLiked={selectedPost.isLiked}
+                postLike={selectedPost.likeCount}
                 postComments={[
                   { id: 1, author: "Endrew", comment: "good job" },
                   { id: 2, author: "Sdi_dk", comment: "awesome" }
@@ -148,10 +151,10 @@ class UserPage extends Component {
   }
 
   getUserPost = async () => {
-    const { dispatch } = this.props;
+    const { dispatch, token } = this.props;
     const { userInfo, userPostImgs } = this.state;
     const postImg = [];
-    await dispatch(PostAction.getPostByUserId(userInfo.id)).then(posts => {
+    await dispatch(PostAction.getPostByUserId(userInfo.id, token)).then(posts => {
       posts.forEach(post => {
         postImg.push({ src: `${ServerEndPoint}image/post/${post.postImgName}`, width: parseInt(post.postImgWidth), height: parseInt(post.postImgHeight), key: String(post.id) });
       });
@@ -160,8 +163,8 @@ class UserPage extends Component {
   }
 
   handleClickPost = (e, { photo, index }) => {
-    const { dispatch } = this.props;
-    dispatch(PostAction.getPostByPostId(photo.key)).then(post => {
+    const { dispatch, token } = this.props;
+    dispatch(PostAction.getPostByPostId(photo.key, token)).then(post => {
       this.setState({ selectedPost: post, openModal: true });
     });
   }

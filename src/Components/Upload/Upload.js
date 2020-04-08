@@ -11,9 +11,20 @@ import TextField from "@material-ui/core/TextField";
 import backIcon from "../../Assets/icons/signup_back.svg";
 import defaultUpload from "../../Assets/icons/creator-upload.png";
 
+const defaultProps = {};
+const propTypes = {};
+
+const mapStateToProps = state => {
+  return {
+    token: state.authReducer.token,
+    user: state.authReducer.user
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
-    uploadPost: params => dispatch(PostAction.uploadPost(params))
+    uploadPost: (params, token) =>
+      dispatch(PostAction.uploadPost(params, token))
   };
 };
 
@@ -169,8 +180,7 @@ class Upload extends Component {
       params.append("img", this.state.pictureImg);
       params.append("content", this.state.content);
       params.append("UserId", this.props.userId);
-      const postUpload = await this.props.uploadPost(params);
-
+      const postUpload = await this.props.uploadPost(params, this.props.token);
       return postUpload ? window.location.reload() : alert("upload failed!");
     } else {
       alert("Please upload your art first :)");
@@ -178,4 +188,7 @@ class Upload extends Component {
   };
 }
 
-export default connect(null, mapDispatchToProps)(Upload);
+Upload.defaultProps = defaultProps;
+Upload.propTypes = propTypes;
+
+export default connect(mapStateToProps, mapDispatchToProps)(Upload);
