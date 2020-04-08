@@ -111,11 +111,15 @@ export const getPostByPostId = (postId, token) => {
   };
 };
 
-export const uploadPost = payload => {
+export const uploadPost = (payload, token) => {
   return async dispatch => {
     await axios
-      .post(ServerEndPoint + "api/posts", payload)
-      .then(res => { })
+      .post(ServerEndPoint + "api/posts", payload, {
+        headers: { "x-access-token": token }
+      })
+      .then(res => {
+        dispatch({ type: SUCCEED_TO_UPLOAD_POST });
+      })
       .catch(err => {
         dispatch({ type: FAILED_TO_UPLOAD_POST });
       });
@@ -124,9 +128,11 @@ export const uploadPost = payload => {
   };
 };
 
-export const deletePost = id => {
+export const deletePost = (id, token) => {
   axios
-    .delete(ServerEndPoint + "api/posts/" + id)
+    .delete(ServerEndPoint + "api/posts/" + id, {
+      headers: { "x-access-token": token }
+    })
     .then(res => {
       return res;
     })
@@ -166,7 +172,7 @@ export const postLike = (postId, token) => {
       });
     }
   };
-}
+};
 
 export const deleteLike = (postId, token) => {
   return async dispatch => {
@@ -197,4 +203,4 @@ export const deleteLike = (postId, token) => {
       });
     }
   };
-}
+};
