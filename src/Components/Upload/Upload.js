@@ -9,7 +9,6 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
 import backIcon from "../../Assets/icons/signup_back.svg";
-import defaultUpload from "../../Assets/icons/creator-upload.png";
 
 const defaultProps = {};
 const propTypes = {};
@@ -38,7 +37,13 @@ class Upload extends Component {
       crop: {
         aspect: 16 / 9, //default
         croppedImageUrl: null
-      }
+      },
+      aspectRatioList: [
+        { ratio: { width: 1, height: 1 } },
+        { ratio: { width: 4, height: 3 } },
+        { ratio: { width: 16, height: 9 } },
+        { ratio: { width: null, height: null } }
+      ]
     };
     this.handleCropImage = this.handleCropImage.bind(this);
   }
@@ -78,12 +83,26 @@ class Upload extends Component {
             </div>
             {this.state.pictureImgUrl === null ? null : (
               <div>
-                {/* //TODO 비율 선택 함수 여러개 만들지 말고 한 개로 함축하기 */}
                 <div className="postUpload__creator-ratioSelect">
-                  <Button onClick={this.handleCropRatio1to1}>1:1</Button>
-                  <Button onClick={this.handleCropRatio4to3}>4:3</Button>
-                  <Button onClick={this.handleCropRatio16to9}>16:9</Button>
-                  <Button onClick={this.handleCropRatioFree}>Free</Button>
+                  {this.state.aspectRatioList.map((aspect, i) => {
+                    return (
+                      <Button
+                        key={i}
+                        ratio-value={
+                          aspect.ratio.width !== null
+                            ? aspect.ratio.width / aspect.ratio.height
+                            : 0
+                        }
+                        onClick={this.handleCropRatio}
+                      >
+                        {aspect.ratio.width !== null
+                          ? JSON.stringify(aspect.ratio.width) +
+                            `:` +
+                            JSON.stringify(aspect.ratio.height)
+                          : "Free"}
+                      </Button>
+                    );
+                  })}
                 </div>
                 <div className="postUpload__creator-previewPic">
                   <Button onClick={this.handleCropImage}>Crop Image</Button>
@@ -92,20 +111,19 @@ class Upload extends Component {
                     ref={cropper => {
                       this.cropper = cropper;
                     }}
-                    src={
-                      this.state.pictureImgUrl
-                        ? this.state.pictureImgUrl
-                        : defaultUpload
-                    }
+                    src={this.state.pictureImgUrl}
                     style={{ width: "100%", maxHeight: "300px" }}
                     // Cropper.js options
-                    aspectRatio={this.state.crop.aspect}
+                    center
+                    aspectRatio={Number(this.state.crop.aspect)}
                   />
-                  <img
-                    alt="cropped"
-                    style={{ width: "100%", height: "auto" }}
-                    src={this.state.crop.croppedImageUrl}
-                  />
+                  {this.state.crop.croppedImageUrl && (
+                    <img
+                      alt="cropped"
+                      style={{ width: "100%", height: "auto" }}
+                      src={this.state.crop.croppedImageUrl}
+                    />
+                  )}
                 </div>
               </div>
             )}
@@ -152,24 +170,12 @@ class Upload extends Component {
     });
   }
 
-  handleCropRatio1to1 = v => {
+  handleCropRatio = e => {
+    const ratio = e.currentTarget.getAttribute("ratio-value");
     this.setState({
-      crop: Object.assign({}, this.state.crop, { aspect: 1 / 1 })
-    });
-  };
-  handleCropRatio4to3 = v => {
-    this.setState({
-      crop: Object.assign({}, this.state.crop, { aspect: 4 / 3 })
-    });
-  };
-  handleCropRatio16to9 = v => {
-    this.setState({
-      crop: Object.assign({}, this.state.crop, { aspect: 16 / 9 })
-    });
-  };
-  handleCropRatioFree = v => {
-    this.setState({
-      crop: Object.assign({}, this.state.crop, { aspect: null })
+      crop: Object.assign({}, this.state.crop, {
+        aspect: ratio
+      })
     });
   };
 
@@ -198,7 +204,7 @@ class Upload extends Component {
   };
 
   handlePostUpload = () => {
-    if (this.state.pictureImg) {
+    if (this.state.pictureImg && this.state.crop.croppedImageUrl) {
       this.cropper
         .getCroppedCanvas({ imageSmoothingQuality: "high" })
         .toBlob(async croppedImg => {
