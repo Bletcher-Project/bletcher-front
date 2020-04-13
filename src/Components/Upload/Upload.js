@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 
 import * as PostAction from "../../Redux/Actions/PostAction";
 
-import ReactCrop from "react-image-crop";
-import "react-image-crop/dist/ReactCrop.css";
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
@@ -34,20 +34,17 @@ class Upload extends Component {
     this.state = {
       pictureImg: null,
       pictureImgUrl: null,
-      croppedImg: null,
-      croppedImageUrl: null,
       content: "",
       crop: {
-        unit: "%",
-        width: 60,
-        height: 60,
-        aspect: 16 / 9
+        aspect: 16 / 9, //default
+        croppedImageUrl: null
       }
     };
+    this.handleCropImage = this.handleCropImage.bind(this);
   }
 
   render() {
-    const { content, crop, croppedImageUrl } = this.state;
+    const { content } = this.state;
     return (
       <div className="postUpload">
         <img
@@ -59,6 +56,7 @@ class Upload extends Component {
         />
 
         {parseInt(this.props.userType) === 1 ? (
+          /* Upload Section for Creator */
           <div className="postUpload__creator">
             <input
               accept="image/*"
@@ -80,7 +78,7 @@ class Upload extends Component {
             </div>
             {this.state.pictureImgUrl === null ? null : (
               <div>
-                //TODO 비율 선택 함수 여러개 만들지 말고 한 개로 함축하기
+                {/* //TODO 비율 선택 함수 여러개 만들지 말고 한 개로 함축하기 */}
                 <div className="postUpload__creator-ratioSelect">
                   <Button onClick={this.handleCropRatio1to1}>1:1</Button>
                   <Button onClick={this.handleCropRatio4to3}>4:3</Button>
@@ -88,27 +86,26 @@ class Upload extends Component {
                   <Button onClick={this.handleCropRatioFree}>Free</Button>
                 </div>
                 <div className="postUpload__creator-previewPic">
-                  <ReactCrop
-                    alt="post"
+                  <Button onClick={this.handleCropImage}>Crop Image</Button>
+                  <Cropper
+                    alt="original"
+                    ref={cropper => {
+                      this.cropper = cropper;
+                    }}
                     src={
                       this.state.pictureImgUrl
                         ? this.state.pictureImgUrl
                         : defaultUpload
                     }
-                    crop={crop}
-                    ruleOfThirds
-                    onComplete={this.onCropComplete}
-                    onChange={this.onCropChange}
-                    onImageLoaded={this.onImageLoaded}
-                    width="100%"
+                    style={{ width: "100%", maxHeight: "300px" }}
+                    // Cropper.js options
+                    aspectRatio={this.state.crop.aspect}
                   />
-                  {croppedImageUrl && (
-                    <img
-                      alt="Crop"
-                      style={{ maxWidth: "100%" }}
-                      src={croppedImageUrl}
-                    />
-                  )}
+                  <img
+                    alt="cropped"
+                    style={{ width: "100%", height: "auto" }}
+                    src={this.state.crop.croppedImageUrl}
+                  />
                 </div>
               </div>
             )}
@@ -127,6 +124,7 @@ class Upload extends Component {
             </div>
           </div>
         ) : (
+          /* Upload Section for Sketcher */
           <div className="postUpload__sketcher">It's for Sketcher</div>
         )}
 
@@ -139,13 +137,20 @@ class Upload extends Component {
     );
   }
 
-  onCropChange = (crop, percentCrop) => {
-    this.setState({ crop });
-  };
-
-  onImageLoaded = image => {
-    this.imageRef = image;
-  };
+  /*
+  Crop Image functions
+*/
+  handleCropImage() {
+    if (typeof this.cropper.getCroppedCanvas() === "undefined") {
+      return;
+    }
+    const croppedResultUrl = this.cropper.getCroppedCanvas().toDataURL();
+    this.setState({
+      crop: Object.assign({}, this.state.crop, {
+        croppedImageUrl: croppedResultUrl
+      })
+    });
+  }
 
   handleCropRatio1to1 = v => {
     this.setState({
@@ -168,61 +173,6 @@ class Upload extends Component {
     });
   };
 
-  onCropComplete = crop => {
-    this.makeClientCrop(crop);
-  };
-
-  async makeClientCrop(crop) {
-    if (this.imageRef && crop.width && crop.height) {
-      const croppedImageUrl = await this.getCroppedImg(
-        this.imageRef,
-        crop,
-        "newFile.jpeg"
-      );
-      this.setState({ croppedImageUrl });
-    }
-  }
-
-  getCroppedImg = async (image, crop, fileName) => {
-    const canvas = document.createElement("canvas");
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
-    canvas.width = crop.width;
-    canvas.height = crop.height;
-    const ctx = canvas.getContext("2d");
-
-    ctx.drawImage(
-      image,
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
-      0,
-      0,
-      crop.width,
-      crop.height
-    );
-
-    return new Promise((resolve, reject) => {
-      canvas.toBlob(
-        blob => {
-          if (!blob) {
-            //reject(new Error('Canvas is empty'));
-            console.error("Canvas is empty");
-            return;
-          }
-          blob.name = fileName;
-          window.URL.revokeObjectURL(this.fileUrl);
-          this.fileUrl = window.URL.createObjectURL(blob);
-          this.setState({ croppedImg: blob });
-          resolve(this.fileUrl);
-        },
-        "image/jpeg",
-        1
-      );
-    });
-  };
-
   handlePictureImg = e => {
     this.setState(
       {
@@ -239,18 +189,31 @@ class Upload extends Component {
     );
   };
 
+  /*
+  Post Upload functions
+*/
+
   handleContent = e => {
     this.setState({ content: e.target.value });
   };
 
-  handlePostUpload = async () => {
+  handlePostUpload = () => {
     if (this.state.pictureImg) {
-      const params = new FormData();
-      params.append("img", this.state.croppedImg);
-      params.append("content", this.state.content);
-      params.append("UserId", this.props.userId);
-      const postUpload = await this.props.uploadPost(params, this.props.token);
-      return postUpload ? window.location.reload() : alert("upload failed!");
+      this.cropper
+        .getCroppedCanvas({ imageSmoothingQuality: "high" })
+        .toBlob(async croppedImg => {
+          const params = new FormData();
+          params.append("img", croppedImg);
+          params.append("content", this.state.content);
+          params.append("UserId", this.props.userId);
+          const postUpload = await this.props.uploadPost(
+            params,
+            this.props.token
+          );
+          return postUpload
+            ? window.location.reload()
+            : alert("upload failed!");
+        });
     } else {
       alert("Please upload your art first :)");
     }
