@@ -36,7 +36,7 @@ class Upload extends Component {
       content: "",
       crop: {
         aspect: 16 / 9, //default
-        croppedImageUrl: null
+        croppedImgUrl: null
       },
       aspectRatioList: [
         { ratio: { width: 1, height: 1 } },
@@ -53,10 +53,9 @@ class Upload extends Component {
     return (
       <div className="postUpload">
         <img
-          alt="back"
+          className="backBtn"
+          alt="backBtn"
           src={backIcon}
-          width="35px"
-          style={{ cursor: "pointer" }}
           onClick={this.props.handlePrevStep}
         />
 
@@ -107,21 +106,21 @@ class Upload extends Component {
                 <div className="postUpload__creator-previewPic">
                   <Button onClick={this.handleCropImage}>Crop Image</Button>
                   <Cropper
+                    className="cropper"
                     alt="original"
+                    src={this.state.pictureImgUrl}
                     ref={cropper => {
                       this.cropper = cropper;
                     }}
-                    src={this.state.pictureImgUrl}
-                    style={{ width: "100%", maxHeight: "300px" }}
                     // Cropper.js options
                     center
                     aspectRatio={Number(this.state.crop.aspect)}
                   />
-                  {this.state.crop.croppedImageUrl && (
+                  {this.state.crop.croppedImgUrl && (
                     <img
+                      className="cropped"
                       alt="cropped"
-                      style={{ width: "100%", height: "auto" }}
-                      src={this.state.crop.croppedImageUrl}
+                      src={this.state.crop.croppedImgUrl}
                     />
                   )}
                 </div>
@@ -162,10 +161,9 @@ class Upload extends Component {
     if (typeof this.cropper.getCroppedCanvas() === "undefined") {
       return;
     }
-    const croppedResultUrl = this.cropper.getCroppedCanvas().toDataURL();
     this.setState({
       crop: Object.assign({}, this.state.crop, {
-        croppedImageUrl: croppedResultUrl
+        croppedImgUrl: this.cropper.getCroppedCanvas().toDataURL()
       })
     });
   }
@@ -198,13 +196,12 @@ class Upload extends Component {
   /*
   Post Upload functions
 */
-
   handleContent = e => {
     this.setState({ content: e.target.value });
   };
 
   handlePostUpload = () => {
-    if (this.state.pictureImg && this.state.crop.croppedImageUrl) {
+    if (this.state.pictureImg && this.state.crop.croppedImgUrl) {
       this.cropper
         .getCroppedCanvas({ imageSmoothingQuality: "high" })
         .toBlob(async croppedImg => {

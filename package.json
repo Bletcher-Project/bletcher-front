@@ -16,7 +16,6 @@
     "react-background-slider": "^1.2.0",
     "react-cropper": "^1.3.0",
     "react-dom": "^16.11.0",
-    "react-image-crop": "^8.6.1",
     "react-images-upload": "^1.2.7",
     "react-photo-gallery": "^8.0.0",
     "react-redux": "^7.1.3",
