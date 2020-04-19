@@ -33,19 +33,9 @@ class Upload extends Component {
     this.state = {
       pictureImg: null,
       pictureImgUrl: null,
-      content: "",
-      crop: {
-        aspect: 16 / 9, //default
-        croppedImgUrl: null
-      },
-      aspectRatioList: [
-        { ratio: { width: 1, height: 1 } },
-        { ratio: { width: 4, height: 3 } },
-        { ratio: { width: 16, height: 9 } },
-        { ratio: { width: null, height: null } }
-      ]
+      croppedImgUrl: null,
+      content: ""
     };
-    this.handleCropImage = this.handleCropImage.bind(this);
   }
 
   render() {
@@ -81,49 +71,17 @@ class Upload extends Component {
               </Button>
             </div>
             {this.state.pictureImgUrl === null ? null : (
-              <div>
-                <div className="postUpload__creator-ratioSelect">
-                  {this.state.aspectRatioList.map((aspect, i) => {
-                    return (
-                      <Button
-                        key={i}
-                        ratio-value={
-                          aspect.ratio.width !== null
-                            ? aspect.ratio.width / aspect.ratio.height
-                            : 0
-                        }
-                        onClick={this.handleCropRatio}
-                      >
-                        {aspect.ratio.width !== null
-                          ? JSON.stringify(aspect.ratio.width) +
-                            `:` +
-                            JSON.stringify(aspect.ratio.height)
-                          : "Free"}
-                      </Button>
-                    );
-                  })}
-                </div>
-                <div className="postUpload__creator-previewPic">
-                  <Button onClick={this.handleCropImage}>Crop Image</Button>
-                  <Cropper
-                    className="cropper"
-                    alt="original"
-                    src={this.state.pictureImgUrl}
-                    ref={cropper => {
-                      this.cropper = cropper;
-                    }}
-                    // Cropper.js options
-                    center
-                    aspectRatio={Number(this.state.crop.aspect)}
-                  />
-                  {this.state.crop.croppedImgUrl && (
-                    <img
-                      className="cropped"
-                      alt="cropped"
-                      src={this.state.crop.croppedImgUrl}
-                    />
-                  )}
-                </div>
+              <div className="postUpload__creator-previewPic">
+                <Cropper
+                  className="cropper"
+                  alt="original"
+                  src={this.state.pictureImgUrl}
+                  ref={cropper => {
+                    this.cropper = cropper;
+                  }}
+                  // Cropper.js options
+                  center
+                />
               </div>
             )}
             <div className="postUpload__creator-content">
@@ -154,29 +112,6 @@ class Upload extends Component {
     );
   }
 
-  /*
-  Crop Image functions
-*/
-  handleCropImage() {
-    if (typeof this.cropper.getCroppedCanvas() === "undefined") {
-      return;
-    }
-    this.setState({
-      crop: Object.assign({}, this.state.crop, {
-        croppedImgUrl: this.cropper.getCroppedCanvas().toDataURL()
-      })
-    });
-  }
-
-  handleCropRatio = e => {
-    const ratio = e.currentTarget.getAttribute("ratio-value");
-    this.setState({
-      crop: Object.assign({}, this.state.crop, {
-        aspect: ratio
-      })
-    });
-  };
-
   handlePictureImg = e => {
     this.setState(
       {
@@ -201,7 +136,8 @@ class Upload extends Component {
   };
 
   handlePostUpload = () => {
-    if (this.state.pictureImg && this.state.crop.croppedImgUrl) {
+    if (this.state.pictureImg) {
+      const imgInfo = this.cropper.getCropBoxData();
       this.cropper
         .getCroppedCanvas({ imageSmoothingQuality: "high" })
         .toBlob(async croppedImg => {
@@ -209,6 +145,8 @@ class Upload extends Component {
           params.append("img", croppedImg);
           params.append("content", this.state.content);
           params.append("UserId", this.props.userId);
+          params.append("width", imgInfo.width);
+          params.append("height", imgInfo.height);
           const postUpload = await this.props.uploadPost(
             params,
             this.props.token
