@@ -12,6 +12,7 @@ import commaNumber from "comma-number";
 import likeIcon from "../../Assets/icons/heart.png";
 import filledLikeIcon from "../../Assets/icons/heart-filled.png";
 import commentIcon from "../../Assets/icons/comment.png";
+import filledCommentIcon from "../../Assets/icons/comment-filled.png";
 import scrapIcon from "../../Assets/icons/scrap.png";
 import filledScrapIcon from "../../Assets/icons/scrap-filled.png";
 
@@ -41,7 +42,9 @@ class Post extends Component {
       likeIcon: likeIcon,
       likeActionCount: 0,
       scrapClicked: false,
-      scrapIcon: scrapIcon
+      scrapIcon: scrapIcon,
+      commentClicked: false,
+      commentIcon: commentIcon
     };
   }
 
@@ -62,7 +65,8 @@ class Post extends Component {
       likeClicked,
       likeIcon,
       likeActionCount,
-      scrapIcon
+      scrapIcon,
+      commentIcon
     } = this.state;
 
     return (
@@ -188,7 +192,13 @@ class Post extends Component {
   };
 
   toggleComment = () => {
-    this.setState({ writeComment: !this.state.writeComment });
+    this.setState({ commentClicked: !this.state.commentClicked }, () => {
+      if (this.state.commentClicked) {
+        this.setState({ commentIcon: filledCommentIcon });
+      } else {
+        this.setState({ commentIcon: commentIcon });
+      }
+    });
   };
 
   toggleScrap = () => {
