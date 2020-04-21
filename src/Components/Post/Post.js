@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { ServerEndPoint } from "../../Configs/Server";
 import * as PostAction from "../../Redux/Actions/PostAction";
 
-import { Thumbnail } from "../../Components";
+import { Thumbnail, Comment } from "../../Components";
 
 import moment from "moment";
 import commaNumber from "comma-number";
@@ -30,7 +30,8 @@ const mapDispatchToProps = dispatch => {
   return {
     deletePost: id => dispatch(PostAction.deletePost(id)),
     likePost: (postId, token) => dispatch(PostAction.postLike(postId, token)),
-    deleteLikePost: (postId, token) => dispatch(PostAction.deleteLike(postId, token))
+    deleteLikePost: (postId, token) =>
+      dispatch(PostAction.deleteLike(postId, token))
   };
 };
 
@@ -66,114 +67,117 @@ class Post extends Component {
       likeIcon,
       likeActionCount,
       scrapIcon,
+      commentClicked,
       commentIcon
     } = this.state;
 
     return (
       <div className="post">
-        <div className="post__header">
-          <Thumbnail
-            className="post__header__userProfile"
-            size="50"
-            src={userProfileImg !== null ? `${ServerEndPoint}image/profile/${userProfileImg}` : null}
-            type={userType}
-            userName={userName}
-          />
-          <div className="post__header__postInfo">
-            <div>
-              <span className="post__header__postInfo__userName">{userName}</span>
-              <span className="post__header__postInfo__userType">
-                [{userType === "0" ? "Sketcher" : "Creator"}]
-              </span>
-            </div>
-
-            <div className="post__header__postInfo__postDate">
-              {moment(postDate).format("YYYY-MM-DD HH:mm:ss")}
-            </div>
-          </div>
-        </div>
-
-        <div className="post__body">
-          <img
-            className="post__body__postImage"
-            src={`${ServerEndPoint}image/post/${postImg}`}
-            alt="postImage"
-          />
-        </div>
-
-        <div className="post__footer">
-          <div className="post__footer__postContent">{postContent}</div>
-          <div className="post__footer__postHashtag">
-            {postHashTags.map(hashtags => (
-              <div className="post__footer__postHashtag-tagbox" key={hashtags.id}>
-                <span>#{hashtags.tags}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="post__footer__communicateArea">
-            <div className="post__footer__communicateArea__like" onClick={this.toggleLike}>
-              <img
-                src={likeClicked ? filledLikeIcon : likeIcon}
-                width="25px"
-                height="25px"
-                alt="likeIcon"
-              />
-              {isMyPost && (postLike + likeActionCount > 0) ? (
-                <span className="post__footer__communicateArea__like-num">
-                  {commaNumber(postLike + likeActionCount)}
+        <div className="post__postSection">
+          <div className="post__postSection__header">
+            <Thumbnail
+              className="post__postSection__header__userProfile"
+              size="50"
+              src={
+                userProfileImg !== null
+                  ? `${ServerEndPoint}image/profile/${userProfileImg}`
+                  : null
+              }
+              type={userType}
+              userName={userName}
+            />
+            <div className="post__postSection__header__postInfo">
+              <div>
+                <span className="post__postSection__header__postInfo__userName">
+                  {userName}
                 </span>
-              ) : null}
-            </div>
+                <span className="post__postSection__header__postInfo__userType">
+                  [{userType === "0" ? "Sketcher" : "Creator"}]
+                </span>
+              </div>
 
-            <div className="post__footer__communicateArea__comment" onClick={this.toggleComment}>
-              <img
-                src={commentIcon}
-                width="25px"
-                height="25px"
-                alt="commentIcon"
-              />
-              <span className="post__footer__communicateArea__comment-num">{commaNumber(postComments.length)}</span>
-            </div>
-
-            <div className="post__footer__communicateArea__scrap" onClick={this.toggleScrap}>
-              <img
-                src={scrapIcon}
-                width="25px"
-                height="25px"
-                alt="scrapIcon"
-              />
+              <div className="post__postSection__header__postInfo__postDate">
+                {moment(postDate).format("YYYY-MM-DD HH:mm:ss")}
+              </div>
             </div>
           </div>
-          {/* 
-          {postComments
-            .slice(
-              0,
-              moreCommentClicked & (postComments.length > 2)
-                ? postComments.length
-                : !moreCommentClicked & (postComments.length > 2)
-                  ? 2
-                  : postComments.length
-            )
-            .map(comment => (
-              <span key={comment.id} style={{ fontSize: "0.9rem" }}>
-                <strong className="mr-2">{comment.author}</strong>
-                <span>{comment.comment}</span>
-                <br></br>
-              </span>
-            ))}
-          <span
-            className="small"
-            style={{ cursor: "pointer" }}
-            onClick={this.toggleMoreComment}
-          >
-            {postComments.length > 2
-              ? moreCommentClicked
-                ? `close comment...`
-                : `more comment...`
-              : null}
-          </span> */}
+
+          <div className="post__postSection__body">
+            <img
+              className="post__postSection__body__postImage"
+              src={`${ServerEndPoint}image/post/${postImg}`}
+              alt="postImage"
+            />
+          </div>
+
+          <div className="post__postSection__footer">
+            <div className="post__postSection__footer__postContent">
+              {postContent}
+            </div>
+            <div className="post__postSection__footer__postHashtag">
+              {postHashTags.map(hashtags => (
+                <div
+                  className="post__postSection__footer__postHashtag-tagbox"
+                  key={hashtags.id}
+                >
+                  <span>#{hashtags.tags}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="post__postSection__footer__communicateArea">
+              <div
+                className="post__postSection__footer__communicateArea__like"
+                onClick={this.toggleLike}
+              >
+                <img
+                  src={likeClicked ? filledLikeIcon : likeIcon}
+                  width="25px"
+                  height="25px"
+                  alt="likeIcon"
+                />
+                {isMyPost && postLike + likeActionCount > 0 ? (
+                  <span className="post__postSection__footer__communicateArea__like-num">
+                    {commaNumber(postLike + likeActionCount)}
+                  </span>
+                ) : null}
+              </div>
+
+              <div
+                className="post__postSection__footer__communicateArea__comment"
+                onClick={this.toggleComment}
+              >
+                <img
+                  src={commentIcon}
+                  width="25px"
+                  height="25px"
+                  alt="commentIcon"
+                />
+                <span className="post__postSection__footer__communicateArea__comment-num">
+                  {commaNumber(postComments.length)}
+                </span>
+              </div>
+
+              <div
+                className="post__postSection__footer__communicateArea__scrap"
+                onClick={this.toggleScrap}
+              >
+                <img
+                  src={scrapIcon}
+                  width="25px"
+                  height="25px"
+                  alt="scrapIcon"
+                />
+              </div>
+            </div>
+          </div>
         </div>
+
+        {commentClicked ?
+          <div className="post__commentSection">
+            <Comment />
+          </div>
+          : null}
       </div>
     );
   }
@@ -215,10 +219,12 @@ class Post extends Component {
     const postDelete = await this.props.deletePost(this.props.postId);
     return postDelete ? window.location.reload() : alert("delete failed!");
   };
-
 }
 
 Post.defaultProps = defaultProps;
 Post.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Post);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Post);

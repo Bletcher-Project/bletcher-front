@@ -5,6 +5,7 @@ import TypeButton from "./TypeButton/TypeButton";
 import SignUpInput from "./SignUpInput/SignUpInput";
 import SignUpStepper from "./SignUpStepper/SignUpStepper";
 import Post from "./Post/Post";
+import Comment from "./Comment/Comment";
 import Thumbnail from "./Thumbnail/Thumbnail";
 import Upload from "./Upload/Upload";
 
@@ -16,6 +17,7 @@ export {
   SignUpInput,
   SignUpStepper,
   Post,
+  Comment,
   Thumbnail,
   Upload
 };
