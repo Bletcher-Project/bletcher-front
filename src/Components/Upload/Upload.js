@@ -3,11 +3,12 @@ import { connect } from "react-redux";
 
 import * as PostAction from "../../Redux/Actions/PostAction";
 
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
 import backIcon from "../../Assets/icons/signup_back.svg";
-import defaultUpload from "../../Assets/icons/creator-upload.png";
 
 const defaultProps = {};
 const propTypes = {};
@@ -32,6 +33,7 @@ class Upload extends Component {
     this.state = {
       pictureImg: null,
       pictureImgUrl: null,
+      croppedImgUrl: null,
       content: ""
     };
   }
@@ -41,14 +43,14 @@ class Upload extends Component {
     return (
       <div className="postUpload">
         <img
-          alt="back"
+          className="backBtn"
+          alt="backBtn"
           src={backIcon}
-          width="35px"
-          style={{ cursor: "pointer" }}
           onClick={this.props.handlePrevStep}
         />
 
         {parseInt(this.props.userType) === 1 ? (
+          /* Upload Section for Creator */
           <div className="postUpload__creator">
             <input
               accept="image/*"
@@ -58,19 +60,30 @@ class Upload extends Component {
               style={{ display: "none" }}
               onChange={this.handlePictureImg}
             />
-            <div className="postUpload__creator-picture">
-              <label htmlFor="art-upload">
-                <img
-                  alt="post"
-                  src={
-                    this.state.pictureImgUrl
-                      ? this.state.pictureImgUrl
-                      : defaultUpload
-                  }
-                  width="100%"
-                />
-              </label>
+            <div className="postUpload__creator-uploadPic">
+              <Button
+                size="small"
+                fullWidth
+                disableRipple={true}
+                disableFocusRipple={true}
+              >
+                <label htmlFor="art-upload">select image</label>
+              </Button>
             </div>
+            {this.state.pictureImgUrl === null ? null : (
+              <div className="postUpload__creator-previewPic">
+                <Cropper
+                  className="cropper"
+                  alt="original"
+                  src={this.state.pictureImgUrl}
+                  ref={cropper => {
+                    this.cropper = cropper;
+                  }}
+                  // Cropper.js options
+                  center
+                />
+              </div>
+            )}
             <div className="postUpload__creator-content">
               <TextField
                 id="outlined-multiline"
@@ -86,6 +99,7 @@ class Upload extends Component {
             </div>
           </div>
         ) : (
+          /* Upload Section for Sketcher */
           <div className="postUpload__sketcher">It's for Sketcher</div>
         )}
 
@@ -114,18 +128,33 @@ class Upload extends Component {
     );
   };
 
+  /*
+  Post Upload functions
+*/
   handleContent = e => {
     this.setState({ content: e.target.value });
   };
 
-  handlePostUpload = async () => {
+  handlePostUpload = () => {
     if (this.state.pictureImg) {
-      const params = new FormData();
-      params.append("img", this.state.pictureImg);
-      params.append("content", this.state.content);
-      params.append("UserId", this.props.userId);
-      const postUpload = await this.props.uploadPost(params, this.props.token);
-      return postUpload ? window.location.reload() : alert("upload failed!");
+      const imgInfo = this.cropper.getCropBoxData();
+      this.cropper
+        .getCroppedCanvas({ imageSmoothingQuality: "high" })
+        .toBlob(async croppedImg => {
+          const params = new FormData();
+          params.append("img", croppedImg, this.state.pictureImg.name);
+          params.append("content", this.state.content);
+          params.append("UserId", this.props.userId);
+          params.append("width", imgInfo.width);
+          params.append("height", imgInfo.height);
+          const postUpload = await this.props.uploadPost(
+            params,
+            this.props.token
+          );
+          return postUpload
+            ? window.location.reload()
+            : alert("upload failed!");
+        });
     } else {
       alert("Please upload your art first :)");
     }
