@@ -142,7 +142,7 @@ class Upload extends Component {
         .getCroppedCanvas({ imageSmoothingQuality: "high" })
         .toBlob(async croppedImg => {
           const params = new FormData();
-          params.append("img", croppedImg);
+          params.append("img", croppedImg, this.state.pictureImg.name);
           params.append("content", this.state.content);
           params.append("UserId", this.props.userId);
           params.append("width", imgInfo.width);
