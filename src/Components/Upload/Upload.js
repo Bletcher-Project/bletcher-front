@@ -67,7 +67,7 @@ class Upload extends Component {
                 disableRipple={true}
                 disableFocusRipple={true}
               >
-                <label htmlFor="art-upload">select image</label>
+                <label htmlFor="art-upload">upload image</label>
               </Button>
             </div>
             {this.state.pictureImgUrl === null ? null : (
@@ -100,7 +100,55 @@ class Upload extends Component {
           </div>
         ) : (
           /* Upload Section for Sketcher */
-          <div className="postUpload__sketcher">It's for Sketcher</div>
+          <div className="postUpload__sketcher">
+            <input
+              accept="image/*"
+              type="file"
+              name="img"
+              id="art-upload"
+              style={{ display: "none" }}
+              onChange={this.handlePictureImg}
+            />
+            <div className="postUpload__sketcher-uploadPic">
+              <div>
+                <Button>
+                  <label htmlFor="art-upload">upload image</label>
+                </Button>
+                {this.state.pictureImgUrl === null ? null : (
+                  <img
+                    alt="original"
+                    width="100%"
+                    src={this.state.pictureImgUrl}
+                  />
+                )}
+              </div>
+              <div>
+                <Button>
+                  <label htmlFor="art-upload">select style image</label>
+                </Button>
+                {/* It is sample picture for later */}
+                <img
+                  alt="style_preview"
+                  width="100%"
+                  src="https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/71Hk/image/Kdo1cF-dckIZlXOCIIKene-sSmo.jpg"
+                />
+              </div>
+            </div>
+
+            <div className="postUpload__sketcher-content">
+              <TextField
+                id="outlined-multiline"
+                placeholder="Type your art..."
+                value={content}
+                multiline
+                rows="3"
+                rowsMax="10"
+                variant="outlined"
+                fullWidth
+                onChange={this.handleContent}
+              />
+            </div>
+          </div>
         )}
 
         <div className="postUpload__upload">

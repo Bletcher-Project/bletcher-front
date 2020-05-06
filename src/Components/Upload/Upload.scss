@@ -50,6 +50,19 @@
     }
   }
 
+  &__sketcher {
+    &-uploadPic {
+      display: flex;
+
+      div {
+        width: 50%;
+        border: 1px solid #ccd0d5;
+        border-radius: 4px;
+        text-align: center;
+      }
+    }
+  }
+
   &__upload {
     margin-top: 20px;
     text-align: center;
