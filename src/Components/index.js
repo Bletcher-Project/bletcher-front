@@ -7,6 +7,7 @@ import SignUpStepper from "./SignUpStepper/SignUpStepper";
 import Post from "./Post/Post";
 import Thumbnail from "./Thumbnail/Thumbnail";
 import Upload from "./Upload/Upload";
+import ProfileSetting from "./ProfileSetting/ProfileSetting";
 
 export {
   NavBar,
@@ -17,5 +18,6 @@ export {
   SignUpStepper,
   Post,
   Thumbnail,
-  Upload
+  Upload,
+  ProfileSetting
 };
