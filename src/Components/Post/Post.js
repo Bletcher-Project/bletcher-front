@@ -44,7 +44,8 @@ class Post extends Component {
       likeActionCount: 0,
       scrapClicked: false,
       scrapIcon: scrapIcon,
-      commentClicked: false,
+      // commentClicked: false,
+      commentClicked: true,
       commentIcon: commentIcon
     };
   }
