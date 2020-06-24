@@ -44,9 +44,9 @@ class Post extends Component {
       likeActionCount: 0,
       scrapClicked: false,
       scrapIcon: scrapIcon,
-      // commentClicked: false,
-      commentClicked: true,
-      commentIcon: commentIcon
+      commentClicked: false,
+      commentIcon: commentIcon,
+      comments: []
     };
   }
 
@@ -61,7 +61,6 @@ class Post extends Component {
       postImg,
       postDate,
       postLike,
-      postComments
     } = this.props;
     const {
       likeClicked,
@@ -69,7 +68,8 @@ class Post extends Component {
       likeActionCount,
       scrapIcon,
       commentClicked,
-      commentIcon
+      commentIcon,
+      comments
     } = this.state;
 
     return (
@@ -154,9 +154,9 @@ class Post extends Component {
                   height="25px"
                   alt="commentIcon"
                 />
-                <span className="post__postSection__footer__communicateArea__comment-num">
-                  {commaNumber(postComments.length)}
-                </span>
+                {/* <span className="post__postSection__footer__communicateArea__comment-num">
+                  {commaNumber(comments.length)}
+                </span> */}
               </div>
 
               <div
@@ -176,7 +176,7 @@ class Post extends Component {
 
         {commentClicked ?
           <div className="post__commentSection">
-            <Comment />
+            <Comment comments={comments} />
           </div>
           : null}
       </div>
@@ -200,6 +200,7 @@ class Post extends Component {
     this.setState({ commentClicked: !this.state.commentClicked }, () => {
       if (this.state.commentClicked) {
         this.setState({ commentIcon: filledCommentIcon });
+        this.getComments();
       } else {
         this.setState({ commentIcon: commentIcon });
       }
@@ -219,6 +220,24 @@ class Post extends Component {
   handleDelete = async () => {
     const postDelete = await this.props.deletePost(this.props.postId);
     return postDelete ? window.location.reload() : alert("delete failed!");
+  };
+
+  getComments = async () => {
+    try {
+      let response = await fetch(ServerEndPoint + `api/comments/${this.props.postId}`, {
+        method: "GET",
+        headers: {
+          "x-access-token": this.props.token
+        }
+      });
+      if (response.status === 200) {
+        let result = await response.json();
+        this.setState({ comments: result.comments });
+      }
+    } catch (error) {
+      console.log(error);
+      this.setState({ comments: [] });
+    }
   };
 }
 

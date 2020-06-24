@@ -65,10 +65,6 @@ class HomePage extends Component {
                           postDate={data.createdAt}
                           isLiked={data.isLiked}
                           postLike={data.likeCount}
-                          postComments={[
-                            { id: 1, author: "Endrew", comment: "good job" },
-                            { id: 2, author: "Sdi_dk", comment: "awesome" }
-                          ]} //////
                         />
                       </div>
                     );

@@ -25,10 +25,19 @@ class Comment extends Component {
           {comments
             ? comments.map(comment => {
               return (
-                <div key={comment.id}>
-                  <Thumbnail size={50} /> {comment.UserId} <br />
-                  {comment.content} <br />
-                  {moment(comment.updatedAt).format("YYYY-MM-DD HH:mm:ss")}
+                <div
+                  className="comment__body__item"
+                  key={comment.id}
+                >
+                  <div className="comment__body__item__thumb">
+                    <Thumbnail size={50} />
+                  </div>
+                  <div className="comment__body__item__content">
+                    <span className="comment__body__item__content-moment">
+                      {moment(comment.updatedAt).format("YYYY-MM-DD HH:mm:ss")}
+                    </span>
+                    <span>{comment.content}</span>
+                  </div>
                 </div>
               )
             })

@@ -126,10 +126,6 @@ class UserPage extends Component {
                 postDate={selectedPost.createdAt}
                 isLiked={selectedPost.isLiked}
                 postLike={selectedPost.likeCount}
-                postComments={[
-                  { id: 1, author: "Endrew", comment: "good job" },
-                  { id: 2, author: "Sdi_dk", comment: "awesome" }
-                ]} ////// 
               />
             </Modal>
             : null}
