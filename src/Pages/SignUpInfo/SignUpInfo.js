@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { ServerEndPoint } from "../../Configs/Server";
 import axios from "axios";
 
 import { SignUpInput, MainButton } from "../../Components";
@@ -215,7 +214,7 @@ class SignUpInfo extends Component {
         window.setTimeout(() => {
           return Object.is(this.state.email, email)
             ? axios
-              .get(ServerEndPoint + "api/users?email=" + email)
+              .get(process.env.REACT_APP_SERVER_URL + "api/users?email=" + email)
               .then(res => {
                 if (res.status === 200) {
                   changeEmailStatus(false, "Already exists email!");

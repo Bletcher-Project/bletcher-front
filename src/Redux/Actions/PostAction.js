@@ -1,4 +1,3 @@
-import { ServerEndPoint } from "../../Configs/Server";
 
 import axios from "axios";
 import {
@@ -21,7 +20,7 @@ import {
 export const getAllPosts = (token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(ServerEndPoint + "api/posts", {
+      let response = await fetch(process.env.REACT_APP_SERVER_URL + "api/posts", {
         method: "GET",
         headers: {
           "x-access-token": token,
@@ -52,7 +51,7 @@ export const getAllPosts = (token) => {
 export const getPostByUserId = (userId, token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(ServerEndPoint + `api/posts/${userId}`, {
+      let response = await fetch(process.env.REACT_APP_SERVER_URL + `api/posts/${userId}`, {
         method: "GET",
         headers: {
           "x-access-token": token,
@@ -83,7 +82,7 @@ export const getPostByUserId = (userId, token) => {
 export const getPostByPostId = (postId, token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(ServerEndPoint + `api/posts/one/${postId}`, {
+      let response = await fetch(process.env.REACT_APP_SERVER_URL + `api/posts/one/${postId}`, {
         method: "GET",
         headers: {
           "x-access-token": token,
@@ -114,7 +113,7 @@ export const getPostByPostId = (postId, token) => {
 export const uploadPost = (payload, token) => {
   return async (dispatch) => {
     await axios
-      .post(ServerEndPoint + "api/posts", payload, {
+      .post(process.env.REACT_APP_SERVER_URL + "api/posts", payload, {
         headers: { "x-access-token": token },
       })
       .then((res) => {
@@ -131,7 +130,7 @@ export const uploadPost = (payload, token) => {
 export const uploadSketcherPost = (payload, token) => {
   return async (dispatch) => {
     await axios
-      .post(ServerEndPoint + "api/posts/sketcher", payload, {
+      .post(process.env.REACT_APP_SERVER_URL + "api/posts/sketcher", payload, {
         headers: { "x-access-token": token },
       })
       .then((res) => {
@@ -148,7 +147,7 @@ export const uploadSketcherPost = (payload, token) => {
 
 export const deletePost = (id, token) => {
   axios
-    .delete(ServerEndPoint + "api/posts/" + id, {
+    .delete(process.env.REACT_APP_SERVER_URL + "api/posts/" + id, {
       headers: { "x-access-token": token },
     })
     .then((res) => {
@@ -164,7 +163,7 @@ export const deletePost = (id, token) => {
 export const postLike = (postId, token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(ServerEndPoint + `api/posts/like/${postId}`, {
+      let response = await fetch(process.env.REACT_APP_SERVER_URL + `api/posts/like/${postId}`, {
         method: "POST",
         headers: {
           "x-access-token": token,
@@ -195,7 +194,7 @@ export const postLike = (postId, token) => {
 export const deleteLike = (postId, token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(ServerEndPoint + `api/posts/like/${postId}`, {
+      let response = await fetch(process.env.REACT_APP_SERVER_URL + `api/posts/like/${postId}`, {
         method: "DELETE",
         headers: {
           "x-access-token": token,

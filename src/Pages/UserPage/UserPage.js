@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-import { ServerEndPoint } from "../../Configs/Server";
 import * as UserAction from "../../Redux/Actions/UserAction";
 import * as PostAction from "../../Redux/Actions/PostAction";
 
@@ -61,7 +60,7 @@ class UserPage extends Component {
               <div className="userPage__contents__header__thumb">
                 <Thumbnail
                   size="100"
-                  src={userInfo.profileImgName !== null ? `${ServerEndPoint}image/profile/${userInfo.profileImgName}` : null}
+                  src={userInfo.profileImgName !== null ? `${process.env.REACT_APP_SERVER_URL}image/profile/${userInfo.profileImgName}` : null}
                   type={userInfo.type}
                   userName={userInfo.name}
                 />
@@ -156,7 +155,7 @@ class UserPage extends Component {
     const postImg = [];
     await dispatch(PostAction.getPostByUserId(userInfo.id, token)).then(posts => {
       posts.forEach(post => {
-        postImg.push({ src: `${ServerEndPoint}image/post/${post.postImgName}`, width: parseInt(post.postImgWidth), height: parseInt(post.postImgHeight), key: String(post.id) });
+        postImg.push({ src: `${process.env.REACT_APP_SERVER_URL}image/post/${post.postImgName}`, width: parseInt(post.postImgWidth), height: parseInt(post.postImgHeight), key: String(post.id) });
       });
     });
     this.setState({ userPostImgs: userPostImgs.concat(postImg) });

@@ -1,4 +1,3 @@
-import { ServerEndPoint } from "../../Configs/Server";
 
 import axios from "axios";
 import {
@@ -10,7 +9,7 @@ import {
 
 export function postSignup(payload) {
   axios
-    .post(ServerEndPoint + "api/users", payload)
+    .post(process.env.REACT_APP_SERVER_URL + "api/users", payload)
     .then(res => {
       return res;
     })
@@ -25,7 +24,7 @@ export function postSignup(payload) {
 export const getUserByUserName = username => {
   return async dispatch => {
     try {
-      let response = await fetch(ServerEndPoint + `api/users?name=${username}`, {
+      let response = await fetch(process.env.REACT_APP_SERVER_URL + `api/users?name=${username}`, {
         method: "GET",
       });
       if (response.status === 200) {

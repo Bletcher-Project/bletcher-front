@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 import { SignUpInput, MainButton } from "../../Components";
 
-import { ServerEndPoint } from "../../Configs/Server";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { purple } from "@material-ui/core/colors";
 import Avatar from "@material-ui/core/Avatar";
@@ -173,7 +172,7 @@ class SignUpProfile extends Component {
         window.setTimeout(() => {
           return Object.is(this.state.name, name)
             ? axios
-              .get(ServerEndPoint + "api/users?name=" + name)
+              .get(process.env.REACT_APP_SERVER_URL + "api/users?name=" + name)
               .then(res => {
                 if (res.status === 200) {
                   changeNameStatus(false, "Already exists name!");

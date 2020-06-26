@@ -1,4 +1,3 @@
-import { ServerEndPoint } from "../../Configs/Server";
 
 import {
   SUCCEED_TO_SIGNIN,
@@ -12,7 +11,7 @@ import {
 export const postSignIn = params => {
   return async dispatch => {
     try {
-      let response = await fetch(ServerEndPoint + "api/auth/signin", {
+      let response = await fetch(process.env.REACT_APP_SERVER_URL + "api/auth/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -48,7 +47,7 @@ export const postSignIn = params => {
 export const getUser = token => {
   return async dispatch => {
     try {
-      let response = await fetch(ServerEndPoint + "api/auth/user", {
+      let response = await fetch(process.env.REACT_APP_SERVER_URL + "api/auth/user", {
         method: "GET",
         headers: {
           "x-access-token": token

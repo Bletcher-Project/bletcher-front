@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-import { ServerEndPoint } from "../../Configs/Server";
 import * as PostAction from "../../Redux/Actions/PostAction";
 
 import { Thumbnail } from "../../Components";
@@ -75,7 +74,7 @@ class Post extends Component {
           <Thumbnail
             className="post__header__userProfile"
             size="50"
-            src={userProfileImg !== null ? `${ServerEndPoint}image/profile/${userProfileImg}` : null}
+            src={userProfileImg !== null ? `${process.env.REACT_APP_SERVER_URL}image/profile/${userProfileImg}` : null}
             type={userType}
             userName={userName}
           />
@@ -96,7 +95,7 @@ class Post extends Component {
         <div className="post__body">
           <img
             className="post__body__postImage"
-            src={`${ServerEndPoint}image/post/${postImg}`}
+            src={`${process.env.REACT_APP_SERVER_URL}image/post/${postImg}`}
             alt="postImage"
           />
         </div>
