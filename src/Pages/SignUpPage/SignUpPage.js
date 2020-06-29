@@ -1,20 +1,13 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
+import axios from "axios";
 
 import { SignUpType, SignUpInfo, SignUpProfile, SignUpSuccess } from "../";
 import { NavBar, SignUpStepper } from "../../Components";
 
-import * as UserAction from "../../Redux/Actions/UserAction";
 import { isEmptyString } from "is-what";
 
 const defaultProps = {};
 const propTypes = {};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    postSignup: params => dispatch(UserAction.postSignup(params))
-  };
-};
 
 class SignUpPage extends Component {
   constructor(props) {
@@ -97,7 +90,14 @@ class SignUpPage extends Component {
     params.append("status", this.state.status);
     params.append("type", this.state.type === "Sketcher" ? 0 : 1);
     params.append("img", this.state.profileImg);
-    const postSignUp = await this.props.postSignup(params);
+    const postSignUp = await axios
+      .post(process.env.REACT_APP_SERVER_URL + "api/users", params)
+      .then(res => {
+        return res;
+      })
+      .catch(err => {
+        console.error(err);
+      });
     return postSignUp ? this.handleSignUpStep("successPage") : null;
   };
 }
@@ -105,4 +105,4 @@ class SignUpPage extends Component {
 SignUpPage.defaultProps = defaultProps;
 SignUpPage.propTypes = propTypes;
 
-export default connect(null, mapDispatchToProps)(SignUpPage);
+export default SignUpPage;

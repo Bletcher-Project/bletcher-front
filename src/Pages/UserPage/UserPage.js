@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-import * as UserAction from "../../Redux/Actions/UserAction";
 import * as PostAction from "../../Redux/Actions/PostAction";
 
 import { NavBar, Thumbnail, Post } from "../../Components";
@@ -139,13 +138,21 @@ class UserPage extends Component {
   }
 
   setUser = async () => {
-    const { match, dispatch, user } = this.props;
+    const { match, user } = this.props;
     if (match.params.username === user.name) {
       this.setState({ userInfo: user, isMyPage: true, userPostImgs: [] });
     } else {
-      await dispatch(UserAction.getUserByUserName(match.params.username)).then(userInfo => {
-        this.setState({ userInfo: userInfo, isMyPage: false, userPostImgs: [] });
-      })
+      try {
+        const response = await fetch(process.env.REACT_APP_SERVER_URL + `api/users?name=${match.params.username}`, {
+          method: "GET",
+        });
+        if (response.status === 200) {
+          const result = await response.json();
+          this.setState({ userInfo: result.userInfo, isMyPage: false, userPostImgs: [] });
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
