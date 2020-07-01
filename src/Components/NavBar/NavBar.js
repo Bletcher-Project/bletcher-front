@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import * as AuthAction from "Redux/Actions/AuthAction";
 
 import cx from "classnames";
-import logo from "logo.svg";
+import logo from "Assets/logo/logo.svg";
 
 import { Nav, Navbar, NavItem, NavLink, NavbarBrand } from "reactstrap";
 
