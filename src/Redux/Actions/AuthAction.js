@@ -6,7 +6,7 @@ import {
   FAILED_TO_GET_USER,
   SUCCEED_TO_SIGNOUT,
   TOKEN_EXPIRED
-} from "../Constants/action-types";
+} from "Redux/Constants/action-types";
 
 export const postSignIn = params => {
   return async dispatch => {

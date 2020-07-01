@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import { SignUpType, SignUpInfo, SignUpProfile, SignUpSuccess } from "../";
-import { NavBar, SignUpStepper } from "../../Components";
+import { SignUpType, SignUpInfo, SignUpProfile, SignUpSuccess } from "Pages";
+import { NavBar, SignUpStepper } from "Components";
 
 import { isEmptyString } from "is-what";
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { SignUpInput, MainButton } from "../../Components";
+import { SignUpInput, MainButton } from "Components";
 
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { purple } from "@material-ui/core/colors";
@@ -9,8 +9,8 @@ import Fade from "@material-ui/core/Fade";
 import { isEmptyString } from "is-what";
 import axios from "axios";
 
-import defaultProfile from "../../Assets/images/default_profile.svg";
-import backIcon from "../../Assets/icons/signup_back.svg";
+import defaultProfile from "Assets/images/default_profile.svg";
+import backIcon from "Assets/icons/signup_back.svg";
 
 const defaultProps = {};
 const propTypes = {};

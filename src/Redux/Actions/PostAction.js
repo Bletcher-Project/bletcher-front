@@ -15,7 +15,7 @@ import {
   FAILED_TO_POST_LIKE,
   SUCCEED_TO_DELETE_LIKE,
   FAILED_TO_DELETE_LIKE,
-} from "../Constants/action-types";
+} from "Redux/Constants/action-types";
 
 export const getAllPosts = (token) => {
   return async (dispatch) => {

@@ -5,7 +5,7 @@ import {
   SUCCEED_TO_GET_USER,
   FAILED_TO_GET_USER,
   SUCCEED_TO_SIGNOUT
-} from "../Constants/action-types";
+} from "Redux/Constants/action-types";
 
 const initialState = {
   isLogin: !!localStorage.getItem("token"),

@@ -1,4 +1,4 @@
-import color from './Colors.scss';
+import color from 'Colors.scss';
 
 // Color
 export const mainColor = color.mainColor;

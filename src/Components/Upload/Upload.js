@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import * as PostAction from "../../Redux/Actions/PostAction";
+import * as PostAction from "Redux/Actions/PostAction";
 
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
-import backIcon from "../../Assets/icons/signup_back.svg";
+import backIcon from "Assets/icons/signup_back.svg";
 
 const defaultProps = {};
 const propTypes = {};
@@ -105,63 +105,63 @@ class Upload extends Component {
             </div>
           </div>
         ) : (
-          /* Upload Section for Sketcher */
-          <div className="postUpload__sketcher">
-            <input
-              accept="image/*"
-              type="file"
-              name="content"
-              id="content-upload"
-              style={{ display: "none" }}
-              onChange={this.uploadContentImg}
-            />
-            <input
-              accept="image/*"
-              type="file"
-              name="style"
-              id="style-upload"
-              style={{ display: "none" }}
-              onChange={this.uploadStyleImg}
-            />
-            <div className="postUpload__sketcher-uploadPic">
-              <div>
-                <Button>
-                  <label htmlFor="content-upload">upload image</label>
-                </Button>
-                {this.state.contentImgUrl === null ? null : (
-                  <img
-                    alt="content"
-                    width="100%"
-                    src={this.state.contentImgUrl}
-                  />
-                )}
-              </div>
-              <div>
-                <Button>
-                  <label htmlFor="style-upload">select style image</label>
-                </Button>
-                {/* It is sample picture for later */}
-                {this.state.styleImgUrl === null ? null : (
-                  <img alt="style" width="100%" src={this.state.styleImgUrl} />
-                )}
-              </div>
-            </div>
-
-            <div className="postUpload__sketcher-content">
-              <TextField
-                id="outlined-multiline"
-                placeholder="Type your art..."
-                value={content}
-                multiline
-                rows="3"
-                rowsMax="10"
-                variant="outlined"
-                fullWidth
-                onChange={this.handleContent}
+            /* Upload Section for Sketcher */
+            <div className="postUpload__sketcher">
+              <input
+                accept="image/*"
+                type="file"
+                name="content"
+                id="content-upload"
+                style={{ display: "none" }}
+                onChange={this.uploadContentImg}
               />
+              <input
+                accept="image/*"
+                type="file"
+                name="style"
+                id="style-upload"
+                style={{ display: "none" }}
+                onChange={this.uploadStyleImg}
+              />
+              <div className="postUpload__sketcher-uploadPic">
+                <div>
+                  <Button>
+                    <label htmlFor="content-upload">upload image</label>
+                  </Button>
+                  {this.state.contentImgUrl === null ? null : (
+                    <img
+                      alt="content"
+                      width="100%"
+                      src={this.state.contentImgUrl}
+                    />
+                  )}
+                </div>
+                <div>
+                  <Button>
+                    <label htmlFor="style-upload">select style image</label>
+                  </Button>
+                  {/* It is sample picture for later */}
+                  {this.state.styleImgUrl === null ? null : (
+                    <img alt="style" width="100%" src={this.state.styleImgUrl} />
+                  )}
+                </div>
+              </div>
+
+              <div className="postUpload__sketcher-content">
+                <TextField
+                  id="outlined-multiline"
+                  placeholder="Type your art..."
+                  value={content}
+                  multiline
+                  rows="3"
+                  rowsMax="10"
+                  variant="outlined"
+                  fullWidth
+                  onChange={this.handleContent}
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
         <div className="postUpload__upload">
           <Button size="small" onClick={this.handlePostUpload}>

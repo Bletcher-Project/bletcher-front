@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import { SignUpInput, MainButton } from "../../Components";
+import { SignUpInput, MainButton } from "Components";
 
 import Fade from "@material-ui/core/Fade";
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import { purple } from "@material-ui/core/colors";
 
-import backIcon from "../../Assets/icons/signup_back.svg";
+import backIcon from "Assets/icons/signup_back.svg";
 import { isEmptyString } from "is-what";
 
 const defaultProps = {};

@@ -6,10 +6,10 @@ import { Route, withRouter, Switch, Redirect } from "react-router-dom";
 
 // Redux
 import { connect } from "react-redux";
-import * as AuthAction from "./Redux/Actions/AuthAction";
+import * as AuthAction from "Redux/Actions/AuthAction";
 
 // Pages
-import { MainPage, HomePage, SignUpPage, UserPage } from "./Pages";
+import { MainPage, HomePage, SignUpPage, UserPage } from "Pages";
 
 const mapStateToProps = state => {
   return {

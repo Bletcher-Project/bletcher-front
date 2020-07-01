@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 
-import { MainButton } from "../../Components";
+import { MainButton } from "Components";
 
 import Fade from "@material-ui/core/Fade";
 
-import logoSketcher from "../../Assets/images/logo_sketcher.png";
-import logoCreator from "../../Assets/images/logo_creator.png";
+import logoSketcher from "Assets/images/logo_sketcher.png";
+import logoCreator from "Assets/images/logo_creator.png";
 
 const defaultProps = {};
 const propTypes = {};
@@ -33,8 +33,8 @@ class SignUpProfile extends Component {
             {type === "Sketcher" ? (
               <img alt="sketcher" src={logoSketcher} width="130px" />
             ) : (
-              <img alt="creator" src={logoCreator} width="130px" />
-            )}
+                <img alt="creator" src={logoCreator} width="130px" />
+              )}
           </div>
           <div className="signUpPage__success-desc">
             {type === "Sketcher"

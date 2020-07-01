@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-import * as PostAction from "../../Redux/Actions/PostAction";
+import * as PostAction from "Redux/Actions/PostAction";
 
-import { NavBar, Thumbnail, Post } from "../../Components";
+import { NavBar, Thumbnail, Post } from "Components";
 
 import Gallery from "react-photo-gallery";
 import { Modal } from "reactstrap";
 
-import settingIcon from "../../Assets/icons/setting.png";
+import settingIcon from "Assets/icons/setting.png";
 
 const defaultProps = {};
 const propTypes = {};
