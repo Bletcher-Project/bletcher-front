@@ -12,6 +12,8 @@ import axios from "axios";
 import defaultProfile from "Assets/images/default_profile.svg";
 import backIcon from "Assets/icons/signup_back.svg";
 
+import * as constant from '../../Constants/Constant';
+
 const defaultProps = {};
 const propTypes = {};
 
@@ -172,7 +174,7 @@ class SignUpProfile extends Component {
         window.setTimeout(() => {
           return Object.is(this.state.name, name)
             ? axios
-              .get(process.env.REACT_APP_SERVER_URL + "api/users?name=" + name)
+              .get(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.USERS_API_GET + constant.NAME_API_GET + name)
               .then(res => {
                 if (res.status === 200) {
                   changeNameStatus(false, "Already exists name!");

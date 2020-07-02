@@ -6,6 +6,8 @@ import { NavBar, SignUpStepper } from "Components";
 
 import { isEmptyString } from "is-what";
 
+import * as constant from '../../Constants/Constant';
+
 const defaultProps = {};
 const propTypes = {};
 
@@ -91,7 +93,7 @@ class SignUpPage extends Component {
     params.append("type", this.state.type === "Sketcher" ? 0 : 1);
     params.append("img", this.state.profileImg);
     const postSignUp = await axios
-      .post(process.env.REACT_APP_SERVER_URL + "api/users", params)
+      .post(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.USERS_API_GET, params)
       .then(res => {
         return res;
       })

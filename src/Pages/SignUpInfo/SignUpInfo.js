@@ -10,6 +10,8 @@ import { purple } from "@material-ui/core/colors";
 import backIcon from "Assets/icons/signup_back.svg";
 import { isEmptyString } from "is-what";
 
+import * as constant from '../../Constants/Constant';
+
 const defaultProps = {};
 const propTypes = {};
 
@@ -214,7 +216,7 @@ class SignUpInfo extends Component {
         window.setTimeout(() => {
           return Object.is(this.state.email, email)
             ? axios
-              .get(process.env.REACT_APP_SERVER_URL + "api/users?email=" + email)
+              .get(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.USERS_API_GET + constant.EMAIL_API_GET + email)
               .then(res => {
                 if (res.status === 200) {
                   changeEmailStatus(false, "Already exists email!");

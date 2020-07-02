@@ -16,11 +16,12 @@ import {
   SUCCEED_TO_DELETE_LIKE,
   FAILED_TO_DELETE_LIKE,
 } from "Redux/Constants/action-types";
+import * as constant from '../../Constants/Constant';
 
 export const getAllPosts = (token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(process.env.REACT_APP_SERVER_URL + "api/posts", {
+      let response = await fetch(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.USER_POSTS, {
         method: "GET",
         headers: {
           "x-access-token": token,
@@ -51,7 +52,7 @@ export const getAllPosts = (token) => {
 export const getPostByUserId = (userId, token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(process.env.REACT_APP_SERVER_URL + `api/posts/${userId}`, {
+      let response = await fetch(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.USER_POSTS + `${userId}`, {
         method: "GET",
         headers: {
           "x-access-token": token,
@@ -82,7 +83,7 @@ export const getPostByUserId = (userId, token) => {
 export const getPostByPostId = (postId, token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(process.env.REACT_APP_SERVER_URL + `api/posts/one/${postId}`, {
+      let response = await fetch(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.USER_POSTS + constant.ONE_API +`${postId}`, {
         method: "GET",
         headers: {
           "x-access-token": token,
@@ -113,7 +114,7 @@ export const getPostByPostId = (postId, token) => {
 export const uploadPost = (payload, token) => {
   return async (dispatch) => {
     await axios
-      .post(process.env.REACT_APP_SERVER_URL + "api/posts", payload, {
+      .post(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.USER_POSTS, payload, {
         headers: { "x-access-token": token },
       })
       .then((res) => {
@@ -130,7 +131,7 @@ export const uploadPost = (payload, token) => {
 export const uploadSketcherPost = (payload, token) => {
   return async (dispatch) => {
     await axios
-      .post(process.env.REACT_APP_SERVER_URL + "api/posts/sketcher", payload, {
+      .post(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.USER_POSTS + constant.SKETCHER_API, payload, {
         headers: { "x-access-token": token },
       })
       .then((res) => {
@@ -147,7 +148,7 @@ export const uploadSketcherPost = (payload, token) => {
 
 export const deletePost = (id, token) => {
   axios
-    .delete(process.env.REACT_APP_SERVER_URL + "api/posts/" + id, {
+    .delete(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.USER_POSTS + id, {
       headers: { "x-access-token": token },
     })
     .then((res) => {
@@ -163,7 +164,7 @@ export const deletePost = (id, token) => {
 export const postLike = (postId, token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(process.env.REACT_APP_SERVER_URL + `api/posts/like/${postId}`, {
+      let response = await fetch(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.USER_POSTS + constant.LIKE_API + `${postId}`, {
         method: "POST",
         headers: {
           "x-access-token": token,
@@ -194,7 +195,7 @@ export const postLike = (postId, token) => {
 export const deleteLike = (postId, token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(process.env.REACT_APP_SERVER_URL + `api/posts/like/${postId}`, {
+      let response = await fetch(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.USER_POSTS + constant.LIKE_API + `${postId}`, {
         method: "DELETE",
         headers: {
           "x-access-token": token,

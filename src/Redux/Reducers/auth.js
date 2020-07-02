@@ -14,6 +14,8 @@ const initialState = {
   user: null
 };
 
+import * as constant from '../../Constants/Constant';
+
 /* AUTH Reducer */
 export default function authReducer(state = initialState, action = {}) {
   switch (action.type) {
@@ -57,7 +59,7 @@ export default function authReducer(state = initialState, action = {}) {
 export const postSignIn = params => {
   return async dispatch => {
     try {
-      let response = await fetch(process.env.REACT_APP_SERVER_URL + "api/auth/signin", {
+      let response = await fetch(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.AUTH_API + constant.SIGNIN_API, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -93,7 +95,7 @@ export const postSignIn = params => {
 export const getUser = token => {
   return async dispatch => {
     try {
-      let response = await fetch(process.env.REACT_APP_SERVER_URL + "api/auth/user", {
+      let response = await fetch(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.AUTH_API + constant.USER_API_GET, {
         method: "GET",
         headers: {
           "x-access-token": token

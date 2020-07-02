@@ -9,6 +9,7 @@ import Gallery from "react-photo-gallery";
 import { Modal } from "reactstrap";
 
 import settingIcon from "Assets/icons/setting.png";
+import * as constant from '../../Constants/Constant';
 
 const defaultProps = {};
 const propTypes = {};
@@ -143,7 +144,7 @@ class UserPage extends Component {
       this.setState({ userInfo: user, isMyPage: true, userPostImgs: [] });
     } else {
       try {
-        const response = await fetch(process.env.REACT_APP_SERVER_URL + `api/users?name=${match.params.username}`, {
+        const response = await fetch(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.USERS_API_GET + constant.NAME_API_GET + `${match.params.username}`, {
           method: "GET",
         });
         if (response.status === 200) {
