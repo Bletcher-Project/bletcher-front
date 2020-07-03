@@ -1,18 +1,18 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { SignUpInput, MainButton } from "Components";
+import { SignUpInput, MainButton } from 'Components';
 
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
-import { purple } from "@material-ui/core/colors";
-import Avatar from "@material-ui/core/Avatar";
-import Fade from "@material-ui/core/Fade";
-import { isEmptyString } from "is-what";
-import axios from "axios";
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import { purple } from '@material-ui/core/colors';
+import Avatar from '@material-ui/core/Avatar';
+import Fade from '@material-ui/core/Fade';
+import { isEmptyString } from 'is-what';
+import axios from 'axios';
 
-import defaultProfile from "Assets/images/default_profile.svg";
-import backIcon from "Assets/icons/signup_back.svg";
+import defaultProfile from 'Assets/images/default_profile.svg';
+import backIcon from 'Assets/icons/signup_back.svg';
 
-import * as constant from '../../Constants/Constant';
+import * as constant from '../../Constants/api_uri';
 
 const defaultProps = {};
 const propTypes = {};
@@ -21,15 +21,15 @@ class SignUpProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "",
-      status: "",
-      helpName: " ",
-      helpStatus: " ",
+      name: '',
+      status: '',
+      helpName: ' ',
+      helpStatus: ' ',
       profileImg: null,
       profileImgUrl: null,
       isSignUpNext: false,
       isNameValid: true,
-      isStatusValid: true
+      isStatusValid: true,
     };
   }
 
@@ -41,7 +41,7 @@ class SignUpProfile extends Component {
       helpStatus,
       isNameValid,
       isStatusValid,
-      isSignUpNext
+      isSignUpNext,
     } = this.state;
 
     return (
@@ -58,7 +58,7 @@ class SignUpProfile extends Component {
                   alt="back"
                   src={backIcon}
                   width="35px"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: 'pointer' }}
                   onClick={this.handlePrevStep}
                 />
               </div>
@@ -74,7 +74,7 @@ class SignUpProfile extends Component {
                     type="file"
                     name="img"
                     id="profile-upload"
-                    style={{ display: "none" }}
+                    style={{ display: 'none' }}
                     onChange={this.handleProfileImg}
                   />
                   <label htmlFor="profile-upload">
@@ -85,10 +85,10 @@ class SignUpProfile extends Component {
                           : defaultProfile
                       }
                       style={{
-                        width: "110px",
-                        height: "110px",
-                        cursor: "pointer",
-                        borderRadius: "50%"
+                        width: '110px',
+                        height: '110px',
+                        cursor: 'pointer',
+                        borderRadius: '50%',
                       }}
                     ></Avatar>
                   </label>
@@ -97,10 +97,10 @@ class SignUpProfile extends Component {
                   <label
                     htmlFor="profile-upload"
                     style={{
-                      width: "100%",
-                      height: "100%",
-                      cursor: "pointer",
-                      margin: "0"
+                      width: '100%',
+                      height: '100%',
+                      cursor: 'pointer',
+                      margin: '0',
                     }}
                   >
                     Edit Photo
@@ -119,14 +119,14 @@ class SignUpProfile extends Component {
                   InputProps={
                     !isEmptyString(name) & isNameValid
                       ? {
-                        endAdornment: (
-                          <Fade in={true} timeout={350}>
-                            <CheckCircleOutlineIcon
-                              style={{ color: purple[700], width: "0.8em" }}
-                            />
-                          </Fade>
-                        )
-                      }
+                          endAdornment: (
+                            <Fade in={true} timeout={350}>
+                              <CheckCircleOutlineIcon
+                                style={{ color: purple[700], width: '0.8em' }}
+                              />
+                            </Fade>
+                          ),
+                        }
                       : null
                   }
                 />
@@ -154,10 +154,10 @@ class SignUpProfile extends Component {
   }
 
   handlePrevStep = () => {
-    this.props.handleSignUpStep("infoPage");
+    this.props.handleSignUpStep('infoPage');
   };
 
-  handleNameCheck = e => {
+  handleNameCheck = (e) => {
     const regExp = /^[A-Za-z0-9_.]{3,30}$/;
     const nonAlphabet = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]$/;
     const nonSepcial = /[_.]$/;
@@ -174,71 +174,77 @@ class SignUpProfile extends Component {
         window.setTimeout(() => {
           return Object.is(this.state.name, name)
             ? axios
-              .get(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.USERS_API_GET + constant.NAME_API_GET + name)
-              .then(res => {
-                if (res.status === 200) {
-                  changeNameStatus(false, "Already exists name!");
-                } else if (res.status === 204) {
-                  changeNameStatus(true, " "); //Allowed name
-                }
-              })
-              .catch(err => {
-                console.log(err);
-              })
+                .get(
+                  process.env.REACT_APP_SERVER_URL +
+                    constant.INIT_API +
+                    constant.USERS_API_GET +
+                    constant.NAME_API_GET +
+                    name,
+                )
+                .then((res) => {
+                  if (res.status === 200) {
+                    changeNameStatus(false, 'Already exists name!');
+                  } else if (res.status === 204) {
+                    changeNameStatus(true, ' '); //Allowed name
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                })
             : null;
         }, 200);
       } else {
         if (!isEmptyString(name) & (name.length < 3)) {
-          changeNameStatus(false, "Should be more than 3 words");
+          changeNameStatus(false, 'Should be more than 3 words');
         } else if (name.length > 30) {
-          changeNameStatus(false, "Should no greater than 30 words");
+          changeNameStatus(false, 'Should no greater than 30 words');
         } else if (!isEmptyString(name) & !regExp.test(name)) {
           if (nonAlphabet.test(name)) {
-            changeNameStatus(false, "Only alphabet chracter allowed");
+            changeNameStatus(false, 'Only alphabet chracter allowed');
           } else if (!nonSepcial.test(name)) {
             changeNameStatus(
               false,
-              "Only '_' or '.' special character allowed"
+              "Only '_' or '.' special character allowed",
             );
           }
         } else if (isEmptyString(name)) {
-          changeNameStatus(true, "Enter your name please");
+          changeNameStatus(true, 'Enter your name please');
         }
       }
     });
   };
 
-  handleProfileImg = e => {
+  handleProfileImg = (e) => {
     this.setState({ profileImg: e.target.files[0] }, () => {
       return this.state.profileImg
         ? this.setState({
-          profileImgUrl: URL.createObjectURL(this.state.profileImg)
-        })
+            profileImgUrl: URL.createObjectURL(this.state.profileImg),
+          })
         : null;
     });
   };
 
-  handleStatusCheck = e => {
+  handleStatusCheck = (e) => {
     this.setState({ status: e.target.value }, () => {
       return this.state.status.length > 100
         ? this.setState(
-          {
-            isStatusValid: false,
-            helpStatus: "Should be less than 100 words."
-          },
-          () => {
-            this.handleSignUpBtn();
-          }
-        )
+            {
+              isStatusValid: false,
+              helpStatus: 'Should be less than 100 words.',
+            },
+            () => {
+              this.handleSignUpBtn();
+            },
+          )
         : this.setState(
-          {
-            isStatusValid: true,
-            helpStatus: " "
-          },
-          () => {
-            this.handleSignUpBtn();
-          }
-        );
+            {
+              isStatusValid: true,
+              helpStatus: ' ',
+            },
+            () => {
+              this.handleSignUpBtn();
+            },
+          );
     });
   };
 
@@ -254,7 +260,7 @@ class SignUpProfile extends Component {
     this.props.handleUserInfo({
       name: this.state.name,
       status: this.state.status,
-      profileImg: this.state.profileImg
+      profileImg: this.state.profileImg,
     });
   };
 }

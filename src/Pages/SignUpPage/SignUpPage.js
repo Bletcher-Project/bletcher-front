@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React, { Component } from 'react';
+import axios from 'axios';
 
-import { SignUpType, SignUpInfo, SignUpProfile, SignUpSuccess } from "Pages";
-import { NavBar, SignUpStepper } from "Components";
+import { SignUpType, SignUpInfo, SignUpProfile, SignUpSuccess } from 'Pages';
+import { NavBar, SignUpStepper } from 'Components';
 
-import { isEmptyString } from "is-what";
+import { isEmptyString } from 'is-what';
 
-import * as constant from '../../Constants/Constant';
+import * as constant from '../../Constants/api_uri';
 
 const defaultProps = {};
 const propTypes = {};
@@ -15,13 +15,13 @@ class SignUpPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      signUpStep: "typePage",
-      type: "",
-      email: "",
-      name: "",
-      password: "",
-      status: "",
-      profileImg: null
+      signUpStep: 'typePage',
+      type: '',
+      email: '',
+      name: '',
+      password: '',
+      status: '',
+      profileImg: null,
     };
   }
   render() {
@@ -30,7 +30,7 @@ class SignUpPage extends Component {
     return (
       <div className="signUpPage">
         <NavBar isActive="signUp" />
-        {signUpStep === "typePage" ? (
+        {signUpStep === 'typePage' ? (
           <div>
             <SignUpStepper className="signUpPage__step" step={signUpStep} />
             <SignUpType
@@ -38,7 +38,7 @@ class SignUpPage extends Component {
               handleUserInfo={this.handleUserInfo}
             />
           </div>
-        ) : signUpStep === "infoPage" ? (
+        ) : signUpStep === 'infoPage' ? (
           <div>
             <SignUpStepper className="signUpPage__step" step={signUpStep} />
             <SignUpInfo
@@ -48,7 +48,7 @@ class SignUpPage extends Component {
               handleUserInfo={this.handleUserInfo}
             />
           </div>
-        ) : signUpStep === "profilePage" ? (
+        ) : signUpStep === 'profilePage' ? (
           <div>
             <SignUpStepper className="signUpPage__step" step={signUpStep} />
             <SignUpProfile
@@ -57,18 +57,18 @@ class SignUpPage extends Component {
               handleSignUp={this.handleSignUp}
             />
           </div>
-        ) : signUpStep === "successPage" ? (
+        ) : signUpStep === 'successPage' ? (
           <SignUpSuccess type={type} name={name} />
         ) : null}
       </div>
     );
   }
 
-  handleSignUpStep = step => {
+  handleSignUpStep = (step) => {
     this.setState({ signUpStep: step });
   };
 
-  handleUserInfo = info => {
+  handleUserInfo = (info) => {
     this.setState(
       {
         type: info.type ? info.type : this.state.type,
@@ -76,31 +76,36 @@ class SignUpPage extends Component {
         name: info.name ? info.name : this.state.name,
         password: info.password ? info.password : this.state.password,
         status: info.status ? info.status : this.state.status,
-        profileImg: info.profileImg ? info.profileImg : this.state.profileImg
+        profileImg: info.profileImg ? info.profileImg : this.state.profileImg,
       },
       () => {
         return !isEmptyString(this.state.name) ? this.handleSignUp() : null;
-      }
+      },
     );
   };
 
   handleSignUp = async () => {
     const params = new FormData();
-    params.append("email", this.state.email);
-    params.append("name", this.state.name);
-    params.append("password", this.state.password);
-    params.append("status", this.state.status);
-    params.append("type", this.state.type === "Sketcher" ? 0 : 1);
-    params.append("img", this.state.profileImg);
+    params.append('email', this.state.email);
+    params.append('name', this.state.name);
+    params.append('password', this.state.password);
+    params.append('status', this.state.status);
+    params.append('type', this.state.type === 'Sketcher' ? 0 : 1);
+    params.append('img', this.state.profileImg);
     const postSignUp = await axios
-      .post(process.env.REACT_APP_SERVER_URL + constant.INIT_API + constant.USERS_API_GET, params)
-      .then(res => {
+      .post(
+        process.env.REACT_APP_SERVER_URL +
+          constant.INIT_API +
+          constant.USERS_API_GET,
+        params,
+      )
+      .then((res) => {
         return res;
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
       });
-    return postSignUp ? this.handleSignUpStep("successPage") : null;
+    return postSignUp ? this.handleSignUpStep('successPage') : null;
   };
 }
 
