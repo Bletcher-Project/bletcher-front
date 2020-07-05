@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import { SignUpType, SignUpInfo, SignUpProfile, SignUpSuccess } from 'Pages';
+import { SignUpInfo, SignUpProfile, SignUpSuccess } from 'Pages';
 import { NavBar, SignUpStepper } from 'Components';
 
 import { isEmptyString } from 'is-what';
 
-import * as constant from '../../Constants/api_uri';
+import * as constant from 'Constants/api_uri';
 
 const defaultProps = {};
 const propTypes = {};
@@ -15,7 +15,7 @@ class SignUpPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      signUpStep: 'typePage',
+      signUpStep: 'infoPage',
       type: '',
       email: '',
       name: '',
@@ -30,15 +30,7 @@ class SignUpPage extends Component {
     return (
       <div className="signUpPage">
         <NavBar isActive="signUp" />
-        {signUpStep === 'typePage' ? (
-          <div>
-            <SignUpStepper className="signUpPage__step" step={signUpStep} />
-            <SignUpType
-              handleSignUpStep={this.handleSignUpStep}
-              handleUserInfo={this.handleUserInfo}
-            />
-          </div>
-        ) : signUpStep === 'infoPage' ? (
+        {signUpStep === 'infoPage' ? (
           <div>
             <SignUpStepper className="signUpPage__step" step={signUpStep} />
             <SignUpInfo
