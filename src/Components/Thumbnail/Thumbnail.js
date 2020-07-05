@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 
-import userCreatorImage from "../../Assets/icons/Creator.png";
-import userSketcherImage from "../../Assets/icons/Sketcher.png";
+import userCreatorImage from "Assets/icons/Creator.png";
+import userSketcherImage from "Assets/icons/Sketcher.png";
 
 const defaultProps = {};
 const propTypes = {};

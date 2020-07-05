@@ -3,7 +3,7 @@ import {
   FAILED_TO_GET_ALLPOST,
   SUCCEED_TO_UPLOAD_POST,
   FAILED_TO_UPLOAD_POST
-} from "../Constants/action-types";
+} from "Redux/Constants/action-types";
 
 const initialState = {
   feed: null

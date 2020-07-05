@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 
-import { TypeButton } from "../../Components";
+import { TypeButton } from "Components";
 
 import Fade from "@material-ui/core/Fade";
 
-import logoSketcher from "../../Assets/images/logo_sketcher.png";
-import logoCreator from "../../Assets/images/logo_creator.png";
+import logoSketcher from "Assets/images/logo_sketcher.png";
+import logoCreator from "Assets/images/logo_creator.png";
 
 const defaultProps = {};
 const propTypes = {};

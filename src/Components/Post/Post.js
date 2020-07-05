@@ -1,20 +1,19 @@
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-import { ServerEndPoint } from "../../Configs/Server";
-import * as PostAction from "../../Redux/Actions/PostAction";
+import * as PostAction from "Redux/Actions/PostAction";
 
 import { Thumbnail, Comment } from "../../Components";
 
 import moment from "moment";
 import commaNumber from "comma-number";
 
-import likeIcon from "../../Assets/icons/heart.png";
-import filledLikeIcon from "../../Assets/icons/heart-filled.png";
-import commentIcon from "../../Assets/icons/comment.png";
-import filledCommentIcon from "../../Assets/icons/comment-filled.png";
-import scrapIcon from "../../Assets/icons/scrap.png";
-import filledScrapIcon from "../../Assets/icons/scrap-filled.png";
+import likeIcon from "Assets/icons/heart.png";
+import filledLikeIcon from "Assets/icons/heart-filled.png";
+import commentIcon from "Assets/icons/comment.png";
+import filledCommentIcon from "Assets/icons/comment-filled.png";
+import scrapIcon from "Assets/icons/scrap.png";
+import filledScrapIcon from "Assets/icons/scrap-filled.png";
 
 const defaultProps = {};
 const propTypes = {};

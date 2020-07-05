@@ -1,14 +1,62 @@
-import {
-  SUCCEED_TO_SIGNIN,
-  FAILED_TO_SIGNIN,
-  SUCCEED_TO_GET_USER,
-  FAILED_TO_GET_USER,
-  SUCCEED_TO_SIGNOUT,
-  TOKEN_EXPIRED,
-} from 'Redux/Constants/action-types';
+/* AUTH ACTIONS */
+const TOKEN_EXPIRED = 'bletcher/auth/TOKEN_EXPIRED';
+const SUCCEED_TO_SIGNIN = 'bletcher/auth/SUCCEED_TO_SIGNIN';
+const FAILED_TO_SIGNIN = 'bletcher/auth/FAILED_TO_SIGNIN';
+
+const SUCCEED_TO_SIGNOUT = 'bletcher/auth/SUCCEED_TO_SIGNOUT';
+
+const SUCCEED_TO_GET_USER = 'bletcher/auth/SUCCEED_TO_GET_USER';
+const FAILED_TO_GET_USER = 'bletcher/auth/FAILED_TO_GET_USER';
+
+const initialState = {
+  isLogin: !!localStorage.getItem('token'),
+  token: localStorage.getItem('token'),
+  user: null,
+};
 
 import * as constant from '../../Constants/api_uri';
 
+/* AUTH Reducer */
+export default function authReducer(state = initialState, action = {}) {
+  switch (action.type) {
+    case TOKEN_EXPIRED:
+      return Object.assign({}, state, {
+        isLogin: false,
+        token: null,
+      });
+    case SUCCEED_TO_SIGNIN:
+      localStorage.setItem('token', action.payload);
+      return Object.assign({}, state, {
+        isLogin: true,
+        token: action.payload,
+      });
+    case FAILED_TO_SIGNIN:
+      return Object.assign({}, state, {
+        isLogin: false,
+        token: null,
+      });
+    case SUCCEED_TO_SIGNOUT:
+      localStorage.removeItem('token');
+      return Object.assign({}, state, {
+        isLogin: false,
+        token: null,
+        user: {},
+      });
+    case SUCCEED_TO_GET_USER:
+      return Object.assign({}, state, {
+        user: action.payload,
+      });
+    case FAILED_TO_GET_USER:
+      return Object.assign({}, state, {
+        user: {},
+      });
+
+    default:
+      return state;
+  }
+}
+
+/* Action Creators */
 export const postSignIn = (params) => {
   return async (dispatch) => {
     try {

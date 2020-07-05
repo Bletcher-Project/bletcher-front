@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-import * as AuthAction from "../../Redux/Actions/AuthAction";
+import * as AuthAction from "Redux/Actions/AuthAction";
 
-import { NavBar, MainButton, MainInput } from "../../Components";
+import { NavBar, MainButton, MainInput } from "Components";
 import BackgroundSlider from "react-background-slider";
 import cx from "classnames";
 import "animate.css";
 
-import bgImage1 from "../../Assets/bg-image/bg-1.jpg";
-import bgImage2 from "../../Assets/bg-image/bg-2.jpg";
-import bgImage3 from "../../Assets/bg-image/bg-3.jpg";
+import bgImage1 from "Assets/bg-image/bg-1.jpg";
+import bgImage2 from "Assets/bg-image/bg-2.jpg";
+import bgImage3 from "Assets/bg-image/bg-3.jpg";
 
 const defaultProps = {};
 const propTypes = {};
