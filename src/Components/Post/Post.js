@@ -1,36 +1,36 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { connect } from "react-redux";
-import * as PostAction from "Redux/Actions/PostAction";
+import { connect } from 'react-redux';
+import * as PostAction from 'Redux/Actions/PostAction';
 
-import { Thumbnail, Comment } from "../../Components";
+import { Thumbnail, Comment } from 'Components';
 
-import moment from "moment";
-import commaNumber from "comma-number";
+import moment from 'moment';
+import commaNumber from 'comma-number';
 
-import likeIcon from "Assets/icons/heart.png";
-import filledLikeIcon from "Assets/icons/heart-filled.png";
-import commentIcon from "Assets/icons/comment.png";
-import filledCommentIcon from "Assets/icons/comment-filled.png";
-import scrapIcon from "Assets/icons/scrap.png";
-import filledScrapIcon from "Assets/icons/scrap-filled.png";
+import likeIcon from 'Assets/icons/heart.png';
+import filledLikeIcon from 'Assets/icons/heart-filled.png';
+import commentIcon from 'Assets/icons/comment.png';
+import filledCommentIcon from 'Assets/icons/comment-filled.png';
+import scrapIcon from 'Assets/icons/scrap.png';
+import filledScrapIcon from 'Assets/icons/scrap-filled.png';
 
 const defaultProps = {};
 const propTypes = {};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     token: state.authReducer.token,
-    user: state.authReducer.user
+    user: state.authReducer.user,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    deletePost: id => dispatch(PostAction.deletePost(id)),
+    deletePost: (id) => dispatch(PostAction.deletePost(id)),
     likePost: (postId, token) => dispatch(PostAction.postLike(postId, token)),
     deleteLikePost: (postId, token) =>
-      dispatch(PostAction.deleteLike(postId, token))
+      dispatch(PostAction.deleteLike(postId, token)),
   };
 };
 
@@ -45,7 +45,7 @@ class Post extends Component {
       scrapIcon: scrapIcon,
       commentClicked: false,
       commentIcon: commentIcon,
-      comments: []
+      comments: [],
     };
   }
 
@@ -68,7 +68,7 @@ class Post extends Component {
       scrapIcon,
       commentClicked,
       commentIcon,
-      comments
+      comments,
     } = this.state;
 
     return (
@@ -80,7 +80,7 @@ class Post extends Component {
               size="50"
               src={
                 userProfileImg !== null
-                  ? `${ServerEndPoint}image/profile/${userProfileImg}`
+                  ? `${process.env.REACT_APP_SERVER_URL}image/profile/${userProfileImg}`
                   : null
               }
               type={userType}
@@ -92,12 +92,12 @@ class Post extends Component {
                   {userName}
                 </span>
                 <span className="post__postSection__header__postInfo__userType">
-                  [{userType === "0" ? "Sketcher" : "Creator"}]
+                  [{userType === '0' ? 'Sketcher' : 'Creator'}]
                 </span>
               </div>
 
               <div className="post__postSection__header__postInfo__postDate">
-                {moment(postDate).format("YYYY-MM-DD HH:mm:ss")}
+                {moment(postDate).format('YYYY-MM-DD HH:mm:ss')}
               </div>
             </div>
           </div>
@@ -105,7 +105,7 @@ class Post extends Component {
           <div className="post__postSection__body">
             <img
               className="post__postSection__body__postImage"
-              src={`${ServerEndPoint}image/post/${postImg}`}
+              src={`${process.env.REACT_APP_SERVER_URL}image/post/${postImg}`}
               alt="postImage"
             />
           </div>
@@ -115,7 +115,7 @@ class Post extends Component {
               {postContent}
             </div>
             <div className="post__postSection__footer__postHashtag">
-              {postHashTags.map(hashtags => (
+              {postHashTags.map((hashtags) => (
                 <div
                   className="post__postSection__footer__postHashtag-tagbox"
                   key={hashtags.id}
@@ -173,11 +173,11 @@ class Post extends Component {
           </div>
         </div>
 
-        {commentClicked ?
+        {commentClicked ? (
           <div className="post__commentSection">
             <Comment comments={comments} />
           </div>
-          : null}
+        ) : null}
       </div>
     );
   }
@@ -218,17 +218,20 @@ class Post extends Component {
 
   handleDelete = async () => {
     const postDelete = await this.props.deletePost(this.props.postId);
-    return postDelete ? window.location.reload() : alert("delete failed!");
+    return postDelete ? window.location.reload() : alert('delete failed!');
   };
 
   getComments = async () => {
     try {
-      let response = await fetch(ServerEndPoint + `api/comments/${this.props.postId}`, {
-        method: "GET",
-        headers: {
-          "x-access-token": this.props.token
-        }
-      });
+      let response = await fetch(
+        process.env.REACT_APP_SERVER_URL + `api/comments/${this.props.postId}`,
+        {
+          method: 'GET',
+          headers: {
+            'x-access-token': this.props.token,
+          },
+        },
+      );
       if (response.status === 200) {
         let result = await response.json();
         this.setState({ comments: result.comments });
@@ -243,7 +246,4 @@ class Post extends Component {
 Post.defaultProps = defaultProps;
 Post.propTypes = propTypes;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Post);
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

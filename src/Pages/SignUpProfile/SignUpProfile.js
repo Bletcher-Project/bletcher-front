@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { SignUpInput, MainButton } from 'Components';
+import { MainInput, MainButton } from 'Components';
 
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { purple } from '@material-ui/core/colors';
@@ -108,7 +108,7 @@ class SignUpProfile extends Component {
                 </div>
               </div>
               <div className="signUpPage__info__container__content__input">
-                <SignUpInput
+                <MainInput
                   label="name"
                   type="text"
                   value={name}
@@ -130,7 +130,7 @@ class SignUpProfile extends Component {
                       : null
                   }
                 />
-                <SignUpInput
+                <MainInput
                   label="status (optional)"
                   type="text"
                   value={status}
