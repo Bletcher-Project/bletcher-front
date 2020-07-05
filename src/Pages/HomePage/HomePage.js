@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
 import { connect } from "react-redux";
-import * as PostAction from "../../Redux/Actions/PostAction";
+import * as PostAction from "Redux/Actions/PostAction";
 
-import { NavBar, Post, Upload } from "../../Components";
+import { NavBar, Post, Upload } from "Components";
 
 const defaultProps = {};
 const propTypes = {};
@@ -65,10 +65,6 @@ class HomePage extends Component {
                           postDate={data.createdAt}
                           isLiked={data.isLiked}
                           postLike={data.likeCount}
-                          postComments={[
-                            { id: 1, author: "Endrew", comment: "good job" },
-                            { id: 2, author: "Sdi_dk", comment: "awesome" }
-                          ]} //////
                         />
                       </div>
                     );
