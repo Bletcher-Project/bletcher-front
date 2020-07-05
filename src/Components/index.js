@@ -9,6 +9,7 @@ import Post from "./Post/Post";
 import Comment from "./Comment/Comment";
 import Thumbnail from "./Thumbnail/Thumbnail";
 import Upload from "./Upload/Upload";
+import ProfileSetting from "./ProfileSetting/ProfileSetting";
 
 export {
   NavBar,
@@ -22,4 +23,5 @@ export {
   Comment,
   Thumbnail,
   Upload,
+  ProfileSetting
 };
