@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import { SignUpInput, MainButton } from 'Components';
+import { MainInput, MainButton } from 'Components';
 
 import Fade from '@material-ui/core/Fade';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
@@ -72,7 +72,7 @@ class SignUpInfo extends Component {
               </div>
             </div>
             <div className="signUpPage__info__container__input">
-              <SignUpInput
+              <MainInput
                 label="Email"
                 type="email"
                 value={email}
@@ -94,7 +94,7 @@ class SignUpInfo extends Component {
                     : null
                 }
               />
-              <SignUpInput
+              <MainInput
                 label="Password"
                 type="password"
                 value={this.state.password}
@@ -116,7 +116,7 @@ class SignUpInfo extends Component {
                     : null
                 }
               />
-              <SignUpInput
+              <MainInput
                 label="Password Confirm"
                 type="password"
                 value={this.state.repassword}
