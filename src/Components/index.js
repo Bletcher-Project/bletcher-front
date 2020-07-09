@@ -1,8 +1,7 @@
-import NavBar from './NavBar/NavBar';
-import MainButton from './MainButton/MainButton';
-import MainInput from './MainInput/MainInput.jsx';
-import MainTextField from './MainTextField/MainTextField';
-import TypeButton from './TypeButton/TypeButton';
+import NavBar from './Main/NavBar/NavBar';
+import MainButton from './Common/Button/Button';
+import MainInput from './Common/Input/Input';
+import MainTextField from './Common/TextField/TextField';
 import SignUpStepper from './SignUpStepper/SignUpStepper';
 import Post from './Post/Post';
 import Comment from './Comment/Comment';
@@ -15,7 +14,6 @@ export {
   MainButton,
   MainInput,
   MainTextField,
-  TypeButton,
   SignUpStepper,
   Post,
   Comment,
