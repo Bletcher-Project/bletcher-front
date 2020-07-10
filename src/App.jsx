@@ -2,15 +2,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+// Redux
+import { connect } from 'react-redux';
+import * as AuthAction from 'Redux/Actions/AuthAction';
+
 // React Router
 import { Route, withRouter, Switch, Redirect } from 'react-router-dom';
 
-// Redux
-import { connect } from 'react-redux';
-import * as AuthAction from './Redux/Actions/AuthAction';
-
 // Pages
-import { MainPage, HomePage, SignUpPage, UserPage } from './Pages';
+import MainPage from 'Pages/MainPage';
+import HomePage from 'Pages/HomePage';
+import SignUpPage from 'Pages/SignUpPage';
+import UserPage from 'Pages/UserPage';
+
+const propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  isLogin: PropTypes.string.isRequired,
+  token: PropTypes.string.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   isLogin: state.authReducer.isLogin,
@@ -53,10 +62,6 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  isLogin: PropTypes.string.isRequired,
-  token: PropTypes.string.isRequired,
-};
+App.propTypes = propTypes;
 
 export default withRouter(connect(mapStateToProps)(App));

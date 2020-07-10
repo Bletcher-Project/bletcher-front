@@ -1,0 +1,156 @@
+/*
+  Sign Up Page Styling
+*/
+
+@mixin content-center {
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+}
+
+.signUpPage {
+  width: 100%;
+  height: 100%;
+
+  &__step {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+  }
+
+  &__type {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin-top: 50px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    &__container {
+      background-color: white;
+
+      &-head {
+        font-size: 2.5rem;
+      }
+
+      &-btn {
+        display: flex;
+        flex-flow: row wrap;
+        margin-top: 10px;
+        background-color: white;
+      }
+    }
+  }
+
+  &__info {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    &-loading {
+      margin-top: 200px;
+    }
+
+    &__container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 650px;
+
+      height: 100%;
+      background-color: white;
+
+      &__head {
+        width: 650px;
+        height: 120px;
+        margin-top: 50px;
+        margin-bottom: 10px;
+        justify-content: center;
+        font-size: 2.3rem;
+
+        &-back {
+          position: relative;
+          left: -20px;
+          z-index: 3;
+          width: 60px;
+          margin: 0;
+          border: none;
+          cursor: pointer;
+        }
+
+        &-title {
+          text-align: center;
+          position: relative;
+          top: -55px;
+          z-index: 2;
+        }
+      }
+
+      &__content {
+        width: 360px;
+        height: 400px;
+        padding-top: 8px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 4px;
+
+        &__propic {
+          margin-top: -150px;
+
+          &-preview {
+            height: 120px;
+            border-radius: 40%;
+          }
+
+          &-label {
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+
+  &__success {
+    @keyframes float {
+      0% {
+        transform: translatey(0px);
+      }
+      50% {
+        transform: translatey(-5px);
+      }
+      100% {
+        transform: translatey(0px);
+      }
+    }
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 150px;
+
+    &-head {
+      margin-bottom: 48px;
+      font-size: 3rem;
+    }
+
+    &-logo {
+      img {
+        animation: float 2s ease-in-out infinite;
+      }
+    }
+
+    &-desc {
+      margin-top: 16px;
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+  }
+}

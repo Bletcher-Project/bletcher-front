@@ -1,17 +1,30 @@
-@import "./Constants/Color.scss";
-@import "./Pages/index";
-@import "./Components/index";
-@import url("https://use.typekit.net/dwx4ixd.css"); // (adobe) flood-std font
-@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap"); // (google) Roboto font
-@import url("https://fonts.googleapis.com/css?family=Mansalva&display=swap"); // (google) Mansalva
-@import url("https://fonts.googleapis.com/css?family=Noto+Sans&display=swap"); // (google) NotoSans font
+/* Constants - Color */
+@import 'Constants/Color.scss';
+/* Components Style */
+@import 'Components/Common/TextField';
+@import 'Components/Common/Thumbnail';
+@import 'Components/Main/NavBar';
+@import 'Components/Post/Post';
+@import 'Components/Post/Comment';
+@import 'Components/Upload';
+/* Pages Style */
+@import 'Pages/GuidePage';
+@import 'Pages/HomePage';
+@import 'Pages/MainPage';
+@import 'Pages/SignUpPage';
+@import 'Pages/UserPage';
+/* Fonts */
+@import url('https://use.typekit.net/dwx4ixd.css'); // (adobe) flood-std font
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap'); // (google) Roboto font
+@import url('https://fonts.googleapis.com/css?family=Mansalva&display=swap'); // (google) Mansalva
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans&display=swap'); // (google) NotoSans font
 @import url('https://fonts.googleapis.com/css?family=DM+Serif+Text&display=swap'); // (google) DM Serif Text font
 
 html,
 body {
   margin: 0;
   padding: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   a {
@@ -24,6 +37,6 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }

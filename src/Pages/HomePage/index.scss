@@ -1,0 +1,29 @@
+/*
+  Home Page Styling
+*/
+
+.homePage {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  margin-top: 80px;
+
+  &__newPost {
+    width: 500px;
+    border: 1px solid #ccd0d5;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+    cursor: pointer;
+    &:hover {
+      background-color: #f8f8f8;
+    }
+  }
+
+  &__feed {
+    display: flex;
+    flex-direction: column;
+  }
+}
