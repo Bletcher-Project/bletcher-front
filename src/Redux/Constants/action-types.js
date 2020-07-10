@@ -1,12 +1,10 @@
 /* AUTH ACTIONS */
-export const TOKEN_EXPIRED = 'TOKEN_EXPIRED';
-export const SUCCEED_TO_SIGNIN = 'SUCCEED_TO_SIGNIN';
-export const FAILED_TO_SIGNIN = 'FAILED_TO_SIGNIN';
-
-export const SUCCEED_TO_SIGNOUT = 'SUCCEED_TO_SIGNOUT';
-
-export const SUCCEED_TO_GET_USER = 'SUCCEED_TO_GET_USER';
-export const FAILED_TO_GET_USER = 'FAILED_TO_GET_USER';
+// export const TOKEN_EXPIRED = 'TOKEN_EXPIRED';
+export const REMOVE_TOKEN = 'REMOVE_TOKEN';
+export const SET_TOKEN = 'SET_TOKEN';
+export const SIGNOUT = 'SIGNOUT';
+export const GET_USER = 'GET_USER';
+export const REMOVE_USER = 'REMOVE_USER';
 
 /* POST ACTIONS */
 export const SUCCEED_TO_GET_ALLPOST = 'SUCCEED_TO_GET_ALLPOST';

@@ -1,10 +1,9 @@
 import {
-  SUCCEED_TO_SIGNIN,
-  FAILED_TO_SIGNIN,
-  SUCCEED_TO_GET_USER,
-  FAILED_TO_GET_USER,
-  SUCCEED_TO_SIGNOUT,
-  TOKEN_EXPIRED,
+  REMOVE_TOKEN,
+  SET_TOKEN,
+  SIGNOUT,
+  GET_USER,
+  REMOVE_USER,
 } from 'Redux/Constants/action-types';
 
 import * as constant from '../../Constants/api_uri';
@@ -12,7 +11,7 @@ import * as constant from '../../Constants/api_uri';
 export const postSignIn = (params) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(
+      const response = await fetch(
         process.env.REACT_APP_SERVER_URL +
           constant.INIT_API +
           constant.AUTH_API +
@@ -30,21 +29,20 @@ export const postSignIn = (params) => {
       );
       if (response.status === 401) {
         await dispatch({
-          type: FAILED_TO_SIGNIN,
+          type: REMOVE_TOKEN, // failed to sign in
           payload: null,
         });
         return 'failed';
-      } else {
-        let result = await response.json();
-        await dispatch({
-          type: SUCCEED_TO_SIGNIN,
-          payload: result.token,
-        });
-        return result.token;
       }
+      const result = await response.json();
+      await dispatch({
+        type: SET_TOKEN, // success sign in
+        payload: result.token,
+      });
+      return result.token;
     } catch (error) {
       dispatch({
-        type: FAILED_TO_SIGNIN,
+        type: REMOVE_TOKEN, // fail to sign in
         payload: { data: 'NETWORK_ERROR' },
       });
     }
@@ -54,7 +52,7 @@ export const postSignIn = (params) => {
 export const getUser = (token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(
+      const response = await fetch(
         process.env.REACT_APP_SERVER_URL +
           constant.INIT_API +
           constant.AUTH_API +
@@ -67,30 +65,31 @@ export const getUser = (token) => {
         },
       );
       if (response.status === 200) {
-        let result = await response.json();
+        const result = await response.json();
         await dispatch({
-          type: SUCCEED_TO_GET_USER,
+          type: GET_USER, // success get user
           payload: result.userInfo,
         });
         return result.userInfo;
+        // eslint-disable-next-line no-else-return
       } else if (response.status === 403) {
-        let result = await response.json();
+        const result = await response.json();
         if (result.message === 'jwt expired') {
           await dispatch({
-            type: TOKEN_EXPIRED,
+            type: REMOVE_TOKEN, // token expired
             payload: null,
           });
         }
       } else {
         await dispatch({
-          type: FAILED_TO_GET_USER,
+          type: REMOVE_USER, // fail to get user
           payload: null,
         });
         return 'failed';
       }
     } catch (error) {
       dispatch({
-        type: FAILED_TO_GET_USER,
+        type: REMOVE_USER, // fail to ger user
         payload: { data: 'NETWORK_ERROR' },
       });
     }
@@ -100,7 +99,7 @@ export const getUser = (token) => {
 export const signOut = () => {
   return async (dispatch) => {
     await dispatch({
-      type: SUCCEED_TO_SIGNOUT,
+      type: SIGNOUT,
     });
   };
 };

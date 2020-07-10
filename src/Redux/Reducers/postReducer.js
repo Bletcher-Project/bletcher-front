@@ -2,31 +2,29 @@ import {
   SUCCEED_TO_GET_ALLPOST,
   FAILED_TO_GET_ALLPOST,
   SUCCEED_TO_UPLOAD_POST,
-  FAILED_TO_UPLOAD_POST
-} from "Redux/Constants/action-types";
+  FAILED_TO_UPLOAD_POST,
+} from 'Redux/Constants/action-types';
 
 const initialState = {
-  feed: null
+  feed: null,
 };
 
 export default function postReducer(state = initialState, action) {
   switch (action.type) {
     case SUCCEED_TO_GET_ALLPOST:
-      return Object.assign({}, state, {
-        feed: action.payload
-      });
+      return { ...state, feed: action.payload };
     case FAILED_TO_GET_ALLPOST:
-      return Object.assign({}, state, {
-        //
-      });
+      return {
+        ...state, //
+      };
     case SUCCEED_TO_UPLOAD_POST:
-      return Object.assign({}, state, {
-        //
-      });
+      return {
+        ...state, //
+      };
     case FAILED_TO_UPLOAD_POST:
-      return Object.assign({}, state, {
-        //
-      });
+      return {
+        ...state, //
+      };
 
     default:
       return state;
