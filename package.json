@@ -51,29 +51,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "parser": "babel-eslint",
-    "extends": [
-      "airbnb",
-      "plugin:prettier/recommended"
-    ],
-    "rules": {
-      "object-curly-newline": 0
-    },
-    "env": {
-      "browser": true
-    },
-    "settings": {
-      "import/resolver": {
-        "node": {
-          "moduleDirectory": [
-            "node_modules",
-            "src/"
-          ]
-        }
-      }
-    }
-  },
   "browserslist": {
     "production": [
       ">0.2%",
