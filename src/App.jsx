@@ -10,7 +10,10 @@ import { connect } from 'react-redux';
 import * as AuthAction from './Redux/Actions/AuthAction';
 
 // Pages
-import { MainPage, HomePage, SignUpPage, UserPage } from './Pages';
+import MainPage from 'Pages/MainPage';
+import HomePage from 'Pages/HomePage';
+import SignUpPage from 'Pages/SignUpPage';
+import UserPage from 'Pages/UserPage';
 
 const mapStateToProps = (state) => ({
   isLogin: state.authReducer.isLogin,
