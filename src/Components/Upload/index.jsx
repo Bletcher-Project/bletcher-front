@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as PostAction from 'Redux/Actions/PostAction';
 
 import Cropper from 'react-cropper';
-import 'cropper.css';
+import 'cropperjs/dist/cropper.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 

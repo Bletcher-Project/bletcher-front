@@ -4,6 +4,7 @@ import axios from 'axios';
 import NavBar from 'Components/Main/NavBar';
 import SignUpStepper from 'Components/SignUp/SignUpStepper';
 import SignUpInfo from 'Components/SignUp/SignUpInfo';
+import SignUpProfile from 'Components/SignUp/SignUpProfile';
 import SignUpSuccess from 'Components/SignUp/SignUpSuccess';
 
 import { isEmptyString } from 'is-what';
