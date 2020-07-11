@@ -1,50 +1,41 @@
-import {
-  REMOVE_TOKEN,
-  SET_TOKEN,
-  SIGNOUT,
-  GET_USER,
-  REMOVE_USER,
-} from 'Redux/Constants/action-types';
+import { getApiPath } from '../utils/util';
 
-import * as constant from '../../Constants/api_uri';
+export const REMOVE_TOKEN = 'REMOVE_TOKEN';
+export const SET_TOKEN = 'SET_TOKEN';
+export const SIGNOUT = 'SIGNOUT';
+export const GET_USER = 'GET_USER';
+export const REMOVE_USER = 'REMOVE_USER';
+
+const getAction = (actionType, actionPayload) => {
+  return {
+    type: actionType,
+    payload: actionPayload,
+  };
+};
 
 export const postSignIn = (params) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(
-        process.env.REACT_APP_SERVER_URL +
-          constant.INIT_API +
-          constant.AUTH_API +
-          constant.SIGNIN_API,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            id: params.id,
-            password: params.password,
-          }),
+      const response = await fetch(getApiPath('SIGNIN_API'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify({
+          id: params.id,
+          password: params.password,
+        }),
+      });
       if (response.status === 401) {
-        await dispatch({
-          type: REMOVE_TOKEN, // failed to sign in
-          payload: null,
-        });
+        await dispatch(getAction(REMOVE_TOKEN, null)); // failed to signin
         return 'failed';
       }
       const result = await response.json();
-      await dispatch({
-        type: SET_TOKEN, // success sign in
-        payload: result.token,
-      });
+      await dispatch(getAction(SET_TOKEN, result.token)); // success sign in
       return result.token;
     } catch (error) {
-      dispatch({
-        type: REMOVE_TOKEN, // fail to sign in
-        payload: { data: 'NETWORK_ERROR' },
-      });
+      dispatch(getAction(REMOVE_TOKEN, { data: 'NETWORK_ERROR' })); // fail to sign in
+      return 'ERROR!';
     }
   };
 };
@@ -52,46 +43,31 @@ export const postSignIn = (params) => {
 export const getUser = (token) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(
-        process.env.REACT_APP_SERVER_URL +
-          constant.INIT_API +
-          constant.AUTH_API +
-          constant.USER_API_GET,
-        {
-          method: 'GET',
-          headers: {
-            'x-access-token': token,
-          },
+      const response = await fetch(getApiPath('USER_API_GET'), {
+        method: 'GET',
+        headers: {
+          'x-access-token': token,
         },
-      );
-      if (response.status === 200) {
-        const result = await response.json();
-        await dispatch({
-          type: GET_USER, // success get user
-          payload: result.userInfo,
-        });
-        return result.userInfo;
-        // eslint-disable-next-line no-else-return
-      } else if (response.status === 403) {
-        const result = await response.json();
-        if (result.message === 'jwt expired') {
-          await dispatch({
-            type: REMOVE_TOKEN, // token expired
-            payload: null,
-          });
-        }
-      } else {
-        await dispatch({
-          type: REMOVE_USER, // fail to get user
-          payload: null,
-        });
-        return 'failed';
+      });
+      let result;
+      switch (response.status) {
+        case 200:
+          result = await response.json();
+          await dispatch(getAction(GET_USER, result.userInfo)); // success get user
+          return result.userInfo;
+        case 403:
+          result = await response.json();
+          if (result.message === 'jwt expired') {
+            await dispatch(getAction(REMOVE_TOKEN, null)); // token expired
+          }
+          return result.message;
+        default:
+          await dispatch(getAction(REMOVE_USER, null)); // fail to get user
+          return 'failed';
       }
     } catch (error) {
-      dispatch({
-        type: REMOVE_USER, // fail to ger user
-        payload: { data: 'NETWORK_ERROR' },
-      });
+      dispatch(getAction(REMOVE_USER, { data: 'NETWORK_ERROR' })); // fail to ger user
+      return 'ERROR';
     }
   };
 };

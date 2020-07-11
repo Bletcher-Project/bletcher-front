@@ -4,7 +4,7 @@ import {
   GET_USER,
   REMOVE_TOKEN,
   SIGNOUT,
-} from 'Redux/Constants/action-types';
+} from '../Actions/AuthAction';
 
 const initialState = {
   isLogin: !!localStorage.getItem('token'),
@@ -19,8 +19,6 @@ export default function authReducer(state = initialState, action) {
     case SET_TOKEN: // SUCCEED_TO_SIGNIN
       localStorage.setItem('token', action.payload);
       return { ...state, isLogin: true, token: action.payload };
-    // case REMOVE_TOKEN: // FAILED_TO_SIGNIN
-    //   return { ...state, isLogin: false, token: null };
     case SIGNOUT: // SUCCEED_TO_SIGNOUT
       localStorage.removeItem('token');
       return { ...state, isLogin: false, token: null, user: {} };
