@@ -13,7 +13,7 @@ const defaultProps = {
 };
 const propTypes = {
   text: PropTypes.string.isRequired,
-  onClick: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   component: PropTypes.elementType,
   size: PropTypes.string,
@@ -56,7 +56,7 @@ class MainButton extends Component {
           variant="extended"
           color="primary"
           size={size}
-          disabled={disabled}
+          disabled={!disabled}
           onClick={onClick}
           component={component}
           href={href}

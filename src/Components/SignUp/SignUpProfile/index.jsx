@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import Input from 'Components/Common/Input';
-import Button from 'Components/Common/Button';
 
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { purple } from '@material-ui/core/colors';
@@ -53,20 +52,6 @@ class SignUpProfile extends Component {
           timeout={{ appear: 1000, enter: 750, exit: 750 }}
         >
           <div className="signUpPage__info__container">
-            <div className="signUpPage__info__container__head">
-              <div className="signUpPage__info__container__head-back">
-                <img
-                  alt="back"
-                  src={backIcon}
-                  width="35px"
-                  style={{ cursor: 'pointer' }}
-                  onClick={this.handlePrevStep}
-                />
-              </div>
-              <div className="signUpPage__info__container__head-title">
-                <p>Complete your profile.</p>
-              </div>
-            </div>
             <div className="signUpPage__info__container__content">
               <div className="signUpPage__info__container__content__propic">
                 <div className="signUpPage__info__container__content__propic-preview">
@@ -140,11 +125,6 @@ class SignUpProfile extends Component {
                   onKeyPress={this.handleEnterKey}
                   error={!isStatusValid}
                   helperText={helpStatus}
-                />
-                <Button
-                  disabled={!isSignUpNext}
-                  text="Sign Up"
-                  onClick={this.handleSignUp}
                 />
               </div>
             </div>

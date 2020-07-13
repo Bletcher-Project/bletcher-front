@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import Input from 'Components/Common/Input';
-import Button from 'Components/Common/Button';
 
 import Fade from '@material-ui/core/Fade';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { purple } from '@material-ui/core/colors';
 
-import backIcon from 'Assets/icons/signup_back.svg';
 import { isEmptyString } from 'is-what';
 
 import * as constant from 'Constants/api_uri';
@@ -47,108 +45,79 @@ class SignUpInfo extends Component {
     } = this.state;
 
     return (
-      <Fade
-        in={true}
-        mountOnEnter
-        timeout={{ appear: 1000, enter: 750, exit: 750 }}
-      >
-        <div className="signUpPage__info">
-          <div className="signUpPage__info__container">
-            <div className="signUpPage__info__container__head">
-              <div className="signUpPage__info__container__head-back">
-                <img
-                  alt="back"
-                  src={backIcon}
-                  width="35px"
-                  style={{ cursor: 'pointer' }}
-                  onClick={this.handlePrevStep}
-                />
-              </div>
-
-              <div className="signUpPage__info__container__head-title">
-                <p>
-                  Hello, {type}! <br />
-                  Enter your personal information.
-                </p>
-              </div>
-            </div>
-            <div className="signUpPage__info__container__input">
-              <Input
-                label="Email"
-                type="email"
-                value={email}
-                width="210px"
-                onChange={this.handleEmailCheck}
-                error={!isEmailValid}
-                helperText={helpEmail}
-                InputProps={
-                  !isEmptyString(email) & isEmailValid
-                    ? {
-                        endAdornment: (
-                          <Fade in={true} timeout={350}>
-                            <CheckCircleOutlineIcon
-                              style={{ color: purple[700], width: '0.8em' }}
-                            />
-                          </Fade>
-                        ),
-                      }
-                    : null
-                }
-              />
-              <Input
-                label="Password"
-                type="password"
-                value={this.state.password}
-                width="210px"
-                onChange={this.handlePwdCheck}
-                error={!isPwdValid}
-                helperText={helpPwd}
-                InputProps={
-                  !isEmptyString(this.state.password) & isPwdValid
-                    ? {
-                        endAdornment: (
-                          <Fade in={true} timeout={350}>
-                            <CheckCircleOutlineIcon
-                              style={{ color: purple[700], width: '0.8em' }}
-                            />
-                          </Fade>
-                        ),
-                      }
-                    : null
-                }
-              />
-              <Input
-                label="Password Confirm"
-                type="password"
-                value={this.state.repassword}
-                width="210px"
-                onChange={this.handleRepwdCheck}
-                onKeyPress={this.handleEnterKey}
-                error={!isRePwdValid}
-                helperText={isRePwdValid ? ' ' : helpRePwd}
-                InputProps={
-                  !isEmptyString(this.state.repassword) & isRePwdValid
-                    ? {
-                        endAdornment: (
-                          <Fade in={true} timeout={350}>
-                            <CheckCircleOutlineIcon
-                              style={{ color: purple[700], width: '0.8em' }}
-                            />
-                          </Fade>
-                        ),
-                      }
-                    : null
-                }
-              />
-              <Button
-                disabled={!isInfoNext}
-                text="Next"
-                onClick={this.handleNextStep}
-              />
-            </div>
+      <div className="signUpPage__info">
+        <div className="signUpPage__info__container">
+          <div className="signUpPage__info__container__input">
+            <Input
+              label="Email"
+              type="email"
+              value={email}
+              width="210px"
+              onChange={this.handleEmailCheck}
+              error={!isEmailValid}
+              helperText={helpEmail}
+              InputProps={
+                !isEmptyString(email) & isEmailValid
+                  ? {
+                      endAdornment: (
+                        <Fade in={true} timeout={350}>
+                          <CheckCircleOutlineIcon
+                            style={{ color: purple[700], width: '0.8em' }}
+                          />
+                        </Fade>
+                      ),
+                    }
+                  : null
+              }
+            />
+            <Input
+              label="Password"
+              type="password"
+              value={this.state.password}
+              width="210px"
+              onChange={this.handlePwdCheck}
+              error={!isPwdValid}
+              helperText={helpPwd}
+              InputProps={
+                !isEmptyString(this.state.password) & isPwdValid
+                  ? {
+                      endAdornment: (
+                        <Fade in={true} timeout={350}>
+                          <CheckCircleOutlineIcon
+                            style={{ color: purple[700], width: '0.8em' }}
+                          />
+                        </Fade>
+                      ),
+                    }
+                  : null
+              }
+            />
+            <Input
+              label="Password Confirm"
+              type="password"
+              value={this.state.repassword}
+              width="210px"
+              onChange={this.handleRepwdCheck}
+              onKeyPress={this.handleEnterKey}
+              error={!isRePwdValid}
+              helperText={isRePwdValid ? ' ' : helpRePwd}
+              InputProps={
+                !isEmptyString(this.state.repassword) & isRePwdValid
+                  ? {
+                      endAdornment: (
+                        <Fade in={true} timeout={350}>
+                          <CheckCircleOutlineIcon
+                            style={{ color: purple[700], width: '0.8em' }}
+                          />
+                        </Fade>
+                      ),
+                    }
+                  : null
+              }
+            />
           </div>
         </div>
-      </Fade>
+      </div>
     );
   }
 
@@ -158,10 +127,6 @@ class SignUpInfo extends Component {
       email: this.state.email,
       password: this.state.password,
     });
-  };
-
-  handlePrevStep = () => {
-    this.props.handleSignUpStep('typePage');
   };
 
   handleNextBtn = () => {
