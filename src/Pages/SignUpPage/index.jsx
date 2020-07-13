@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 
 import NavBar from 'Components/Main/NavBar';
 import Button from 'Components/Common/Button';
-import SignUpInfo from 'Components/SignUp/SignUpInfo';
-import SignUpProfile from 'Components/SignUp/SignUpProfile';
+import SignUpForm from 'Components/SignUp/SignUpForm';
 
 const defaultProps = {};
 const propTypes = {};
@@ -13,7 +12,6 @@ class SignUpPage extends Component {
     super(props);
     this.state = {
       isValid: false,
-      nextStepText: '',
     };
   }
 
@@ -30,8 +28,7 @@ class SignUpPage extends Component {
           <p>Enter your personal information.</p>
         </div>
         <div className="signUpPage__content">
-          <SignUpInfo />
-          <SignUpProfile />
+          <SignUpForm />
         </div>
         <div className="signUpPage__footer">
           <Button
