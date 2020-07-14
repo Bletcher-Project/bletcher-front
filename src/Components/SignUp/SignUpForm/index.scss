@@ -10,6 +10,23 @@
 
     & p {
       cursor: pointer;
+      margin: 0;
+    }
+  }
+
+  &__userInfo {
+    display: flex;
+
+    &__account {
+      display: flex;
+      flex-direction: column;
+      padding-right: 10px;
+    }
+
+    &__profile {
+      display: flex;
+      flex-direction: column;
+      padding-left: 10px;
     }
   }
 }
