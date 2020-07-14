@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import TextField from '@material-ui/core/TextField';
@@ -10,7 +10,7 @@ const defaultProps = {
   width: '200px',
   disabled: false,
   error: false,
-  helperText: '',
+  helperText: ' ',
   InputProps: null,
   onKeyPress: null,
 };
@@ -43,42 +43,34 @@ const PurpleInput = withStyles({
   },
 })(TextField);
 
-class Input extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+function Input(props) {
+  const {
+    label,
+    type,
+    width,
+    disabled,
+    error,
+    helperText,
+    InputProps,
+    onChange,
+    onKeyPress,
+  } = props;
 
-  render() {
-    const {
-      label,
-      type,
-      width,
-      disabled,
-      error,
-      helperText,
-      InputProps,
-      onChange,
-      onKeyPress,
-    } = this.props;
-    return (
-      <div className="mainInput">
-        <PurpleInput
-          label={label}
-          type={type}
-          style={{ width }}
-          disabled={disabled}
-          error={error}
-          helperText={helperText}
-          InputProps={{
-            endAdornment: InputProps,
-          }}
-          onChange={onChange}
-          onKeyPress={onKeyPress}
-        />
-      </div>
-    );
-  }
+  return (
+    <PurpleInput
+      label={label}
+      type={type}
+      style={{ width }}
+      disabled={disabled}
+      error={error}
+      helperText={helperText}
+      InputProps={{
+        endAdornment: InputProps,
+      }}
+      onChange={onChange}
+      onKeyPress={onKeyPress}
+    />
+  );
 }
 
 Input.defaultProps = defaultProps;
