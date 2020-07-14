@@ -28,6 +28,56 @@ class SignUpForm extends Component {
     }
   };
 
+  handleEmail = (e) => {
+    const { user } = this.state;
+    this.setState({
+      user: {
+        ...user,
+        email: e.target.value,
+      },
+    });
+  };
+
+  handlePassword = (e) => {
+    const { user } = this.state;
+    this.setState({
+      user: {
+        ...user,
+        password: e.target.value,
+      },
+    });
+  };
+
+  handleRePassword = (e) => {
+    const { user } = this.state;
+    this.setState({
+      user: {
+        ...user,
+        repassword: e.target.value,
+      },
+    });
+  };
+
+  handleName = (e) => {
+    const { user } = this.state;
+    this.setState({
+      user: {
+        ...user,
+        name: e.target.value,
+      },
+    });
+  };
+
+  handleStatus = (e) => {
+    const { user } = this.state;
+    this.setState({
+      user: {
+        ...user,
+        status: e.target.value,
+      },
+    });
+  };
+
   render() {
     const { profileImg, user } = this.state;
     console.log(user);
@@ -52,72 +102,42 @@ class SignUpForm extends Component {
         </div>
         <div className="signUpForm__userInfo">
           <div className="signUpForm__userInfo__account">
-            <Input
-              label="Email"
-              type="email"
-              width="210px"
-              onChange={(e) =>
-                this.setState({
-                  user: {
-                    ...user,
-                    email: e.target.value,
-                  },
-                })
-              }
-            />
-            <Input
-              label="Password"
-              type="password"
-              width="210px"
-              onChange={(e) =>
-                this.setState({
-                  user: {
-                    ...user,
-                    password: e.target.value,
-                  },
-                })
-              }
-            />
-            <Input
-              label="Password Confirm"
-              type="password"
-              width="210px"
-              onChange={(e) =>
-                this.setState({
-                  user: {
-                    ...user,
-                    repassword: e.target.value,
-                  },
-                })
-              }
-            />
+            <form>
+              <Input
+                label="Email"
+                type="email"
+                autoComplete="username"
+                width="210px"
+                onChange={(e) => this.handleEmail(e)}
+              />
+              <Input
+                label="Password"
+                type="password"
+                autoComplete="new-password"
+                width="210px"
+                onChange={(e) => this.handlePassword(e)}
+              />
+              <Input
+                label="Password Confirm"
+                type="password"
+                autoComplete="new-password"
+                width="210px"
+                onChange={(e) => this.handleRePassword(e)}
+              />
+            </form>
           </div>
           <div className="signUpForm__userInfo__profile">
             <Input
               label="Name"
               type="text"
               width="210px"
-              onChange={(e) =>
-                this.setState({
-                  user: {
-                    ...user,
-                    name: e.target.value,
-                  },
-                })
-              }
+              onChange={(e) => this.handleName(e)}
             />
             <Input
               label="Status (optional)"
               type="text"
               width="210px"
-              onChange={(e) =>
-                this.setState({
-                  user: {
-                    ...user,
-                    status: e.target.value,
-                  },
-                })
-              }
+              onChange={(e) => this.handleStatus(e)}
             />
           </div>
         </div>

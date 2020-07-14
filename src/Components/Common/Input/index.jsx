@@ -7,6 +7,7 @@ import { purple } from '@material-ui/core/colors';
 
 const defaultProps = {
   label: '',
+  autoComplete: '',
   width: '200px',
   disabled: false,
   error: false,
@@ -17,6 +18,7 @@ const defaultProps = {
 const propTypes = {
   label: PropTypes.string,
   type: PropTypes.string.isRequired,
+  autoComplete: PropTypes.string,
   width: PropTypes.string,
   disabled: PropTypes.bool,
   error: PropTypes.bool,
@@ -47,6 +49,7 @@ function Input(props) {
   const {
     label,
     type,
+    autoComplete,
     width,
     disabled,
     error,
@@ -60,6 +63,7 @@ function Input(props) {
     <PurpleInput
       label={label}
       type={type}
+      autoComplete={autoComplete}
       style={{ width }}
       disabled={disabled}
       error={error}

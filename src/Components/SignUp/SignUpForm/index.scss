@@ -18,9 +18,12 @@
     display: flex;
 
     &__account {
-      display: flex;
-      flex-direction: column;
       padding-right: 10px;
+
+      & form {
+        display: flex;
+        flex-direction: column;
+      }
     }
 
     &__profile {
