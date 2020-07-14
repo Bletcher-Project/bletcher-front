@@ -6,21 +6,24 @@ import { withStyles } from '@material-ui/core/styles';
 import { purple } from '@material-ui/core/colors';
 
 const defaultProps = {
+  label: '',
+  width: '200px',
   disabled: false,
   error: false,
+  helperText: '',
+  InputProps: null,
+  onKeyPress: null,
 };
 const propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   type: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  width: PropTypes.number.isRequired,
+  width: PropTypes.string,
   disabled: PropTypes.bool,
   error: PropTypes.bool,
-  helperText: PropTypes.string.isRequired,
-  InputProps: PropTypes.element.isRequired,
+  helperText: PropTypes.string,
+  InputProps: PropTypes.element,
   onChange: PropTypes.func.isRequired,
-  onKeyPress: PropTypes.func.isRequired,
+  onKeyPress: PropTypes.func,
 };
 
 const PurpleInput = withStyles({
@@ -40,7 +43,7 @@ const PurpleInput = withStyles({
   },
 })(TextField);
 
-class MainInput extends Component {
+class Input extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -50,8 +53,6 @@ class MainInput extends Component {
     const {
       label,
       type,
-      value,
-      name,
       width,
       disabled,
       error,
@@ -65,13 +66,13 @@ class MainInput extends Component {
         <PurpleInput
           label={label}
           type={type}
-          value={value}
-          name={name}
           style={{ width }}
           disabled={disabled}
           error={error}
           helperText={helperText}
-          InputProps={InputProps}
+          InputProps={{
+            endAdornment: InputProps,
+          }}
           onChange={onChange}
           onKeyPress={onKeyPress}
         />
@@ -80,7 +81,7 @@ class MainInput extends Component {
   }
 }
 
-MainInput.defaultProps = defaultProps;
-MainInput.propTypes = propTypes;
+Input.defaultProps = defaultProps;
+Input.propTypes = propTypes;
 
-export default MainInput;
+export default Input;
