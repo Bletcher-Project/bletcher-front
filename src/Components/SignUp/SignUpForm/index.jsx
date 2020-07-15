@@ -13,6 +13,7 @@ import {
   NameHelperText,
   StatusHelperText,
 } from 'Constants/helper-text';
+import { INIT, USER_API, QUERY_EMAIL } from 'Constants/api_uri';
 
 class SignUpForm extends Component {
   constructor(props) {
@@ -58,8 +59,8 @@ class SignUpForm extends Component {
           email: e.target.value,
         },
       },
-      () => {
-        const result = this.checkEmailValidation();
+      async () => {
+        const result = await this.checkEmailValidation();
         this.setState({
           isNotValid: { ...isNotValid, email: result.isNotValid },
           helperText: { ...helperText, email: result.helperText },
@@ -144,7 +145,7 @@ class SignUpForm extends Component {
     );
   };
 
-  checkEmailValidation = () => {
+  checkEmailValidation = async () => {
     const { user } = this.state;
     const regExp = /^[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     let isNotValid;
@@ -157,11 +158,29 @@ class SignUpForm extends Component {
       isNotValid = true;
       helperText = EmailHelperText.NOT_VALID;
     } else {
-      isNotValid = false;
-      helperText = EmailHelperText.DEFAULT_HELPER_TEXT;
+      const result = await this.checkEmailExists();
+      if (result) {
+        isNotValid = true;
+        helperText = EmailHelperText.EXIST_VALUE;
+      } else {
+        isNotValid = false;
+        helperText = EmailHelperText.DEFAULT_HELPER_TEXT;
+      }
     }
 
     return { isNotValid, helperText };
+  };
+
+  checkEmailExists = async () => {
+    const { user } = this.state;
+    const response = await fetch(
+      `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}${QUERY_EMAIL}${user.email}`,
+      { method: 'GET' },
+    );
+    if (response.status === 204) {
+      return false;
+    }
+    return true;
   };
 
   checkPasswordValidation = () => {
