@@ -6,6 +6,13 @@ import CheckIcon from 'Components/Common/CheckIcon';
 
 import Avatar from '@material-ui/core/Avatar';
 import defaultProfile from 'Assets/images/default_profile.svg';
+import {
+  DEFAULT_HELPER_TEXT,
+  EmailHelperText,
+  PasswordHelperText,
+  NameHelperText,
+  StatusHelperText,
+} from 'Constants/helper-text';
 
 class SignUpForm extends Component {
   constructor(props) {
@@ -20,18 +27,18 @@ class SignUpForm extends Component {
         status: '',
       },
       isNotValid: {
-        email: false,
-        password: false,
-        repassword: false,
-        name: false,
-        status: false,
+        email: null,
+        password: null,
+        repassword: null,
+        name: null,
+        status: null,
       },
       helperText: {
-        email: ' ',
-        password: ' ',
-        repassword: ' ',
-        name: ' ',
-        status: ' ',
+        email: DEFAULT_HELPER_TEXT,
+        password: DEFAULT_HELPER_TEXT,
+        repassword: DEFAULT_HELPER_TEXT,
+        name: DEFAULT_HELPER_TEXT,
+        status: DEFAULT_HELPER_TEXT,
       },
     };
   }
@@ -44,261 +51,226 @@ class SignUpForm extends Component {
 
   handleEmail = (e) => {
     const { user } = this.state;
-    this.setState({
-      user: {
-        ...user,
-        email: e.target.value,
+    this.setState(
+      {
+        user: {
+          ...user,
+          email: e.target.value,
+        },
       },
-    });
+      () => this.checkEmailValidation(),
+    );
   };
 
   handlePassword = (e) => {
     const { user } = this.state;
-    this.setState({
-      user: {
-        ...user,
-        password: e.target.value,
+    this.setState(
+      {
+        user: {
+          ...user,
+          password: e.target.value,
+        },
       },
-    });
+      () => this.checkPasswordValidation(),
+    );
   };
 
   handleRePassword = (e) => {
     const { user } = this.state;
-    this.setState({
-      user: {
-        ...user,
-        repassword: e.target.value,
+    this.setState(
+      {
+        user: {
+          ...user,
+          repassword: e.target.value,
+        },
       },
-    });
+      () => this.checkRePasswordValidation(),
+    );
   };
 
   handleName = (e) => {
     const { user } = this.state;
-    this.setState({
-      user: {
-        ...user,
-        name: e.target.value,
+    this.setState(
+      {
+        user: {
+          ...user,
+          name: e.target.value,
+        },
       },
-    });
+      () => this.checkNameValidation(),
+    );
   };
 
   handleStatus = (e) => {
     const { user } = this.state;
-    this.setState({
-      user: {
-        ...user,
-        status: e.target.value,
+    this.setState(
+      {
+        user: {
+          ...user,
+          status: e.target.value,
+        },
       },
-    });
+      () => this.checkStatusValidation(),
+    );
   };
 
   checkEmailValidation = () => {
+    const { user, isNotValid, helperText } = this.state;
     const regExp = /^[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-    const changeEmailStatus = (bool, msg) => {
-      this.setState({ isEmailValid: bool, helpEmail: msg }, () => {
-        this.handleNextBtn();
+
+    if (!user.email) {
+      this.setState({
+        isNotValid: { ...isNotValid, email: true },
+        helperText: { ...helperText, email: EmailHelperText.EMPTY_VALUE },
       });
-    };
-
-    this.setState({ email: e.target.value }, () => {
-      const email = this.state.email;
-      if (isEmptyString(email)) {
-        changeEmailStatus(false, 'Enter your email address please');
-      } else if (!isEmptyString(email) & !regExp.test(email)) {
-        changeEmailStatus(false, 'Incorrect Email Form');
-      }
-
-      if (regExp.test(email)) {
-        window.setTimeout(() => {
-          return Object.is(this.state.email, email)
-            ? axios
-                .get(
-                  process.env.REACT_APP_SERVER_URL +
-                    constant.INIT_API +
-                    constant.USERS_API_GET +
-                    constant.EMAIL_API_GET +
-                    email,
-                )
-                .then((res) => {
-                  if (res.status === 200) {
-                    changeEmailStatus(false, 'Already exists email!');
-                  } else if (res.status === 204) {
-                    changeEmailStatus(true, ' '); //Allowed email
-                  }
-                })
-                .catch((err) => {
-                  console.log(err);
-                })
-            : null;
-        }, 200);
-      }
-    });
+    } else if (!regExp.test(user.email)) {
+      this.setState({
+        isNotValid: { ...isNotValid, email: true },
+        helperText: { ...helperText, email: EmailHelperText.NOT_VALID },
+      });
+    } else {
+      this.setState({
+        isNotValid: { ...isNotValid, email: false },
+        helperText: { ...helperText, email: DEFAULT_HELPER_TEXT },
+      });
+    }
   };
 
   checkPasswordValidation = () => {
-    const regExp = /\S[0-9a-zA-Z]{7,16}$/;
+    const { user, isNotValid, helperText } = this.state;
+    const regExp = /^(?=.*[0-9])(?=.*[a-zA-Z]).{8,16}$/;
+    const isNum = /^(?=.*[0-9])/;
+    const isChar = /^(?=.*[a-zA-Z])/;
 
-    const condition = () => {
-      const Isnum = /\S[0-9]/;
-      const IsChar = /\S[a-zA-Z]/;
-      const IsSpeical = /\W/g;
-      const changePwdStatus = (bool, msg) => {
-        this.setState({ isPwdValid: bool, helpPwd: msg }, () => {
-          this.handleNextBtn();
+    if (!user.password) {
+      this.setState({
+        isNotValid: { ...isNotValid, password: true },
+        helperText: { ...helperText, password: PasswordHelperText.EMPTY_VALUE },
+      });
+    } else if (!regExp.test(user.password)) {
+      this.setState({ isNotValid: { ...isNotValid, password: true } });
+      if (!isNum.test(user.password)) {
+        this.setState({
+          helperText: {
+            ...helperText,
+            password: PasswordHelperText.MISS_NUMBER,
+          },
         });
-      };
-
-      if (
-        !isEmptyString(this.state.password) &
-        (8 <= this.state.password.length) &
-        (this.state.password.length <= 16)
-      ) {
-        if (
-          IsChar.test(this.state.password) & !Isnum.test(this.state.password)
-        ) {
-          return changePwdStatus(false, 'Num should be contained');
-        } else if (
-          !IsChar.test(this.state.password) & Isnum.test(this.state.password)
-        ) {
-          return changePwdStatus(false, 'Alphabet should be contained');
-        } else if (IsSpeical.test(this.state.password)) {
-          return changePwdStatus(false, 'Special character not allowed');
-        }
-      } else if (
-        !isEmptyString(this.state.password) &
-        (this.state.password.length < 8)
-      ) {
-        return changePwdStatus(false, 'Should be more than 8 words');
-      } else if (
-        !isEmptyString(this.state.password) &
-        (this.state.password.length > 16)
-      ) {
-        return changePwdStatus(false, 'Should no greater than 16 words');
-      } else if (isEmptyString(this.state.password)) {
-        return changePwdStatus(true, 'Enter password please');
-      }
-    };
-
-    this.setState({ password: e.target.value }, () => {
-      if (regExp.test(this.state.password)) {
-        this.setState({ isPwdValid: true, helpPwd: ' ' }, () => {
-          //Allowed password
-          this.handleNextBtn();
-          condition();
+      } else if (!isChar.test(user.password)) {
+        this.setState({
+          helperText: {
+            ...helperText,
+            password: PasswordHelperText.MISS_ALPHABET,
+          },
         });
-      } else {
-        this.setState({ isPwdValid: false }, () => {
-          this.handleNextBtn();
-          condition();
+      } else if (user.password.length < 8) {
+        this.setState({
+          helperText: { ...helperText, password: PasswordHelperText.MIN_WORDS },
+        });
+      } else if (user.password.length > 16) {
+        this.setState({
+          helperText: { ...helperText, password: PasswordHelperText.MAX_WORDS },
         });
       }
-    });
+    } else {
+      this.setState({
+        isNotValid: { ...isNotValid, password: false },
+        helperText: { ...helperText, password: DEFAULT_HELPER_TEXT },
+      });
+    }
   };
 
   checkRePasswordValidation = () => {
-    this.setState({ repassword: e.target.value }, () => {
-      if (
-        isEmptyString(this.state.repassword) ||
-        Object.is(this.state.password, this.state.repassword)
-      ) {
-        this.setState({ isRePwdValid: true }, () => {
-          this.handleNextBtn();
-        });
-      } else {
-        this.setState(
-          { isRePwdValid: false, helpRePwd: 'Enter same password above' },
-          () => {
-            this.handleNextBtn();
-          },
-        );
-      }
-    });
+    const { user, isNotValid, helperText } = this.state;
+
+    if (!user.repassword) {
+      this.setState({
+        isNotValid: { ...isNotValid, repassword: true },
+        helperText: {
+          ...helperText,
+          repassword: PasswordHelperText.EMPTY_VALUE,
+        },
+      });
+    } else if (!Object.is(user.password, user.repassword)) {
+      this.setState({
+        isNotValid: { ...isNotValid, repassword: true },
+        helperText: {
+          ...helperText,
+          repassword: PasswordHelperText.MISS_MATCH_PW,
+        },
+      });
+    } else {
+      this.setState({
+        isNotValid: { ...isNotValid, repassword: false },
+        helperText: { ...helperText, repassword: DEFAULT_HELPER_TEXT },
+      });
+    }
   };
 
   checkNameValidation = () => {
+    const { user, isNotValid, helperText } = this.state;
     const regExp = /^[A-Za-z0-9_.]{3,30}$/;
     const nonAlphabet = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]$/;
-    const nonSepcial = /[_.]$/;
-    const changeNameStatus = (bool, msg) => {
-      this.setState({ isNameValid: bool, helpName: msg }, () => {
-        this.handleSignUpBtn();
+    const isSpecial = /\W/;
+    const allowSpecial = /[_.]$/;
+
+    if (!user.name) {
+      this.setState({
+        isNotValid: { ...isNotValid, name: true },
+        helperText: { ...helperText, name: NameHelperText.EMPTY_VALUE },
       });
-    };
-
-    this.setState({ name: e.target.value }, () => {
-      const name = this.state.name;
-
-      if (regExp.test(name)) {
-        window.setTimeout(() => {
-          return Object.is(this.state.name, name)
-            ? axios
-                .get(
-                  process.env.REACT_APP_SERVER_URL +
-                    constant.INIT_API +
-                    constant.USERS_API_GET +
-                    constant.NAME_API_GET +
-                    name,
-                )
-                .then((res) => {
-                  if (res.status === 200) {
-                    changeNameStatus(false, 'Already exists name!');
-                  } else if (res.status === 204) {
-                    changeNameStatus(true, ' '); //Allowed name
-                  }
-                })
-                .catch((err) => {
-                  console.log(err);
-                })
-            : null;
-        }, 200);
-      } else {
-        if (!isEmptyString(name) & (name.length < 3)) {
-          changeNameStatus(false, 'Should be more than 3 words');
-        } else if (name.length > 30) {
-          changeNameStatus(false, 'Should no greater than 30 words');
-        } else if (!isEmptyString(name) & !regExp.test(name)) {
-          if (nonAlphabet.test(name)) {
-            changeNameStatus(false, 'Only alphabet chracter allowed');
-          } else if (!nonSepcial.test(name)) {
-            changeNameStatus(
-              false,
-              "Only '_' or '.' special character allowed",
-            );
-          }
-        } else if (isEmptyString(name)) {
-          changeNameStatus(true, 'Enter your name please');
-        }
+    } else if (!regExp.test(user.name)) {
+      this.setState({ isNotValid: { ...isNotValid, name: true } });
+      if (nonAlphabet.test(user.name)) {
+        this.setState({
+          helperText: {
+            ...helperText,
+            name: NameHelperText.ONLY_ALPHABET,
+          },
+        });
+      } else if (isSpecial.test(user.name) && !allowSpecial.test(user.name)) {
+        this.setState({
+          helperText: {
+            ...helperText,
+            name: NameHelperText.NO_SPECIAL_CHAR,
+          },
+        });
+      } else if (user.name.length < 3) {
+        this.setState({
+          helperText: { ...helperText, name: NameHelperText.MIN_WORDS },
+        });
+      } else if (user.name.length > 30) {
+        this.setState({
+          helperText: { ...helperText, name: NameHelperText.MAX_WORDS },
+        });
       }
-    });
+    } else {
+      this.setState({
+        isNotValid: { ...isNotValid, name: false },
+        helperText: { ...helperText, name: DEFAULT_HELPER_TEXT },
+      });
+    }
   };
 
   checkStatusValidation = () => {
-    this.setState({ status: e.target.value }, () => {
-      return this.state.status.length > 100
-        ? this.setState(
-            {
-              isStatusValid: false,
-              helpStatus: 'Should be less than 100 words.',
-            },
-            () => {
-              this.handleSignUpBtn();
-            },
-          )
-        : this.setState(
-            {
-              isStatusValid: true,
-              helpStatus: ' ',
-            },
-            () => {
-              this.handleSignUpBtn();
-            },
-          );
-    });
+    const { user, isNotValid, helperText } = this.state;
+
+    if (user.status.length > 100) {
+      this.setState({
+        isNotValid: { ...isNotValid, status: true },
+        helperText: { ...helperText, status: StatusHelperText.MAX_WORDS },
+      });
+    } else {
+      this.setState({
+        isNotValid: { ...isNotValid, status: false },
+        helperText: { ...helperText, status: DEFAULT_HELPER_TEXT },
+      });
+    }
   };
 
   render() {
-    const { profileImg, user, isNotValid, helperText } = this.state;
-    console.log(user);
+    const { profileImg, isNotValid, helperText } = this.state;
+
     return (
       <>
         <div className="signUpForm__profileImg">
@@ -328,7 +300,7 @@ class SignUpForm extends Component {
                 width="210px"
                 error={isNotValid.email}
                 helperText={helperText.email}
-                InputProps={isNotValid.email ? <CheckIcon /> : null}
+                InputProps={isNotValid.email === false ? <CheckIcon /> : null}
                 onChange={(e) => this.handleEmail(e)}
               />
               <Input
@@ -336,6 +308,11 @@ class SignUpForm extends Component {
                 type="password"
                 autoComplete="new-password"
                 width="210px"
+                error={isNotValid.password}
+                helperText={helperText.password}
+                InputProps={
+                  isNotValid.password === false ? <CheckIcon /> : null
+                }
                 onChange={(e) => this.handlePassword(e)}
               />
               <Input
@@ -343,6 +320,11 @@ class SignUpForm extends Component {
                 type="password"
                 autoComplete="new-password"
                 width="210px"
+                error={isNotValid.repassword}
+                helperText={helperText.repassword}
+                InputProps={
+                  isNotValid.repassword === false ? <CheckIcon /> : null
+                }
                 onChange={(e) => this.handleRePassword(e)}
               />
             </form>
@@ -352,12 +334,17 @@ class SignUpForm extends Component {
               label="Name"
               type="text"
               width="210px"
+              error={isNotValid.name}
+              helperText={helperText.name}
+              InputProps={isNotValid.name === false ? <CheckIcon /> : null}
               onChange={(e) => this.handleName(e)}
             />
             <Input
               label="Status (optional)"
               type="text"
               width="210px"
+              error={isNotValid.status}
+              helperText={helperText.status}
               onChange={(e) => this.handleStatus(e)}
             />
           </div>

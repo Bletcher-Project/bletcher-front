@@ -19,7 +19,7 @@ export const NameHelperText = {
   EMPTY_VALUE: 'Enter your name please',
   EXIST_VALUE: 'Already exists name!',
   ONLY_ALPHABET: 'Only alphabet chracter allowed',
-  NO_SPECIAL_CHAR: 'Only "_" or "." special character allowed',
+  NO_SPECIAL_CHAR: 'Only "_" or "." allowed',
   MIN_WORDS: 'Should be more than 3 words',
   MAX_WORDS: 'Should no greater than 30 words',
 };
