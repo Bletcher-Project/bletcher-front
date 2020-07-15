@@ -97,51 +97,65 @@ export const getPostByPostId = (postId, token) => {
 
 export const uploadPost = (payload, token) => {
   return async (dispatch) => {
-    await axios
-      .post(getApiPathPost('USER_POSTS'), payload, {
-        headers: { 'x-access-token': token },
-      })
-      .then((res) => {
-        dispatch({ type: SUCCEED_TO_UPLOAD_POST });
-      })
-      .catch((err) => {
-        dispatch({ type: FAILED_TO_UPLOAD_POST });
+    try {
+      const response = await fetch(getApiPathPost('USER_POSTS'), {
+        method: 'POST',
+        headers: {
+          'x-access-token': token,
+        },
+        body: payload,
       });
-
+      let result = null;
+      if (response.status === 200) {
+        result = await response.json();
+        await dispatch({ type: SUCCEED_TO_UPLOAD_POST });
+      }
+    } catch (err) {
+      dispatch({ type: FAILED_TO_UPLOAD_POST });
+    }
     return { type: SUCCEED_TO_UPLOAD_POST };
   };
 };
 
 export const uploadSketcherPost = (payload, token) => {
   return async (dispatch) => {
-    await axios
-      .post(getApiPathPost('USER_POSTS') + constant.SKETCHER_API, payload, {
-        headers: { 'x-access-token': token },
-      })
-      .then((res) => {
-        dispatch({ type: SUCCEED_TO_UPLOAD_POST });
-      })
-      .catch((err) => {
-        dispatch({ type: FAILED_TO_UPLOAD_POST });
-      });
-
-    return { type: SUCCEED_TO_UPLOAD_POST };
+    try {
+      const response = await fetch(
+        getApiPathPost('USER_POSTS') + constant.SKETCHER_API,
+        {
+          method: 'POST',
+          headers: { 'x-access-token': token },
+          body: payload,
+        },
+      );
+      let result = null;
+      if (response.status === 200) {
+        result = await response.json();
+        await dispatch({ type: SUCCEED_TO_UPLOAD_POST });
+      }
+      return { type: SUCCEED_TO_UPLOAD_POST };
+    } catch (err) {
+      dispatch({ type: FAILED_TO_UPLOAD_POST });
+    }
   };
 };
 
 export const deletePost = (id, token) => {
-  axios
-    .delete(getApiPathPost('USER_POSTS') + id, {
-      headers: { 'x-access-token': token },
-    })
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => {
-      return { type: FAILED_TO_DELETE_POST };
+  try {
+    const response = fetch(getApiPathPost('USER_POSTS') + id, {
+      method: 'DELETE',
+      headers: {
+        'x-access-token': token,
+      },
     });
-
-  return { type: SUCCEED_TO_DELETE_POST };
+    const result = null;
+    if (response.statue === 200) {
+      return response;
+    }
+    return { type: SUCCEED_TO_DELETE_POST };
+  } catch (err) {
+    return { type: FAILED_TO_DELETE_POST };
+  }
 };
 
 export const postLike = (postId, token) => {
