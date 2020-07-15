@@ -11,16 +11,23 @@ class SignUpPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isValid: false,
+      user: {},
+      isNotValid: true,
     };
   }
 
+  handleValidation = (user, isValid) => {
+    if (isValid) this.setState({ user, isNotValid: false });
+    else this.setState({ isNotValid: true });
+  };
+
   handleSignUp = () => {
-    //
+    const { user } = this.state;
+    console.log(user);
   };
 
   render() {
-    const { isValid } = this.state;
+    const { isNotValid } = this.state;
     return (
       <div className="signUpPage">
         <NavBar isActive="signUp" />
@@ -28,12 +35,12 @@ class SignUpPage extends Component {
           <p>Enter your personal information.</p>
         </div>
         <div className="signUpPage__content">
-          <SignUpForm />
+          <SignUpForm handleValidation={this.handleValidation} />
         </div>
         <div className="signUpPage__footer">
           <Button
-            disabled={isValid}
             text="Sign Up"
+            disabled={isNotValid}
             onClick={this.handleSignUp}
           />
         </div>

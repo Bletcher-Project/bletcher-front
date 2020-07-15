@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import UploadImgFile from 'Components/Upload/UploadImgFile';
 import Input from 'Components/Common/Input';
@@ -6,6 +7,7 @@ import CheckIcon from 'Components/Common/CheckIcon';
 
 import Avatar from '@material-ui/core/Avatar';
 import defaultProfile from 'Assets/images/default_profile.svg';
+
 import {
   DEFAULT_HELPER_TEXT,
   EmailHelperText,
@@ -15,17 +17,21 @@ import {
 } from 'Constants/helper-text';
 import { INIT, USER_API, QUERY_EMAIL, QUERY_NAME } from 'Constants/api_uri';
 
+const propTypes = {
+  handleValidation: PropTypes.func.isRequired,
+};
+
 class SignUpForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      profileImg: null,
       user: {
         email: '',
         password: '',
         repassword: '',
         name: '',
         status: '',
+        profileImg: null,
       },
       isNotValid: {
         email: null,
@@ -44,9 +50,29 @@ class SignUpForm extends Component {
     };
   }
 
+  componentDidUpdate = (prevProps, prevState) => {
+    const { handleValidation } = this.props;
+    const { user, isNotValid } = this.state;
+    if (
+      isNotValid !== prevState.isNotValid ||
+      user.profileImg !== prevState.user.profileImg
+    ) {
+      if (
+        isNotValid.email === false &&
+        isNotValid.password === false &&
+        isNotValid.repassword === false &&
+        isNotValid.name === false &&
+        isNotValid.status === false
+      )
+        handleValidation(user, true);
+      else handleValidation(null, false);
+    }
+  };
+
   handleProfileImg = (e) => {
+    const { user } = this.state;
     if (e.target.files[0] !== undefined) {
-      this.setState({ profileImg: e.target.files[0] });
+      this.setState({ user: { ...user, profileImg: e.target.files[0] } });
     }
   };
 
@@ -298,7 +324,7 @@ class SignUpForm extends Component {
   };
 
   render() {
-    const { profileImg, isNotValid, helperText } = this.state;
+    const { user, isNotValid, helperText } = this.state;
 
     return (
       <>
@@ -306,7 +332,9 @@ class SignUpForm extends Component {
           <UploadImgFile handleUploadImg={this.handleProfileImg}>
             <Avatar
               src={
-                profileImg ? URL.createObjectURL(profileImg) : defaultProfile
+                user.profileImg
+                  ? URL.createObjectURL(user.profileImg)
+                  : defaultProfile
               }
               style={{
                 width: '100px',
@@ -382,5 +410,7 @@ class SignUpForm extends Component {
     );
   }
 }
+
+SignUpForm.propTypes = propTypes;
 
 export default SignUpForm;
