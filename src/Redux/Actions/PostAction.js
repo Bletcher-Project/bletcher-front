@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as constant from '../../Constants/api_uri';
+import { getApiPathPost, getAction } from '../utils/util';
 
 const SUCCEED_TO_GET_ALLPOST = 'SUCCEED_TO_GET_ALLPOST';
 const FAILED_TO_GET_ALLPOST = 'FAILED_TO_GET_ALLPOST';
@@ -17,74 +18,51 @@ const SUCCEED_TO_DELETE_LIKE = 'SUCCEED_TO_DELETE_LIKE';
 const FAILED_TO_DELETE_LIKE = 'FAILED_TO_DELETE_LIKE';
 
 export const getAllPosts = (token) => {
+  // eslint-disable-next-line consistent-return
   return async (dispatch) => {
     try {
-      let response = await fetch(
-        process.env.REACT_APP_SERVER_URL +
-          constant.INIT_API +
-          constant.USER_POSTS,
-        {
-          method: 'GET',
-          headers: {
-            'x-access-token': token,
-          },
+      const response = await fetch(getApiPathPost('USER_POSTS'), {
+        method: 'GET',
+        headers: {
+          'x-access-token': token,
         },
-      );
-      if (response.status === 200) {
-        let result = await response.json();
-        await dispatch({
-          type: SUCCEED_TO_GET_ALLPOST,
-          payload: result.posts,
-        });
-        return result.posts;
-      } else {
-        await dispatch({
-          type: FAILED_TO_GET_ALLPOST,
-          payload: null,
-        });
-      }
-    } catch (error) {
-      dispatch({
-        type: FAILED_TO_GET_ALLPOST,
-        payload: { data: 'NETWORK_ERROR' },
       });
+      let result = null;
+      if (response.status === 200) {
+        result = await response.json();
+        await dispatch(getAction(SUCCEED_TO_GET_ALLPOST, result.posts));
+      } else {
+        await dispatch(getAction(FAILED_TO_GET_ALLPOST, null));
+      }
+      return result ? result.posts : null;
+    } catch (error) {
+      dispatch(getAction(FAILED_TO_GET_ALLPOST, { data: 'NETWORK_ERROR' }));
     }
   };
 };
 
 export const getPostByUserId = (userId, token) => {
+  // eslint-disable-next-line consistent-return
   return async (dispatch) => {
     try {
-      let response = await fetch(
-        process.env.REACT_APP_SERVER_URL +
-          constant.INIT_API +
-          constant.USER_POSTS +
-          `${userId}`,
-        {
-          method: 'GET',
-          headers: {
-            'x-access-token': token,
-          },
+      const response = await fetch(`${getApiPathPost('USER_POSTS')}${userId}`, {
+        method: 'GET',
+        headers: {
+          'x-access-token': token,
         },
-      );
-      if (response.status === 200) {
-        let result = await response.json();
-        await dispatch({
-          type: SUCCEED_TO_GET_POST_BY_USERID,
-          payload: result.posts,
-        });
-        return result.posts;
-      } else {
-        await dispatch({
-          type: FAILED_TO_GET_POST_BY_USERID,
-          payload: null,
-        });
-      }
-    } catch (error) {
-      dispatch({
-        type: FAILED_TO_GET_POST_BY_USERID,
-        payload: { data: 'NETWORK_ERROR' },
       });
+      let result = null;
+      if (response.status === 200) {
+        result = await response.json();
+        await dispatch(getAction(SUCCEED_TO_GET_POST_BY_USERID, result.posts));
+      } else {
+        await dispatch(getAction(FAILED_TO_GET_POST_BY_USERID, null));
+      }
+      return result ? result.posts : null;
+    } catch (error) {
+      dispatch(
+        getAction(FAILED_TO_GET_POST_BY_USERID, { data: 'NETWORK_ERROR' }),
+      );
     }
   };
 };
@@ -92,12 +70,8 @@ export const getPostByUserId = (userId, token) => {
 export const getPostByPostId = (postId, token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(
-        process.env.REACT_APP_SERVER_URL +
-          constant.INIT_API +
-          constant.USER_POSTS +
-          constant.ONE_API +
-          `${postId}`,
+      const response = await fetch(
+        `${getApiPathPost('USER_POSTS') + constant.ONE_API}${postId}`,
         {
           method: 'GET',
           headers: {
@@ -105,24 +79,18 @@ export const getPostByPostId = (postId, token) => {
           },
         },
       );
+      let result = null;
       if (response.status === 200) {
-        let result = await response.json();
-        await dispatch({
-          type: SUCCEED_TO_GET_POST_BY_POSTID,
-          payload: result.post,
-        });
-        return result.post;
+        result = await response.json();
+        await dispatch(getAction(SUCCEED_TO_GET_POST_BY_POSTID, result.post));
       } else {
-        await dispatch({
-          type: FAILED_TO_GET_POST_BY_POSTID,
-          payload: null,
-        });
+        await dispatch(getAction(FAILED_TO_GET_POST_BY_POSTID, null));
       }
+      return result ? result.post : null;
     } catch (error) {
-      dispatch({
-        type: FAILED_TO_GET_POST_BY_POSTID,
-        payload: { data: 'NETWORK_ERROR' },
-      });
+      dispatch(
+        getAction(FAILED_TO_GET_POST_BY_POSTID, { data: 'NETWORK_ERROR' }),
+      );
     }
   };
 };
@@ -130,15 +98,9 @@ export const getPostByPostId = (postId, token) => {
 export const uploadPost = (payload, token) => {
   return async (dispatch) => {
     await axios
-      .post(
-        process.env.REACT_APP_SERVER_URL +
-          constant.INIT_API +
-          constant.USER_POSTS,
-        payload,
-        {
-          headers: { 'x-access-token': token },
-        },
-      )
+      .post(getApiPathPost('USER_POSTS'), payload, {
+        headers: { 'x-access-token': token },
+      })
       .then((res) => {
         dispatch({ type: SUCCEED_TO_UPLOAD_POST });
       })
@@ -153,21 +115,13 @@ export const uploadPost = (payload, token) => {
 export const uploadSketcherPost = (payload, token) => {
   return async (dispatch) => {
     await axios
-      .post(
-        process.env.REACT_APP_SERVER_URL +
-          constant.INIT_API +
-          constant.USER_POSTS +
-          constant.SKETCHER_API,
-        payload,
-        {
-          headers: { 'x-access-token': token },
-        },
-      )
+      .post(getApiPathPost('USER_POSTS') + constant.SKETCHER_API, payload, {
+        headers: { 'x-access-token': token },
+      })
       .then((res) => {
         dispatch({ type: SUCCEED_TO_UPLOAD_POST });
       })
       .catch((err) => {
-        console.log(err);
         dispatch({ type: FAILED_TO_UPLOAD_POST });
       });
 
@@ -177,15 +131,9 @@ export const uploadSketcherPost = (payload, token) => {
 
 export const deletePost = (id, token) => {
   axios
-    .delete(
-      process.env.REACT_APP_SERVER_URL +
-        constant.INIT_API +
-        constant.USER_POSTS +
-        id,
-      {
-        headers: { 'x-access-token': token },
-      },
-    )
+    .delete(getApiPathPost('USER_POSTS') + id, {
+      headers: { 'x-access-token': token },
+    })
     .then((res) => {
       return res;
     })
@@ -199,12 +147,8 @@ export const deletePost = (id, token) => {
 export const postLike = (postId, token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(
-        process.env.REACT_APP_SERVER_URL +
-          constant.INIT_API +
-          constant.USER_POSTS +
-          constant.LIKE_API +
-          `${postId}`,
+      const response = await fetch(
+        `${getApiPathPost('USER_POSTS') + constant.LIKE_API}${postId}`,
         {
           method: 'POST',
           headers: {
@@ -212,24 +156,16 @@ export const postLike = (postId, token) => {
           },
         },
       );
+      let result = null;
       if (response.status === 200) {
-        let result = await response.json();
-        await dispatch({
-          type: SUCCEED_TO_POST_LIKE,
-          payload: result,
-        });
-        return result;
+        result = await response.json();
+        await dispatch(getAction(SUCCEED_TO_POST_LIKE, result));
       } else {
-        await dispatch({
-          type: FAILED_TO_POST_LIKE,
-          payload: null,
-        });
+        await dispatch(getAction(FAILED_TO_POST_LIKE, null));
       }
+      return result;
     } catch (error) {
-      dispatch({
-        type: FAILED_TO_POST_LIKE,
-        payload: { data: 'NETWORK_ERROR' },
-      });
+      dispatch(getAction(FAILED_TO_POST_LIKE, { data: 'NETWORK_ERROR' }));
     }
   };
 };
@@ -237,12 +173,8 @@ export const postLike = (postId, token) => {
 export const deleteLike = (postId, token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(
-        process.env.REACT_APP_SERVER_URL +
-          constant.INIT_API +
-          constant.USER_POSTS +
-          constant.LIKE_API +
-          `${postId}`,
+      const response = await fetch(
+        `${getApiPathPost('USER_POSTS') + constant.LIKE_API}${postId}`,
         {
           method: 'DELETE',
           headers: {
@@ -250,24 +182,16 @@ export const deleteLike = (postId, token) => {
           },
         },
       );
+      let result = null;
       if (response.status === 200) {
-        let result = await response.json();
-        await dispatch({
-          type: SUCCEED_TO_DELETE_LIKE,
-          payload: result,
-        });
-        return result;
+        result = await response.json();
+        await dispatch(getAction(SUCCEED_TO_DELETE_LIKE, result));
       } else {
-        await dispatch({
-          type: FAILED_TO_DELETE_LIKE,
-          payload: null,
-        });
+        await dispatch(getAction(FAILED_TO_DELETE_LIKE, null));
       }
+      return result;
     } catch (error) {
-      dispatch({
-        type: FAILED_TO_DELETE_LIKE,
-        payload: { data: 'NETWORK_ERROR' },
-      });
+      dispatch(getAction(FAILED_TO_DELETE_LIKE, { data: 'NETWORK_ERROR' }));
     }
   };
 };

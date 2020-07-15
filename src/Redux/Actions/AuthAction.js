@@ -1,17 +1,10 @@
-import { getApiPath } from '../utils/util';
+import { getApiPath, getAction } from '../utils/util';
 
 export const REMOVE_TOKEN = 'REMOVE_TOKEN';
 export const SET_TOKEN = 'SET_TOKEN';
 export const SIGNOUT = 'SIGNOUT';
 export const GET_USER = 'GET_USER';
 export const REMOVE_USER = 'REMOVE_USER';
-
-const getAction = (actionType, actionPayload) => {
-  return {
-    type: actionType,
-    payload: actionPayload,
-  };
-};
 
 export const postSignIn = (params) => {
   return async (dispatch) => {

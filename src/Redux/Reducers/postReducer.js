@@ -9,21 +9,14 @@ const initialState = {
 
 export default function postReducer(state = initialState, action) {
   switch (action.type) {
-    case SUCCEED_TO_GET_ALLPOST:
-      return { ...state, feed: action.payload };
     case FAILED_TO_GET_ALLPOST:
-      return {
-        ...state, //
-      };
     case SUCCEED_TO_UPLOAD_POST:
-      return {
-        ...state, //
-      };
     case FAILED_TO_UPLOAD_POST:
       return {
         ...state, //
       };
-
+    case SUCCEED_TO_GET_ALLPOST:
+      return { ...state, feed: action.payload };
     default:
       return state;
   }
