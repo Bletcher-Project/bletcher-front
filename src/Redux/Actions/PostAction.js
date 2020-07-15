@@ -60,7 +60,7 @@ export const getPostByUserId = (userId, token) => {
         process.env.REACT_APP_SERVER_URL +
           constant.INIT_API +
           constant.USER_POSTS +
-          `${userId}`,
+          `/${userId}`,
         {
           method: 'GET',
           headers: {
@@ -98,7 +98,7 @@ export const getPostByPostId = (postId, token) => {
           constant.INIT_API +
           constant.USER_POSTS +
           constant.ONE_API +
-          `${postId}`,
+          `/${postId}`,
         {
           method: 'GET',
           headers: {
@@ -205,7 +205,7 @@ export const postLike = (postId, token) => {
           constant.INIT_API +
           constant.USER_POSTS +
           constant.LIKE_API +
-          `${postId}`,
+          `/${postId}`,
         {
           method: 'POST',
           headers: {
@@ -243,7 +243,7 @@ export const deleteLike = (postId, token) => {
           constant.INIT_API +
           constant.USER_POSTS +
           constant.LIKE_API +
-          `${postId}`,
+          `/${postId}`,
         {
           method: 'DELETE',
           headers: {
