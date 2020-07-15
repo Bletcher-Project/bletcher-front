@@ -13,7 +13,7 @@ import {
   NameHelperText,
   StatusHelperText,
 } from 'Constants/helper-text';
-import { INIT, USER_API, QUERY_EMAIL } from 'Constants/api_uri';
+import { INIT, USER_API, QUERY_EMAIL, QUERY_NAME } from 'Constants/api_uri';
 
 class SignUpForm extends Component {
   constructor(props) {
@@ -116,8 +116,8 @@ class SignUpForm extends Component {
           name: e.target.value,
         },
       },
-      () => {
-        const result = this.checkNameValidation();
+      async () => {
+        const result = await this.checkNameValidation();
         this.setState({
           isNotValid: { ...isNotValid, name: result.isNotValid },
           helperText: { ...helperText, name: result.helperText },
@@ -164,7 +164,7 @@ class SignUpForm extends Component {
         helperText = EmailHelperText.EXIST_VALUE;
       } else {
         isNotValid = false;
-        helperText = EmailHelperText.DEFAULT_HELPER_TEXT;
+        helperText = DEFAULT_HELPER_TEXT;
       }
     }
 
@@ -232,7 +232,7 @@ class SignUpForm extends Component {
     return { isNotValid, helperText };
   };
 
-  checkNameValidation = () => {
+  checkNameValidation = async () => {
     const { user } = this.state;
     const regExp = /^[A-Za-z0-9_.]{3,30}$/;
     const nonAlphabet = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]$/;
@@ -256,11 +256,29 @@ class SignUpForm extends Component {
         helperText = NameHelperText.MAX_WORDS;
       }
     } else {
-      isNotValid = false;
-      helperText = DEFAULT_HELPER_TEXT;
+      const result = await this.checkNameExists();
+      if (result) {
+        isNotValid = true;
+        helperText = NameHelperText.EXIST_VALUE;
+      } else {
+        isNotValid = false;
+        helperText = DEFAULT_HELPER_TEXT;
+      }
     }
 
     return { isNotValid, helperText };
+  };
+
+  checkNameExists = async () => {
+    const { user } = this.state;
+    const response = await fetch(
+      `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}${QUERY_NAME}${user.name}`,
+      { method: 'GET' },
+    );
+    if (response.status === 204) {
+      return false;
+    }
+    return true;
   };
 
   checkStatusValidation = () => {

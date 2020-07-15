@@ -6,7 +6,6 @@ export const AUTH_API = 'auth/';
 
 /* users */
 export const USER_API = '/users';
-export const USERS_API_GET = 'users';
 export const USER_API_POST = 'users/';
 
 /* posts */
