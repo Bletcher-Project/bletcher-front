@@ -31,7 +31,7 @@ class SignUpForm extends Component {
         password: null,
         repassword: null,
         name: null,
-        status: null,
+        status: false,
       },
       helperText: {
         email: DEFAULT_HELPER_TEXT,
@@ -50,7 +50,7 @@ class SignUpForm extends Component {
   };
 
   handleEmail = (e) => {
-    const { user } = this.state;
+    const { user, isNotValid, helperText } = this.state;
     this.setState(
       {
         user: {
@@ -58,12 +58,18 @@ class SignUpForm extends Component {
           email: e.target.value,
         },
       },
-      () => this.checkEmailValidation(),
+      () => {
+        const result = this.checkEmailValidation();
+        this.setState({
+          isNotValid: { ...isNotValid, email: result.isNotValid },
+          helperText: { ...helperText, email: result.helperText },
+        });
+      },
     );
   };
 
   handlePassword = (e) => {
-    const { user } = this.state;
+    const { user, isNotValid, helperText } = this.state;
     this.setState(
       {
         user: {
@@ -71,12 +77,18 @@ class SignUpForm extends Component {
           password: e.target.value,
         },
       },
-      () => this.checkPasswordValidation(),
+      () => {
+        const result = this.checkPasswordValidation();
+        this.setState({
+          isNotValid: { ...isNotValid, password: result.isNotValid },
+          helperText: { ...helperText, password: result.helperText },
+        });
+      },
     );
   };
 
   handleRePassword = (e) => {
-    const { user } = this.state;
+    const { user, isNotValid, helperText } = this.state;
     this.setState(
       {
         user: {
@@ -84,12 +96,18 @@ class SignUpForm extends Component {
           repassword: e.target.value,
         },
       },
-      () => this.checkRePasswordValidation(),
+      () => {
+        const result = this.checkRePasswordValidation();
+        this.setState({
+          isNotValid: { ...isNotValid, repassword: result.isNotValid },
+          helperText: { ...helperText, repassword: result.helperText },
+        });
+      },
     );
   };
 
   handleName = (e) => {
-    const { user } = this.state;
+    const { user, isNotValid, helperText } = this.state;
     this.setState(
       {
         user: {
@@ -97,12 +115,18 @@ class SignUpForm extends Component {
           name: e.target.value,
         },
       },
-      () => this.checkNameValidation(),
+      () => {
+        const result = this.checkNameValidation();
+        this.setState({
+          isNotValid: { ...isNotValid, name: result.isNotValid },
+          helperText: { ...helperText, name: result.helperText },
+        });
+      },
     );
   };
 
   handleStatus = (e) => {
-    const { user } = this.state;
+    const { user, isNotValid, helperText } = this.state;
     this.setState(
       {
         user: {
@@ -110,162 +134,130 @@ class SignUpForm extends Component {
           status: e.target.value,
         },
       },
-      () => this.checkStatusValidation(),
+      () => {
+        const result = this.checkStatusValidation();
+        this.setState({
+          isNotValid: { ...isNotValid, status: result.isNotValid },
+          helperText: { ...helperText, status: result.helperText },
+        });
+      },
     );
   };
 
   checkEmailValidation = () => {
-    const { user, isNotValid, helperText } = this.state;
+    const { user } = this.state;
     const regExp = /^[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    let isNotValid;
+    let helperText;
 
     if (!user.email) {
-      this.setState({
-        isNotValid: { ...isNotValid, email: true },
-        helperText: { ...helperText, email: EmailHelperText.EMPTY_VALUE },
-      });
+      isNotValid = true;
+      helperText = EmailHelperText.EMPTY_VALUE;
     } else if (!regExp.test(user.email)) {
-      this.setState({
-        isNotValid: { ...isNotValid, email: true },
-        helperText: { ...helperText, email: EmailHelperText.NOT_VALID },
-      });
+      isNotValid = true;
+      helperText = EmailHelperText.NOT_VALID;
     } else {
-      this.setState({
-        isNotValid: { ...isNotValid, email: false },
-        helperText: { ...helperText, email: DEFAULT_HELPER_TEXT },
-      });
+      isNotValid = false;
+      helperText = EmailHelperText.DEFAULT_HELPER_TEXT;
     }
+
+    return { isNotValid, helperText };
   };
 
   checkPasswordValidation = () => {
-    const { user, isNotValid, helperText } = this.state;
+    const { user } = this.state;
     const regExp = /^(?=.*[0-9])(?=.*[a-zA-Z]).{8,16}$/;
     const isNum = /^(?=.*[0-9])/;
     const isChar = /^(?=.*[a-zA-Z])/;
+    let isNotValid;
+    let helperText;
 
     if (!user.password) {
-      this.setState({
-        isNotValid: { ...isNotValid, password: true },
-        helperText: { ...helperText, password: PasswordHelperText.EMPTY_VALUE },
-      });
+      isNotValid = true;
+      helperText = PasswordHelperText.EMPTY_VALUE;
     } else if (!regExp.test(user.password)) {
-      this.setState({ isNotValid: { ...isNotValid, password: true } });
+      isNotValid = true;
       if (!isNum.test(user.password)) {
-        this.setState({
-          helperText: {
-            ...helperText,
-            password: PasswordHelperText.MISS_NUMBER,
-          },
-        });
+        helperText = PasswordHelperText.MISS_NUMBER;
       } else if (!isChar.test(user.password)) {
-        this.setState({
-          helperText: {
-            ...helperText,
-            password: PasswordHelperText.MISS_ALPHABET,
-          },
-        });
+        helperText = PasswordHelperText.MISS_ALPHABET;
       } else if (user.password.length < 8) {
-        this.setState({
-          helperText: { ...helperText, password: PasswordHelperText.MIN_WORDS },
-        });
+        helperText = PasswordHelperText.MIN_WORDS;
       } else if (user.password.length > 16) {
-        this.setState({
-          helperText: { ...helperText, password: PasswordHelperText.MAX_WORDS },
-        });
+        helperText = PasswordHelperText.MAX_WORDS;
       }
     } else {
-      this.setState({
-        isNotValid: { ...isNotValid, password: false },
-        helperText: { ...helperText, password: DEFAULT_HELPER_TEXT },
-      });
+      isNotValid = false;
+      helperText = DEFAULT_HELPER_TEXT;
     }
+
+    return { isNotValid, helperText };
   };
 
   checkRePasswordValidation = () => {
-    const { user, isNotValid, helperText } = this.state;
+    const { user } = this.state;
+    let isNotValid;
+    let helperText;
 
     if (!user.repassword) {
-      this.setState({
-        isNotValid: { ...isNotValid, repassword: true },
-        helperText: {
-          ...helperText,
-          repassword: PasswordHelperText.EMPTY_VALUE,
-        },
-      });
+      isNotValid = true;
+      helperText = PasswordHelperText.EMPTY_VALUE;
     } else if (!Object.is(user.password, user.repassword)) {
-      this.setState({
-        isNotValid: { ...isNotValid, repassword: true },
-        helperText: {
-          ...helperText,
-          repassword: PasswordHelperText.MISS_MATCH_PW,
-        },
-      });
+      isNotValid = true;
+      helperText = PasswordHelperText.MISS_MATCH_PW;
     } else {
-      this.setState({
-        isNotValid: { ...isNotValid, repassword: false },
-        helperText: { ...helperText, repassword: DEFAULT_HELPER_TEXT },
-      });
+      isNotValid = false;
+      helperText = DEFAULT_HELPER_TEXT;
     }
+
+    return { isNotValid, helperText };
   };
 
   checkNameValidation = () => {
-    const { user, isNotValid, helperText } = this.state;
+    const { user } = this.state;
     const regExp = /^[A-Za-z0-9_.]{3,30}$/;
     const nonAlphabet = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]$/;
     const isSpecial = /\W/;
     const allowSpecial = /[_.]$/;
+    let isNotValid;
+    let helperText;
 
     if (!user.name) {
-      this.setState({
-        isNotValid: { ...isNotValid, name: true },
-        helperText: { ...helperText, name: NameHelperText.EMPTY_VALUE },
-      });
+      isNotValid = true;
+      helperText = NameHelperText.EMPTY_VALUE;
     } else if (!regExp.test(user.name)) {
-      this.setState({ isNotValid: { ...isNotValid, name: true } });
+      isNotValid = true;
       if (nonAlphabet.test(user.name)) {
-        this.setState({
-          helperText: {
-            ...helperText,
-            name: NameHelperText.ONLY_ALPHABET,
-          },
-        });
+        helperText = NameHelperText.ONLY_ALPHABET;
       } else if (isSpecial.test(user.name) && !allowSpecial.test(user.name)) {
-        this.setState({
-          helperText: {
-            ...helperText,
-            name: NameHelperText.NO_SPECIAL_CHAR,
-          },
-        });
+        helperText = NameHelperText.NO_SPECIAL_CHAR;
       } else if (user.name.length < 3) {
-        this.setState({
-          helperText: { ...helperText, name: NameHelperText.MIN_WORDS },
-        });
+        helperText = NameHelperText.MIN_WORDS;
       } else if (user.name.length > 30) {
-        this.setState({
-          helperText: { ...helperText, name: NameHelperText.MAX_WORDS },
-        });
+        helperText = NameHelperText.MAX_WORDS;
       }
     } else {
-      this.setState({
-        isNotValid: { ...isNotValid, name: false },
-        helperText: { ...helperText, name: DEFAULT_HELPER_TEXT },
-      });
+      isNotValid = false;
+      helperText = DEFAULT_HELPER_TEXT;
     }
+
+    return { isNotValid, helperText };
   };
 
   checkStatusValidation = () => {
-    const { user, isNotValid, helperText } = this.state;
+    const { user } = this.state;
+    let isNotValid;
+    let helperText;
 
     if (user.status.length > 100) {
-      this.setState({
-        isNotValid: { ...isNotValid, status: true },
-        helperText: { ...helperText, status: StatusHelperText.MAX_WORDS },
-      });
+      isNotValid = true;
+      helperText = StatusHelperText.MAX_WORDS;
     } else {
-      this.setState({
-        isNotValid: { ...isNotValid, status: false },
-        helperText: { ...helperText, status: DEFAULT_HELPER_TEXT },
-      });
+      isNotValid = false;
+      helperText = DEFAULT_HELPER_TEXT;
     }
+
+    return { isNotValid, helperText };
   };
 
   render() {
