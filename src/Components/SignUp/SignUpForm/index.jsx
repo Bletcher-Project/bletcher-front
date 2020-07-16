@@ -33,12 +33,12 @@ class SignUpForm extends Component {
         status: '',
         profileImg: null,
       },
-      isNotValid: {
+      isValid: {
         email: null,
         password: null,
         repassword: null,
         name: null,
-        status: false,
+        status: true,
       },
       helperText: {
         email: DEFAULT_HELPER_TEXT,
@@ -52,17 +52,17 @@ class SignUpForm extends Component {
 
   componentDidUpdate = (prevProps, prevState) => {
     const { handleValidation } = this.props;
-    const { user, isNotValid } = this.state;
+    const { user, isValid } = this.state;
     if (
-      isNotValid !== prevState.isNotValid ||
+      isValid !== prevState.isValid ||
       user.profileImg !== prevState.user.profileImg
     ) {
       if (
-        isNotValid.email === false &&
-        isNotValid.password === false &&
-        isNotValid.repassword === false &&
-        isNotValid.name === false &&
-        isNotValid.status === false
+        isValid.email &&
+        isValid.password &&
+        isValid.repassword &&
+        isValid.name &&
+        isValid.status
       )
         handleValidation(user, true);
       else handleValidation(null, false);
@@ -77,7 +77,7 @@ class SignUpForm extends Component {
   };
 
   handleEmail = (e) => {
-    const { user, isNotValid, helperText } = this.state;
+    const { user, isValid, helperText } = this.state;
     this.setState(
       {
         user: {
@@ -88,7 +88,7 @@ class SignUpForm extends Component {
       async () => {
         const result = await this.checkEmailValidation();
         this.setState({
-          isNotValid: { ...isNotValid, email: result.isNotValid },
+          isValid: { ...isValid, email: result.isValid },
           helperText: { ...helperText, email: result.helperText },
         });
       },
@@ -96,7 +96,7 @@ class SignUpForm extends Component {
   };
 
   handlePassword = (e) => {
-    const { user, isNotValid, helperText } = this.state;
+    const { user, isValid, helperText } = this.state;
     this.setState(
       {
         user: {
@@ -107,7 +107,7 @@ class SignUpForm extends Component {
       () => {
         const result = this.checkPasswordValidation();
         this.setState({
-          isNotValid: { ...isNotValid, password: result.isNotValid },
+          isValid: { ...isValid, password: result.isValid },
           helperText: { ...helperText, password: result.helperText },
         });
       },
@@ -115,7 +115,7 @@ class SignUpForm extends Component {
   };
 
   handleRePassword = (e) => {
-    const { user, isNotValid, helperText } = this.state;
+    const { user, isValid, helperText } = this.state;
     this.setState(
       {
         user: {
@@ -126,7 +126,7 @@ class SignUpForm extends Component {
       () => {
         const result = this.checkRePasswordValidation();
         this.setState({
-          isNotValid: { ...isNotValid, repassword: result.isNotValid },
+          isValid: { ...isValid, repassword: result.isValid },
           helperText: { ...helperText, repassword: result.helperText },
         });
       },
@@ -134,7 +134,7 @@ class SignUpForm extends Component {
   };
 
   handleName = (e) => {
-    const { user, isNotValid, helperText } = this.state;
+    const { user, isValid, helperText } = this.state;
     this.setState(
       {
         user: {
@@ -145,7 +145,7 @@ class SignUpForm extends Component {
       async () => {
         const result = await this.checkNameValidation();
         this.setState({
-          isNotValid: { ...isNotValid, name: result.isNotValid },
+          isValid: { ...isValid, name: result.isValid },
           helperText: { ...helperText, name: result.helperText },
         });
       },
@@ -153,7 +153,7 @@ class SignUpForm extends Component {
   };
 
   handleStatus = (e) => {
-    const { user, isNotValid, helperText } = this.state;
+    const { user, isValid, helperText } = this.state;
     this.setState(
       {
         user: {
@@ -164,7 +164,7 @@ class SignUpForm extends Component {
       () => {
         const result = this.checkStatusValidation();
         this.setState({
-          isNotValid: { ...isNotValid, status: result.isNotValid },
+          isValid: { ...isValid, status: result.isValid },
           helperText: { ...helperText, status: result.helperText },
         });
       },
@@ -174,27 +174,27 @@ class SignUpForm extends Component {
   checkEmailValidation = async () => {
     const { user } = this.state;
     const regExp = /^[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-    let isNotValid;
+    let isValid;
     let helperText;
 
     if (!user.email) {
-      isNotValid = true;
+      isValid = false;
       helperText = EmailHelperText.EMPTY_VALUE;
     } else if (!regExp.test(user.email)) {
-      isNotValid = true;
+      isValid = false;
       helperText = EmailHelperText.NOT_VALID;
     } else {
       const result = await this.checkEmailExists();
       if (result) {
-        isNotValid = true;
+        isValid = false;
         helperText = EmailHelperText.EXIST_VALUE;
       } else {
-        isNotValid = false;
+        isValid = true;
         helperText = DEFAULT_HELPER_TEXT;
       }
     }
 
-    return { isNotValid, helperText };
+    return { isValid, helperText };
   };
 
   checkEmailExists = async () => {
@@ -214,14 +214,14 @@ class SignUpForm extends Component {
     const regExp = /^(?=.*[0-9])(?=.*[a-zA-Z]).{8,16}$/;
     const isNum = /^(?=.*[0-9])/;
     const isChar = /^(?=.*[a-zA-Z])/;
-    let isNotValid;
+    let isValid;
     let helperText;
 
     if (!user.password) {
-      isNotValid = true;
+      isValid = false;
       helperText = PasswordHelperText.EMPTY_VALUE;
     } else if (!regExp.test(user.password)) {
-      isNotValid = true;
+      isValid = false;
       if (!isNum.test(user.password)) {
         helperText = PasswordHelperText.MISS_NUMBER;
       } else if (!isChar.test(user.password)) {
@@ -232,30 +232,30 @@ class SignUpForm extends Component {
         helperText = PasswordHelperText.MAX_WORDS;
       }
     } else {
-      isNotValid = false;
+      isValid = true;
       helperText = DEFAULT_HELPER_TEXT;
     }
 
-    return { isNotValid, helperText };
+    return { isValid, helperText };
   };
 
   checkRePasswordValidation = () => {
     const { user } = this.state;
-    let isNotValid;
+    let isValid;
     let helperText;
 
     if (!user.repassword) {
-      isNotValid = true;
+      isValid = false;
       helperText = PasswordHelperText.EMPTY_VALUE;
     } else if (!Object.is(user.password, user.repassword)) {
-      isNotValid = true;
+      isValid = false;
       helperText = PasswordHelperText.MISS_MATCH_PW;
     } else {
-      isNotValid = false;
+      isValid = true;
       helperText = DEFAULT_HELPER_TEXT;
     }
 
-    return { isNotValid, helperText };
+    return { isValid, helperText };
   };
 
   checkNameValidation = async () => {
@@ -264,14 +264,14 @@ class SignUpForm extends Component {
     const nonAlphabet = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]$/;
     const isSpecial = /\W/;
     const allowSpecial = /[_.]$/;
-    let isNotValid;
+    let isValid;
     let helperText;
 
     if (!user.name) {
-      isNotValid = true;
+      isValid = false;
       helperText = NameHelperText.EMPTY_VALUE;
     } else if (!regExp.test(user.name)) {
-      isNotValid = true;
+      isValid = false;
       if (nonAlphabet.test(user.name)) {
         helperText = NameHelperText.ONLY_ALPHABET;
       } else if (isSpecial.test(user.name) && !allowSpecial.test(user.name)) {
@@ -284,15 +284,15 @@ class SignUpForm extends Component {
     } else {
       const result = await this.checkNameExists();
       if (result) {
-        isNotValid = true;
+        isValid = false;
         helperText = NameHelperText.EXIST_VALUE;
       } else {
-        isNotValid = false;
+        isValid = true;
         helperText = DEFAULT_HELPER_TEXT;
       }
     }
 
-    return { isNotValid, helperText };
+    return { isValid, helperText };
   };
 
   checkNameExists = async () => {
@@ -309,22 +309,22 @@ class SignUpForm extends Component {
 
   checkStatusValidation = () => {
     const { user } = this.state;
-    let isNotValid;
+    let isValid;
     let helperText;
 
     if (user.status.length > 100) {
-      isNotValid = true;
+      isValid = false;
       helperText = StatusHelperText.MAX_WORDS;
     } else {
-      isNotValid = false;
+      isValid = true;
       helperText = DEFAULT_HELPER_TEXT;
     }
 
-    return { isNotValid, helperText };
+    return { isValid, helperText };
   };
 
   render() {
-    const { user, isNotValid, helperText } = this.state;
+    const { user, isValid, helperText } = this.state;
 
     return (
       <>
@@ -355,9 +355,9 @@ class SignUpForm extends Component {
                 type="email"
                 autoComplete="username"
                 width="210px"
-                error={isNotValid.email}
+                error={isValid.email === false}
                 helperText={helperText.email}
-                InputProps={isNotValid.email === false ? <CheckIcon /> : null}
+                InputProps={isValid.email ? <CheckIcon /> : null}
                 onChange={(e) => this.handleEmail(e)}
               />
               <Input
@@ -365,11 +365,9 @@ class SignUpForm extends Component {
                 type="password"
                 autoComplete="new-password"
                 width="210px"
-                error={isNotValid.password}
+                error={isValid.password === false}
                 helperText={helperText.password}
-                InputProps={
-                  isNotValid.password === false ? <CheckIcon /> : null
-                }
+                InputProps={isValid.password ? <CheckIcon /> : null}
                 onChange={(e) => this.handlePassword(e)}
               />
               <Input
@@ -377,11 +375,9 @@ class SignUpForm extends Component {
                 type="password"
                 autoComplete="new-password"
                 width="210px"
-                error={isNotValid.repassword}
+                error={isValid.repassword === false}
                 helperText={helperText.repassword}
-                InputProps={
-                  isNotValid.repassword === false ? <CheckIcon /> : null
-                }
+                InputProps={isValid.repassword ? <CheckIcon /> : null}
                 onChange={(e) => this.handleRePassword(e)}
               />
             </form>
@@ -391,16 +387,16 @@ class SignUpForm extends Component {
               label="Name"
               type="text"
               width="210px"
-              error={isNotValid.name}
+              error={isValid.name === false}
               helperText={helperText.name}
-              InputProps={isNotValid.name === false ? <CheckIcon /> : null}
+              InputProps={isValid.name ? <CheckIcon /> : null}
               onChange={(e) => this.handleName(e)}
             />
             <Input
               label="Status (optional)"
               type="text"
               width="210px"
-              error={isNotValid.status}
+              error={isValid.status === false}
               helperText={helperText.status}
               onChange={(e) => this.handleStatus(e)}
             />

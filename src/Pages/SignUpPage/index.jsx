@@ -17,13 +17,13 @@ class SignUpPage extends Component {
     super(props);
     this.state = {
       user: {},
-      isNotValid: true,
+      isValid: false,
     };
   }
 
   handleValidation = (user, isValid) => {
-    if (isValid) this.setState({ user, isNotValid: false });
-    else this.setState({ isNotValid: true });
+    if (isValid) this.setState({ user, isValid: true });
+    else this.setState({ isValid: false });
   };
 
   handleSignUp = async () => {
@@ -55,7 +55,7 @@ class SignUpPage extends Component {
   };
 
   render() {
-    const { isNotValid } = this.state;
+    const { isValid } = this.state;
     return (
       <div className="signUpPage">
         <NavBar isActive="signUp" />
@@ -68,7 +68,7 @@ class SignUpPage extends Component {
         <div className="signUpPage__footer">
           <Button
             text="Sign Up"
-            disabled={isNotValid}
+            disabled={!isValid}
             onClick={this.handleSignUp}
           />
         </div>
