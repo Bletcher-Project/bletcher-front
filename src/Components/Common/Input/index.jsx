@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import TextField from '@material-ui/core/TextField';
@@ -6,21 +6,26 @@ import { withStyles } from '@material-ui/core/styles';
 import { purple } from '@material-ui/core/colors';
 
 const defaultProps = {
+  label: '',
+  autoComplete: '',
+  width: '200px',
   disabled: false,
   error: false,
+  helperText: ' ',
+  InputProps: null,
+  onKeyPress: null,
 };
 const propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   type: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  width: PropTypes.number.isRequired,
+  autoComplete: PropTypes.string,
+  width: PropTypes.string,
   disabled: PropTypes.bool,
   error: PropTypes.bool,
-  helperText: PropTypes.string.isRequired,
-  InputProps: PropTypes.element.isRequired,
+  helperText: PropTypes.string,
+  InputProps: PropTypes.element,
   onChange: PropTypes.func.isRequired,
-  onKeyPress: PropTypes.func.isRequired,
+  onKeyPress: PropTypes.func,
 };
 
 const PurpleInput = withStyles({
@@ -40,47 +45,39 @@ const PurpleInput = withStyles({
   },
 })(TextField);
 
-class MainInput extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+function Input(props) {
+  const {
+    label,
+    type,
+    autoComplete,
+    width,
+    disabled,
+    error,
+    helperText,
+    InputProps,
+    onChange,
+    onKeyPress,
+  } = props;
 
-  render() {
-    const {
-      label,
-      type,
-      value,
-      name,
-      width,
-      disabled,
-      error,
-      helperText,
-      InputProps,
-      onChange,
-      onKeyPress,
-    } = this.props;
-    return (
-      <div className="mainInput">
-        <PurpleInput
-          label={label}
-          type={type}
-          value={value}
-          name={name}
-          style={{ width }}
-          disabled={disabled}
-          error={error}
-          helperText={helperText}
-          InputProps={InputProps}
-          onChange={onChange}
-          onKeyPress={onKeyPress}
-        />
-      </div>
-    );
-  }
+  return (
+    <PurpleInput
+      label={label}
+      type={type}
+      autoComplete={autoComplete}
+      style={{ width }}
+      disabled={disabled}
+      error={error}
+      helperText={helperText}
+      InputProps={{
+        endAdornment: InputProps,
+      }}
+      onChange={onChange}
+      onKeyPress={onKeyPress}
+    />
+  );
 }
 
-MainInput.defaultProps = defaultProps;
-MainInput.propTypes = propTypes;
+Input.defaultProps = defaultProps;
+Input.propTypes = propTypes;
 
-export default MainInput;
+export default Input;

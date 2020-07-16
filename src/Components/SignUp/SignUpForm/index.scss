@@ -1,0 +1,35 @@
+/*
+  Sign Up Form Component Styling
+*/
+
+.signUpForm {
+  &__profileImg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & p {
+      cursor: pointer;
+      margin: 0;
+    }
+  }
+
+  &__userInfo {
+    display: flex;
+
+    &__account {
+      padding-right: 10px;
+
+      & form {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    &__profile {
+      display: flex;
+      flex-direction: column;
+      padding-left: 10px;
+    }
+  }
+}

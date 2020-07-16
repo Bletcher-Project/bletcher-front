@@ -161,7 +161,7 @@ class UserPage extends Component {
         const response = await fetch(
           process.env.REACT_APP_SERVER_URL +
             constant.INIT_API +
-            constant.USERS_API_GET +
+            constant.USER_API_GET +
             constant.NAME_API_GET +
             `${match.params.username}`,
           {
