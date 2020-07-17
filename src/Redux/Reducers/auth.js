@@ -14,7 +14,7 @@ const initialState = {
   user: null,
 };
 
-import * as constant from '../../Constants/api_uri';
+import * as constant from '../../Constants/api-uri';
 
 /* AUTH Reducer */
 export default function authReducer(state = initialState, action = {}) {
@@ -62,9 +62,9 @@ export const postSignIn = (params) => {
     try {
       let response = await fetch(
         process.env.REACT_APP_SERVER_URL +
-          constant.INIT_API +
+          constant.INIT +
           constant.AUTH_API +
-          constant.SIGNIN_API,
+          constant.SIGN_IN,
         {
           method: 'POST',
           headers: {
@@ -104,9 +104,9 @@ export const getUser = (token) => {
     try {
       let response = await fetch(
         process.env.REACT_APP_SERVER_URL +
-          constant.INIT_API +
+          constant.INIT +
           constant.AUTH_API +
-          constant.USER_API_GET,
+          constant.PARAM_USER,
         {
           method: 'GET',
           headers: {

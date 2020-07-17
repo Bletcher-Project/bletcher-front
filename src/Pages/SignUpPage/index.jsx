@@ -5,7 +5,7 @@ import NavBar from 'Components/Main/NavBar';
 import Button from 'Components/Common/Button';
 import SignUpForm from 'Components/SignUp/SignUpForm';
 
-import { INIT, USER_API } from 'Constants/api_uri';
+import { INIT, USER_API } from 'Constants/api-uri';
 
 const defaultProps = {};
 const propTypes = {

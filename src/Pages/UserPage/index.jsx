@@ -11,7 +11,14 @@ import Gallery from 'react-photo-gallery';
 import { Modal } from 'reactstrap';
 
 import settingIcon from 'Assets/icons/setting.png';
-import * as constant from 'Constants/api_uri';
+import {
+  INIT,
+  IMAGE,
+  USER_API,
+  QUERY_NAME,
+  PROFILE_IMG,
+  POST_IMG,
+} from 'Constants/api-uri';
 
 const defaultProps = {};
 const propTypes = {};
@@ -71,7 +78,7 @@ class UserPage extends Component {
                   size="100"
                   src={
                     userInfo.profileImgName !== null
-                      ? `${process.env.REACT_APP_SERVER_URL}image/profile/${userInfo.profileImgName}`
+                      ? `${process.env.REACT_APP_SERVER_URL}${IMAGE}${PROFILE_IMG}/${userInfo.profileImgName}`
                       : null
                   }
                   type={userInfo.type}
@@ -159,11 +166,7 @@ class UserPage extends Component {
     } else {
       try {
         const response = await fetch(
-          process.env.REACT_APP_SERVER_URL +
-            constant.INIT_API +
-            constant.USER_API_GET +
-            constant.NAME_API_GET +
-            `${match.params.username}`,
+          `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}${QUERY_NAME}${match.params.username}`,
           {
             method: 'GET',
           },
@@ -190,7 +193,7 @@ class UserPage extends Component {
       (posts) => {
         posts.forEach((post) => {
           postImg.push({
-            src: `${process.env.REACT_APP_SERVER_URL}image/post/${post.postImgName}`,
+            src: `${process.env.REACT_APP_SERVER_URL}${IMAGE}${POST_IMG}/${post.postImgName}`,
             width: parseInt(post.postImgWidth),
             height: parseInt(post.postImgHeight),
             key: String(post.id),

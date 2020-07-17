@@ -15,7 +15,7 @@ import {
   NameHelperText,
   StatusHelperText,
 } from 'Constants/helper-text';
-import { INIT, USER_API, QUERY_EMAIL, QUERY_NAME } from 'Constants/api_uri';
+import { INIT, USER_API, QUERY_EMAIL, QUERY_NAME } from 'Constants/api-uri';
 
 const propTypes = {
   handleValidation: PropTypes.func.isRequired,
