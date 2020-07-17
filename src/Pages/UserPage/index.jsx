@@ -16,8 +16,8 @@ import {
   IMAGE,
   USER_API,
   QUERY_NAME,
-  PROFILE_IMG,
-  POST_IMG,
+  IMAGE_PROFILE,
+  IMAGE_POST,
 } from 'Constants/api-uri';
 
 const defaultProps = {};
@@ -78,7 +78,7 @@ class UserPage extends Component {
                   size="100"
                   src={
                     userInfo.profileImgName !== null
-                      ? `${process.env.REACT_APP_SERVER_URL}${IMAGE}${PROFILE_IMG}/${userInfo.profileImgName}`
+                      ? `${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_PROFILE}/${userInfo.profileImgName}`
                       : null
                   }
                   type={userInfo.type}
@@ -193,7 +193,7 @@ class UserPage extends Component {
       (posts) => {
         posts.forEach((post) => {
           postImg.push({
-            src: `${process.env.REACT_APP_SERVER_URL}${IMAGE}${POST_IMG}/${post.postImgName}`,
+            src: `${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_POST}/${post.postImgName}`,
             width: parseInt(post.postImgWidth),
             height: parseInt(post.postImgHeight),
             key: String(post.id),

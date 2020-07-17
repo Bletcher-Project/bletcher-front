@@ -3,8 +3,8 @@ export const INIT = '/api';
 
 /* image */
 export const IMAGE = '/image';
-export const PROFILE_IMG = '/profile';
-export const POST_IMG = '/post';
+export const IMAGE_PROFILE = '/profile';
+export const IMAGE_POST = '/post';
 
 /* auth */
 export const AUTH_API = '/auth';

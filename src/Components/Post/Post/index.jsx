@@ -20,8 +20,8 @@ import {
   INIT,
   COMMENT_API,
   IMAGE,
-  PROFILE_IMG,
-  POST_IMG,
+  IMAGE_PROFILE,
+  IMAGE_POST,
 } from 'Constants/api-uri';
 
 const defaultProps = {};
@@ -89,7 +89,7 @@ class Post extends Component {
               size="50"
               src={
                 userProfileImg !== null
-                  ? `${process.env.REACT_APP_SERVER_URL}${IMAGE}${PROFILE_IMG}/${userProfileImg}`
+                  ? `${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_PROFILE}/${userProfileImg}`
                   : null
               }
               type={userType}
@@ -114,7 +114,7 @@ class Post extends Component {
           <div className="post__postSection__body">
             <img
               className="post__postSection__body__postImage"
-              src={`${process.env.REACT_APP_SERVER_URL}${IMAGE}${POST_IMG}/${postImg}`}
+              src={`${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_POST}/${postImg}`}
               alt="postImage"
             />
           </div>
