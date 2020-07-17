@@ -1,16 +1,25 @@
 /* init */
 export const INIT = '/api';
 
+/* image */
+export const IMAGE = '/image';
+export const PROFILE_IMG = '/profile';
+export const POST_IMG = '/post';
+
 /* auth */
 export const AUTH_API = '/auth';
+export const AUTH_USER_INFO = '/user';
 
 /* users */
 export const USER_API = '/users';
 
 /* posts */
 export const POST_API = '/posts';
-export const ONE = '/one';
-export const LIKE = '/like';
+export const POST_ONE = '/one';
+export const POST_LIKE = '/like';
+
+/* comments */
+export const COMMENT_API = '/comments';
 
 /* query */
 export const QUERY_EMAIL = '?email=';
@@ -18,4 +27,4 @@ export const QUERY_NAME = '?name=';
 
 /* temporary */
 export const SKETCHER = '/sketcher';
-export const SIGNIN = '/signin';
+export const SIGN_IN = '/signin';
