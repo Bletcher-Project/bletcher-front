@@ -1,10 +1,11 @@
-import { getApiPath, getAction } from '../utils/util';
-
-export const REMOVE_TOKEN = 'REMOVE_TOKEN';
-export const SET_TOKEN = 'SET_TOKEN';
-export const SIGNOUT = 'SIGNOUT';
-export const GET_USER = 'GET_USER';
-export const REMOVE_USER = 'REMOVE_USER';
+import {
+  removeTokenSuccess,
+  setTokenSuccess,
+  getUserSuccess,
+  removeUserSuccess,
+  signoutSuccess,
+} from '../Reducers/authReducer';
+import { getApiPath } from '../utils/util';
 
 export const postSignIn = (params) => {
   return async (dispatch) => {
@@ -20,14 +21,14 @@ export const postSignIn = (params) => {
         }),
       });
       if (response.status === 401) {
-        await dispatch(getAction(REMOVE_TOKEN, null)); // failed to signin
+        await dispatch(removeTokenSuccess()); // failed to signin
         return 'failed';
       }
       const result = await response.json();
-      await dispatch(getAction(SET_TOKEN, result.token)); // success sign in
+      await dispatch(setTokenSuccess(result.token)); // success sign in
       return result.token;
     } catch (error) {
-      dispatch(getAction(REMOVE_TOKEN, { data: 'NETWORK_ERROR' })); // fail to sign in
+      dispatch(removeTokenSuccess()); // fail to sign in
       return 'ERROR!';
     }
   };
@@ -46,20 +47,20 @@ export const getUser = (token) => {
       switch (response.status) {
         case 200:
           result = await response.json();
-          await dispatch(getAction(GET_USER, result.userInfo)); // success get user
+          await dispatch(getUserSuccess(result.userInfo)); // success get user
           return result.userInfo;
         case 403:
           result = await response.json();
           if (result.message === 'jwt expired') {
-            await dispatch(getAction(REMOVE_TOKEN, null)); // token expired
+            await dispatch(removeTokenSuccess()); // token expired
           }
           return result.message;
         default:
-          await dispatch(getAction(REMOVE_USER, null)); // fail to get user
+          await dispatch(removeUserSuccess()); // fail to get user
           return 'failed';
       }
     } catch (error) {
-      dispatch(getAction(REMOVE_USER, { data: 'NETWORK_ERROR' })); // fail to ger user
+      dispatch(removeUserSuccess()); // fail to ger user
       return 'ERROR';
     }
   };
@@ -67,8 +68,6 @@ export const getUser = (token) => {
 
 export const signOut = () => {
   return async (dispatch) => {
-    await dispatch({
-      type: SIGNOUT,
-    });
+    await dispatch(signoutSuccess());
   };
 };

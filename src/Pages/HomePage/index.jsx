@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import * as PostAction from 'Redux/Actions/PostAction';
@@ -8,7 +9,11 @@ import Post from 'Components/Post/Post';
 import Upload from 'Components/Upload';
 
 const defaultProps = {};
-const propTypes = {};
+
+const propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
+};
 
 const mapStateToProps = (state) => {
   return {
@@ -31,17 +36,30 @@ class HomePage extends Component {
     this.getAllPosts();
   }
 
+  getAllPosts = () => {
+    const { dispatch, token } = this.props;
+    dispatch(PostAction.getAllPosts(token)).then((result) => {
+      console.log(token);
+      this.setState({ feed: result, feedLoading: false });
+    });
+  };
+
+  toggleNewPost = () => {
+    this.setState({ newPostClicked: !this.state.newPostClicked });
+  };
+
   render() {
-    const { newPostClicked } = this.state;
+    const { newPostClicked, feedLoading, feed } = this.state;
+    const { user } = this.props;
     return (
       <div className="homePage">
         <NavBar isActive="feed" />
 
         {newPostClicked ? (
           <Upload
-            userId={this.props.user.id}
-            userProfileImg={this.props.user.profileImgName}
-            userType={this.props.user.type}
+            userId={user.id}
+            userProfileImg={user.profileImgName}
+            userType={user.type}
             handlePrevStep={this.toggleNewPost}
           />
         ) : (
@@ -50,13 +68,13 @@ class HomePage extends Component {
               What are you thinking now?
             </div>
             <div className="homePage__postList">
-              {!this.state.feedLoading && this.props.user && this.state.feed
-                ? this.state.feed.map((data) => {
+              {!feedLoading && user && feed
+                ? feed.map((data) => {
                     return (
                       <div className="homePage__post mb-3" key={data.id}>
                         <Post
                           postId={data.id}
-                          isMyPost={this.props.user.id === data.UserId}
+                          isMyPost={user.id === data.UserId}
                           userProfileImg={data.User.profileImgName}
                           userName={data.User.name}
                           userType={data.User.type}
@@ -80,18 +98,6 @@ class HomePage extends Component {
       </div>
     );
   }
-
-  getAllPosts = () => {
-    this.props
-      .dispatch(PostAction.getAllPosts(this.props.token))
-      .then((result) => {
-        this.setState({ feed: result, feedLoading: false });
-      });
-  };
-
-  toggleNewPost = () => {
-    this.setState({ newPostClicked: !this.state.newPostClicked });
-  };
 }
 
 HomePage.defaultProps = defaultProps;

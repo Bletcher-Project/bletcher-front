@@ -1,21 +1,19 @@
-import axios from 'axios';
 import * as constant from '../../Constants/api_uri';
-import { getApiPathPost, getAction } from '../utils/util';
-
-const SUCCEED_TO_GET_ALLPOST = 'SUCCEED_TO_GET_ALLPOST';
-const FAILED_TO_GET_ALLPOST = 'FAILED_TO_GET_ALLPOST';
-const SUCCEED_TO_GET_POST_BY_USERID = 'SUCCEED_TO_GET_POST_BY_USERID';
-const FAILED_TO_GET_POST_BY_USERID = 'FAILED_TO_GET_POST_BY_USERID';
-const SUCCEED_TO_GET_POST_BY_POSTID = 'SUCCEED_TO_GET_POST_BY_POSTID';
-const FAILED_TO_GET_POST_BY_POSTID = 'FAILED_TO_GET_POST_BY_POSTID';
-const SUCCEED_TO_UPLOAD_POST = 'SUCCEED_TO_UPLOAD_POST';
-const FAILED_TO_UPLOAD_POST = 'FAILED_TO_UPLOAD_POST';
-const SUCCEED_TO_DELETE_POST = 'SUCCEED_TO_DELETE_POST';
-const FAILED_TO_DELETE_POST = 'FAILED_TO_DELETE_POST';
-const SUCCEED_TO_POST_LIKE = 'SUCCEED_TO_POST_LIKE';
-const FAILED_TO_POST_LIKE = 'FAILED_TO_POST_LIKE';
-const SUCCEED_TO_DELETE_LIKE = 'SUCCEED_TO_DELETE_LIKE';
-const FAILED_TO_DELETE_LIKE = 'FAILED_TO_DELETE_LIKE';
+import { getApiPathPost } from '../utils/util';
+import {
+  getAllPostsFail,
+  getAllPostsSuccess,
+  getUserPostSuccess,
+  getUserPostFail,
+  clickPostSuccess,
+  clickPostFail,
+  uploadPostSuccess,
+  uploadPostFail,
+  likePostSuccess,
+  likePostFail,
+  delikePostFail,
+  delikePostSuccess,
+} from '../Reducers/postReducer';
 
 export const getAllPosts = (token) => {
   // eslint-disable-next-line consistent-return
@@ -30,13 +28,13 @@ export const getAllPosts = (token) => {
       let result = null;
       if (response.status === 200) {
         result = await response.json();
-        await dispatch(getAction(SUCCEED_TO_GET_ALLPOST, result.posts));
+        await dispatch(getAllPostsSuccess(result.posts));
       } else {
-        await dispatch(getAction(FAILED_TO_GET_ALLPOST, null));
+        await dispatch(getAllPostsFail());
       }
       return result ? result.posts : null;
     } catch (error) {
-      dispatch(getAction(FAILED_TO_GET_ALLPOST, { data: 'NETWORK_ERROR' }));
+      dispatch(getAllPostsFail());
     }
   };
 };
@@ -54,15 +52,13 @@ export const getPostByUserId = (userId, token) => {
       let result = null;
       if (response.status === 200) {
         result = await response.json();
-        await dispatch(getAction(SUCCEED_TO_GET_POST_BY_USERID, result.posts));
+        await dispatch(getUserPostSuccess());
       } else {
-        await dispatch(getAction(FAILED_TO_GET_POST_BY_USERID, null));
+        await dispatch(getUserPostFail());
       }
       return result ? result.posts : null;
     } catch (error) {
-      dispatch(
-        getAction(FAILED_TO_GET_POST_BY_USERID, { data: 'NETWORK_ERROR' }),
-      );
+      dispatch(getUserPostFail());
     }
   };
 };
@@ -82,15 +78,13 @@ export const getPostByPostId = (postId, token) => {
       let result = null;
       if (response.status === 200) {
         result = await response.json();
-        await dispatch(getAction(SUCCEED_TO_GET_POST_BY_POSTID, result.post));
+        await dispatch(clickPostSuccess(result.post));
       } else {
-        await dispatch(getAction(FAILED_TO_GET_POST_BY_POSTID, null));
+        await dispatch(clickPostFail());
       }
       return result ? result.post : null;
     } catch (error) {
-      dispatch(
-        getAction(FAILED_TO_GET_POST_BY_POSTID, { data: 'NETWORK_ERROR' }),
-      );
+      dispatch(clickPostFail());
     }
   };
 };
@@ -108,12 +102,12 @@ export const uploadPost = (payload, token) => {
       let result = null;
       if (response.status === 200) {
         result = await response.json();
-        await dispatch({ type: SUCCEED_TO_UPLOAD_POST });
+        await dispatch(uploadPostSuccess(result));
       }
     } catch (err) {
-      dispatch({ type: FAILED_TO_UPLOAD_POST });
+      dispatch(uploadPostFail());
     }
-    return { type: SUCCEED_TO_UPLOAD_POST };
+    return { type: 'UPLOAD_POST_SUCCESS' };
   };
 };
 
@@ -131,11 +125,11 @@ export const uploadSketcherPost = (payload, token) => {
       let result = null;
       if (response.status === 200) {
         result = await response.json();
-        await dispatch({ type: SUCCEED_TO_UPLOAD_POST });
+        await dispatch(uploadPostSuccess(result));
       }
-      return { type: SUCCEED_TO_UPLOAD_POST };
+      return { type: 'UPLOAD_POST_SUCCESS' };
     } catch (err) {
-      dispatch({ type: FAILED_TO_UPLOAD_POST });
+      dispatch(uploadPostFail());
     }
   };
 };
@@ -148,13 +142,12 @@ export const deletePost = (id, token) => {
         'x-access-token': token,
       },
     });
-    const result = null;
     if (response.statue === 200) {
       return response;
     }
-    return { type: SUCCEED_TO_DELETE_POST };
+    return { type: 'DELETE_POST_SUCCESS' };
   } catch (err) {
-    return { type: FAILED_TO_DELETE_POST };
+    return { type: 'DELETE_POST_FAIL' };
   }
 };
 
@@ -173,13 +166,13 @@ export const postLike = (postId, token) => {
       let result = null;
       if (response.status === 200) {
         result = await response.json();
-        await dispatch(getAction(SUCCEED_TO_POST_LIKE, result));
+        await dispatch(likePostSuccess(result));
       } else {
-        await dispatch(getAction(FAILED_TO_POST_LIKE, null));
+        await dispatch(likePostFail());
       }
       return result;
     } catch (error) {
-      dispatch(getAction(FAILED_TO_POST_LIKE, { data: 'NETWORK_ERROR' }));
+      dispatch(likePostFail());
     }
   };
 };
@@ -199,13 +192,13 @@ export const deleteLike = (postId, token) => {
       let result = null;
       if (response.status === 200) {
         result = await response.json();
-        await dispatch(getAction(SUCCEED_TO_DELETE_LIKE, result));
+        await dispatch(delikePostSuccess(result));
       } else {
-        await dispatch(getAction(FAILED_TO_DELETE_LIKE, null));
+        await dispatch(delikePostFail());
       }
       return result;
     } catch (error) {
-      dispatch(getAction(FAILED_TO_DELETE_LIKE, { data: 'NETWORK_ERROR' }));
+      dispatch(delikePostFail());
     }
   };
 };
