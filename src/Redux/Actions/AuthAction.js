@@ -7,16 +7,13 @@ import {
   TOKEN_EXPIRED,
 } from 'Redux/Constants/action-types';
 
-import * as constant from '../../Constants/api_uri';
+import { INIT, AUTH_API, SIGN_IN, AUTH_USER_INFO } from 'Constants/api-uri';
 
 export const postSignIn = (params) => {
   return async (dispatch) => {
     try {
       let response = await fetch(
-        process.env.REACT_APP_SERVER_URL +
-          constant.INIT_API +
-          constant.AUTH_API +
-          constant.SIGNIN_API,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${AUTH_API}${SIGN_IN}`,
         {
           method: 'POST',
           headers: {
@@ -55,10 +52,7 @@ export const getUser = (token) => {
   return async (dispatch) => {
     try {
       let response = await fetch(
-        process.env.REACT_APP_SERVER_URL +
-          constant.INIT_API +
-          constant.AUTH_API +
-          constant.USER_API_GET,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${AUTH_API}${AUTH_USER_INFO}`,
         {
           method: 'GET',
           headers: {
