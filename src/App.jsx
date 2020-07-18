@@ -15,10 +15,13 @@ import HomePage from 'Pages/HomePage';
 import SignUpPage from 'Pages/SignUpPage';
 import UserPage from 'Pages/UserPage';
 
+const defaultProps = {
+  token: null,
+};
 const propTypes = {
   dispatch: PropTypes.func.isRequired,
-  isLogin: PropTypes.string.isRequired,
-  token: PropTypes.string.isRequired,
+  isLogin: PropTypes.bool.isRequired,
+  token: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
@@ -62,6 +65,7 @@ class App extends Component {
   }
 }
 
+App.defaultProps = defaultProps;
 App.propTypes = propTypes;
 
 export default withRouter(connect(mapStateToProps)(App));

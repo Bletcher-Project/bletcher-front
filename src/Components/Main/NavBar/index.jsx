@@ -11,12 +11,14 @@ import * as AuthAction from 'Redux/Actions/AuthAction';
 import cx from 'classnames';
 import logo from 'Assets/logo/logo.svg';
 
-const defaultProps = {};
+const defaultProps = {
+  user: null,
+};
 const propTypes = {
   isActive: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   history: ReactRouterPropTypes.history.isRequired,
-  user: PropTypes.node.isRequired,
+  user: PropTypes.node,
 };
 
 const mapStateToProps = (state) => {

@@ -6,18 +6,20 @@ import Fab from '@material-ui/core/Fab';
 import { purple } from '@material-ui/core/colors';
 
 const defaultProps = {
+  text: '',
   disabled: false,
   component: 'button',
   size: 'large',
   href: null,
+  onClick: null,
 };
 const propTypes = {
-  text: PropTypes.string.isRequired,
-  onClick: PropTypes.string.isRequired,
+  text: PropTypes.string,
   disabled: PropTypes.bool,
   component: PropTypes.elementType,
-  size: PropTypes.string,
+  size: PropTypes.oneOf(['large', 'medium', 'small']),
   href: PropTypes.string,
+  onClick: PropTypes.func,
 };
 
 const PurpleButton = withStyles((theme) => ({
@@ -42,7 +44,7 @@ const PurpleButton = withStyles((theme) => ({
   },
 }))(Fab);
 
-class MainButton extends Component {
+class Button extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -51,24 +53,22 @@ class MainButton extends Component {
   render() {
     const { text, onClick, disabled, component, size, href } = this.props;
     return (
-      <div className="mainButton">
-        <PurpleButton
-          variant="extended"
-          color="primary"
-          size={size}
-          disabled={disabled}
-          onClick={onClick}
-          component={component}
-          href={href}
-        >
-          {text}
-        </PurpleButton>
-      </div>
+      <PurpleButton
+        variant="extended"
+        color="primary"
+        size={size}
+        disabled={disabled}
+        onClick={onClick}
+        component={component}
+        href={href}
+      >
+        {text}
+      </PurpleButton>
     );
   }
 }
 
-MainButton.defaultProps = defaultProps;
-MainButton.propTypes = propTypes;
+Button.defaultProps = defaultProps;
+Button.propTypes = propTypes;
 
-export default MainButton;
+export default Button;

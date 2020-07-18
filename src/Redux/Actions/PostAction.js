@@ -1,5 +1,10 @@
-import * as constant from '../../Constants/api_uri';
-import { getApiPathPost } from '../utils/util';
+import {
+  INIT,
+  POST_LIKE,
+  SKETCHER,
+  POST_ONE,
+  POST_API,
+} from 'Constants/api-uri';
 import {
   getAllPostsFail,
   getAllPostsSuccess,
@@ -19,12 +24,15 @@ export const getAllPosts = (token) => {
   // eslint-disable-next-line consistent-return
   return async (dispatch) => {
     try {
-      const response = await fetch(getApiPathPost('USER_POSTS'), {
-        method: 'GET',
-        headers: {
-          'x-access-token': token,
+      let response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}`,
+        {
+          method: 'GET',
+          headers: {
+            'x-access-token': token,
+          },
         },
-      });
+      );
       let result = null;
       if (response.status === 200) {
         result = await response.json();
@@ -43,12 +51,15 @@ export const getPostByUserId = (userId, token) => {
   // eslint-disable-next-line consistent-return
   return async (dispatch) => {
     try {
-      const response = await fetch(`${getApiPathPost('USER_POSTS')}${userId}`, {
-        method: 'GET',
-        headers: {
-          'x-access-token': token,
+      let response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}/${userId}`,
+        {
+          method: 'GET',
+          headers: {
+            'x-access-token': token,
+          },
         },
-      });
+      );
       let result = null;
       if (response.status === 200) {
         result = await response.json();
@@ -66,8 +77,8 @@ export const getPostByUserId = (userId, token) => {
 export const getPostByPostId = (postId, token) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(
-        `${getApiPathPost('USER_POSTS') + constant.ONE_API}${postId}`,
+      let response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_ONE}/${postId}`,
         {
           method: 'GET',
           headers: {
@@ -92,13 +103,16 @@ export const getPostByPostId = (postId, token) => {
 export const uploadPost = (payload, token) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(getApiPathPost('USER_POSTS'), {
-        method: 'POST',
-        headers: {
-          'x-access-token': token,
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}`,
+        {
+          method: 'POST',
+          headers: {
+            'x-access-token': token,
+          },
+          body: payload,
         },
-        body: payload,
-      });
+      );
       let result = null;
       if (response.status === 200) {
         result = await response.json();
@@ -115,7 +129,7 @@ export const uploadSketcherPost = (payload, token) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        getApiPathPost('USER_POSTS') + constant.SKETCHER_API,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${SKETCHER}`,
         {
           method: 'POST',
           headers: { 'x-access-token': token },
@@ -136,12 +150,15 @@ export const uploadSketcherPost = (payload, token) => {
 
 export const deletePost = (id, token) => {
   try {
-    const response = fetch(getApiPathPost('USER_POSTS') + id, {
-      method: 'DELETE',
-      headers: {
-        'x-access-token': token,
+    const response = fetch(
+      `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}/${id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'x-access-token': token,
+        },
       },
-    });
+    );
     if (response.statue === 200) {
       return response;
     }
@@ -154,8 +171,8 @@ export const deletePost = (id, token) => {
 export const postLike = (postId, token) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(
-        `${getApiPathPost('USER_POSTS') + constant.LIKE_API}${postId}`,
+      let response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_LIKE}/${postId}`,
         {
           method: 'POST',
           headers: {
@@ -180,8 +197,8 @@ export const postLike = (postId, token) => {
 export const deleteLike = (postId, token) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(
-        `${getApiPathPost('USER_POSTS') + constant.LIKE_API}${postId}`,
+      let response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_LIKE}/${postId}`,
         {
           method: 'DELETE',
           headers: {

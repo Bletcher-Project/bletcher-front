@@ -5,21 +5,25 @@ import {
   removeUserSuccess,
   signoutSuccess,
 } from '../Reducers/authReducer';
-import { getApiPath } from '../utils/util';
+
+import { INIT, AUTH_API, SIGN_IN, AUTH_USER_INFO } from 'Constants/api-uri';
 
 export const postSignIn = (params) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(getApiPath('SIGNIN_API'), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      let response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${AUTH_API}${SIGN_IN}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringfy({
+            id: params.id,
+            password: params.password,
+          }),
         },
-        body: JSON.stringify({
-          id: params.id,
-          password: params.password,
-        }),
-      });
+      );
       if (response.status === 401) {
         await dispatch(removeTokenSuccess()); // failed to signin
         return 'failed';
@@ -37,12 +41,15 @@ export const postSignIn = (params) => {
 export const getUser = (token) => {
   return async (dispatch) => {
     try {
-      const response = await fetch(getApiPath('USER_API_GET'), {
-        method: 'GET',
-        headers: {
-          'x-access-token': token,
+      let response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${AUTH_API}${AUTH_USER_INFO}`,
+        {
+          method: 'GET',
+          headers: {
+            'x-access-token': token,
+          },
         },
-      });
+      );
       let result;
       switch (response.status) {
         case 200:

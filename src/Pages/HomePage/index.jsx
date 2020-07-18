@@ -6,7 +6,7 @@ import * as PostAction from 'Redux/Actions/PostAction';
 
 import NavBar from 'Components/Main/NavBar';
 import Post from 'Components/Post/Post';
-import Upload from 'Components/Upload';
+import UploadPost from 'Components/Upload/UploadPost';
 
 const defaultProps = {};
 
@@ -56,10 +56,10 @@ class HomePage extends Component {
         <NavBar isActive="feed" />
 
         {newPostClicked ? (
-          <Upload
-            userId={user.id}
-            userProfileImg={user.profileImgName}
-            userType={user.type}
+          <UploadPost
+            userId={this.props.user.id}
+            userProfileImg={this.props.user.profileImgName}
+            userType={this.props.user.type}
             handlePrevStep={this.toggleNewPost}
           />
         ) : (

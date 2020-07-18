@@ -16,6 +16,14 @@ import filledCommentIcon from 'Assets/icons/comment-filled.png';
 import scrapIcon from 'Assets/icons/scrap.png';
 import filledScrapIcon from 'Assets/icons/scrap-filled.png';
 
+import {
+  INIT,
+  COMMENT_API,
+  IMAGE,
+  IMAGE_PROFILE,
+  IMAGE_POST,
+} from 'Constants/api-uri';
+
 const defaultProps = {};
 const propTypes = {};
 
@@ -141,7 +149,7 @@ class Post extends Component {
               size="50"
               src={
                 userProfileImg !== null
-                  ? `${process.env.REACT_APP_SERVER_URL}image/profile/${userProfileImg}`
+                  ? `${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_PROFILE}/${userProfileImg}`
                   : null
               }
               type={userType}
@@ -166,7 +174,7 @@ class Post extends Component {
           <div className="post__postSection__body">
             <img
               className="post__postSection__body__postImage"
-              src={`${process.env.REACT_APP_SERVER_URL}image/post/${postImg}`}
+              src={`${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_POST}/${postImg}`}
               alt="postImage"
             />
           </div>
