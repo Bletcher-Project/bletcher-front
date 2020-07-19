@@ -109,7 +109,7 @@ class Post extends Component {
         },
       );
       if (response.status === 200) {
-        let result = await response.json();
+        const result = await response.json();
         this.setState({ comments: result.comments });
       }
     } catch (error) {

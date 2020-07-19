@@ -1,3 +1,4 @@
+import { INIT, AUTH_API, SIGN_IN, AUTH_USER_INFO } from 'Constants/api-uri';
 import {
   removeTokenSuccess,
   setTokenSuccess,
@@ -6,19 +7,17 @@ import {
   signoutSuccess,
 } from '../Reducers/authReducer';
 
-import { INIT, AUTH_API, SIGN_IN, AUTH_USER_INFO } from 'Constants/api-uri';
-
 export const postSignIn = (params) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(
+      const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${AUTH_API}${SIGN_IN}`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringfy({
+          body: JSON.stringify({
             id: params.id,
             password: params.password,
           }),
@@ -27,6 +26,10 @@ export const postSignIn = (params) => {
       if (response.status === 401) {
         await dispatch(removeTokenSuccess()); // failed to signin
         return 'failed';
+      }
+      if (response.status === 403) {
+        await dispatch(removeTokenSuccess());
+        return 'invalid token';
       }
       const result = await response.json();
       await dispatch(setTokenSuccess(result.token)); // success sign in
@@ -41,7 +44,7 @@ export const postSignIn = (params) => {
 export const getUser = (token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(
+      const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${AUTH_API}${AUTH_USER_INFO}`,
         {
           method: 'GET',
@@ -61,6 +64,9 @@ export const getUser = (token) => {
           if (result.message === 'jwt expired') {
             await dispatch(removeTokenSuccess()); // token expired
           }
+          if (result.message === 'jwt malformed') {
+            await dispatch(removeTokenSuccess()); // token malformed
+          }
           return result.message;
         default:
           await dispatch(removeUserSuccess()); // fail to get user
@@ -68,7 +74,7 @@ export const getUser = (token) => {
       }
     } catch (error) {
       dispatch(removeUserSuccess()); // fail to ger user
-      return 'ERROR';
+      return 'ERROR!';
     }
   };
 };
