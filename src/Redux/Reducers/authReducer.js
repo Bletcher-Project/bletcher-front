@@ -1,3 +1,5 @@
+import { createAction, handleActions as authReducer } from 'redux-actions';
+
 const REMOVE_TOKEN_SUCCESS = 'authReducer/REMOVE_TOKEN_SUCCESS';
 const REMOVE_TOKEN_FAIL = 'authReducer/REMOVE_TOKEN_FAIL';
 
@@ -19,65 +21,51 @@ const initialState = {
   user: null,
 };
 
-export const removeTokenSuccess = () => ({
-  type: REMOVE_TOKEN_SUCCESS,
-});
+export const removeTokenSuccess = createAction(REMOVE_TOKEN_SUCCESS);
+export const removeTokenFail = createAction(REMOVE_TOKEN_FAIL);
+export const setTokenSuccess = createAction(SET_TOKEN_SUCCESS); //result.token
+export const setTokenFail = createAction(SET_TOKEN_FAIL);
+export const signoutSuccess = createAction(SIGNOUT_SUCCESS);
+export const signoutFail = createAction(SIGNOUT_FAIL);
+export const getUserSuccess = createAction(GET_USER_SUCCESS); // result.userinfo
+export const getUserFail = createAction(GET_USER_FAIL);
+export const removeUserSuccess = createAction(REMOVE_USER_SUCCESS);
+export const removeUserFail = createAction(REMOVE_USER_FAIL);
 
-export const removeTokenFail = () => ({
-  type: REMOVE_TOKEN_FAIL,
-});
-
-export const setTokenSuccess = (payload) => ({
-  type: SET_TOKEN_SUCCESS,
-  payload,
-});
-
-export const setTokenFail = (payload) => ({
-  type: SET_TOKEN_FAIL,
-  payload,
-});
-
-export const signoutSuccess = () => ({
-  type: SIGNOUT_SUCCESS,
-});
-
-export const signoutFail = () => ({
-  type: SIGNOUT_FAIL,
-});
-
-export const getUserSuccess = (payload) => ({
-  type: GET_USER_SUCCESS,
-  payload,
-});
-
-export const getUserFail = () => ({
-  type: GET_USER_FAIL,
-});
-
-export const removeUserSuccess = () => ({
-  type: REMOVE_USER_SUCCESS,
-});
-
-export const removeUserFail = () => ({
-  type: REMOVE_USER_FAIL,
-});
-
-export default function authReducer(state = initialState, action) {
-  switch (action.type) {
-    case REMOVE_TOKEN_SUCCESS: // TOKEN_EXPIRED
+export default authReducer(
+  {
+    [REMOVE_TOKEN_SUCCESS]: (state) => {
       return { ...state, isLogin: false, token: null };
-    case SET_TOKEN_SUCCESS: // SUCCEED_TO_SIGNIN
+    },
+    [REMOVE_TOKEN_FAIL]: (state) => {
+      return state;
+    },
+    [SET_TOKEN_SUCCESS]: (state, action) => {
       localStorage.setItem('token', action.payload);
       return { ...state, isLogin: true, token: action.payload };
-    case SIGNOUT_SUCCESS: // SUCCEED_TO_SIGNOUT
+    },
+    [SET_TOKEN_FAIL]: (state) => {
+      return state;
+    },
+    [SIGNOUT_SUCCESS]: (state) => {
       localStorage.removeItem('token');
       return { ...state, isLogin: false, token: null, user: {} };
-    case GET_USER_SUCCESS: // SUCCEED_TO_GET_USER
-      return { ...state, user: action.payload };
-    case REMOVE_USER_SUCCESS: // FAILED_TO_GET_USER
-      return { ...state, user: {} };
-
-    default:
+    },
+    [SIGNOUT_FAIL]: (state) => {
       return state;
-  }
-}
+    },
+    [GET_USER_SUCCESS]: (state, action) => {
+      return { ...state, user: action.payload };
+    },
+    [GET_USER_FAIL]: (state) => {
+      return state;
+    },
+    [REMOVE_USER_SUCCESS]: (state) => {
+      return { ...state, user: {} };
+    },
+    [REMOVE_USER_FAIL]: (state) => {
+      return state;
+    },
+  },
+  initialState,
+);

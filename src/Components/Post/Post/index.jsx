@@ -100,7 +100,7 @@ class Post extends Component {
   getComments = async () => {
     try {
       let response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}api/comments/${this.props.postId}`,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${COMMENT_API}/${this.props.postId}`,
         {
           method: 'GET',
           headers: {

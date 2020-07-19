@@ -39,7 +39,6 @@ class HomePage extends Component {
   getAllPosts = () => {
     const { dispatch, token } = this.props;
     dispatch(PostAction.getAllPosts(token)).then((result) => {
-      console.log(token);
       this.setState({ feed: result, feedLoading: false });
     });
   };

@@ -24,7 +24,7 @@ export const getAllPosts = (token) => {
   // eslint-disable-next-line consistent-return
   return async (dispatch) => {
     try {
-      let response = await fetch(
+      const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}`,
         {
           method: 'GET',
@@ -51,7 +51,7 @@ export const getPostByUserId = (userId, token) => {
   // eslint-disable-next-line consistent-return
   return async (dispatch) => {
     try {
-      let response = await fetch(
+      const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}/${userId}`,
         {
           method: 'GET',
@@ -77,7 +77,7 @@ export const getPostByUserId = (userId, token) => {
 export const getPostByPostId = (postId, token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(
+      const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_ONE}/${postId}`,
         {
           method: 'GET',
@@ -171,7 +171,7 @@ export const deletePost = (id, token) => {
 export const postLike = (postId, token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(
+      const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_LIKE}/${postId}`,
         {
           method: 'POST',
@@ -197,7 +197,7 @@ export const postLike = (postId, token) => {
 export const deleteLike = (postId, token) => {
   return async (dispatch) => {
     try {
-      let response = await fetch(
+      const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_LIKE}/${postId}`,
         {
           method: 'DELETE',
