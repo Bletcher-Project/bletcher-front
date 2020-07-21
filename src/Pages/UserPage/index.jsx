@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import * as PostAction from 'Redux/Actions/PostAction';
+import * as PostAction from 'Redux/post';
 
 import NavBar from 'Components/Main/NavBar';
 import Thumbnail from 'Components/Common/Thumbnail';

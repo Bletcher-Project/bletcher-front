@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import * as AuthAction from 'Redux/Actions/AuthAction';
+import * as AuthAction from 'Redux/auth';
 
 import NavBar from 'Components/Main/NavBar';
 import Input from 'Components/Common/Input';

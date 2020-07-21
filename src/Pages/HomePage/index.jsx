@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import * as PostAction from 'Redux/Actions/PostAction';
+import * as PostAction from 'Redux/post';
 
 import NavBar from 'Components/Main/NavBar';
 import Post from 'Components/Post/Post';
