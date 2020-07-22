@@ -12,8 +12,8 @@ const initialState = {
   feed: null,
 };
 
-const GET_ALLPOSTS_SUCCESS = 'post/GET_ALLPOST_SUCCESS';
-const GET_ALLPOSTS_FAIL = 'post/GET_ALLPOST_FAIL';
+const GET_ALLPOSTS_SUCCESS = 'post/GET_ALLPOSTS_SUCCESS';
+const GET_ALLPOSTS_FAIL = 'post/GET_ALLPOSTS_FAIL';
 
 const GET_USER_POST_SUCCESS = 'post/GET_USER_POST_SUCCESS';
 const GET_USER_POST_FAIL = 'post/GET_USER_POST_SUCCESS';
@@ -104,7 +104,9 @@ export default postReducer(
 
 export const getAllPosts = (token) => {
   return async (dispatch) => {
-    let result = null;
+    let result = {
+      posts: '',
+    };
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}`,
@@ -118,11 +120,9 @@ export const getAllPosts = (token) => {
       if (response.status === 200) {
         result = await response.json();
         await dispatch(getAllPostsSuccess(result.posts));
-      } else {
-        await dispatch(getAllPostsFail());
       }
     } catch (error) {
-      dispatch(getAllPostsFail());
+      await dispatch(getAllPostsFail());
     }
     return result.posts;
   };
@@ -130,7 +130,9 @@ export const getAllPosts = (token) => {
 
 export const getPostByUserId = (userId, token) => {
   return async (dispatch) => {
-    let result = null;
+    let result = {
+      posts: '',
+    };
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}/${userId}`,
@@ -144,11 +146,9 @@ export const getPostByUserId = (userId, token) => {
       if (response.status === 200) {
         result = await response.json();
         await dispatch(getUserPostSuccess());
-      } else {
-        await dispatch(getUserPostFail());
       }
     } catch (error) {
-      dispatch(getUserPostFail());
+      await dispatch(getUserPostFail());
     }
     return result.posts;
   };
@@ -156,7 +156,9 @@ export const getPostByUserId = (userId, token) => {
 
 export const getPostByPostId = (postId, token) => {
   return async (dispatch) => {
-    let result = null;
+    let result = {
+      posts: '',
+    };
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_ONE}/${postId}`,
@@ -170,11 +172,9 @@ export const getPostByPostId = (postId, token) => {
       if (response.status === 200) {
         result = await response.json();
         await dispatch(clickPostSuccess(result.post));
-      } else {
-        await dispatch(clickPostFail());
       }
     } catch (error) {
-      dispatch(clickPostFail());
+      await dispatch(clickPostFail());
     }
     return result.post;
   };
@@ -199,7 +199,7 @@ export const uploadPost = (payload, token) => {
         await dispatch(uploadPostSuccess(result));
       }
     } catch (err) {
-      dispatch(uploadPostFail());
+      await dispatch(uploadPostFail());
     }
     return { type: 'UPLOAD_POST_SUCCESS' };
   };
@@ -222,7 +222,7 @@ export const uploadSketcherPost = (payload, token) => {
         await dispatch(uploadPostSuccess(result));
       }
     } catch (err) {
-      dispatch(uploadPostFail());
+      await dispatch(uploadPostFail());
     }
     return { type: 'UPLOAD_POST_SUCCESS' };
   };
@@ -264,11 +264,9 @@ export const postLike = (postId, token) => {
       if (response.status === 200) {
         result = await response.json();
         await dispatch(likePostSuccess(result));
-      } else {
-        await dispatch(likePostFail());
       }
     } catch (error) {
-      dispatch(likePostFail());
+      await dispatch(likePostFail());
     }
     return result;
   };
@@ -290,11 +288,9 @@ export const deleteLike = (postId, token) => {
       if (response.status === 200) {
         result = await response.json();
         await dispatch(delikePostSuccess(result));
-      } else {
-        await dispatch(delikePostFail());
       }
     } catch (error) {
-      dispatch(delikePostFail());
+      await dispatch(delikePostFail());
     }
     return result;
   };

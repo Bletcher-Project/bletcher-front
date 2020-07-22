@@ -90,17 +90,15 @@ export const postSignIn = (params) => {
       );
       if (response.status === 401) {
         await dispatch(removeTokenSuccess());
-        return 'failed';
       }
       if (response.status === 403) {
         await dispatch(removeTokenSuccess());
-        return 'invalid token';
       }
       const result = await response.json();
       await dispatch(setTokenSuccess(result.token));
       return result.token;
     } catch (error) {
-      dispatch(removeTokenSuccess());
+      await dispatch(removeTokenSuccess());
       return 'ERROR!';
     }
   };
@@ -138,7 +136,7 @@ export const getUser = (token) => {
           return 'failed';
       }
     } catch (error) {
-      dispatch(removeUserSuccess());
+      await dispatch(removeUserSuccess());
       return 'ERROR!';
     }
   };
