@@ -162,7 +162,7 @@ class MainPage extends Component {
       this.props
         .dispatch(AuthAction.postSignIn(params))
         .then(async (result) => {
-          if (result === 'failed') {
+          if (result === 'Login failed! Check authentication credentials') {
             this.setState({
               isIdValid: false,
               idErrMsg: 'Please check your account again.',

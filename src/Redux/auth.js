@@ -96,7 +96,7 @@ export const postSignIn = (params) => {
         await dispatch(setTokenSuccess(result));
       } else {
         result = await response.json().then((res) => {
-          return res.message;
+          return res.error;
         });
       }
     } catch (error) {
@@ -126,7 +126,7 @@ export const getUser = (token) => {
         await dispatch(getUserSuccess(result));
       } else {
         result = await response.json().then((res) => {
-          return res.message;
+          return res.error;
         });
       }
     } catch (error) {
