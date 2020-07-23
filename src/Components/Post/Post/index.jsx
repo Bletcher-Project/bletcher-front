@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import * as PostAction from 'Redux/Actions/PostAction';
+import * as PostAction from 'Redux/post';
 
 import Thumbnail from 'Components/Common/Thumbnail';
 import Comment from 'Components/Post/Comment';
@@ -57,6 +57,66 @@ class Post extends Component {
       comments: [],
     };
   }
+
+  toggleLike = () => {
+    const { likePost, deleteLikePost, postId, token } = this.props;
+    this.setState({ likeClicked: !this.state.likeClicked }, () => {
+      if (this.state.likeClicked) {
+        this.setState({ likeActionCount: this.state.likeActionCount + 1 });
+        likePost(postId, token);
+      } else {
+        this.setState({ likeActionCount: this.state.likeActionCount - 1 });
+        deleteLikePost(postId, token);
+      }
+    });
+  };
+
+  toggleComment = () => {
+    this.setState({ commentClicked: !this.state.commentClicked }, () => {
+      if (this.state.commentClicked) {
+        this.setState({ commentIcon: filledCommentIcon });
+        this.getComments();
+      } else {
+        this.setState({ commentIcon });
+      }
+    });
+  };
+
+  toggleScrap = () => {
+    this.setState({ scrapClicked: !this.state.scrapClicked }, () => {
+      if (this.state.scrapClicked) {
+        this.setState({ scrapIcon: filledScrapIcon });
+      } else {
+        this.setState({ scrapIcon });
+      }
+    });
+  };
+
+  handleDelete = async () => {
+    const postDelete = await this.props.deletePost(this.props.postId);
+    return postDelete ? window.location.reload() : alert('delete failed!');
+  };
+
+  getComments = async () => {
+    try {
+      let response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${COMMENT_API}/${this.props.postId}`,
+        {
+          method: 'GET',
+          headers: {
+            'x-access-token': this.props.token,
+          },
+        },
+      );
+      if (response.status === 200) {
+        const result = await response.json();
+        this.setState({ comments: result.comments });
+      }
+    } catch (error) {
+      console.log(error);
+      this.setState({ comments: [] });
+    }
+  };
 
   render() {
     const {
@@ -190,66 +250,6 @@ class Post extends Component {
       </div>
     );
   }
-
-  toggleLike = () => {
-    const { likePost, deleteLikePost, postId, token } = this.props;
-    this.setState({ likeClicked: !this.state.likeClicked }, () => {
-      if (this.state.likeClicked) {
-        this.setState({ likeActionCount: this.state.likeActionCount + 1 });
-        likePost(postId, token);
-      } else {
-        this.setState({ likeActionCount: this.state.likeActionCount - 1 });
-        deleteLikePost(postId, token);
-      }
-    });
-  };
-
-  toggleComment = () => {
-    this.setState({ commentClicked: !this.state.commentClicked }, () => {
-      if (this.state.commentClicked) {
-        this.setState({ commentIcon: filledCommentIcon });
-        this.getComments();
-      } else {
-        this.setState({ commentIcon: commentIcon });
-      }
-    });
-  };
-
-  toggleScrap = () => {
-    this.setState({ scrapClicked: !this.state.scrapClicked }, () => {
-      if (this.state.scrapClicked) {
-        this.setState({ scrapIcon: filledScrapIcon });
-      } else {
-        this.setState({ scrapIcon: scrapIcon });
-      }
-    });
-  };
-
-  handleDelete = async () => {
-    const postDelete = await this.props.deletePost(this.props.postId);
-    return postDelete ? window.location.reload() : alert('delete failed!');
-  };
-
-  getComments = async () => {
-    try {
-      let response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${COMMENT_API}/${this.props.postId}`,
-        {
-          method: 'GET',
-          headers: {
-            'x-access-token': this.props.token,
-          },
-        },
-      );
-      if (response.status === 200) {
-        let result = await response.json();
-        this.setState({ comments: result.comments });
-      }
-    } catch (error) {
-      console.log(error);
-      this.setState({ comments: [] });
-    }
-  };
 }
 
 Post.defaultProps = defaultProps;

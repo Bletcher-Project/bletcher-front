@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { Nav, Navbar, NavItem, NavLink, NavbarBrand } from 'reactstrap';
 
 import { connect } from 'react-redux';
-import * as AuthAction from 'Redux/Actions/AuthAction';
+import * as AuthAction from 'Redux/auth';
 
 import cx from 'classnames';
 import logo from 'Assets/logo/logo.svg';

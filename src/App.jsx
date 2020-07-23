@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 // Redux
 import { connect } from 'react-redux';
-import * as AuthAction from 'Redux/Actions/AuthAction';
+import * as AuthAction from 'Redux/auth';
 
 // React Router
 import { Route, withRouter, Switch, Redirect } from 'react-router-dom';
