@@ -104,9 +104,7 @@ export default postReducer(
 
 export const getAllPosts = (token) => {
   return async (dispatch) => {
-    let result = {
-      posts: '',
-    };
+    let result = null;
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}`,
@@ -118,21 +116,21 @@ export const getAllPosts = (token) => {
         },
       );
       if (response.status === 200) {
-        result = await response.json();
-        await dispatch(getAllPostsSuccess(result.posts));
+        result = await response.json().then((res) => {
+          return res.posts;
+        });
+        await dispatch(getAllPostsSuccess(result));
       }
     } catch (error) {
       await dispatch(getAllPostsFail());
     }
-    return result.posts;
+    return result;
   };
 };
 
 export const getPostByUserId = (userId, token) => {
   return async (dispatch) => {
-    let result = {
-      posts: '',
-    };
+    let result = null;
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}/${userId}`,
@@ -144,21 +142,21 @@ export const getPostByUserId = (userId, token) => {
         },
       );
       if (response.status === 200) {
-        result = await response.json();
+        result = await response.json().then((res) => {
+          return res.posts;
+        });
         await dispatch(getUserPostSuccess());
       }
     } catch (error) {
       await dispatch(getUserPostFail());
     }
-    return result.posts;
+    return result;
   };
 };
 
 export const getPostByPostId = (postId, token) => {
   return async (dispatch) => {
-    let result = {
-      posts: '',
-    };
+    let result = null;
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_ONE}/${postId}`,
@@ -170,19 +168,20 @@ export const getPostByPostId = (postId, token) => {
         },
       );
       if (response.status === 200) {
-        result = await response.json();
-        await dispatch(clickPostSuccess(result.post));
+        result = await response.json().then((res) => {
+          return res.post;
+        });
+        await dispatch(clickPostSuccess(result));
       }
     } catch (error) {
       await dispatch(clickPostFail());
     }
-    return result.post;
+    return result;
   };
 };
 
 export const uploadPost = (payload, token) => {
   return async (dispatch) => {
-    let result = null;
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}`,
@@ -195,7 +194,7 @@ export const uploadPost = (payload, token) => {
         },
       );
       if (response.status === 200) {
-        result = await response.json();
+        const result = await response.json();
         await dispatch(uploadPostSuccess(result));
       }
     } catch (err) {
@@ -207,7 +206,6 @@ export const uploadPost = (payload, token) => {
 
 export const uploadSketcherPost = (payload, token) => {
   return async (dispatch) => {
-    let result = null;
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${SKETCHER}`,
@@ -218,7 +216,7 @@ export const uploadSketcherPost = (payload, token) => {
         },
       );
       if (response.status === 200) {
-        result = await response.json();
+        const result = await response.json();
         await dispatch(uploadPostSuccess(result));
       }
     } catch (err) {
@@ -239,7 +237,7 @@ export const deletePost = (id, token) => {
         },
       },
     );
-    if (response.statue === 200) {
+    if (response.status === 200) {
       return response;
     }
     return { type: 'DELETE_POST_SUCCESS' };

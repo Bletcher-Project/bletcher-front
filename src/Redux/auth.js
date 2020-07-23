@@ -74,6 +74,7 @@ export default authReducer(
 
 export const postSignIn = (params) => {
   return async (dispatch) => {
+    let result = null;
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${AUTH_API}${SIGN_IN}`,
@@ -94,18 +95,18 @@ export const postSignIn = (params) => {
       if (response.status === 403) {
         await dispatch(removeTokenSuccess());
       }
-      const result = await response.json();
+      result = await response.json();
       await dispatch(setTokenSuccess(result.token));
-      return result.token;
     } catch (error) {
       await dispatch(removeTokenSuccess());
-      return 'ERROR!';
     }
+    return result.token;
   };
 };
 
 export const getUser = (token) => {
   return async (dispatch) => {
+    let result = null;
     try {
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${AUTH_API}${AUTH_USER_INFO}`,
@@ -116,29 +117,29 @@ export const getUser = (token) => {
           },
         },
       );
-      let result;
       switch (response.status) {
         case 200:
-          result = await response.json();
-          await dispatch(getUserSuccess(result.userInfo));
-          return result.userInfo;
+          result = await response.json().then((res) => {
+            return res.userInfo;
+          });
+          await dispatch(getUserSuccess(result));
+          break;
         case 403:
-          result = await response.json();
-          if (result.message === 'jwt expired') {
+          result = await response.json().message;
+          if (result === 'jwt expired') {
             await dispatch(removeTokenSuccess());
           }
-          if (result.message === 'jwt malformed') {
+          if (result === 'jwt malformed') {
             await dispatch(removeTokenSuccess());
           }
-          return result.message;
+          break;
         default:
           await dispatch(removeUserSuccess());
-          return 'failed';
       }
     } catch (error) {
       await dispatch(removeUserSuccess());
-      return 'ERROR!';
     }
+    return result;
   };
 };
 
