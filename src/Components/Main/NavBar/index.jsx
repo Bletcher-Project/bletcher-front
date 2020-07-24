@@ -10,6 +10,8 @@ import * as AuthAction from 'Redux/auth';
 
 import cx from 'classnames';
 import logo from 'Assets/logo/logo.svg';
+import { shopCart, person } from 'Assets/icons/svg';
+import Search from 'Components/Search';
 
 const defaultProps = {
   user: null,
@@ -35,7 +37,7 @@ class NavBar extends Component {
 
   handleUserPage = () => {
     const { history, user } = this.props;
-    history.push({ pathname: `/${user.name}` });
+    history.push({ pathname: `user/${user.name}` });
   };
 
   handleSignOut = () => {
@@ -45,20 +47,10 @@ class NavBar extends Component {
     });
   };
 
-  render() {
-    const { isActive } = this.props;
-    return (
-      <Navbar
-        className={cx('navBar', { navBar__primary: isActive !== 'main' })}
-        light
-        fixed="true"
-        expand="md"
-      >
-        <NavbarBrand className="navBar__logo col-2 ml-5" href="/">
-          <img src={logo} width="33px" alt="logo" />
-          {isActive === 'main' || <span>Bletcher</span>}
-        </NavbarBrand>
-        {isActive === 'main' ? (
+  getActiveNav = (isActive) => {
+    switch (isActive) {
+      case 'main':
+        return (
           <Nav className="ml-auto mr-5" navbar>
             <NavItem>
               <NavLink href="/signup">Sign Up</NavLink>
@@ -67,7 +59,9 @@ class NavBar extends Component {
               <NavLink href="#">About</NavLink>
             </NavItem>
           </Nav>
-        ) : isActive === 'signUp' ? (
+        );
+      case 'signUp':
+        return (
           <Nav className="ml-auto mr-5" navbar>
             <NavItem>
               <NavLink href="/signin">Sign In</NavLink>
@@ -76,30 +70,73 @@ class NavBar extends Component {
               <NavLink href="#">About</NavLink>
             </NavItem>
           </Nav>
-        ) : (
-          <Nav className="ml-auto mr-3" navbar>
-            <NavItem>
-              <NavLink href="/home" active={isActive === 'feed'}>
-                Feed
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                href="#"
-                active={isActive === 'user'}
-                onClick={this.handleUserPage}
-              >
-                MyPage
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="#" onClick={this.handleSignOut}>
-                SignOut
-              </NavLink>
-            </NavItem>
-          </Nav>
-        )}
-      </Navbar>
+        );
+      default:
+        return (
+          <>
+            <Nav className="ml-auto mr-4" navbar>
+              <NavItem>
+                <NavLink href="/home" active={isActive === 'feed'}>
+                  New
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="#">Funding</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="#">Favorite</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/shop">Shop</NavLink>
+              </NavItem>
+            </Nav>
+            <Nav className="ml-auto mr-4" navbar>
+              <Search
+                history={this.props.history}
+                match={this.props.match}
+                location={this.props.location}
+              />
+              <NavItem>
+                <NavLink href="#">{shopCart}</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  href="#"
+                  active={isActive === 'user'}
+                  onClick={this.handleUserPage}
+                >
+                  {person}
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="#" onClick={this.handleSignOut}>
+                  Bye
+                </NavLink>
+              </NavItem>
+            </Nav>
+          </>
+        );
+    }
+  };
+
+  render() {
+    const { isActive } = this.props;
+    return (
+      <>
+        <Navbar
+          className={cx('navBar', { navBar__primary: isActive !== 'main' })}
+          light
+          fixed="true"
+          expand="md"
+        >
+          <NavbarBrand className="navBar__logo col-2 ml-5" href="/">
+            <img src={logo} width="33px" alt="logo" />
+            {isActive === 'main' || <span>Bletcher</span>}
+          </NavbarBrand>
+
+          {this.getActiveNav(isActive)}
+        </Navbar>
+      </>
     );
   }
 }

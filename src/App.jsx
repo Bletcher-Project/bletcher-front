@@ -14,6 +14,8 @@ import MainPage from 'Pages/MainPage';
 import HomePage from 'Pages/HomePage';
 import SignUpPage from 'Pages/SignUpPage';
 import UserPage from 'Pages/UserPage';
+import ShopPage from 'Pages/ShopPage';
+import SearchPage from 'Pages/SearchPage';
 
 const defaultProps = {
   token: null,
@@ -58,7 +60,12 @@ class App extends Component {
           <Route exact path="/home">
             {!isLogin ? <Redirect to="/" /> : <HomePage />}
           </Route>
-          <Route exact path="/:username" component={UserPage} />
+          <Route exact path="/shop" component={ShopPage} />
+          <Route exact path="/search:query" component={SearchPage} />
+          <Route exact path="/user/:username" component={UserPage} />
+          <Route>
+            <Redirect to="/home" />
+          </Route>
         </Switch>
       </div>
     );

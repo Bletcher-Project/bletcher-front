@@ -69,7 +69,7 @@ class UserPage extends Component {
     } = this.state;
     return (
       <div className="userPage">
-        <NavBar isActive={isMyPage ? 'user' : null} />
+        <NavBar isActive={isMyPage ? 'user' : ''} />
         {userInfo ? (
           <div className="userPage__contents">
             <div className="userPage__contents__header">
@@ -89,7 +89,7 @@ class UserPage extends Component {
                 <div className="userPage__contents__header__profile-name-set">
                   <div className="nameArea">
                     <h1>{userInfo.name}</h1>
-                    <div id="nameUnderBar"></div>
+                    <div id="nameUnderBar" />
                   </div>
                   {isMyPage ? (
                     <div className="settingArea">
@@ -134,7 +134,7 @@ class UserPage extends Component {
             <Modal
               isOpen={openModal}
               toggle={() => this.setState({ openModal: !openModal })}
-              centered={true}
+              centered
             >
               <Post
                 postId={selectedPost.id}
@@ -146,7 +146,7 @@ class UserPage extends Component {
                 postHashTags={[
                   { id: 1, tags: 'flower' },
                   { id: 2, tags: 'sunny' },
-                ]} //////
+                ]} /// ///
                 postImg={selectedPost.postImgName}
                 postDate={selectedPost.createdAt}
                 isLiked={selectedPost.isLiked}
@@ -178,7 +178,9 @@ class UserPage extends Component {
             isMyPage: false,
             userPostImgs: [],
           });
+          return result;
         }
+        return null;
       } catch (error) {
         console.error(error);
       }

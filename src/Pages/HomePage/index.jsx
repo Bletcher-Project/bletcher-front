@@ -49,11 +49,9 @@ class HomePage extends Component {
 
   render() {
     const { newPostClicked, feedLoading, feed } = this.state;
-    const { user } = this.props;
     return (
       <div className="homePage">
         <NavBar isActive="feed" />
-
         {newPostClicked ? (
           <UploadPost
             userId={this.props.user.id}
@@ -67,13 +65,13 @@ class HomePage extends Component {
               What are you thinking now?
             </div>
             <div className="homePage__postList">
-              {!feedLoading && user && feed
+              {!feedLoading && this.props.user && feed
                 ? feed.map((data) => {
                     return (
                       <div className="homePage__post mb-3" key={data.id}>
                         <Post
                           postId={data.id}
-                          isMyPost={user.id === data.UserId}
+                          isMyPost={this.props.user.id === data.UserId}
                           userProfileImg={data.User.profileImgName}
                           userName={data.User.name}
                           userType={data.User.type}

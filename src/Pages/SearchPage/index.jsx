@@ -5,7 +5,7 @@ import NavBar from 'Components/Main/NavBar';
 const defaultProps = {};
 const propTypes = {};
 
-class ShopPage extends Component {
+class SearchPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -14,14 +14,15 @@ class ShopPage extends Component {
   render() {
     return (
       <>
-        <NavBar isActive="shop" />
-        This is Shop Page.
+        <NavBar isActive="search" />
+        {/* <div>{searchWord}</div> */}
+        This is Search Page.
       </>
     );
   }
 }
 
-ShopPage.defaultProps = defaultProps;
-ShopPage.propTypes = propTypes;
+SearchPage.defaultProps = defaultProps;
+SearchPage.propTypes = propTypes;
 
-export default ShopPage;
+export default SearchPage;
