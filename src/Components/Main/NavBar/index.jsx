@@ -51,7 +51,17 @@ class NavBar extends Component {
 
   handleFundingPage = () => {
     const { history } = this.props;
-    history.push({ pathname: `/funding` });
+    history.push({ pathname: '/funding' });
+  };
+
+  handleFavoritePage = () => {
+    const { history } = this.props;
+    history.push({ pathname: '/favorite' });
+  };
+
+  handleShopPage = () => {
+    const { history } = this.props;
+    history.push({ pathname: '/shop' });
   };
 
   getActiveNav = (isActive) => {
@@ -98,10 +108,22 @@ class NavBar extends Component {
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="#">Favorite</NavLink>
+                <NavLink
+                  href="#"
+                  active={isActive === 'favorite'}
+                  onClick={this.handleFavoritePage}
+                >
+                  Favorite
+                </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/shop">Shop</NavLink>
+                <NavLink
+                  href="#"
+                  active={isActive === 'shop'}
+                  onClick={this.handleShopPage}
+                >
+                  Shop
+                </NavLink>
               </NavItem>
             </Nav>
             <Nav className="ml-auto mr-4" navbar>

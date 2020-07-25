@@ -17,6 +17,7 @@ import UserPage from 'Pages/UserPage';
 import ShopPage from 'Pages/ShopPage';
 import SearchPage from 'Pages/SearchPage';
 import FundingPage from 'Pages/FundingPage';
+import FavoritePage from 'Pages/FavoritePage';
 
 const defaultProps = {
   token: null,
@@ -63,6 +64,7 @@ class App extends Component {
           </Route>
           <Route exact path="/shop" component={ShopPage} />
           <Route exact path="/funding" component={FundingPage} />
+          <Route exact path="/favorite" component={FavoritePage} />
           <Route exact path="/search:query" component={SearchPage} />
           <Route exact path="/user/:username" component={UserPage} />
           <Route>
