@@ -22,7 +22,7 @@ const propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
   location: ReactRouterPropTypes.location.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
-  user: PropTypes.node,
+  user: PropTypes.objectOf(PropTypes.object),
 };
 
 const mapStateToProps = (state) => {
@@ -32,14 +32,41 @@ const mapStateToProps = (state) => {
 };
 
 class NavBar extends Component {
+  destPage = {
+    feed: 'feed',
+    funding: 'funding',
+    favorite: 'favorite',
+    shop: 'shop',
+    cart: 'cart',
+    userInfo: 'user',
+  };
+
   constructor(props) {
     super(props);
     this.state = {};
   }
 
-  handleUserPage = () => {
+  getNavLink = (isActive, dest, linkName) => {
+    return (
+      <NavLink
+        href="#"
+        active={isActive === dest}
+        onClick={() => {
+          this.handlePage(dest);
+        }}
+      >
+        {linkName}
+      </NavLink>
+    );
+  };
+
+  handlePage = (dest) => {
     const { history, user } = this.props;
-    history.push({ pathname: `user/${user.name}` });
+    if (dest === this.destPage.userInfo) {
+      history.push({ pathname: `user/${user.name}` });
+    } else {
+      history.push({ pathname: `/${dest}` });
+    }
   };
 
   handleSignOut = () => {
@@ -47,26 +74,6 @@ class NavBar extends Component {
     dispatch(AuthAction.signOut()).then(async () => {
       history.push({ pathname: '/' });
     });
-  };
-
-  handleFundingPage = () => {
-    const { history } = this.props;
-    history.push({ pathname: '/funding' });
-  };
-
-  handleFavoritePage = () => {
-    const { history } = this.props;
-    history.push({ pathname: '/favorite' });
-  };
-
-  handleShopPage = () => {
-    const { history } = this.props;
-    history.push({ pathname: '/shop' });
-  };
-
-  handleCartPage = () => {
-    const { history } = this.props;
-    history.push({ pathname: '/cart' });
   };
 
   getActiveNav = (isActive) => {
@@ -104,52 +111,22 @@ class NavBar extends Component {
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink
-                  href="#"
-                  active={isActive === 'funding'}
-                  onClick={this.handleFundingPage}
-                >
-                  Funding
-                </NavLink>
+                {this.getNavLink(isActive, this.destPage.funding, 'Funding')}
               </NavItem>
               <NavItem>
-                <NavLink
-                  href="#"
-                  active={isActive === 'favorite'}
-                  onClick={this.handleFavoritePage}
-                >
-                  Favorite
-                </NavLink>
+                {this.getNavLink(isActive, this.destPage.favorite, 'Favorite')}
               </NavItem>
               <NavItem>
-                <NavLink
-                  href="#"
-                  active={isActive === 'shop'}
-                  onClick={this.handleShopPage}
-                >
-                  Shop
-                </NavLink>
+                {this.getNavLink(isActive, this.destPage.shop, 'Shop')}
               </NavItem>
             </Nav>
             <Nav className="ml-auto mr-4" navbar>
               <Search history={history} match={match} location={location} />
               <NavItem>
-                <NavLink
-                  href="#"
-                  active={isActive === 'cart'}
-                  onClick={this.handleCartPage}
-                >
-                  {shopCart}
-                </NavLink>
+                {this.getNavLink(isActive, this.destPage.cart, shopCart)}
               </NavItem>
               <NavItem>
-                <NavLink
-                  href="#"
-                  active={isActive === 'user'}
-                  onClick={this.handleUserPage}
-                >
-                  {person}
-                </NavLink>
+                {this.getNavLink(isActive, this.destPage.userInfo, person)}
               </NavItem>
               <NavItem>
                 <NavLink href="#" onClick={this.handleSignOut}>
