@@ -16,6 +16,7 @@ import SignUpPage from 'Pages/SignUpPage';
 import UserPage from 'Pages/UserPage';
 import ShopPage from 'Pages/ShopPage';
 import SearchPage from 'Pages/SearchPage';
+import FundingPage from 'Pages/FundingPage';
 
 const defaultProps = {
   token: null,
@@ -61,6 +62,7 @@ class App extends Component {
             {!isLogin ? <Redirect to="/" /> : <HomePage />}
           </Route>
           <Route exact path="/shop" component={ShopPage} />
+          <Route exact path="/funding" component={FundingPage} />
           <Route exact path="/search:query" component={SearchPage} />
           <Route exact path="/user/:username" component={UserPage} />
           <Route>

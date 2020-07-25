@@ -20,6 +20,8 @@ const propTypes = {
   isActive: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   history: ReactRouterPropTypes.history.isRequired,
+  location: ReactRouterPropTypes.location.isRequired,
+  match: ReactRouterPropTypes.match.isRequired,
   user: PropTypes.node,
 };
 
@@ -47,7 +49,13 @@ class NavBar extends Component {
     });
   };
 
+  handleFundingPage = () => {
+    const { history } = this.props;
+    history.push({ pathname: `/funding` });
+  };
+
   getActiveNav = (isActive) => {
+    const { history, location, match } = this.props;
     switch (isActive) {
       case 'main':
         return (
@@ -81,7 +89,13 @@ class NavBar extends Component {
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="#">Funding</NavLink>
+                <NavLink
+                  href="#"
+                  active={isActive === 'funding'}
+                  onClick={this.handleFundingPage}
+                >
+                  Funding
+                </NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="#">Favorite</NavLink>
@@ -91,11 +105,7 @@ class NavBar extends Component {
               </NavItem>
             </Nav>
             <Nav className="ml-auto mr-4" navbar>
-              <Search
-                history={this.props.history}
-                match={this.props.match}
-                location={this.props.location}
-              />
+              <Search history={history} match={match} location={location} />
               <NavItem>
                 <NavLink href="#">{shopCart}</NavLink>
               </NavItem>
