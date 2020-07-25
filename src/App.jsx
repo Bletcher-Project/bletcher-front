@@ -19,6 +19,7 @@ import SearchPage from 'Pages/SearchPage';
 import FundingPage from 'Pages/FundingPage';
 import FavoritePage from 'Pages/FavoritePage';
 import CartPage from 'Pages/CartPage';
+import NotFoundPage from 'Pages/NotFoundPage';
 
 const defaultProps = {
   token: null,
@@ -69,9 +70,7 @@ class App extends Component {
           <Route exact path="/cart" component={CartPage} />
           <Route exact path="/search:query" component={SearchPage} />
           <Route exact path="/user/:username" component={UserPage} />
-          <Route>
-            <Redirect to="/home" />
-          </Route>
+          <Route component={NotFoundPage} />
         </Switch>
       </div>
     );

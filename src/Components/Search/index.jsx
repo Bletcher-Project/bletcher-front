@@ -25,7 +25,11 @@ class Search extends Component {
   handleSearchPage = () => {
     const { history } = this.props;
     const { word } = this.state;
-    history.push({ pathname: `/search?query=${word}` });
+    history.push({
+      pathname: '/search',
+      search: `?query=${word}`,
+    });
+    // history.push({ pathname: `/search?query=${word}` });
   };
 
   handleEnter = (e) => {

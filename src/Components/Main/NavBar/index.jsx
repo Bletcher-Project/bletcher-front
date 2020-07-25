@@ -62,8 +62,9 @@ class NavBar extends Component {
 
   handlePage = (dest) => {
     const { history, user } = this.props;
+    console.log(history);
     if (dest === this.destPage.userInfo) {
-      history.push({ pathname: `user/${user.name}` });
+      history.push({ pathname: `/user/${user.name}` });
     } else {
       history.push({ pathname: `/${dest}` });
     }
