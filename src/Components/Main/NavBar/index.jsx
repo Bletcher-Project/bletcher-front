@@ -64,6 +64,11 @@ class NavBar extends Component {
     history.push({ pathname: '/shop' });
   };
 
+  handleCartPage = () => {
+    const { history } = this.props;
+    history.push({ pathname: '/cart' });
+  };
+
   getActiveNav = (isActive) => {
     const { history, location, match } = this.props;
     switch (isActive) {
@@ -129,7 +134,13 @@ class NavBar extends Component {
             <Nav className="ml-auto mr-4" navbar>
               <Search history={history} match={match} location={location} />
               <NavItem>
-                <NavLink href="#">{shopCart}</NavLink>
+                <NavLink
+                  href="#"
+                  active={isActive === 'cart'}
+                  onClick={this.handleCartPage}
+                >
+                  {shopCart}
+                </NavLink>
               </NavItem>
               <NavItem>
                 <NavLink
