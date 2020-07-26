@@ -1,3 +1,17 @@
 /*
   Guide Page Styling
 */
+
+.searchPage {
+  margin-top: 100px;
+
+  &__header {
+    font-size: xx-large;
+    text-align: center;
+  }
+
+  &__content {
+    font-size: 16px;
+    text-align: center;
+  }
+}

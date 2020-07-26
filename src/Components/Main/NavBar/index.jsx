@@ -39,6 +39,7 @@ class NavBar extends Component {
     shop: 'shop',
     cart: 'cart',
     userInfo: 'user',
+    new: 'new',
   };
 
   constructor(props) {
@@ -62,7 +63,6 @@ class NavBar extends Component {
 
   handlePage = (dest) => {
     const { history, user } = this.props;
-    console.log(history);
     if (dest === this.destPage.userInfo) {
       history.push({ pathname: `/user/${user.name}` });
     } else {
@@ -105,11 +105,9 @@ class NavBar extends Component {
       default:
         return (
           <>
-            <Nav className="ml-auto mr-4" navbar>
+            <Nav navbar>
               <NavItem>
-                <NavLink href="/home" active={isActive === 'feed'}>
-                  New
-                </NavLink>
+                {this.getNavLink(isActive, this.destPage.new, 'New')}
               </NavItem>
               <NavItem>
                 {this.getNavLink(isActive, this.destPage.funding, 'Funding')}
@@ -117,12 +115,12 @@ class NavBar extends Component {
               <NavItem>
                 {this.getNavLink(isActive, this.destPage.favorite, 'Favorite')}
               </NavItem>
+            </Nav>
+            <Nav className="ml-auto" navbar>
+              <Search history={history} match={match} location={location} />
               <NavItem>
                 {this.getNavLink(isActive, this.destPage.shop, 'Shop')}
               </NavItem>
-            </Nav>
-            <Nav className="ml-auto mr-4" navbar>
-              <Search history={history} match={match} location={location} />
               <NavItem>
                 {this.getNavLink(isActive, this.destPage.cart, shopCart)}
               </NavItem>
@@ -150,7 +148,7 @@ class NavBar extends Component {
           fixed="true"
           expand="md"
         >
-          <NavbarBrand className="navBar__logo col-2 ml-5" href="/">
+          <NavbarBrand className="navBar__logo col-2" href="/">
             <img src={logo} width="33px" alt="logo" />
             {isActive === 'main' || <span>Bletcher</span>}
           </NavbarBrand>

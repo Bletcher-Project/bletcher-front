@@ -29,7 +29,6 @@ class Search extends Component {
       pathname: '/search',
       search: `?query=${word}`,
     });
-    // history.push({ pathname: `/search?query=${word}` });
   };
 
   handleEnter = (e) => {

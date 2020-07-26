@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 
+import ReactRouterPropTypes from 'react-router-prop-types';
+
+import queryString from 'query-string';
+
 import NavBar from 'Components/Main/NavBar';
 
 const defaultProps = {};
-const propTypes = {};
+const propTypes = {
+  location: ReactRouterPropTypes.location.isRequired,
+};
 
 class SearchPage extends Component {
   constructor(props) {
@@ -12,11 +18,15 @@ class SearchPage extends Component {
   }
 
   render() {
+    const { location } = this.props;
+    const query = queryString.parse(location.search);
     return (
       <>
         <NavBar isActive="search" />
-        {/* <div>{searchWord}</div> */}
-        This is Search Page.
+        <div className="searchPage">
+          <div className="searchPage__header">{` '${query.query}' 검색 결과입니다.`}</div>
+          <div className="searchPage__content"> 결과창 </div>
+        </div>
       </>
     );
   }

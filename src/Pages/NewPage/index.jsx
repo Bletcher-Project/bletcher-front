@@ -5,7 +5,7 @@ import NavBar from 'Components/Main/NavBar';
 const defaultProps = {};
 const propTypes = {};
 
-class CartPage extends Component {
+class NewPage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -14,14 +14,14 @@ class CartPage extends Component {
   render() {
     return (
       <>
-        <NavBar isActive="cart" />
-        This is CartPage
+        <NavBar isActive="new" />
+        This is NewPage
       </>
     );
   }
 }
 
-CartPage.defaultProps = defaultProps;
-CartPage.propTypes = propTypes;
+NewPage.defaultProps = defaultProps;
+NewPage.propTypes = propTypes;
 
-export default CartPage;
+export default NewPage;
