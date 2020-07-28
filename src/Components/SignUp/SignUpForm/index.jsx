@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Input from 'Components/Common/Input';
-import CheckIcon from 'Components/Icons/CheckIcon';
+import Input from 'Components/Form/Input';
+import CheckIcon from 'Components/Icon/CheckIcon';
 
 import {
   DEFAULT_HELPER_TEXT,

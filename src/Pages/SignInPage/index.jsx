@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as AuthAction from 'Redux/auth';
 
-import Input from 'Components/Common/Input';
-import Button from 'Components/Common/Button';
+import Input from 'Components/Form/Input';
+import Button from 'Components/Form/Button';
 
 const defaultProps = {};
 const propTypes = {
