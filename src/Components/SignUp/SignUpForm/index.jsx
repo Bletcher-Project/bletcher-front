@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import UploadImgFile from 'Components/Upload/UploadImgFile';
-import Input from 'Components/Form/Input';
-import CheckIcon from 'Components/Form/CheckIcon';
-
-import Avatar from '@material-ui/core/Avatar';
-import defaultProfile from 'Assets/images/default_profile.svg';
+import Input from 'Components/Common/Input';
+import CheckIcon from 'Components/Icons/CheckIcon';
 
 import {
   DEFAULT_HELPER_TEXT,
   EmailHelperText,
   PasswordHelperText,
   NameHelperText,
-  StatusHelperText,
 } from 'Constants/helper-text';
 import { INIT, USER_API, QUERY_EMAIL, QUERY_NAME } from 'Constants/api-uri';
 
@@ -27,25 +22,18 @@ class SignUpForm extends Component {
     this.state = {
       user: {
         email: '',
-        password: '',
-        repassword: '',
         name: '',
-        status: '',
-        profileImg: null,
+        password: '',
       },
       isValid: {
         email: null,
-        password: null,
-        repassword: null,
         name: null,
-        status: true,
+        password: null,
       },
       helperText: {
         email: DEFAULT_HELPER_TEXT,
-        password: DEFAULT_HELPER_TEXT,
-        repassword: DEFAULT_HELPER_TEXT,
         name: DEFAULT_HELPER_TEXT,
-        status: DEFAULT_HELPER_TEXT,
+        password: DEFAULT_HELPER_TEXT,
       },
     };
   }
@@ -53,26 +41,10 @@ class SignUpForm extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     const { handleValidation } = this.props;
     const { user, isValid } = this.state;
-    if (
-      isValid !== prevState.isValid ||
-      user.profileImg !== prevState.user.profileImg
-    ) {
-      if (
-        isValid.email &&
-        isValid.password &&
-        isValid.repassword &&
-        isValid.name &&
-        isValid.status
-      )
+    if (isValid !== prevState.isValid) {
+      if (isValid.email && isValid.name && isValid.password)
         handleValidation(user, true);
       else handleValidation(null, false);
-    }
-  };
-
-  handleProfileImg = (e) => {
-    const { user } = this.state;
-    if (e.target.files[0] !== undefined) {
-      this.setState({ user: { ...user, profileImg: e.target.files[0] } });
     }
   };
 
@@ -90,44 +62,6 @@ class SignUpForm extends Component {
         this.setState({
           isValid: { ...isValid, email: result.isValid },
           helperText: { ...helperText, email: result.helperText },
-        });
-      },
-    );
-  };
-
-  handlePassword = (e) => {
-    const { user, isValid, helperText } = this.state;
-    this.setState(
-      {
-        user: {
-          ...user,
-          password: e.target.value,
-        },
-      },
-      () => {
-        const result = this.checkPasswordValidation();
-        this.setState({
-          isValid: { ...isValid, password: result.isValid },
-          helperText: { ...helperText, password: result.helperText },
-        });
-      },
-    );
-  };
-
-  handleRePassword = (e) => {
-    const { user, isValid, helperText } = this.state;
-    this.setState(
-      {
-        user: {
-          ...user,
-          repassword: e.target.value,
-        },
-      },
-      () => {
-        const result = this.checkRePasswordValidation();
-        this.setState({
-          isValid: { ...isValid, repassword: result.isValid },
-          helperText: { ...helperText, repassword: result.helperText },
         });
       },
     );
@@ -152,20 +86,20 @@ class SignUpForm extends Component {
     );
   };
 
-  handleStatus = (e) => {
+  handlePassword = (e) => {
     const { user, isValid, helperText } = this.state;
     this.setState(
       {
         user: {
           ...user,
-          status: e.target.value,
+          password: e.target.value,
         },
       },
       () => {
-        const result = this.checkStatusValidation();
+        const result = this.checkPasswordValidation();
         this.setState({
-          isValid: { ...isValid, status: result.isValid },
-          helperText: { ...helperText, status: result.helperText },
+          isValid: { ...isValid, password: result.isValid },
+          helperText: { ...helperText, password: result.helperText },
         });
       },
     );
@@ -207,55 +141,6 @@ class SignUpForm extends Component {
       return false;
     }
     return true;
-  };
-
-  checkPasswordValidation = () => {
-    const { user } = this.state;
-    const regExp = /^(?=.*[0-9])(?=.*[a-zA-Z]).{8,16}$/;
-    const isNum = /^(?=.*[0-9])/;
-    const isChar = /^(?=.*[a-zA-Z])/;
-    let isValid;
-    let helperText;
-
-    if (!user.password) {
-      isValid = false;
-      helperText = PasswordHelperText.EMPTY_VALUE;
-    } else if (!regExp.test(user.password)) {
-      isValid = false;
-      if (!isNum.test(user.password)) {
-        helperText = PasswordHelperText.MISS_NUMBER;
-      } else if (!isChar.test(user.password)) {
-        helperText = PasswordHelperText.MISS_ALPHABET;
-      } else if (user.password.length < 8) {
-        helperText = PasswordHelperText.MIN_WORDS;
-      } else if (user.password.length > 16) {
-        helperText = PasswordHelperText.MAX_WORDS;
-      }
-    } else {
-      isValid = true;
-      helperText = DEFAULT_HELPER_TEXT;
-    }
-
-    return { isValid, helperText };
-  };
-
-  checkRePasswordValidation = () => {
-    const { user } = this.state;
-    let isValid;
-    let helperText;
-
-    if (!user.repassword) {
-      isValid = false;
-      helperText = PasswordHelperText.EMPTY_VALUE;
-    } else if (!Object.is(user.password, user.repassword)) {
-      isValid = false;
-      helperText = PasswordHelperText.MISS_MATCH_PW;
-    } else {
-      isValid = true;
-      helperText = DEFAULT_HELPER_TEXT;
-    }
-
-    return { isValid, helperText };
   };
 
   checkNameValidation = async () => {
@@ -307,14 +192,28 @@ class SignUpForm extends Component {
     return true;
   };
 
-  checkStatusValidation = () => {
+  checkPasswordValidation = () => {
     const { user } = this.state;
+    const regExp = /^(?=.*[0-9])(?=.*[a-zA-Z]).{8,16}$/;
+    const isNum = /^(?=.*[0-9])/;
+    const isChar = /^(?=.*[a-zA-Z])/;
     let isValid;
     let helperText;
 
-    if (user.status.length > 100) {
+    if (!user.password) {
       isValid = false;
-      helperText = StatusHelperText.MAX_WORDS;
+      helperText = PasswordHelperText.EMPTY_VALUE;
+    } else if (!regExp.test(user.password)) {
+      isValid = false;
+      if (!isNum.test(user.password)) {
+        helperText = PasswordHelperText.MISS_NUMBER;
+      } else if (!isChar.test(user.password)) {
+        helperText = PasswordHelperText.MISS_ALPHABET;
+      } else if (user.password.length < 8) {
+        helperText = PasswordHelperText.MIN_WORDS;
+      } else if (user.password.length > 16) {
+        helperText = PasswordHelperText.MAX_WORDS;
+      }
     } else {
       isValid = true;
       helperText = DEFAULT_HELPER_TEXT;
@@ -324,82 +223,43 @@ class SignUpForm extends Component {
   };
 
   render() {
-    const { user, isValid, helperText } = this.state;
+    const { isValid, helperText } = this.state;
 
     return (
       <>
-        <div className="signUpForm__profileImg">
-          <UploadImgFile handleUploadImg={this.handleProfileImg}>
-            <Avatar
-              src={
-                user.profileImg
-                  ? URL.createObjectURL(user.profileImg)
-                  : defaultProfile
-              }
-              style={{
-                width: '100px',
-                height: '100px',
-                cursor: 'pointer',
-              }}
-            />
-          </UploadImgFile>
-          <UploadImgFile handleUploadImg={this.handleProfileImg}>
-            <p>Edit Photo</p>
-          </UploadImgFile>
-        </div>
         <div className="signUpForm__userInfo">
           <div className="signUpForm__userInfo__account">
             <form>
               <Input
-                label="Email"
-                type="email"
-                autoComplete="username"
-                width="210px"
+                label="이메일"
+                type="text"
+                width="250px"
                 error={isValid.email === false}
                 helperText={helperText.email}
                 InputProps={isValid.email ? <CheckIcon /> : null}
                 onChange={(e) => this.handleEmail(e)}
               />
               <Input
-                label="Password"
+                label="사용자 이름 (영문)"
+                type="text"
+                autoComplete="username"
+                width="250px"
+                error={isValid.name === false}
+                helperText={helperText.name}
+                InputProps={isValid.name ? <CheckIcon /> : null}
+                onChange={(e) => this.handleName(e)}
+              />
+              <Input
+                label="비밀번호"
                 type="password"
                 autoComplete="new-password"
-                width="210px"
+                width="250px"
                 error={isValid.password === false}
                 helperText={helperText.password}
                 InputProps={isValid.password ? <CheckIcon /> : null}
                 onChange={(e) => this.handlePassword(e)}
               />
-              <Input
-                label="Password Confirm"
-                type="password"
-                autoComplete="new-password"
-                width="210px"
-                error={isValid.repassword === false}
-                helperText={helperText.repassword}
-                InputProps={isValid.repassword ? <CheckIcon /> : null}
-                onChange={(e) => this.handleRePassword(e)}
-              />
             </form>
-          </div>
-          <div className="signUpForm__userInfo__profile">
-            <Input
-              label="Name"
-              type="text"
-              width="210px"
-              error={isValid.name === false}
-              helperText={helperText.name}
-              InputProps={isValid.name ? <CheckIcon /> : null}
-              onChange={(e) => this.handleName(e)}
-            />
-            <Input
-              label="Status (optional)"
-              type="text"
-              width="210px"
-              error={isValid.status === false}
-              helperText={helperText.status}
-              onChange={(e) => this.handleStatus(e)}
-            />
           </div>
         </div>
       </>

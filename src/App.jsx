@@ -11,6 +11,7 @@ import { Route, withRouter, Switch, Redirect } from 'react-router-dom';
 
 // Pages
 import MainPage from 'Pages/MainPage';
+import SignInPage from 'Pages/SignInPage';
 import SignUpPage from 'Pages/SignUpPage';
 import UserPage from 'Pages/UserPage';
 import ProfilePage from 'Pages/ProfilePage';
@@ -56,8 +57,9 @@ class App extends Component {
       <div className="app">
         <Switch>
           <Route exact path="/" component={MainPage} />
+          </Route>
           <Route path="/signin">
-            {isLogin ? <Redirect to="/home" /> : <MainPage />}
+            {isLogin ? <Redirect to="/home" /> : <SignInPage />}
           </Route>
           <Route exact path="/signup" component={SignUpPage} />
           <Route exact path="/home">

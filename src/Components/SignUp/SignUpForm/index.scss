@@ -16,6 +16,7 @@
 
   &__userInfo {
     display: flex;
+    flex-direction: column;
 
     &__account {
       padding-right: 10px;

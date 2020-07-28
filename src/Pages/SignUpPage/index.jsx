@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
-import NavBar from 'Components/Common/NavBar';
-import Button from 'Components/Form/Button';
+import Button from 'Components/Common/Button';
 import SignUpForm from 'Components/SignUp/SignUpForm';
 
 import { INIT, USER_API } from 'Constants/api-uri';
@@ -32,9 +31,6 @@ class SignUpPage extends Component {
     userData.append('email', user.email);
     userData.append('name', user.name);
     userData.append('password', user.password);
-    userData.append('img', user.profileImg);
-    userData.append('status', user.status);
-    userData.append('type', 1);
 
     const response = await fetch(
       `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}`,
@@ -66,7 +62,7 @@ class SignUpPage extends Component {
         </div>
         <div className="signUpPage__footer">
           <Button
-            text="Sign Up"
+            text="회원가입"
             disabled={!isValid}
             onClick={this.handleSignUp}
           />
