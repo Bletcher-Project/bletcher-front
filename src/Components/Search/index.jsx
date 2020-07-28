@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
-import { NavItem, NavLink } from 'reactstrap';
-import { searchIcon } from 'Assets/icons/svg';
+import { searchIcon } from 'Components/Common/Icon';
 import Input from '../Common/Input';
 
 const defaultProps = {};
@@ -48,11 +47,13 @@ class Search extends Component {
           onKeyPress={this.handleEnter}
           onChange={this.handleChange}
         />
-        <NavItem>
-          <NavLink href="#" onClick={this.handleSearchPage}>
-            {searchIcon}
-          </NavLink>
-        </NavItem>
+        <button
+          className="searchButton"
+          type="button"
+          onClick={this.handleSearchPage}
+        >
+          {searchIcon}
+        </button>
       </>
     );
   }

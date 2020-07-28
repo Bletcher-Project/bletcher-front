@@ -1,9 +1,27 @@
 import React, { Component } from 'react';
 
-import NavBar from 'Components/Main/NavBar';
+import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 
-const defaultProps = {};
-const propTypes = {};
+import { connect } from 'react-redux';
+
+import NavBar from 'Components/Main/NavBar';
+import * as User from 'Pages/UserPage';
+
+const defaultProps = {
+  user: null,
+};
+const propTypes = {
+  match: ReactRouterPropTypes.match.isRequired,
+  user: PropTypes.objectOf(PropTypes.object),
+};
+
+const mapStateToProps = (state) => {
+  return {
+    token: state.authReducer.token,
+    user: state.authReducer.user,
+  };
+};
 
 class ProfilePage extends Component {
   constructor(props) {
@@ -27,4 +45,4 @@ class ProfilePage extends Component {
 ProfilePage.defaultProps = defaultProps;
 ProfilePage.propTypes = propTypes;
 
-export default ProfilePage;
+export default connect(mapStateToProps)(ProfilePage);

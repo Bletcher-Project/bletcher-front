@@ -7,11 +7,22 @@ import { Nav, Navbar, NavItem, NavLink, NavbarBrand } from 'reactstrap';
 
 import { connect } from 'react-redux';
 import * as AuthAction from 'Redux/auth';
-
 import cx from 'classnames';
-import logo from 'Assets/logo/logo.svg';
-import { shopCart, person } from 'Assets/icons/svg';
+
+import Logo from 'Components/Common/Logo';
+import { person, shopCart } from 'Components/Common/Icon';
 import Search from 'Components/Search';
+
+import {
+  TO_FUNDING,
+  TO_FAVORITE,
+  TO_SHOP,
+  TO_CART,
+  TO_USERINFO,
+  TO_NEW,
+  TO_SIGNUP,
+  TO_SIGNIN,
+} from 'Constants/page-for-route';
 
 const defaultProps = {
   user: null,
@@ -32,25 +43,15 @@ const mapStateToProps = (state) => {
 };
 
 class NavBar extends Component {
-  destPage = {
-    feed: 'feed',
-    funding: 'funding',
-    favorite: 'favorite',
-    shop: 'shop',
-    cart: 'cart',
-    userInfo: 'user',
-    new: 'new',
-  };
-
   constructor(props) {
     super(props);
     this.state = {};
   }
 
-  getNavLink = (isActive, dest, linkName) => {
+  getNavLink = (dest, linkName) => {
+    const isActive = this.props;
     return (
       <NavLink
-        href="#"
         active={isActive === dest}
         onClick={() => {
           this.handlePage(dest);
@@ -63,8 +64,10 @@ class NavBar extends Component {
 
   handlePage = (dest) => {
     const { history, user } = this.props;
-    if (dest === this.destPage.userInfo) {
+    if (dest === TO_USERINFO) {
       history.push({ pathname: `/user/${user.name}` });
+    } else if (!dest) {
+      this.handleSignOut();
     } else {
       history.push({ pathname: `/${dest}` });
     }
@@ -77,62 +80,26 @@ class NavBar extends Component {
     });
   };
 
-  getActiveNav = (isActive) => {
-    const { history, location, match } = this.props;
+  getActiveNav = () => {
+    const { history, location, match, isActive } = this.props;
     switch (isActive) {
       case 'main':
-        return (
-          <Nav className="ml-auto mr-5" navbar>
-            <NavItem>
-              <NavLink href="/signup">Sign Up</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="#">About</NavLink>
-            </NavItem>
-          </Nav>
-        );
+        return <NavItem>{this.getNavLink(TO_SIGNUP, 'Sign Up')}</NavItem>;
       case 'signUp':
-        return (
-          <Nav className="ml-auto mr-5" navbar>
-            <NavItem>
-              <NavLink href="/signin">Sign In</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="#">About</NavLink>
-            </NavItem>
-          </Nav>
-        );
+        return <NavItem>{this.getNavLink(TO_SIGNIN, 'Sign In')}</NavItem>;
       default:
         return (
           <>
-            <Nav navbar>
-              <NavItem>
-                {this.getNavLink(isActive, this.destPage.new, 'New')}
-              </NavItem>
-              <NavItem>
-                {this.getNavLink(isActive, this.destPage.funding, 'Funding')}
-              </NavItem>
-              <NavItem>
-                {this.getNavLink(isActive, this.destPage.favorite, 'Favorite')}
-              </NavItem>
-            </Nav>
-            <Nav className="ml-auto" navbar>
+            <NavItem>{this.getNavLink(TO_NEW, 'New')}</NavItem>
+            <NavItem>{this.getNavLink(TO_FUNDING, 'Funding')}</NavItem>
+            <NavItem>{this.getNavLink(TO_FAVORITE, 'Favorite')}</NavItem>
+            <NavItem className="searchTab">
               <Search history={history} match={match} location={location} />
-              <NavItem>
-                {this.getNavLink(isActive, this.destPage.shop, 'Shop')}
-              </NavItem>
-              <NavItem>
-                {this.getNavLink(isActive, this.destPage.cart, shopCart)}
-              </NavItem>
-              <NavItem>
-                {this.getNavLink(isActive, this.destPage.userInfo, person)}
-              </NavItem>
-              <NavItem>
-                <NavLink href="#" onClick={this.handleSignOut}>
-                  Bye
-                </NavLink>
-              </NavItem>
-            </Nav>
+            </NavItem>
+            <NavItem>{this.getNavLink(TO_SHOP, 'Shop')}</NavItem>
+            <NavItem>{this.getNavLink(TO_CART, shopCart)}</NavItem>
+            <NavItem>{this.getNavLink(TO_USERINFO, person)}</NavItem>
+            <NavItem>{this.getNavLink('', 'Bye')}</NavItem>
           </>
         );
     }
@@ -149,11 +116,16 @@ class NavBar extends Component {
           expand="md"
         >
           <NavbarBrand className="navBar__logo col-2" href="/">
-            <img src={logo} width="33px" alt="logo" />
-            {isActive === 'main' || <span>Bletcher</span>}
+            <Logo isActive={isActive} />
           </NavbarBrand>
-
-          {this.getActiveNav(isActive)}
+          <Nav
+            className={cx('customNav', {
+              customNav__main: isActive !== 'main' && isActive !== 'signUp',
+            })}
+            navbar
+          >
+            {this.getActiveNav()}
+          </Nav>
         </Navbar>
       </>
     );
