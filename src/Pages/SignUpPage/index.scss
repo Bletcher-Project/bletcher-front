@@ -14,10 +14,10 @@
   align-items: center;
 
   &__header {
-    margin-top: 40px;
+    margin-top: 50px;
 
     & p {
-      font-size: 2.3rem;
+      font-size: $header2;
       margin: 0;
     }
   }
@@ -28,5 +28,23 @@
 
   &__footer {
     margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__signInLink {
+      font-size: $description;
+      margin-top: 12px;
+
+      & a {
+        text-decoration: underline;
+        font-weight: 700;
+      }
+
+      & a:hover {
+        text-decoration: underline;
+        color: $dark-gray;
+      }
+    }
   }
 }

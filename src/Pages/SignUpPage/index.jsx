@@ -60,7 +60,7 @@ class SignUpPage extends Component {
       <div className="signUpPage">
         <NavBar isActive="signUp" />
         <div className="signUpPage__header">
-          <p>Enter your personal information.</p>
+          <p>너도 해보고 싶니 Bletcher</p>
         </div>
         <div className="signUpPage__content">
           <SignUpForm handleValidation={this.handleValidation} />
@@ -71,6 +71,10 @@ class SignUpPage extends Component {
             disabled={!isValid}
             onClick={this.handleSignUp}
           />
+          <div className="signUpPage__footer__signInLink">
+            <span>이미 아이디가 있으시다면? </span>
+            <a href="/signin">로그인 하러 가기</a>
+          </div>
         </div>
       </div>
     );
