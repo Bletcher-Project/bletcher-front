@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import PropTypes from 'prop-types';
 
 import {
   Dropdown,
@@ -6,6 +9,25 @@ import {
   DropdownToggle,
   DropdownItem,
 } from 'reactstrap';
+
+import {
+  TO_FUNDING,
+  TO_FAVORITE,
+  TO_SHOP,
+  TO_CART,
+  TO_USERINFO,
+  TO_NEW,
+} from 'Constants/page-for-route';
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.authReducer.user,
+  };
+};
+
+const propTypes = {
+  handlePage: PropTypes.func.isRequired,
+};
 
 class DropDown extends Component {
   constructor(props) {
@@ -21,21 +43,41 @@ class DropDown extends Component {
     }));
   };
 
-  render() {
+  getDropDownItem = (dest, linkName) => {
+    const { handlePage } = this.props;
     return (
-      <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+      <DropdownItem
+        onClick={() => {
+          handlePage(dest);
+        }}
+      >
+        {linkName}
+      </DropdownItem>
+    );
+  };
+
+  render() {
+    const { dropdownOpen } = this.state;
+    return (
+      <Dropdown isOpen={dropdownOpen} toggle={this.toggle}>
         <DropdownToggle caret />
         <DropdownMenu right>
-          <DropdownItem header>Header</DropdownItem>
-          <DropdownItem>Some Action</DropdownItem>
+          {this.getDropDownItem(TO_NEW, 'New')}
+          {this.getDropDownItem(TO_FUNDING, 'Funding')}
+          {this.getDropDownItem(TO_FAVORITE, 'Favorite')}
           <DropdownItem divider />
-          <DropdownItem>Foo Action</DropdownItem>
-          <DropdownItem>Bar Action</DropdownItem>
-          <DropdownItem>Quo Action</DropdownItem>
+          <DropdownItem>Search</DropdownItem>
+          {this.getDropDownItem(TO_SHOP, 'Shop')}
+          {this.getDropDownItem(TO_CART, 'Cart')}
+          {this.getDropDownItem(TO_USERINFO, 'My Page')}
+          <DropdownItem divider />
+          {this.getDropDownItem('', 'Sign Out')}
         </DropdownMenu>
       </Dropdown>
     );
   }
 }
 
-export default DropDown;
+DropDown.propTypes = propTypes;
+
+export default connect(mapStateToProps)(DropDown);

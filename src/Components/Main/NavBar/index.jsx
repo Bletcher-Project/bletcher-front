@@ -48,7 +48,7 @@ class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isFold: false,
+      isFold: window.innerWidth < MAC13.width,
     };
   }
 
@@ -151,7 +151,14 @@ class NavBar extends Component {
             })}
             navbar
           >
-            {!isFold ? this.getActiveNav() : <DropDown />}
+            {!isFold ? (
+              this.getActiveNav()
+            ) : (
+              <DropDown
+                handlePage={this.handlePage}
+                handleSignOut={this.handleSignOut}
+              />
+            )}
           </Nav>
         </Navbar>
       </>
