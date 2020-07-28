@@ -23,6 +23,8 @@ import {
   TO_SIGNUP,
   TO_SIGNIN,
 } from 'Constants/page-for-route';
+import { MAC13 } from 'Constants/window-size';
+import DropDown from '../DropDown';
 
 const defaultProps = {
   user: null,
@@ -45,8 +47,26 @@ const mapStateToProps = (state) => {
 class NavBar extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isFold: false,
+    };
   }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.updateDimensions);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
+  }
+
+  updateDimensions = () => {
+    if (window.innerWidth < MAC13.width) {
+      this.setState({ isFold: true });
+    } else {
+      this.setState({ isFold: false });
+    }
+  };
 
   getNavLink = (dest, linkName) => {
     const isActive = this.props;
@@ -90,9 +110,15 @@ class NavBar extends Component {
       default:
         return (
           <>
-            <NavItem>{this.getNavLink(TO_NEW, 'New')}</NavItem>
-            <NavItem>{this.getNavLink(TO_FUNDING, 'Funding')}</NavItem>
-            <NavItem>{this.getNavLink(TO_FAVORITE, 'Favorite')}</NavItem>
+            <NavItem className="leftTab">
+              {this.getNavLink(TO_NEW, 'New')}
+            </NavItem>
+            <NavItem className="leftTab">
+              {this.getNavLink(TO_FUNDING, 'Funding')}
+            </NavItem>
+            <NavItem className="leftTab">
+              {this.getNavLink(TO_FAVORITE, 'Favorite')}
+            </NavItem>
             <NavItem className="searchTab">
               <Search history={history} match={match} location={location} />
             </NavItem>
@@ -107,6 +133,7 @@ class NavBar extends Component {
 
   render() {
     const { isActive } = this.props;
+    const { isFold } = this.state;
     return (
       <>
         <Navbar
@@ -124,7 +151,7 @@ class NavBar extends Component {
             })}
             navbar
           >
-            {this.getActiveNav()}
+            {!isFold ? this.getActiveNav() : <DropDown />}
           </Nav>
         </Navbar>
       </>
