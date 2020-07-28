@@ -58,7 +58,6 @@ class SignUpPage extends Component {
     const { isValid } = this.state;
     return (
       <div className="signUpPage">
-        <NavBar isActive="signUp" />
         <div className="signUpPage__header">
           <p>너도 해보고 싶니 Bletcher</p>
         </div>
