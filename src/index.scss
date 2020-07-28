@@ -1,5 +1,6 @@
-/* Constants - Color */
-@import 'Constants/Color.scss';
+/* Constants */
+@import 'Constants/colors.scss';
+@import 'Constants/font-size.scss';
 /* Components Style */
 @import 'Components/Common/Logo';
 @import 'Components/Common/NavBar';
@@ -13,6 +14,7 @@
 /* Pages Style */
 @import 'Pages/GuidePage';
 @import 'Pages/MainPage';
+@import 'Pages/SignInPage';
 @import 'Pages/SignUpPage';
 @import 'Pages/UserPage';
 @import 'Pages/ProfilePage/';
