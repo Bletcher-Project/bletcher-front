@@ -37,17 +37,27 @@
   .leftTab.nav-item {
     margin-right: 20px;
   }
-  &__main.navbar-nav {
-    width: 79%;
+
+  &__main.__fold.navbar-nav {
     display: flex;
-    .dropdown {
-      width: 10%;
+    flex-direction: row;
+    .searchTab__DropDown.nav-item {
       margin-left: auto;
+      margin-right: 3%;
+    }
+
+    .dropdown.nav-item {
       .dropdown-toggle.btn.btn-secondary {
         background-color: $main-color;
         border: none;
       }
     }
+  }
+
+  &__main.navbar-nav {
+    width: 79%;
+    display: flex;
+
     .searchTab.nav-item {
       .searchButton {
         margin-top: 5px;

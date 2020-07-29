@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import ReactRouterPropTypes from 'react-router-prop-types';
 
 import PropTypes from 'prop-types';
 
@@ -8,6 +10,7 @@ import {
   DropdownMenu,
   DropdownToggle,
   DropdownItem,
+  NavItem,
 } from 'reactstrap';
 
 import {
@@ -19,6 +22,7 @@ import {
   TO_NEW,
   TO_SIGNIN,
 } from 'Constants/page-for-route';
+import Search from 'Components/Search';
 
 const mapStateToProps = (state) => {
   return {
@@ -26,8 +30,16 @@ const mapStateToProps = (state) => {
   };
 };
 
+const defaultProps = {
+  user: null,
+};
+
 const propTypes = {
   handlePage: PropTypes.func.isRequired,
+  history: ReactRouterPropTypes.history.isRequired,
+  location: ReactRouterPropTypes.location.isRequired,
+  match: ReactRouterPropTypes.match.isRequired,
+  user: PropTypes.objectOf(PropTypes.object),
 };
 
 class DropDown extends Component {
@@ -59,29 +71,34 @@ class DropDown extends Component {
 
   render() {
     const { dropdownOpen } = this.state;
-    const { user } = this.props;
+    const { user, history, match, location } = this.props;
     return (
-      <Dropdown isOpen={dropdownOpen} toggle={this.toggle}>
-        <DropdownToggle caret />
-        <DropdownMenu right>
-          {this.getDropDownItem(TO_NEW, 'New')}
-          {this.getDropDownItem(TO_FUNDING, 'Funding')}
-          {this.getDropDownItem(TO_FAVORITE, 'Favorite')}
-          <DropdownItem divider />
-          <DropdownItem>Search</DropdownItem>
-          {this.getDropDownItem(TO_SHOP, 'Shop')}
-          {this.getDropDownItem(TO_CART, 'Cart')}
-          {this.getDropDownItem(TO_USERINFO, 'My Page')}
-          <DropdownItem divider />
-          {user
-            ? this.getDropDownItem('', 'Sign Out')
-            : this.getDropDownItem(TO_SIGNIN, 'Sign In')}
-        </DropdownMenu>
-      </Dropdown>
+      <>
+        <NavItem className="searchTab__DropDown">
+          <Search history={history} match={match} location={location} />
+        </NavItem>
+        <Dropdown nav isOpen={dropdownOpen} toggle={this.toggle}>
+          <DropdownToggle caret />
+          <DropdownMenu right>
+            {this.getDropDownItem(TO_NEW, 'New')}
+            {this.getDropDownItem(TO_FUNDING, 'Funding')}
+            {this.getDropDownItem(TO_FAVORITE, 'Favorite')}
+            <DropdownItem divider />
+            {this.getDropDownItem(TO_SHOP, 'Shop')}
+            {this.getDropDownItem(TO_CART, 'Cart')}
+            {this.getDropDownItem(TO_USERINFO, 'My Page')}
+            <DropdownItem divider />
+            {user
+              ? this.getDropDownItem('', 'Sign Out')
+              : this.getDropDownItem(TO_SIGNIN, 'Sign In')}
+          </DropdownMenu>
+        </Dropdown>
+      </>
     );
   }
 }
 
 DropDown.propTypes = propTypes;
+DropDown.defaultProps = defaultProps;
 
-export default connect(mapStateToProps)(DropDown);
+export default withRouter(connect(mapStateToProps)(DropDown));

@@ -147,9 +147,15 @@ class NavBar extends Component {
             <Logo isActive={isActive} />
           </NavbarBrand>
           <Nav
-            className={cx('customNav', {
-              customNav__main: isActive !== 'main' && isActive !== 'signUp',
-            })}
+            className={cx(
+              'customNav',
+              {
+                customNav__main: isActive !== 'main' && isActive !== 'signUp',
+              },
+              {
+                __fold: isFold,
+              },
+            )}
             navbar
           >
             {!isFold ? (
