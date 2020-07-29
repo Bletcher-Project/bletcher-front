@@ -4,7 +4,7 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 
 import queryString from 'query-string';
 
-import NavBar from 'Components/Main/NavBar';
+import NavBar from 'Components/Common/NavBar';
 
 const defaultProps = {};
 const propTypes = {

@@ -11,7 +11,6 @@ import { Route, withRouter, Switch, Redirect } from 'react-router-dom';
 
 // Pages
 import MainPage from 'Pages/MainPage';
-import HomePage from 'Pages/HomePage';
 import SignUpPage from 'Pages/SignUpPage';
 import UserPage from 'Pages/UserPage';
 import ProfilePage from 'Pages/ProfilePage';
@@ -56,15 +55,13 @@ class App extends Component {
     return (
       <div className="app">
         <Switch>
-          <Route exact path="/">
-            {isLogin ? <Redirect to="/home" /> : <MainPage />}
-          </Route>
+          <Route exact path="/" component={MainPage} />
           <Route path="/signin">
-            {isLogin ? <Redirect to="/home" /> : <MainPage isSignIn />}
+            {isLogin ? <Redirect to="/home" /> : <MainPage />}
           </Route>
           <Route exact path="/signup" component={SignUpPage} />
           <Route exact path="/home">
-            {!isLogin ? <Redirect to="/" /> : <HomePage />}
+            {!isLogin ? <Redirect to="/" /> : <MainPage />}
           </Route>
           <Route exact path="/shop" component={ShopPage} />
           <Route exact path="/new" component={NewPage} />

@@ -17,6 +17,7 @@ import {
   TO_CART,
   TO_USERINFO,
   TO_NEW,
+  TO_SIGNIN,
 } from 'Constants/page-for-route';
 
 const mapStateToProps = (state) => {
@@ -58,6 +59,7 @@ class DropDown extends Component {
 
   render() {
     const { dropdownOpen } = this.state;
+    const { user } = this.props;
     return (
       <Dropdown isOpen={dropdownOpen} toggle={this.toggle}>
         <DropdownToggle caret />
@@ -71,7 +73,9 @@ class DropDown extends Component {
           {this.getDropDownItem(TO_CART, 'Cart')}
           {this.getDropDownItem(TO_USERINFO, 'My Page')}
           <DropdownItem divider />
-          {this.getDropDownItem('', 'Sign Out')}
+          {user
+            ? this.getDropDownItem('', 'Sign Out')
+            : this.getDropDownItem(TO_SIGNIN, 'Sign In')}
         </DropdownMenu>
       </Dropdown>
     );

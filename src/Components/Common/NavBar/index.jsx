@@ -10,7 +10,7 @@ import * as AuthAction from 'Redux/auth';
 import cx from 'classnames';
 
 import Logo from 'Components/Common/Logo';
-import { person, shopCart } from 'Components/Common/Icon';
+import { person, shopCart } from 'Components/Icon';
 import Search from 'Components/Search';
 
 import {
@@ -85,7 +85,8 @@ class NavBar extends Component {
   handlePage = (dest) => {
     const { history, user } = this.props;
     if (dest === TO_USERINFO) {
-      history.push({ pathname: `/user/${user.name}` });
+      if (user) history.push({ pathname: `/user/${user.name}` });
+      else history.push({ pathname: `/USER_NOT_DEFINED` });
     } else if (!dest) {
       this.handleSignOut();
     } else {

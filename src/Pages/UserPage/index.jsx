@@ -6,8 +6,8 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 import { connect } from 'react-redux';
 import * as PostAction from 'Redux/post';
 
-import NavBar from 'Components/Main/NavBar';
-import Thumbnail from 'Components/Common/Thumbnail';
+import NavBar from 'Components/Common/NavBar';
+import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
 
 import Gallery from 'react-photo-gallery';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import NavBar from 'Components/Main/NavBar';
+import NavBar from 'Components/Common/NavBar';
 
 const defaultProps = {};
 const propTypes = {};

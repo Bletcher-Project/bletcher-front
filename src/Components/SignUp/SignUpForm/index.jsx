@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import UploadImgFile from 'Components/Upload/UploadImgFile';
-import Input from 'Components/Common/Input';
-import CheckIcon from 'Components/Common/CheckIcon';
+import Input from 'Components/Form/Input';
+import CheckIcon from 'Components/Icon/CheckIcon';
 
 import Avatar from '@material-ui/core/Avatar';
 import defaultProfile from 'Assets/images/default_profile.svg';

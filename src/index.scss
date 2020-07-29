@@ -1,9 +1,9 @@
 /* Constants - Color */
 @import 'Constants/Color.scss';
 /* Components Style */
-@import 'Components/Common/TextField';
-@import 'Components/Common/Thumbnail';
-@import 'Components/Main/NavBar';
+@import 'Components/Form/TextField';
+@import 'Components/Thumbnail';
+@import 'Components/Common/NavBar';
 @import 'Components/Post/Post';
 @import 'Components/Post/Comment';
 @import 'Components/SignUp/SignUpForm';
@@ -11,7 +11,6 @@
 @import 'Components/Search/';
 /* Pages Style */
 @import 'Pages/GuidePage';
-@import 'Pages/HomePage';
 @import 'Pages/MainPage';
 @import 'Pages/SignUpPage';
 @import 'Pages/UserPage';

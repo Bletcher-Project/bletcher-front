@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
-import { searchIcon } from 'Components/Common/Icon';
-import Input from '../Common/Input';
+import { searchIcon } from 'Components/Icon';
+import Input from '../Form/Input';
 
 const defaultProps = {};
 const propTypes = {

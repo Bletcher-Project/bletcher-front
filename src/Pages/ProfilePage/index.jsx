@@ -5,8 +5,7 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
 
-import NavBar from 'Components/Main/NavBar';
-import * as User from 'Pages/UserPage';
+import NavBar from 'Components/Common/NavBar';
 
 const defaultProps = {
   user: null,
@@ -30,12 +29,14 @@ class ProfilePage extends Component {
   }
 
   render() {
+    const { user } = this.props;
     return (
       <>
         <NavBar isActive="profile" />
         <div className="profilePage">
           <div className="profilePage__Header">This is ProfilePage.</div>
           <div className="profilePage__Content" />
+          {user ? user.name : ''}
         </div>
       </>
     );

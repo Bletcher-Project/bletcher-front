@@ -7,8 +7,8 @@ import { purple } from '@material-ui/core/colors';
 import moment from 'moment';
 import 'animate.css';
 
-import Thumbnail from 'Components/Common/Thumbnail';
-import TextField from 'Components/Common/TextField';
+import Thumbnail from 'Components/Thumbnail';
+import TextField from 'Components/Form/TextField';
 
 const defaultProps = {};
 const propTypes = {

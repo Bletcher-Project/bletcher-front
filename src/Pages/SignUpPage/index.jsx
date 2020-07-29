@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
-import NavBar from 'Components/Main/NavBar';
-import Button from 'Components/Common/Button';
+import NavBar from 'Components/Common/NavBar';
+import Button from 'Components/Form/Button';
 import SignUpForm from 'Components/SignUp/SignUpForm';
 
 import { INIT, USER_API } from 'Constants/api-uri';

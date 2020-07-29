@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as PostAction from 'Redux/post';
 
-import Thumbnail from 'Components/Common/Thumbnail';
+import Thumbnail from 'Components/Thumbnail';
 import Comment from 'Components/Post/Comment';
 
 import moment from 'moment';
