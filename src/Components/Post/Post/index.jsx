@@ -9,12 +9,12 @@ import Comment from 'Components/Post/Comment';
 import moment from 'moment';
 import commaNumber from 'comma-number';
 
-import likeIcon from 'Assets/icons/heart.png';
-import filledLikeIcon from 'Assets/icons/heart-filled.png';
-import commentIcon from 'Assets/icons/comment.png';
-import filledCommentIcon from 'Assets/icons/comment-filled.png';
-import scrapIcon from 'Assets/icons/scrap.png';
-import filledScrapIcon from 'Assets/icons/scrap-filled.png';
+import likeIcon from 'Assets/images/heart.png';
+import filledLikeIcon from 'Assets/images/heart-filled.png';
+import commentIcon from 'Assets/images/comment.png';
+import filledCommentIcon from 'Assets/images/comment-filled.png';
+import scrapIcon from 'Assets/images/scrap.png';
+import filledScrapIcon from 'Assets/images/scrap-filled.png';
 
 import {
   INIT,

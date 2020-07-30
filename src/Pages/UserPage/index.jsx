@@ -13,7 +13,7 @@ import Post from 'Components/Post/Post';
 import Gallery from 'react-photo-gallery';
 import { Modal } from 'reactstrap';
 
-import settingIcon from 'Assets/icons/setting.png';
+import settingIcon from 'Assets/images/setting.png';
 import {
   INIT,
   IMAGE,
