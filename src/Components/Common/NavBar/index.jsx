@@ -67,7 +67,7 @@ class NavBar extends Component {
     if (dest === 'user') {
       if (user) history.push({ pathname: `/user/${user.name}` });
       else history.push({ pathname: `/USER_NOT_DEFINED` });
-    } else if (dest === 'bye') {
+    } else if (dest === 'signout') {
       this.handleSignOut();
     } else {
       history.push({ pathname: `/${dest}` });

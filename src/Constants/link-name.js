@@ -10,5 +10,5 @@ export const NAV_LINK_NAME = [
   { path: 'shop', linkName: 'Shop' },
   { path: 'cart', linkName: 'Cart' },
   { path: 'user', linkName: 'User' },
-  { path: 'bye', linkName: 'Bye' },
+  { path: 'signout', linkName: 'Bye' },
 ];
