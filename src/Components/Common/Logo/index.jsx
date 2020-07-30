@@ -2,12 +2,12 @@ import React from 'react';
 
 import logoImg from 'Assets/logo/logo.svg';
 
-function Logo(isActive) {
+function Logo() {
   return (
-    <>
+    <div className="logo">
       <img src={logoImg} width="33px" alt="logo" />
-      {isActive === 'main' || <span>Bletcher</span>}
-    </>
+      <span>Bletcher</span>
+    </div>
   );
 }
 

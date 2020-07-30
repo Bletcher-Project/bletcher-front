@@ -1,11 +1,12 @@
 /* Constants - Color */
 @import 'Constants/Color.scss';
 /* Components Style */
-@import 'Components/Form/TextField';
-@import 'Components/Thumbnail';
+@import 'Components/Common/Logo';
 @import 'Components/Common/NavBar';
+@import 'Components/Form/TextField';
 @import 'Components/Post/Post';
 @import 'Components/Post/Comment';
+@import 'Components/Thumbnail';
 @import 'Components/SignUp/SignUpForm';
 @import 'Components/Upload/UploadPost';
 @import 'Components/Search/';

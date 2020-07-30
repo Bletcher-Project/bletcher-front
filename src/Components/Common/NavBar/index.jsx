@@ -143,7 +143,7 @@ class NavBar extends Component {
           fixed="true"
           expand="md"
         >
-          <NavbarBrand className="navBar__logo col-2" href="/">
+          <NavbarBrand className="col-2" href="/">
             <Logo isActive={isActive} />
           </NavbarBrand>
           <Nav
