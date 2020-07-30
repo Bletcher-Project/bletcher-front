@@ -22,11 +22,7 @@ import person from 'Assets/icons/person';
 import shopCart from 'Assets/icons/shopCart';
 import cx from 'classnames';
 
-import {
-  NAV_LINK_NAME,
-  SIGNUP_LINK_NAME,
-  SIGNIN_LINK_NAME,
-} from 'Constants/link-name';
+import { NAV_LINK_NAME } from 'Constants/link-name';
 
 const defaultProps = {
   user: null,
@@ -59,20 +55,6 @@ class NavBar extends Component {
     this.setState({ isOpen: !isOpen });
   };
 
-  getNavLink = (dest, linkName) => {
-    const isActive = this.props;
-    return (
-      <NavLink
-        active={isActive === dest}
-        onClick={() => {
-          this.handlePage(dest);
-        }}
-      >
-        {linkName}
-      </NavLink>
-    );
-  };
-
   handleSignOut = () => {
     const { dispatch, history } = this.props;
     dispatch(AuthAction.signOut()).then(async () => {
@@ -92,63 +74,61 @@ class NavBar extends Component {
     }
   };
 
-  getActiveNav = () => {
-    const { history, location, match, isActive } = this.props;
-    switch (isActive) {
-      case 'main':
-        return (
-          <NavItem>
-            {this.getNavLink(SIGNUP_LINK_NAME.toLowerCase(), SIGNUP_LINK_NAME)}
-          </NavItem>
-        );
-      case 'signUp':
-        return (
-          <NavItem>
-            {this.getNavLink(SIGNIN_LINK_NAME.toLowerCase(), SIGNIN_LINK_NAME)}
-          </NavItem>
-        );
-      default:
-        return NAV_LINK_NAME.map((x) => {
-          let data = x;
-          if (data === 'Search') {
-            return (
-              <NavItem>
-                <Search history={history} match={match} location={location} />
-              </NavItem>
-            );
-          }
-          if (data === 'Cart') data = shopCart;
-          else if (data === 'User') data = person;
-          return (
-            <NavItem className={`${x.toLowerCase()}Tab`}>
-              {this.getNavLink(x.toLowerCase(), data)}
-            </NavItem>
-          );
-        });
-    }
+  getNavLink = (linkInfo) => {
+    const { isActive } = this.props;
+    let linkName;
+    if (linkInfo.linkName === 'Cart') linkName = shopCart;
+    else if (linkInfo.linkName === 'User') linkName = person;
+    else linkName = linkInfo.linkName;
+
+    return (
+      <NavLink
+        active={isActive === linkInfo.path}
+        onClick={() => {
+          this.handlePage(linkInfo.path);
+        }}
+      >
+        {linkName}
+      </NavLink>
+    );
   };
 
   render() {
-    const { isActive } = this.props;
+    const { history, match, location } = this.props;
     const { isOpen } = this.state;
     return (
       <>
-        <Navbar
-          className={cx('navBar', { navBar__primary: isActive !== 'main' })}
-          light
-          fixed="true"
-          expand="md"
-        >
+        <Navbar className="navBar" light fixed="true" expand="md">
           <NavbarBrand className="col-2" href="/">
-            <Logo isActive={isActive} />
+            <Logo />
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav
-              className={cx('customNav', { customNav__open: isOpen })}
+              className={cx('navBar__navItems', { customNav__open: isOpen })}
               navbar
             >
-              {this.getActiveNav()}
+              {NAV_LINK_NAME.map((data) => {
+                if (data === 'Search') {
+                  return (
+                    <NavItem key={data.path}>
+                      <Search
+                        history={history}
+                        match={match}
+                        location={location}
+                      />
+                    </NavItem>
+                  );
+                }
+                return (
+                  <NavItem
+                    key={data.path}
+                    className={`navBar__navItems__${data.path}`}
+                  >
+                    {this.getNavLink(data)}
+                  </NavItem>
+                );
+              })}
             </Nav>
           </Collapse>
         </Navbar>
