@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
-import { searchIcon } from 'Components/Icon';
+import searchIcon from 'Assets/icons/search';
 import Input from '../Form/Input';
 
 const defaultProps = {};

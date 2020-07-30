@@ -7,11 +7,12 @@ import { Nav, Navbar, NavItem, NavLink, NavbarBrand } from 'reactstrap';
 
 import { connect } from 'react-redux';
 import * as AuthAction from 'Redux/auth';
-import cx from 'classnames';
 
 import Logo from 'Components/Common/Logo';
-import { person, shopCart } from 'Components/Icon';
 import Search from 'Components/Search';
+import person from 'Assets/icons/person';
+import shopCart from 'Assets/icons/shopCart';
+import cx from 'classnames';
 
 import {
   TO_FUNDING,
