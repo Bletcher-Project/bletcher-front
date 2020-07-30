@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import UploadImgFile from 'Components/Upload/UploadImgFile';
 import Input from 'Components/Form/Input';
-import CheckIcon from 'Components/Icon/CheckIcon';
+import CheckIcon from 'Components/Form/CheckIcon';
 
 import Avatar from '@material-ui/core/Avatar';
 import defaultProfile from 'Assets/images/default_profile.svg';
