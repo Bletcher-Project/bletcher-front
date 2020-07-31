@@ -10,7 +10,9 @@ import UploadPost from 'Components/Upload/UploadPost';
 
 import dummyPost from './dummyPost.json';
 
-const defaultProps = {};
+const defaultProps = {
+  token: null,
+};
 
 const propTypes = {
   dispatch: PropTypes.func.isRequired,
@@ -68,7 +70,16 @@ class MainPage extends Component {
             </div>
             <div className="mainPage__postList">
               {dummyPost.posts.map((data) => {
-                return <TestPost postImg={data.postImgName} key={data.id} />;
+                return (
+                  <TestPost
+                    postImg={data.postImgName}
+                    postCategory={data.postCategory}
+                    postTitle={data.postTitle}
+                    postDescription={data.postDescription}
+                    isFavorite={data.isFavorite}
+                    key={data.id}
+                  />
+                );
               })}
             </div>
           </div>
