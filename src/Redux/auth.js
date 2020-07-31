@@ -51,7 +51,7 @@ export default authReducer(
     },
     [SIGNOUT_SUCCESS]: (state) => {
       localStorage.removeItem('token');
-      return { ...state, isLogin: false, token: null, user: {} };
+      return { ...state, isLogin: false, token: null, user: null };
     },
     [SIGNOUT_FAIL]: (state) => {
       return state;

@@ -11,9 +11,16 @@ import { Route, withRouter, Switch, Redirect } from 'react-router-dom';
 
 // Pages
 import MainPage from 'Pages/MainPage';
-import HomePage from 'Pages/HomePage';
 import SignUpPage from 'Pages/SignUpPage';
 import UserPage from 'Pages/UserPage';
+import ProfilePage from 'Pages/ProfilePage';
+import ShopPage from 'Pages/ShopPage';
+import SearchPage from 'Pages/SearchPage';
+import FundingPage from 'Pages/FundingPage';
+import FavoritePage from 'Pages/FavoritePage';
+import CartPage from 'Pages/CartPage';
+import NewPage from 'Pages/NewPage';
+import NotFoundPage from 'Pages/NotFoundPage';
 
 const defaultProps = {
   token: null,
@@ -48,17 +55,23 @@ class App extends Component {
     return (
       <div className="app">
         <Switch>
-          <Route exact path="/">
-            {isLogin ? <Redirect to="/home" /> : <MainPage />}
-          </Route>
+          <Route exact path="/" component={MainPage} />
           <Route path="/signin">
-            {isLogin ? <Redirect to="/home" /> : <MainPage isSignIn />}
+            {isLogin ? <Redirect to="/home" /> : <MainPage />}
           </Route>
           <Route exact path="/signup" component={SignUpPage} />
           <Route exact path="/home">
-            {!isLogin ? <Redirect to="/" /> : <HomePage />}
+            {!isLogin ? <Redirect to="/" /> : <MainPage />}
           </Route>
-          <Route exact path="/:username" component={UserPage} />
+          <Route exact path="/shop" component={ShopPage} />
+          <Route exact path="/new" component={NewPage} />
+          <Route exact path="/funding" component={FundingPage} />
+          <Route exact path="/favorite" component={FavoritePage} />
+          <Route exact path="/cart" component={CartPage} />
+          <Route path="/search" component={SearchPage} />
+          <Route exact path="/user/:username/profile" component={ProfilePage} />
+          <Route exact path="/user/:username" component={UserPage} />
+          <Route component={NotFoundPage} />
         </Switch>
       </div>
     );

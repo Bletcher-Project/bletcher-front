@@ -1,19 +1,29 @@
 /* Constants - Color */
 @import 'Constants/Color.scss';
 /* Components Style */
-@import 'Components/Common/TextField';
-@import 'Components/Common/Thumbnail';
-@import 'Components/Main/NavBar';
+@import 'Components/Common/Logo';
+@import 'Components/Common/NavBar';
+@import 'Components/Form/TextField';
 @import 'Components/Post/Post';
 @import 'Components/Post/Comment';
+@import 'Components/Thumbnail';
 @import 'Components/SignUp/SignUpForm';
 @import 'Components/Upload/UploadPost';
+@import 'Components/Search/';
 /* Pages Style */
 @import 'Pages/GuidePage';
-@import 'Pages/HomePage';
 @import 'Pages/MainPage';
 @import 'Pages/SignUpPage';
 @import 'Pages/UserPage';
+@import 'Pages/ProfilePage/';
+@import 'Pages/ShopPage/';
+@import 'Pages/SearchPage/';
+@import 'Pages/FundingPage/';
+@import 'Pages/FavoritePage';
+@import 'Pages/CartPage/';
+@import 'Pages/NewPage';
+@import 'Pages/NotFoundPage/';
+@import 'Pages/SearchPage/';
 /* Fonts */
 @import url('https://use.typekit.net/dwx4ixd.css'); // (adobe) flood-std font
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap'); // (google) Roboto font

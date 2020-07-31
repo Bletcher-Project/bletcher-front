@@ -1,0 +1,19 @@
+/*
+  NotFound Page Styling
+*/
+
+.notFoundPage {
+  margin-top: 25%;
+  &__header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__notice {
+      span {
+        font-size: xx-large;
+      }
+    }
+  }
+}

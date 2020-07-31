@@ -8,7 +8,7 @@ import 'cropperjs/dist/cropper.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
-import backIcon from 'Assets/icons/signup_back.svg';
+import backIcon from 'Assets/images/back.svg';
 
 const defaultProps = {};
 const propTypes = {};

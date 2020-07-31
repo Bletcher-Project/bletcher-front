@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 
+import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
+
 import { connect } from 'react-redux';
 import * as PostAction from 'Redux/post';
 
-import NavBar from 'Components/Main/NavBar';
-import Thumbnail from 'Components/Common/Thumbnail';
+import NavBar from 'Components/Common/NavBar';
+import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
 
 import Gallery from 'react-photo-gallery';
 import { Modal } from 'reactstrap';
 
-import settingIcon from 'Assets/icons/setting.png';
+import settingIcon from 'Assets/images/setting.png';
 import {
   INIT,
   IMAGE,
@@ -20,8 +23,13 @@ import {
   IMAGE_POST,
 } from 'Constants/api-uri';
 
-const defaultProps = {};
-const propTypes = {};
+const defaultProps = {
+  user: null,
+};
+const propTypes = {
+  match: ReactRouterPropTypes.match.isRequired,
+  user: PropTypes.objectOf(PropTypes.object),
+};
 
 const mapStateToProps = (state) => {
   return {
@@ -42,6 +50,65 @@ class UserPage extends Component {
     };
   }
 
+  setUser = async () => {
+    const { match, user } = this.props;
+    if (match.params.username === user.name) {
+      this.setState({ userInfo: user, isMyPage: true, userPostImgs: [] });
+    } else {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}${QUERY_NAME}${match.params.username}`,
+          {
+            method: 'GET',
+          },
+        );
+        if (response.status === 200) {
+          const result = await response.json();
+          this.setState({
+            userInfo: result.userInfo,
+            isMyPage: false,
+            userPostImgs: [],
+          });
+          return result;
+        }
+        return null;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  getUserPost = async () => {
+    const { dispatch, token } = this.props;
+    const { userInfo, userPostImgs } = this.state;
+    const postImg = [];
+    await dispatch(PostAction.getPostByUserId(userInfo.id, token)).then(
+      (posts) => {
+        posts.forEach((post) => {
+          postImg.push({
+            src: `${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_POST}/${post.postImgName}`,
+            width: parseInt(post.postImgWidth),
+            height: parseInt(post.postImgHeight),
+            key: String(post.id),
+          });
+        });
+      },
+    );
+    this.setState({ userPostImgs: userPostImgs.concat(postImg) });
+  };
+
+  handleClickPost = (e, { photo, index }) => {
+    const { dispatch, token } = this.props;
+    dispatch(PostAction.getPostByPostId(photo.key, token)).then((post) => {
+      this.setState({ selectedPost: post, openModal: true });
+    });
+  };
+
+  editUserProfile = () => {
+    const { history, match } = this.props;
+    history.push({ pathname: `${match.url}/profile` });
+  };
+
   componentDidMount = async () => {
     if (this.props.user) {
       await this.setUser();
@@ -50,9 +117,10 @@ class UserPage extends Component {
   };
 
   componentDidUpdate = async (prevProps, prevState) => {
+    const { token, user, match } = this.props;
     if (
-      (this.props.token && this.props.user !== prevProps.user) ||
-      prevProps.match.params.username !== this.props.match.params.username
+      (token && user !== prevProps.user) ||
+      prevProps.match.params.username !== match.params.username
     ) {
       await this.setUser();
       await this.getUserPost();
@@ -69,7 +137,7 @@ class UserPage extends Component {
     } = this.state;
     return (
       <div className="userPage">
-        <NavBar isActive={isMyPage ? 'user' : null} />
+        <NavBar isActive={isMyPage ? 'user' : ''} />
         {userInfo ? (
           <div className="userPage__contents">
             <div className="userPage__contents__header">
@@ -89,11 +157,17 @@ class UserPage extends Component {
                 <div className="userPage__contents__header__profile-name-set">
                   <div className="nameArea">
                     <h1>{userInfo.name}</h1>
-                    <div id="nameUnderBar"></div>
+                    <div id="nameUnderBar" />
                   </div>
                   {isMyPage ? (
                     <div className="settingArea">
-                      <img src={settingIcon} alt="setting" />
+                      <button
+                        className="settingButton"
+                        type="button"
+                        onClick={this.editUserProfile}
+                      >
+                        <img src={settingIcon} alt="setting" />
+                      </button>
                     </div>
                   ) : null}
                 </div>
@@ -134,7 +208,7 @@ class UserPage extends Component {
             <Modal
               isOpen={openModal}
               toggle={() => this.setState({ openModal: !openModal })}
-              centered={true}
+              centered
             >
               <Post
                 postId={selectedPost.id}
@@ -146,7 +220,7 @@ class UserPage extends Component {
                 postHashTags={[
                   { id: 1, tags: 'flower' },
                   { id: 2, tags: 'sunny' },
-                ]} //////
+                ]} /// ///
                 postImg={selectedPost.postImgName}
                 postDate={selectedPost.createdAt}
                 isLiked={selectedPost.isLiked}
@@ -158,58 +232,6 @@ class UserPage extends Component {
       </div>
     );
   }
-
-  setUser = async () => {
-    const { match, user } = this.props;
-    if (match.params.username === user.name) {
-      this.setState({ userInfo: user, isMyPage: true, userPostImgs: [] });
-    } else {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}${QUERY_NAME}${match.params.username}`,
-          {
-            method: 'GET',
-          },
-        );
-        if (response.status === 200) {
-          const result = await response.json();
-          this.setState({
-            userInfo: result.userInfo,
-            isMyPage: false,
-            userPostImgs: [],
-          });
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
-
-  getUserPost = async () => {
-    const { dispatch, token } = this.props;
-    const { userInfo, userPostImgs } = this.state;
-    const postImg = [];
-    await dispatch(PostAction.getPostByUserId(userInfo.id, token)).then(
-      (posts) => {
-        posts.forEach((post) => {
-          postImg.push({
-            src: `${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_POST}/${post.postImgName}`,
-            width: parseInt(post.postImgWidth),
-            height: parseInt(post.postImgHeight),
-            key: String(post.id),
-          });
-        });
-      },
-    );
-    this.setState({ userPostImgs: userPostImgs.concat(postImg) });
-  };
-
-  handleClickPost = (e, { photo, index }) => {
-    const { dispatch, token } = this.props;
-    dispatch(PostAction.getPostByPostId(photo.key, token)).then((post) => {
-      this.setState({ selectedPost: post, openModal: true });
-    });
-  };
 }
 
 UserPage.defaultProps = defaultProps;
