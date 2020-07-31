@@ -1,0 +1,114 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "postImgName": "냥11593408105774.jpeg",
+      "postImgWidth": "180",
+      "postImgHeight": "240",
+      "content": "냥",
+      "createdAt": "2020-06-29T05:21:45.000Z",
+      "updatedAt": "2020-06-29T05:21:45.000Z",
+      "deletedAt": null,
+      "UserId": 2
+    },
+    {
+      "id": 2,
+      "postImgName": "스크린샷 2020-07-08 오후 6.02.511594482834979.png",
+      "postImgWidth": "240",
+      "postImgHeight": "80",
+      "content": "IM TOP 2",
+      "createdAt": "2020-07-11T15:53:54.000Z",
+      "updatedAt": "2020-07-11T15:53:54.000Z",
+      "deletedAt": null,
+      "UserId": 2
+    },
+    {
+      "id": 3,
+      "postImgName": "vonvon1594482877734.jpg",
+      "postImgWidth": "217",
+      "postImgHeight": "205",
+      "content": "MY IMAGE",
+      "createdAt": "2020-07-11T15:54:37.000Z",
+      "updatedAt": "2020-07-11T15:54:37.000Z",
+      "deletedAt": null,
+      "UserId": 2
+    },
+    {
+      "id": 4,
+      "postImgName": "1594790114896.png",
+      "postImgWidth": "254",
+      "postImgHeight": "240",
+      "content": "dwqdq",
+      "createdAt": "2020-07-15T05:15:14.000Z",
+      "updatedAt": "2020-07-15T05:15:14.000Z",
+      "deletedAt": null,
+      "UserId": 2
+    },
+    {
+      "id": 5,
+      "postImgName": "1594790152208.jpeg",
+      "postImgWidth": "239",
+      "postImgHeight": "240",
+      "content": "",
+      "createdAt": "2020-07-15T05:15:52.000Z",
+      "updatedAt": "2020-07-15T05:15:52.000Z",
+      "deletedAt": null,
+      "UserId": 2
+    },
+    {
+      "id": 6,
+      "postImgName": "1594792041105.jpg",
+      "postImgWidth": "240",
+      "postImgHeight": "240",
+      "content": "dqw",
+      "createdAt": "2020-07-15T05:47:21.000Z",
+      "updatedAt": "2020-07-15T05:47:21.000Z",
+      "deletedAt": null,
+      "UserId": 2
+    },
+    {
+      "id": 7,
+      "postImgName": "1594807101544.jpeg",
+      "postImgWidth": "240",
+      "postImgHeight": "240",
+      "content": "dwqwq",
+      "createdAt": "2020-07-15T09:58:21.000Z",
+      "updatedAt": "2020-07-15T09:58:21.000Z",
+      "deletedAt": null,
+      "UserId": 2
+    },
+    {
+      "id": 8,
+      "postImgName": "1595410939859.png",
+      "postImgWidth": "209",
+      "postImgHeight": "240",
+      "content": "HELLO gayoung",
+      "createdAt": "2020-07-22T09:42:19.000Z",
+      "updatedAt": "2020-07-22T09:42:19.000Z",
+      "deletedAt": null,
+      "UserId": 2
+    },
+    {
+      "id": 9,
+      "postImgName": "1595498972100.gif",
+      "postImgWidth": "317",
+      "postImgHeight": "178",
+      "content": "",
+      "createdAt": "2020-07-23T10:09:32.000Z",
+      "updatedAt": "2020-07-23T10:09:32.000Z",
+      "deletedAt": null,
+      "UserId": 2
+    },
+    {
+      "id": 10,
+      "postImgName": "1595512044647.jpg",
+      "postImgWidth": "246",
+      "postImgHeight": "240",
+      "content": "",
+      "createdAt": "2020-07-23T13:47:24.000Z",
+      "updatedAt": "2020-07-23T13:47:24.000Z",
+      "deletedAt": null,
+      "UserId": 2
+    }
+  ]
+}

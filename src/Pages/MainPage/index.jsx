@@ -5,8 +5,10 @@ import { connect } from 'react-redux';
 import * as PostAction from 'Redux/post';
 
 import NavBar from 'Components/Common/NavBar';
-import Post from 'Components/Post/Post';
+import TestPost from 'Components/Post/testPost';
 import UploadPost from 'Components/Upload/UploadPost';
+
+import dummyPost from './dummyPost.json';
 
 const defaultProps = {};
 
@@ -48,7 +50,7 @@ class MainPage extends Component {
   };
 
   render() {
-    const { newPostClicked, feedLoading, feed } = this.state;
+    const { newPostClicked } = this.state;
     return (
       <div className="mainPage">
         <NavBar isActive="feed" />
@@ -65,30 +67,9 @@ class MainPage extends Component {
               What are you thinking now?
             </div>
             <div className="mainPage__postList">
-              {!feedLoading && this.props.user && feed
-                ? feed.map((data) => {
-                    return (
-                      <div className="mainPage__post mb-3" key={data.id}>
-                        <Post
-                          postId={data.id}
-                          isMyPost={this.props.user.id === data.UserId}
-                          userProfileImg={data.User.profileImgName}
-                          userName={data.User.name}
-                          userType={data.User.type}
-                          postContent={data.content}
-                          postHashTags={[
-                            { id: 1, tags: 'flower' },
-                            { id: 2, tags: 'sunny' },
-                          ]} //////
-                          postImg={data.postImgName}
-                          postDate={data.createdAt}
-                          isLiked={data.isLiked}
-                          postLike={data.likeCount}
-                        />
-                      </div>
-                    );
-                  })
-                : null}
+              {dummyPost.posts.map((data) => {
+                return <TestPost postImg={data.postImgName} key={data.id} />;
+              })}
             </div>
           </div>
         )}
