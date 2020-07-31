@@ -8,11 +8,13 @@ import NavBar from 'Components/Common/NavBar';
 import Post from 'Components/Post/Post';
 import UploadPost from 'Components/Upload/UploadPost';
 
-const defaultProps = {};
+const defaultProps = {
+  token: null,
+};
 
 const propTypes = {
   dispatch: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
+  token: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {

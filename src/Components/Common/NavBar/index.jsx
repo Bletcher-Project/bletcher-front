@@ -22,7 +22,11 @@ import person from 'Assets/icons/person';
 import shopCart from 'Assets/icons/shopCart';
 import cx from 'classnames';
 
-import { NAV_LINK_NAME } from 'Constants/link-name';
+import {
+  NAV_LINK_NAME,
+  SIGNIN_LINK_NAME,
+  SIGNOUT_LINK_NAME,
+} from 'Constants/link-name';
 
 const defaultProps = {
   user: null,
@@ -94,7 +98,7 @@ class NavBar extends Component {
   };
 
   render() {
-    const { history, match, location } = this.props;
+    const { history, match, location, user } = this.props;
     const { isOpen } = this.state;
     return (
       <>
@@ -109,26 +113,28 @@ class NavBar extends Component {
               navbar
             >
               {NAV_LINK_NAME.map((data) => {
-                if (data === 'Search') {
-                  return (
-                    <NavItem key={data.path}>
-                      <Search
-                        history={history}
-                        match={match}
-                        location={location}
-                      />
-                    </NavItem>
-                  );
-                }
                 return (
                   <NavItem
                     key={data.path}
                     className={`navBar__navItems__${data.path}`}
                   >
-                    {this.getNavLink(data)}
+                    {data.linkName === 'Search' ? (
+                      <Search
+                        history={history}
+                        match={match}
+                        location={location}
+                      />
+                    ) : (
+                      this.getNavLink(data)
+                    )}
                   </NavItem>
                 );
               })}
+              <NavItem key="sign" className="navBar__navItems__sign">
+                {user
+                  ? this.getNavLink(SIGNOUT_LINK_NAME)
+                  : this.getNavLink(SIGNIN_LINK_NAME)}
+              </NavItem>
             </Nav>
           </Collapse>
         </Navbar>
