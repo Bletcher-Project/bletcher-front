@@ -9,9 +9,8 @@ import TestPost from 'Components/Post/testPost';
 import UploadPost from 'Components/Upload/UploadPost';
 
 import dummyPost from './dummyPost.json';
-  token: null,
-};
-const defaultProps = {
+
+const defaultProps = {};
 
 const propTypes = {
   dispatch: PropTypes.func.isRequired,
