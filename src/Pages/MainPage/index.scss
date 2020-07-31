@@ -1,20 +1,18 @@
 /*
-  Home Page Styling
+  Main Page Styling
 */
 
 .mainPage {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  align-content: center;
-  align-items: center;
-  margin-top: 80px;
+  margin-top: 100px;
 
   &__newPost {
+    margin: auto;
     width: 500px;
     border: 1px solid #ccd0d5;
     border-radius: 20px;
-    margin-bottom: 10px;
     text-align: center;
     cursor: pointer;
     &:hover {
@@ -22,8 +20,10 @@
     }
   }
 
-  &__feed {
+  &__postList {
     display: flex;
-    flex-direction: column;
+    flex-flow: row wrap;
+    margin-left: 2%;
+    margin-right: 2%;
   }
 }
