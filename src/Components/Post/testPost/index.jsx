@@ -13,12 +13,14 @@ import MixButton from 'Assets/icons/MixButton';
 
 const defaultProps = {};
 const propTypes = {
+  postId: PropTypes.number.isRequired,
   postImg: PropTypes.string.isRequired,
   postCategory: PropTypes.string.isRequired,
   postTitle: PropTypes.string.isRequired,
   postDescription: PropTypes.string.isRequired,
   isFavorite: PropTypes.bool.isRequired,
-  isActive: PropTypes.string.isRequired,
+  userId: PropTypes.number.isRequired,
+  // isActive: PropTypes.string.isRequired,
   history: ReactRouterPropTypes.history.isRequired,
 };
 
@@ -48,20 +50,27 @@ class TestPost extends Component {
     };
   }
 
-  hoverToggler = () => {
-    const { isHover } = this.state;
-    this.setState({ isHover: !isHover });
+  onClickHandler = () => {
+    const { history, postId, userId } = this.props;
+    history.push({
+      pathname: '/detail',
+      search: `?postId=${postId}&authorId=${userId}`,
+    });
   };
 
-  onMouseHandler = () => {
-    this.hoverToggler();
+  hoverToggler = (action) => {
+    this.setState({ isHover: action === 'enter' });
   };
 
-  hoverOnClickHandler = (clickItem) => {
+  onMouseHandler = (action) => {
+    this.hoverToggler(action);
+  };
+
+  buttonClickHandler = (clickItem) => {
     if (clickItem === 'favorite') {
       // update user's favorite in database
     } else if (clickItem === 'mix') {
-      // rotue to mix page.
+      // route to MixPage
     }
   };
 
@@ -71,7 +80,9 @@ class TestPost extends Component {
     return (
       <div
         className="post"
-        onMouseEnter={this.onMouseHandler}
+        onMouseEnter={() => {
+          this.onMouseHandler('enter');
+        }}
         onMouseLeave={this.onMouseHandler}
       >
         {isHover && (
@@ -80,31 +91,37 @@ class TestPost extends Component {
               <LikeStar
                 liked={isFavorite}
                 onClick={() => {
-                  this.hoverOnClickHandler('favorite');
+                  this.buttonClickHandler('favorite');
                 }}
               />
               <MixButton
                 onClick={() => {
-                  this.hoverOnClickHandler('mix');
+                  this.buttonClickHandler('mix');
                 }}
               />
             </div>
           </div>
         )}
-        <div className="post__content">
-          <div className="post__content__imageBox">
-            <img
-              className="post__content__imageBox__image"
-              src={`${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_POST}/${postImg}`}
-              alt="postImage"
-            />
+        <button
+          className="postButton"
+          type="button"
+          onClick={this.onClickHandler}
+        >
+          <div className="post__content">
+            <div className="post__content__imageBox">
+              <img
+                className="post__content__imageBox__image"
+                src={`${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_POST}/${postImg}`}
+                alt="postImage"
+              />
+            </div>
           </div>
-        </div>
-        <div className="post__footer">
-          <div className="post__footer__title">{postTitle}</div>
-          <div className="post__footer__description">{postDescription}</div>
-          <div className="post__footer__category">{postCategory}</div>
-        </div>
+          <div className="post__footer">
+            <div className="post__footer__title">{postTitle}</div>
+            <div className="post__footer__description">{postDescription}</div>
+            <div className="post__footer__category">{postCategory}</div>
+          </div>
+        </button>
       </div>
     );
   }

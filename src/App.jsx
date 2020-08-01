@@ -21,6 +21,7 @@ import FavoritePage from 'Pages/FavoritePage';
 import CartPage from 'Pages/CartPage';
 import NewPage from 'Pages/NewPage';
 import NotFoundPage from 'Pages/NotFoundPage';
+import DetailPage from 'Pages/DetailPage';
 
 const defaultProps = {
   token: null,
@@ -68,9 +69,10 @@ class App extends Component {
           <Route exact path="/funding" component={FundingPage} />
           <Route exact path="/favorite" component={FavoritePage} />
           <Route exact path="/cart" component={CartPage} />
-          <Route path="/search" component={SearchPage} />
           <Route exact path="/user/:username/profile" component={ProfilePage} />
           <Route exact path="/user/:username" component={UserPage} />
+          <Route path="/detail" component={DetailPage} />
+          <Route path="/search" component={SearchPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </div>

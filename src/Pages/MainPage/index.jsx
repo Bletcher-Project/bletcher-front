@@ -37,7 +37,7 @@ class MainPage extends Component {
   }
 
   componentDidMount() {
-    this.getAllPosts();
+    // this.getAllPosts();
   }
 
   getAllPosts = () => {
@@ -72,11 +72,13 @@ class MainPage extends Component {
               {dummyPost.posts.map((data) => {
                 return (
                   <TestPost
+                    postId={data.id}
                     postImg={data.postImgName}
                     postCategory={data.postCategory}
                     postTitle={data.postTitle}
                     postDescription={data.postDescription}
                     isFavorite={data.isFavorite}
+                    userId={data.UserId}
                     key={data.id}
                   />
                 );

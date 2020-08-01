@@ -6,7 +6,6 @@
       "postCategory": "A B C",
       "postTitle": "Title",
       "postDescription": "Description",
-
       "postImgWidth": "180",
       "postImgHeight": "240",
       "content": "냥",
@@ -14,23 +13,7 @@
       "updatedAt": "2020-06-29T05:21:45.000Z",
       "deletedAt": null,
       "UserId": 2,
-      "isFavorite": false,
-      "UserId": 2
-    },
-    {
-      "id": 2,
-      "postImgName": "스크린샷 2020-07-08 오후 6.02.511594482834979.png",
-      "postCategory": "A B C",
-      "postTitle": "Title",
-      "postDescription": "Description",
-      "postImgWidth": "240",
-      "postImgHeight": "80",
-      "content": "IM TOP 2",
-      "createdAt": "2020-07-11T15:53:54.000Z",
-      "updatedAt": "2020-07-11T15:53:54.000Z",
-      "deletedAt": null,
-      "UserId": 2,
-      "isFavorite": true
+      "isFavorite": false
     },
     {
       "id": 3,
