@@ -57,14 +57,10 @@ class App extends Component {
       <div className="app">
         <Switch>
           <Route exact path="/" component={MainPage} />
-          </Route>
           <Route path="/signin">
-            {isLogin ? <Redirect to="/home" /> : <SignInPage />}
+            {isLogin ? <Redirect to="/" /> : <SignInPage />}
           </Route>
           <Route exact path="/signup" component={SignUpPage} />
-          <Route exact path="/home">
-            {!isLogin ? <Redirect to="/" /> : <MainPage />}
-          </Route>
           <Route exact path="/shop" component={ShopPage} />
           <Route exact path="/new" component={NewPage} />
           <Route exact path="/funding" component={FundingPage} />

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Input from 'Components/Form/Input';
-import CheckIcon from 'Components/Icon/CheckIcon';
+import CheckIcon from 'Components/Form/CheckIcon';
 
 import {
   DEFAULT_HELPER_TEXT,
