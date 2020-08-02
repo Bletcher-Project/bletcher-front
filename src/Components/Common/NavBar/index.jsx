@@ -37,7 +37,9 @@ const propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
   location: ReactRouterPropTypes.location.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
-  user: PropTypes.objectOf(PropTypes.object),
+  user: PropTypes.shape({
+    id: PropTypes.number,
+  }),
 };
 
 const mapStateToProps = (state) => {

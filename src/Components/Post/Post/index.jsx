@@ -1,31 +1,27 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
 import * as PostAction from 'Redux/post';
 
-import Thumbnail from 'Components/Thumbnail';
-import Comment from 'Components/Post/Comment';
+import { IMAGE, IMAGE_POST } from 'Constants/api-uri';
 
-import moment from 'moment';
-import commaNumber from 'comma-number';
-
-import likeIcon from 'Assets/images/heart.png';
-import filledLikeIcon from 'Assets/images/heart-filled.png';
-import commentIcon from 'Assets/images/comment.png';
-import filledCommentIcon from 'Assets/images/comment-filled.png';
-import scrapIcon from 'Assets/images/scrap.png';
-import filledScrapIcon from 'Assets/images/scrap-filled.png';
-
-import {
-  INIT,
-  COMMENT_API,
-  IMAGE,
-  IMAGE_PROFILE,
-  IMAGE_POST,
-} from 'Constants/api-uri';
+import LikeStar from 'Assets/icons/LikeStar';
+import MixButton from 'Assets/icons/MixButton';
 
 const defaultProps = {};
-const propTypes = {};
+const propTypes = {
+  postId: PropTypes.number.isRequired,
+  postImg: PropTypes.string.isRequired,
+  postCategory: PropTypes.string.isRequired,
+  postTitle: PropTypes.string.isRequired,
+  postDescription: PropTypes.string.isRequired,
+  isFavorite: PropTypes.bool.isRequired,
+  userId: PropTypes.number.isRequired,
+  history: ReactRouterPropTypes.history.isRequired,
+};
 
 const mapStateToProps = (state) => {
   return {
@@ -46,207 +42,85 @@ const mapDispatchToProps = (dispatch) => {
 class Post extends Component {
   constructor(props) {
     super(props);
+    const { isFavorite } = this.props;
     this.state = {
-      likeClicked: this.props.isLiked,
-      likeIcon: likeIcon,
-      likeActionCount: 0,
-      scrapClicked: false,
-      scrapIcon: scrapIcon,
-      commentClicked: false,
-      commentIcon: commentIcon,
-      comments: [],
+      isHover: false,
+      isFavorite,
     };
   }
 
-  toggleLike = () => {
-    const { likePost, deleteLikePost, postId, token } = this.props;
-    this.setState({ likeClicked: !this.state.likeClicked }, () => {
-      if (this.state.likeClicked) {
-        this.setState({ likeActionCount: this.state.likeActionCount + 1 });
-        likePost(postId, token);
-      } else {
-        this.setState({ likeActionCount: this.state.likeActionCount - 1 });
-        deleteLikePost(postId, token);
-      }
+  onClickHandler = () => {
+    const { history, postId, userId } = this.props;
+    history.push({
+      pathname: '/detail',
+      search: `?postId=${postId}&authorId=${userId}`,
     });
   };
 
-  toggleComment = () => {
-    this.setState({ commentClicked: !this.state.commentClicked }, () => {
-      if (this.state.commentClicked) {
-        this.setState({ commentIcon: filledCommentIcon });
-        this.getComments();
-      } else {
-        this.setState({ commentIcon });
-      }
-    });
+  hoverToggler = (action) => {
+    this.setState({ isHover: action === 'enter' });
   };
 
-  toggleScrap = () => {
-    this.setState({ scrapClicked: !this.state.scrapClicked }, () => {
-      if (this.state.scrapClicked) {
-        this.setState({ scrapIcon: filledScrapIcon });
-      } else {
-        this.setState({ scrapIcon });
-      }
-    });
+  onMouseHandler = (action) => {
+    this.hoverToggler(action);
   };
 
-  handleDelete = async () => {
-    const postDelete = await this.props.deletePost(this.props.postId);
-    return postDelete ? window.location.reload() : alert('delete failed!');
-  };
-
-  getComments = async () => {
-    try {
-      let response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${COMMENT_API}/${this.props.postId}`,
-        {
-          method: 'GET',
-          headers: {
-            'x-access-token': this.props.token,
-          },
-        },
-      );
-      if (response.status === 200) {
-        const result = await response.json();
-        this.setState({ comments: result.comments });
-      }
-    } catch (error) {
-      console.log(error);
-      this.setState({ comments: [] });
+  buttonClickHandler = (clickItem) => {
+    if (clickItem === 'favorite') {
+      // update user's favorite in database
+    } else if (clickItem === 'mix') {
+      // route to MixPage
     }
   };
 
   render() {
-    const {
-      isMyPost,
-      userProfileImg,
-      userName,
-      userType,
-      postContent,
-      postHashTags,
-      postImg,
-      postDate,
-      postLike,
-    } = this.props;
-    const {
-      likeClicked,
-      likeIcon,
-      likeActionCount,
-      scrapIcon,
-      commentClicked,
-      commentIcon,
-      comments,
-    } = this.state;
-
+    const { postImg, postDescription, postCategory, postTitle } = this.props;
+    const { isHover, isFavorite } = this.state;
     return (
-      <div className="post">
-        <div className="post__postSection">
-          <div className="post__postSection__header">
-            <Thumbnail
-              className="post__postSection__header__userProfile"
-              size="50"
-              src={
-                userProfileImg !== null
-                  ? `${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_PROFILE}/${userProfileImg}`
-                  : null
-              }
-              type={userType}
-              userName={userName}
-            />
-            <div className="post__postSection__header__postInfo">
-              <div>
-                <span className="post__postSection__header__postInfo__userName">
-                  {userName}
-                </span>
-                <span className="post__postSection__header__postInfo__userType">
-                  [{userType === '0' ? 'Sketcher' : 'Creator'}]
-                </span>
-              </div>
-
-              <div className="post__postSection__header__postInfo__postDate">
-                {moment(postDate).format('YYYY-MM-DD HH:mm:ss')}
-              </div>
+      <div
+        className="post"
+        onMouseEnter={() => {
+          this.onMouseHandler('enter');
+        }}
+        onMouseLeave={this.onMouseHandler}
+      >
+        {isHover && (
+          <div className="post__hover">
+            <div className="post__hover__icon">
+              <LikeStar
+                liked={isFavorite}
+                onClick={() => {
+                  this.buttonClickHandler('favorite');
+                }}
+              />
+              <MixButton
+                onClick={() => {
+                  this.buttonClickHandler('mix');
+                }}
+              />
             </div>
           </div>
-
-          <div className="post__postSection__body">
-            <img
-              className="post__postSection__body__postImage"
-              src={`${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_POST}/${postImg}`}
-              alt="postImage"
-            />
-          </div>
-
-          <div className="post__postSection__footer">
-            <div className="post__postSection__footer__postContent">
-              {postContent}
-            </div>
-            <div className="post__postSection__footer__postHashtag">
-              {postHashTags.map((hashtags) => (
-                <div
-                  className="post__postSection__footer__postHashtag-tagbox"
-                  key={hashtags.id}
-                >
-                  <span>#{hashtags.tags}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="post__postSection__footer__communicateArea">
-              <div
-                className="post__postSection__footer__communicateArea__like"
-                onClick={this.toggleLike}
-              >
-                <img
-                  src={likeClicked ? filledLikeIcon : likeIcon}
-                  width="25px"
-                  height="25px"
-                  alt="likeIcon"
-                />
-                {isMyPost && postLike + likeActionCount > 0 ? (
-                  <span className="post__postSection__footer__communicateArea__like-num">
-                    {commaNumber(postLike + likeActionCount)}
-                  </span>
-                ) : null}
-              </div>
-
-              <div
-                className="post__postSection__footer__communicateArea__comment"
-                onClick={this.toggleComment}
-              >
-                <img
-                  src={commentIcon}
-                  width="25px"
-                  height="25px"
-                  alt="commentIcon"
-                />
-                {/* <span className="post__postSection__footer__communicateArea__comment-num">
-                  {commaNumber(comments.length)}
-                </span> */}
-              </div>
-
-              <div
-                className="post__postSection__footer__communicateArea__scrap"
-                onClick={this.toggleScrap}
-              >
-                <img
-                  src={scrapIcon}
-                  width="25px"
-                  height="25px"
-                  alt="scrapIcon"
-                />
-              </div>
+        )}
+        <button
+          className="postButton"
+          type="button"
+          onClick={this.onClickHandler}
+        >
+          <div className="post__content">
+            <div className="post__content__imageBox">
+              <img
+                className="post__content__imageBox__image"
+                src={`${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_POST}/${postImg}`}
+                alt="postImage"
+              />
             </div>
           </div>
-        </div>
-
-        {commentClicked ? (
-          <div className="post__commentSection">
-            <Comment comments={comments} />
+          <div className="post__footer">
+            <div className="post__footer__title">{postTitle}</div>
+            <div className="post__footer__description">{postDescription}</div>
+            <div className="post__footer__category">{postCategory}</div>
           </div>
-        ) : null}
+        </button>
       </div>
     );
   }
@@ -255,4 +129,4 @@ class Post extends Component {
 Post.defaultProps = defaultProps;
 Post.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Post);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Post));

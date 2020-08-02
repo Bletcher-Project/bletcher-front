@@ -1,106 +1,81 @@
-/*
-  Post Component Styling
-*/
-
 .post {
+  margin: 1%;
+  padding: 1%;
   display: flex;
-  justify-content: center;
-  z-index: 1000;
+  flex-grow: 3;
+  max-width: 350px;
+  height: 550px;
+  flex-direction: column;
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
 
-  &__postSection {
-    width: 500px;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.05);
-    border: 1px solid #eeeeee;
+  &:hover {
+    background-color: #f2f2f2;
+  }
 
-    &__header {
-      padding: 15px 20px;
-      display: flex;
-
-      &__postInfo {
-        margin-left: 15px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-
-        &__userName {
-          font-family: 'DM Serif Text', serif;
-          font-size: 1.1rem;
-          margin-right: 7px;
-        }
-
-        &__userType,
-        &__postDate {
-          font-size: 0.9rem;
-          color: #777777;
-        }
-      }
-    }
-
-    &__body {
-      &__postImage {
-        width: 100%;
-      }
-    }
-
-    &__footer {
-      padding: 15px 20px 10px 20px;
-
-      &__postContent {
-        font-size: 1rem;
-      }
-
-      &__postHashtag {
-        display: flex;
-
-        &-tagbox {
-          cursor: pointer;
-          color: $main-color;
-          font-size: 0.9rem;
-          margin-right: 5px;
-
-          &:hover {
-            background-color: rgba(154, 122, 243, 0.3);
-          }
-        }
-      }
-
-      &__communicateArea {
-        width: 100%;
-        height: 50px;
-        margin-top: 15px;
-        padding-top: 5px;
-        border-top: 1px solid #e6e6e6;
-        display: flex;
-        justify-content: space-between;
-
-        &__like,
-        &__comment,
-        &__scrap {
-          cursor: pointer;
-          width: 33%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin: 2px 0;
-
-          &:hover {
-            background-color: #f8f8f8;
-          }
-
-          &-num {
-            margin-left: 10px;
-            color: #707070;
-          }
+  &__hover {
+    z-index: 1;
+    &__icon {
+      position: absolute;
+      .bi {
+        cursor: pointer;
+        width: 50px;
+        height: auto;
+        z-index: 2;
+        border: 1px solid #d6c4c3;
+        border-radius: 50%;
+        padding: 10px;
+        margin-right: 15px;
+        color: #d2b2d9;
+        background-color: white;
+        &.bi-brush {
+          color: #f59b47;
         }
       }
     }
   }
 
-  &__commentSection {
-    width: 300px;
-    // z-index: -1;
+  &__content {
+    display: flex;
+    align-items: center;
+    height: 85%;
+
+    &__imageBox {
+      &__image {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+  }
+
+  &__footer {
+    height: 15%;
+    display: inline-block;
+    vertical-align: bottom;
+
+    &__title {
+      text-align: center;
+    }
+
+    &__description {
+      text-align: center;
+    }
+
+    &__category {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+}
+
+.postButton {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  position: relative;
+  &:focus {
+    outline: none;
   }
 }

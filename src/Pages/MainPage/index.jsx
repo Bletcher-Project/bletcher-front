@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import * as PostAction from 'Redux/post';
 
 import NavBar from 'Components/Common/NavBar';
-import TestPost from 'Components/Post/testPost';
+import Post from 'Components/Post/Post';
 import UploadPost from 'Components/Upload/UploadPost';
 
 import dummyPost from './dummyPost.json';
@@ -71,7 +71,7 @@ class MainPage extends Component {
             <div className="mainPage__postList">
               {dummyPost.posts.map((data) => {
                 return (
-                  <TestPost
+                  <Post
                     postId={data.id}
                     postImg={data.postImgName}
                     postCategory={data.postCategory}

@@ -22,6 +22,7 @@ import CartPage from 'Pages/CartPage';
 import NewPage from 'Pages/NewPage';
 import NotFoundPage from 'Pages/NotFoundPage';
 import DetailPage from 'Pages/DetailPage';
+import SignInPageDummy from 'Pages/SignInPageDummy';
 
 const defaultProps = {
   token: null,
@@ -57,9 +58,7 @@ class App extends Component {
       <div className="app">
         <Switch>
           <Route exact path="/" component={MainPage} />
-          <Route path="/signin">
-            {isLogin ? <Redirect to="/home" /> : <MainPage />}
-          </Route>
+          <Route exact path="/signin" component={SignInPageDummy} />
           <Route exact path="/signup" component={SignUpPage} />
           <Route exact path="/home">
             {!isLogin ? <Redirect to="/" /> : <MainPage />}

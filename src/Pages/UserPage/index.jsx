@@ -28,7 +28,9 @@ const defaultProps = {
 };
 const propTypes = {
   match: ReactRouterPropTypes.match.isRequired,
-  user: PropTypes.objectOf(PropTypes.object),
+  user: PropTypes.shape({
+    id: PropTypes.number,
+  }),
 };
 
 const mapStateToProps = (state) => {
