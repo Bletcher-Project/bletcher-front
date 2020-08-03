@@ -8,6 +8,7 @@ const search = (
     className="bi bi-search"
     fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
+    style={{ color: '#a26bc3' }}
   >
     <path
       fillRule="evenodd"

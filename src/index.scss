@@ -32,12 +32,13 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans&display=swap'); // (google) NotoSans font
 @import url('https://fonts.googleapis.com/css?family=DM+Serif+Text&display=swap'); // (google) DM Serif Text font
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+@import url('https://cdn.rawgit.com/mfd/f3d96ec7f0e8f034cc22ea73b3797b59/raw/856f1dbb8d807aabceb80b6d4f94b464df461b3e/gotham.css');
 
 html,
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: GothamPro, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   a {

@@ -22,11 +22,7 @@ import person from 'Assets/icons/person';
 import shopCart from 'Assets/icons/shopCart';
 import cx from 'classnames';
 
-import {
-  NAV_LINK_NAME,
-  SIGNIN_LINK_NAME,
-  SIGNOUT_LINK_NAME,
-} from 'Constants/link-name';
+import { NAV_LINK_NAME } from 'Constants/link-name';
 
 const defaultProps = {
   user: null,
@@ -100,12 +96,12 @@ class NavBar extends Component {
   };
 
   render() {
-    const { history, match, location, user } = this.props;
+    const { history, match, location } = this.props;
     const { isOpen } = this.state;
     return (
       <>
-        <Navbar className="navBar" light fixed="true" expand="md">
-          <NavbarBrand className="col-2" href="/">
+        <Navbar className="navBar" light expand="md">
+          <NavbarBrand className="ml-5 col-2" href="/">
             <Logo />
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
@@ -132,11 +128,6 @@ class NavBar extends Component {
                   </NavItem>
                 );
               })}
-              <NavItem key="sign" className="navBar__navItems__sign">
-                {user
-                  ? this.getNavLink(SIGNOUT_LINK_NAME)
-                  : this.getNavLink(SIGNIN_LINK_NAME)}
-              </NavItem>
             </Nav>
           </Collapse>
         </Navbar>

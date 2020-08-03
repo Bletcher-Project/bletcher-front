@@ -56,6 +56,15 @@ class MainPage extends Component {
     return (
       <div className="mainPage">
         <NavBar isActive="feed" />
+        <div className="mainPage__expanded">
+          <div className="mainPage__expanded__content">
+            <hr className="mainPage__expanded__content__line" />
+            <div className="mainPage__expanded__content__title">Find out</div>
+            <div className="mainPage__expanded__content__description">
+              What other people painted
+            </div>
+          </div>
+        </div>
         {newPostClicked ? (
           <UploadPost
             userId={this.props.user.id}

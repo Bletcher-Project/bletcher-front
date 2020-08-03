@@ -1,3 +1,12 @@
 /*
   Funding Page Styling
 */
+
+.fundingPage {
+  &__postList {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin: 2% 1% 0 1%;
+  }
+}

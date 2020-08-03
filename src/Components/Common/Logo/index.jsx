@@ -1,12 +1,11 @@
 import React from 'react';
 
-import logoImg from 'Assets/logo/logo.svg';
+import logoImg from 'Assets/logo/logo.png';
 
 function Logo() {
   return (
     <div className="logo">
-      <img src={logoImg} width="33px" alt="logo" />
-      <span>Bletcher</span>
+      <img src={logoImg} alt="logo" />
     </div>
   );
 }

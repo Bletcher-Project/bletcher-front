@@ -6,6 +6,8 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 import { connect } from 'react-redux';
 import * as PostAction from 'Redux/post';
 
+import cx from 'classnames';
+
 import { IMAGE, IMAGE_POST } from 'Constants/api-uri';
 
 import LikeStar from 'Assets/icons/LikeStar';
@@ -73,7 +75,7 @@ class Post extends Component {
   };
 
   render() {
-    const { postImg, postTitle } = this.props;
+    const { postImg, postTitle, isActive } = this.props;
     const { isHover, isFavorite } = this.state;
     return (
       <div className="post">
@@ -118,6 +120,30 @@ class Post extends Component {
                 alt="postImage"
               />
             </div>
+          </div>
+
+          <div
+            className={cx(
+              'post__main__footer',
+              {
+                main:
+                  isActive === 'feed' ||
+                  isActive === 'user' ||
+                  isActive === 'shop',
+              },
+              { funding: isActive === 'funding' },
+            )}
+          >
+            {isActive === 'funding' && (
+              <>
+                <div className="post__main__footer funding__tab">
+                  <div className="post__main__footer funding__tab__dueDate">
+                    1:32:21
+                  </div>
+                </div>
+                <div className="post__main__footer funding__tab">362명</div>
+              </>
+            )}
           </div>
         </button>
       </div>

@@ -7,6 +7,33 @@
   justify-content: center;
   flex-direction: column;
 
+  &__expanded {
+    height: 150px;
+    background-color: $nav-color;
+    &__content {
+      height: 100%;
+      margin-left: 80px;
+      font-family: GothamPro;
+      font-stretch: normal;
+      font-style: normal;
+      color: #a26bc3;
+      font-size: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      &__title {
+        font-weight: bolder;
+      }
+
+      &__line {
+        max-width: 70px;
+        margin: 0;
+        border: 1px solid $main-color;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
   &__newPost {
     margin: 20px auto 0 auto;
     width: 500px;
@@ -23,7 +50,6 @@
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    margin-left: 2%;
-    margin-right: 2%;
+    margin: 2% 1% 0 1%;
   }
 }
