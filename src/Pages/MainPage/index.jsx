@@ -74,12 +74,11 @@ class MainPage extends Component {
                   <Post
                     postId={data.id}
                     postImg={data.postImgName}
-                    postCategory={data.postCategory}
                     postTitle={data.postTitle}
-                    postDescription={data.postDescription}
                     isFavorite={data.isFavorite}
                     userId={data.UserId}
                     key={data.id}
+                    isActive="feed"
                   />
                 );
               })}

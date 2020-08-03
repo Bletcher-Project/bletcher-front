@@ -100,7 +100,12 @@
     } /* end header css */
 
     &__body {
-      width: 60%;
+      width: 100%;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: center;
+      margin-left: 2%;
+      margin-right: 2%;
     }
   }
 }

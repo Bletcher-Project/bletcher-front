@@ -15,12 +15,11 @@ const defaultProps = {};
 const propTypes = {
   postId: PropTypes.number.isRequired,
   postImg: PropTypes.string.isRequired,
-  postCategory: PropTypes.string.isRequired,
   postTitle: PropTypes.string.isRequired,
-  postDescription: PropTypes.string.isRequired,
   isFavorite: PropTypes.bool.isRequired,
   userId: PropTypes.number.isRequired,
   history: ReactRouterPropTypes.history.isRequired,
+  isActive: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -74,51 +73,51 @@ class Post extends Component {
   };
 
   render() {
-    const { postImg, postDescription, postCategory, postTitle } = this.props;
+    const { postImg, postTitle } = this.props;
     const { isHover, isFavorite } = this.state;
     return (
-      <div
-        className="post"
-        onMouseEnter={() => {
-          this.onMouseHandler('enter');
-        }}
-        onMouseLeave={this.onMouseHandler}
-      >
-        {isHover && (
-          <div className="post__hover">
-            <div className="post__hover__icon">
-              <LikeStar
-                liked={isFavorite}
-                onClick={() => {
-                  this.buttonClickHandler('favorite');
-                }}
-              />
-              <MixButton
-                onClick={() => {
-                  this.buttonClickHandler('mix');
-                }}
-              />
-            </div>
-          </div>
-        )}
+      <div className="post">
         <button
-          className="postButton"
+          className="post__main"
           type="button"
           onClick={this.onClickHandler}
+          onMouseOver={() => {
+            this.hoverToggler('enter');
+          }}
+          onMouseLeave={this.hoverToggler}
+          onFocus={() => {}}
         >
-          <div className="post__content">
-            <div className="post__content__imageBox">
+          <div className="post__main__header">
+            <div className="post__main__header__title">{postTitle}</div>
+          </div>
+          {isHover && (
+            <div className="post__main__hover">
+              <div className="post__main__hover__icon">
+                <LikeStar
+                  liked={isFavorite}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    this.buttonClickHandler('favorite');
+                  }}
+                />
+                <MixButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    this.buttonClickHandler('mix');
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="post__main__content">
+            <div className="post__main__content__imgBox">
               <img
-                className="post__content__imageBox__image"
+                className="post__main__content__imgBox__image"
                 src={`${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_POST}/${postImg}`}
                 alt="postImage"
               />
             </div>
-          </div>
-          <div className="post__footer">
-            <div className="post__footer__title">{postTitle}</div>
-            <div className="post__footer__description">{postDescription}</div>
-            <div className="post__footer__category">{postCategory}</div>
           </div>
         </button>
       </div>
