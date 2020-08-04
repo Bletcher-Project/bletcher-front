@@ -10,3 +10,8 @@ $light-gray: #a7a7a7;
 $background-color: #fff4c9;
 
 $white: #ffffff;
+
+:export {
+  mainColor: $main-color;
+  lightGray: $light-gray;
+}

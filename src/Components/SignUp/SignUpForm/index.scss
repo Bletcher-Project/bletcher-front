@@ -3,34 +3,12 @@
 */
 
 .signUpForm {
-  &__profileImg {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 20px;
 
-    & p {
-      cursor: pointer;
-      margin: 0;
-    }
-  }
-
-  &__userInfo {
-    display: flex;
-    flex-direction: column;
-
-    &__account {
-      padding-right: 10px;
-
-      & form {
-        display: flex;
-        flex-direction: column;
-      }
-    }
-
-    &__profile {
-      display: flex;
-      flex-direction: column;
-      padding-left: 10px;
-    }
+  &__input {
+    margin: 5px 0;
   }
 }

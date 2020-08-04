@@ -9,7 +9,7 @@
   color: $light-gray;
 
   &__header {
-    padding: 15px 0;
+    padding: 10px 0;
   }
 
   &__container {
@@ -20,7 +20,7 @@
     padding-bottom: 20px;
     background-color: $white;
     width: 480px;
-    height: 540px;
+    min-height: 540px;
     border-radius: 25px;
 
     &__form {
@@ -52,12 +52,14 @@
 
         & hr {
           width: 60%;
+          margin-top: 0;
         }
       }
     }
 
     &__footer {
       @include content-center;
+      margin-top: 20px;
 
       &-signinlink {
         font-size: $guidance;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Input from 'Components/Form/Input';
+import RoundInput from 'Components/Form/RoundInput';
 import CheckIcon from 'Components/Form/CheckIcon';
 
 import {
@@ -227,41 +227,43 @@ class SignUpForm extends Component {
 
     return (
       <>
-        <div className="signUpForm__userInfo">
-          <div className="signUpForm__userInfo__account">
-            <form>
-              <Input
-                label="이메일"
-                type="text"
-                width="250px"
-                error={isValid.email === false}
-                helperText={helperText.email}
-                InputProps={isValid.email ? <CheckIcon /> : null}
-                onChange={(e) => this.handleEmail(e)}
-              />
-              <Input
-                label="사용자 이름 (영문)"
-                type="text"
-                autoComplete="username"
-                width="250px"
-                error={isValid.name === false}
-                helperText={helperText.name}
-                InputProps={isValid.name ? <CheckIcon /> : null}
-                onChange={(e) => this.handleName(e)}
-              />
-              <Input
-                label="비밀번호"
-                type="password"
-                autoComplete="new-password"
-                width="250px"
-                error={isValid.password === false}
-                helperText={helperText.password}
-                InputProps={isValid.password ? <CheckIcon /> : null}
-                onChange={(e) => this.handlePassword(e)}
-              />
-            </form>
+        <form className="signUpForm">
+          <div className="signUpForm__input">
+            <RoundInput
+              placeholder="Email"
+              type="text"
+              width="100%"
+              error={isValid.email === false}
+              helperText={helperText.email}
+              InputProps={isValid.email ? <CheckIcon /> : null}
+              onChange={(e) => this.handleEmail(e)}
+            />
           </div>
-        </div>
+          <div className="signUpForm__input">
+            <RoundInput
+              placeholder="Name"
+              type="text"
+              autoComplete="username"
+              width="100%"
+              error={isValid.name === false}
+              helperText={helperText.name}
+              InputProps={isValid.name ? <CheckIcon /> : null}
+              onChange={(e) => this.handleName(e)}
+            />
+          </div>
+          <div className="signUpForm__input">
+            <RoundInput
+              placeholder="Password"
+              type="password"
+              autoComplete="new-password"
+              width="100%"
+              error={isValid.password === false}
+              helperText={helperText.password}
+              InputProps={isValid.password ? <CheckIcon /> : null}
+              onChange={(e) => this.handlePassword(e)}
+            />
+          </div>
+        </form>
       </>
     );
   }
