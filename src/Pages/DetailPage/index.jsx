@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
 
-import NavBar from 'Components/Common/NavBar';
 import queryString from 'query-string';
+import cx from 'classnames';
+
+import NavBar from 'Components/Common/NavBar';
 import { IMAGE, IMAGE_POST } from 'Constants/api-uri';
 
 import LikeStar from 'Assets/icons/LikeStar';
 import MixButton from 'Assets/icons/MixButton';
+import person from 'Assets/icons/person';
+import DueDate from 'Assets/icons/DueDate';
 
 import dummyPost from 'Pages/MainPage/dummyPost.json';
 
@@ -25,7 +29,7 @@ class DetailPage extends Component {
   render() {
     const { location } = this.props;
     const query = queryString.parse(location.search);
-    const { authorId, postId } = query;
+    const { authorId, postId, active } = query;
     const postInfo = dummyPost.posts.filter(
       (post) => JSON.stringify(post.id) === postId,
     )[0];
@@ -43,15 +47,48 @@ class DetailPage extends Component {
             </div>
           </div>
 
-          <div className="detailPage__feature">
-            <div>
-              <LikeStar liked />
-              <span className="detailPage__feature__buttonText">FAVORITE</span>
-            </div>
-            <div>
-              <MixButton />
-              <span className="detailPage__feature__buttonText">BLEND</span>
-            </div>
+          <div
+            className={cx('detailPage__rightTab', {
+              fundInfo: active === 'funding',
+            })}
+          >
+            {active === 'funding' ? (
+              <>
+                <div>
+                  <span>{/* user1 profileImg */}</span>
+                  <span>권혁진</span>
+                </div>
+                <div>
+                  <span>{/* user2 profileImg */}</span>
+                  <span>권혁순</span>
+                </div>
+                <div>
+                  <span>
+                    <DueDate />
+                  </span>
+                  <span>1:32:21</span>
+                </div>
+                <div>
+                  <span>{person}</span>
+                  <span>192/300</span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <LikeStar liked />
+                  <span className="detailPage__rightTab__buttonText">
+                    FAVORITE
+                  </span>
+                </div>
+                <div>
+                  <MixButton />
+                  <span className="detailPage__rightTab__buttonText">
+                    BLEND
+                  </span>
+                </div>
+              </>
+            )}
           </div>
           <div className="detailPage__footer">
             <div className="detailPage__footer__title">

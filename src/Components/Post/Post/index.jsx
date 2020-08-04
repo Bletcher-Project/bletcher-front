@@ -54,10 +54,10 @@ class Post extends Component {
 
   onClickHandler = (isActive) => {
     const { history, postId, userId } = this.props;
-    if (isActive === 'new' || isActive === 'feed') {
+    if (isActive === 'new' || isActive === 'feed' || isActive === 'funding') {
       history.push({
         pathname: '/detail',
-        search: `?postId=${postId}&authorId=${userId}`,
+        search: `?postId=${postId}&authorId=${userId}&active=${isActive}`,
       });
     }
   };
