@@ -12,6 +12,8 @@ import { IMAGE, IMAGE_POST } from 'Constants/api-uri';
 
 import LikeStar from 'Assets/icons/LikeStar';
 import MixButton from 'Assets/icons/MixButton';
+import DueDate from 'Assets/icons/DueDate';
+import person from 'Assets/icons/person';
 
 const defaultProps = {};
 const propTypes = {
@@ -50,12 +52,14 @@ class Post extends Component {
     };
   }
 
-  onClickHandler = () => {
+  onClickHandler = (isActive) => {
     const { history, postId, userId } = this.props;
-    history.push({
-      pathname: '/detail',
-      search: `?postId=${postId}&authorId=${userId}`,
-    });
+    if (isActive === 'new' || isActive === 'feed') {
+      history.push({
+        pathname: '/detail',
+        search: `?postId=${postId}&authorId=${userId}`,
+      });
+    }
   };
 
   hoverToggler = (action) => {
@@ -82,17 +86,24 @@ class Post extends Component {
         <button
           className="post__main"
           type="button"
-          onClick={this.onClickHandler}
+          onClick={() => {
+            this.onClickHandler(isActive);
+          }}
           onMouseOver={() => {
             this.hoverToggler('enter');
           }}
           onMouseLeave={this.hoverToggler}
           onFocus={() => {}}
         >
-          <div className="post__main__header">
+          <div
+            className={cx('post__main__header', {
+              shown: isActive === 'funding',
+              none: isActive === 'user',
+            })}
+          >
             <div className="post__main__header__title">{postTitle}</div>
           </div>
-          {isHover && (
+          {isHover && (isActive === 'new' || isActive === 'feed') && (
             <div className="post__main__hover">
               <div className="post__main__hover__icon">
                 <LikeStar
@@ -123,25 +134,27 @@ class Post extends Component {
           </div>
 
           <div
-            className={cx(
-              'post__main__footer',
-              {
-                main:
-                  isActive === 'feed' ||
-                  isActive === 'user' ||
-                  isActive === 'shop',
-              },
-              { funding: isActive === 'funding' },
-            )}
+            className={cx('post__main__footer', {
+              funding: isActive === 'funding',
+            })}
           >
             {isActive === 'funding' && (
               <>
-                <div className="post__main__footer funding__tab">
-                  <div className="post__main__footer funding__tab__dueDate">
-                    1:32:21
+                <div className="post__main__footer funding">
+                  <hr className="post__main__footer funding__line" />
+                  <div className="post__main__footer funding__tab">
+                    <div className="post__main__footer funding__tab__dueDate">
+                      <span className="mr-1">
+                        <DueDate />
+                      </span>
+                      <span>1:32:21</span>
+                    </div>
+                    <div className="post__main__footer funding__tab__fundNum">
+                      <span>{person}</span>
+                      <span>192/300</span>
+                    </div>
                   </div>
                 </div>
-                <div className="post__main__footer funding__tab">362명</div>
               </>
             )}
           </div>

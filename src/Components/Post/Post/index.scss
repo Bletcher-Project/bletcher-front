@@ -1,20 +1,26 @@
 .post {
-  height: 550px;
-  max-width: 300px;
+  max-height: fit-content;
+  max-width: 25%;
+  margin-bottom: 10%;
+  @media screen and (max-width: 1200px) {
+    max-width: 33%;
+  }
+  @media screen and (max-width: 950px) {
+    max-width: 50%;
+  }
+  @media screen and (max-width: 700px) {
+    max-width: 100%;
+  }
 
   &__main {
     width: 100%;
-    height: fit-content;
     position: relative;
     display: flex;
     flex-grow: 3;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     border: none;
     background-color: transparent;
     cursor: pointer;
-
     &:focus {
       outline: none;
     }
@@ -50,12 +56,22 @@
       height: fit-content;
       visibility: hidden;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       background-color: #fff4c9;
 
+      &.shown {
+        visibility: visible;
+        background-color: transparent;
+        order: 1;
+      }
+
+      &.none {
+        display: none;
+      }
+
       &__title {
         font-size: 25px;
-        font-family: 'Montserrat', sans-serif;
       }
     }
 
@@ -63,7 +79,6 @@
       height: fit-content;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
       align-items: center;
 
       &__imgBox {
@@ -79,8 +94,19 @@
     &__footer.funding {
       width: 100%;
       display: flex;
-      flex-direction: row;
-      justify-content: space-around;
+      flex-flow: wrap;
+      order: 2;
+
+      &__tab {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+      }
+      &__line {
+        width: 75%;
+        border: 1px solid black;
+      }
     }
   }
 }

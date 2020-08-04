@@ -26,17 +26,19 @@ class SignInPage extends Component {
   }
 
   componentDidMount() {
-    this.dummySignIn();
+    const { history } = this.props;
+    this.dummySignIn().then(() => {
+      history.push('/');
+    });
   }
 
   dummySignIn = async () => {
-    const { dispatch, history } = this.props;
+    const { dispatch } = this.props;
     const params = { id: 'JJIN', password: 'gurwls97' };
 
     await dispatch(auth.postSignIn(params)).then(async (token) => {
       await dispatch(auth.getUser(token));
     });
-    await history.push('/');
   };
 
   render() {

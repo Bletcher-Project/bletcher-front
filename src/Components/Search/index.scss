@@ -4,8 +4,8 @@
 
 .searchTab {
   width: 175px;
-  height: 44px;
-  padding: 3%;
+  height: fit-content;
+  padding: 1%;
   border: 2px solid $main-color;
   border-radius: 25.5px;
   display: flex;
@@ -13,6 +13,5 @@
   &__button {
     border: none;
     background-color: transparent;
-    margin: 0 0 10px 10px;
   }
 }

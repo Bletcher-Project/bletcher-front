@@ -75,7 +75,7 @@ class MainPage extends Component {
         ) : (
           <div>
             <div className="mainPage__newPost" onClick={this.toggleNewPost}>
-              What are you thinking now?
+              Share Your Masterpiece!
             </div>
             <div className="mainPage__postList">
               {dummyPost.posts.map((data) => {
