@@ -52,6 +52,13 @@ class NavBar extends Component {
     };
   }
 
+  componentDidMount() {
+    setInterval(() => {
+      const { isOpen } = this.state;
+      if (isOpen) this.setState({ isOpen: false });
+    }, 8000);
+  }
+
   toggle = () => {
     const { isOpen } = this.state;
     this.setState({ isOpen: !isOpen });
