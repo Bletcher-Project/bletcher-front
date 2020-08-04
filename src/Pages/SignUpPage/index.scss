@@ -3,47 +3,76 @@
 */
 
 .signUpPage {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  @include content-full;
+  @include content-center;
+  background-color: $background-color;
+  color: $light-gray;
 
   &__header {
-    margin-top: 50px;
-
-    & p {
-      font-size: $header2;
-      margin: 0;
-    }
+    padding: 15px 0;
   }
 
-  &__content {
-    padding: 20px 0;
-  }
-
-  &__footer {
-    margin-top: 10px;
+  &__container {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: center;
+    padding-bottom: 20px;
+    background-color: $white;
+    width: 480px;
+    height: 540px;
+    border-radius: 25px;
 
-    &__signInLink {
-      font-size: $description;
-      margin-top: 12px;
+    &__form {
+      @include content-center;
+      width: 80%;
 
-      & a {
-        text-decoration: underline;
-        font-weight: 700;
+      &-linked {
+        width: 100%;
+        height: 80px;
       }
 
-      & a:hover {
-        text-decoration: underline;
-        color: $dark-gray;
+      &-division {
+        display: flex;
+        width: 100%;
+
+        & hr {
+          width: 100%;
+        }
+
+        & span {
+          font-size: $guidance;
+          padding: 5px 10px 0 10px;
+        }
+      }
+
+      &-policy {
+        font-size: $description;
+        text-align: center;
+
+        & hr {
+          width: 60%;
+        }
+      }
+    }
+
+    &__footer {
+      @include content-center;
+
+      &-signinlink {
+        font-size: $guidance;
+        padding-top: 10px;
+
+        & a {
+          font-weight: 700;
+          color: $main-color;
+          border-bottom: 1px solid $main-color;
+          margin-left: 8px;
+
+          &:hover {
+            color: $main-color;
+          }
+        }
       }
     }
   }

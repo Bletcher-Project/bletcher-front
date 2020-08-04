@@ -26,7 +26,7 @@ const PurpleButton = withStyles((theme) => ({
   root: {
     boxShadow: 'none',
     textTransform: 'none',
-    width: '150px',
+    width: '250px',
     fontSize: 17,
     padding: '0 20px',
     color: theme.palette.getContrastText(purple[600]),

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
+import Logo from 'Components/Common/Logo';
 import Button from 'Components/Form/Button';
 import SignUpForm from 'Components/SignUp/SignUpForm';
 
@@ -55,20 +56,37 @@ class SignUpPage extends Component {
     return (
       <div className="signUpPage">
         <div className="signUpPage__header">
-          <p>너도 해보고 싶니 Bletcher</p>
+          <Logo width="130px" />
         </div>
-        <div className="signUpPage__content">
-          <SignUpForm handleValidation={this.handleValidation} />
-        </div>
-        <div className="signUpPage__footer">
-          <Button
-            text="회원가입"
-            disabled={!isValid}
-            onClick={this.handleSignUp}
-          />
-          <div className="signUpPage__footer__signInLink">
-            <span>이미 아이디가 있으시다면? </span>
-            <a href="/signin">로그인 하러 가기</a>
+        <div className="signUpPage__container">
+          <div className="signUpPage__container__form">
+            <div className="signUpPage__container__form-linked">
+              {/* facebook, google */}
+            </div>
+            <div className="signUpPage__container__form-division">
+              <hr />
+              <span>or</span>
+              <hr />
+            </div>
+            <SignUpForm handleValidation={this.handleValidation} />
+            <div className="signUpPage__container__form-policy">
+              <hr />
+              <p>
+                Creating an account means you’re okay with our Terms of Service,
+                Privacy Policy, and our default Notification Settings.
+              </p>
+            </div>
+          </div>
+          <div className="signUpPage__container__footer">
+            <Button
+              text="Create account"
+              disabled={!isValid}
+              onClick={this.handleSignUp}
+            />
+            <div className="signUpPage__container__footer-signinlink">
+              <span>Already members? </span>
+              <a href="/signin">Sign in</a>
+            </div>
           </div>
         </div>
       </div>
