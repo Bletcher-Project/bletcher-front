@@ -24,10 +24,12 @@ class Search extends Component {
   handleSearchPage = () => {
     const { history } = this.props;
     const { word } = this.state;
-    history.push({
-      pathname: '/search',
-      search: `?query=${word}`,
-    });
+    setTimeout(() => {
+      history.push({
+        pathname: '/search',
+        search: `?query=${word}`,
+      });
+    }, 100);
   };
 
   handleEnter = (e) => {

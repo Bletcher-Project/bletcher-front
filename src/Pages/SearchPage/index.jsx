@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import ReactRouterPropTypes from 'react-router-prop-types';
 
@@ -24,7 +25,9 @@ class SearchPage extends Component {
       <>
         <NavBar isActive="search" />
         <div className="searchPage">
-          <div className="searchPage__header">{` '${query.query}' 검색 결과입니다.`}</div>
+          <div className="searchPage__header">
+            {` '${query ? query.query : ''}' 검색 결과입니다.`}
+          </div>
           <div className="searchPage__content"> 결과창 </div>
         </div>
       </>
@@ -35,4 +38,4 @@ class SearchPage extends Component {
 SearchPage.defaultProps = defaultProps;
 SearchPage.propTypes = propTypes;
 
-export default SearchPage;
+export default withRouter(SearchPage);
