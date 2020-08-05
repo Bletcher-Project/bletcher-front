@@ -34,22 +34,10 @@
     }
   }
 
-  &__newPost {
-    margin: 20px auto 0 auto;
-    width: 500px;
-    border: 1px solid #ccd0d5;
-    border-radius: 20px;
-    text-align: center;
-    cursor: pointer;
-    &:hover {
-      background-color: #f8f8f8;
-    }
-  }
-
   &__postList {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    margin: 2% 1% 0 1%;
+    margin: 2% 4% 0 4%;
   }
 }
