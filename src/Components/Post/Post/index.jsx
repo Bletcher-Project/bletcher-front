@@ -82,7 +82,7 @@ class Post extends Component {
     const { postImg, postTitle, isActive } = this.props;
     const { isHover, isFavorite } = this.state;
     return (
-      <div className="post">
+      <div className={cx('post', { funding: isActive === 'funding' })}>
         <button
           className="post__main"
           type="button"

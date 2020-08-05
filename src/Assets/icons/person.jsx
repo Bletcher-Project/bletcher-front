@@ -2,8 +2,8 @@ import React from 'react';
 
 const person = (
   <svg
-    width="1.8em"
-    height="1.8em"
+    width="1.5em"
+    height="1.5em"
     viewBox="0 0 16 16"
     className="bi bi-person-fill"
     fill="currentColor"
