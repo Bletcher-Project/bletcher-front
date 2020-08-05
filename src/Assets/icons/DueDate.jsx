@@ -3,8 +3,8 @@ import React from 'react';
 const DueDate = () => {
   return (
     <svg
-      width="1.8em"
-      height="1.8em"
+      width="1.8rem"
+      height="1.8rem"
       viewBox="0 0 16 16"
       className="bi bi-alarm-fill"
       fill="currentColor"

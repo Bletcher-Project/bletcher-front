@@ -4,8 +4,8 @@ const likeStar = (props) => {
   const { liked, onClick } = props;
   return liked ? (
     <svg
-      width="1em"
-      height="1em"
+      width="1rem"
+      height="1rem"
       viewBox="0 0 16 16"
       className="bi bi-star-fill"
       fill="currentColor"
@@ -16,8 +16,8 @@ const likeStar = (props) => {
     </svg>
   ) : (
     <svg
-      width="1em"
-      height="1em"
+      width="1rem"
+      height="1rem"
       viewBox="0 0 16 16"
       className="bi bi-star"
       fill="currentColor"

@@ -2,8 +2,8 @@ import React from 'react';
 
 const shopCart = (
   <svg
-    width="1.5em"
-    height="1.5em"
+    width="1.5rem"
+    height="1.5rem"
     viewBox="0 0 16 16"
     className="bi bi-bag-fill"
     fill="currentColor"

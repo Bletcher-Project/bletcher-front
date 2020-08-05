@@ -2,8 +2,8 @@ import React from 'react';
 
 const search = (
   <svg
-    width="1em"
-    height="1em"
+    width="1rem"
+    height="1rem"
     viewBox="0 0 16 16"
     className="bi bi-search"
     fill="currentColor"

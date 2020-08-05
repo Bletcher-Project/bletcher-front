@@ -37,6 +37,21 @@ html,
 body {
   margin: 0;
   padding: 0;
+  @media screen and (max-width: 1920px) {
+    font-size: 17.5px;
+  }
+  @media screen and (max-width: 1600px) {
+    font-size: 15px;
+  }
+  @media screen and (max-width: 1440px) {
+    font-size: 12.5px;
+  }
+  @media screen and (max-width: 1024px) {
+    font-size: 10px;
+  }
+  @media screen and (max-width: 800px) {
+    font-size: 7.5px;
+  }
   font-family: GothamPro, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -4,8 +4,8 @@ const MixButton = (props) => {
   const { onClick } = props;
   return (
     <svg
-      width="1em"
-      height="1em"
+      width="1rem"
+      height="1rem"
       viewBox="0 0 16 16"
       className="bi bi-brush"
       fill="currentColor"
