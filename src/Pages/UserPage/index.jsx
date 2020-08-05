@@ -12,7 +12,7 @@ import Post from 'Components/Post/Post';
 
 import { Modal } from 'reactstrap';
 
-import dummyPost from 'Pages/MainPage/dummyPost.json';
+import dummyPost from 'dummyPost.json';
 
 import settingIcon from 'Assets/images/setting.png';
 import {

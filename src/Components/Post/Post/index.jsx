@@ -82,7 +82,11 @@ class Post extends Component {
     const { postImg, postTitle, isActive } = this.props;
     const { isHover, isFavorite } = this.state;
     return (
-      <div className={cx('post', { funding: isActive === 'funding' })}>
+      <div
+        className={cx('post', {
+          centered: isActive === 'funding' || isActive === 'shop',
+        })}
+      >
         <button
           className="post__main"
           type="button"
@@ -97,11 +101,13 @@ class Post extends Component {
         >
           <div
             className={cx('post__main__header', {
-              shown: isActive === 'funding',
+              shown: isActive === 'funding' || isActive === 'shop',
               none: isActive === 'user',
             })}
           >
-            <div className="post__main__header__title">{postTitle}</div>
+            <div className="post__main__header__title">
+              {isActive === 'shop' ? '권혁진 X 권혁순' : postTitle}
+            </div>
           </div>
           {isHover && (isActive === 'new' || isActive === 'feed') && (
             <div className="post__main__hover">
@@ -136,20 +142,25 @@ class Post extends Component {
           <div
             className={cx('post__main__footer', {
               funding: isActive === 'funding',
+              shop: isActive === 'shop',
             })}
           >
             {isActive === 'funding' && (
               <>
-                <div className="post__main__footer funding">
-                  <hr className="post__main__footer funding__line" />
-                  <div className="post__main__footer funding__tab">
-                    <div className="post__main__footer funding__tab__dueDate">
+                <div className={`post__main__footer ${isActive}`}>
+                  <hr className={`post__main__footer ${isActive}__line`} />
+                  <div className={`post__main__footer ${isActive}__tab`}>
+                    <div
+                      className={`post__main__footer ${isActive}__tab__left`}
+                    >
                       <span className="mr-1">
                         <DueDate />
                       </span>
                       <span>1:32:21</span>
                     </div>
-                    <div className="post__main__footer funding__tab__fundNum">
+                    <div
+                      className={`post__main__footer ${isActive}__tab__right`}
+                    >
                       <span>{person}</span>
                       <span>192/300</span>
                     </div>

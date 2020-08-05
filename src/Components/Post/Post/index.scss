@@ -12,7 +12,7 @@
     max-width: 100%;
   }
 
-  &.funding {
+  &.centered {
     & .post__main {
       height: 100%;
       padding-bottom: 5%;
@@ -47,7 +47,7 @@
         position: absolute;
 
         .bi {
-          width: 2rem;
+          width: 3rem;
           height: auto;
           padding: 0.5rem;
           border: 1px solid #d6c4c3;
