@@ -108,7 +108,7 @@ class NavBar extends Component {
     return (
       <>
         <Navbar className="navBar" light expand="md">
-          <NavbarBrand className="col-2" href="/">
+          <NavbarBrand className="mr-5 col-2" href="/">
             <Logo />
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />

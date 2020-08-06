@@ -7,6 +7,7 @@
   width: 100%;
   z-index: 1001;
   background-color: $nav-color;
+  align-items: center;
 
   &__navItems {
     width: 100%;
@@ -20,10 +21,10 @@
       }
     }
 
-    .nav-item {
-      margin-left: 1rem;
-      color: #a26bc3;
+    &__search {
+      margin-right: 3rem;
     }
+
     &__favorite {
       margin-right: auto;
     }

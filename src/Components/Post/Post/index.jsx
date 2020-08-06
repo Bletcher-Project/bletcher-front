@@ -148,7 +148,6 @@ class Post extends Component {
             {isActive === 'funding' && (
               <>
                 <div className={`post__main__footer ${isActive}`}>
-                  <hr className={`post__main__footer ${isActive}__line`} />
                   <div className={`post__main__footer ${isActive}__tab`}>
                     <div
                       className={`post__main__footer ${isActive}__tab__left`}
@@ -164,6 +163,11 @@ class Post extends Component {
                       <span>{person}</span>
                       <span>192/300</span>
                     </div>
+                  </div>
+                  <div className={`post__main__footer ${isActive}__progress`}>
+                    <hr
+                      className={`post__main__footer ${isActive}__progress__bar`}
+                    />
                   </div>
                 </div>
               </>
