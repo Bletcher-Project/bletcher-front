@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
+
+import { connect } from 'react-redux';
+import * as AuthAction from 'Redux/auth';
 
 import Logo from 'Components/Common/Logo';
 import Button from 'Components/Form/Button';
@@ -7,11 +11,18 @@ import SignUpFacebook from 'Components/SignUp/SignUpFacebook';
 import SignUpGoogle from 'Components/SignUp/SignUpGoogle';
 import SignUpForm from 'Components/SignUp/SignUpForm';
 
-import { INIT, USER_API } from 'Constants/api-uri';
-
 const defaultProps = {};
 const propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
+  createUser: PropTypes.func.isRequired,
+  signInUser: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createUser: (user) => dispatch(AuthAction.postUser(user)),
+    signInUser: (userInfo) => dispatch(AuthAction.postSignIn(userInfo)),
+  };
 };
 
 class SignUpPage extends Component {
@@ -29,28 +40,12 @@ class SignUpPage extends Component {
   };
 
   handleSignUp = async () => {
+    const { history, createUser, signInUser } = this.props;
     const { user } = this.state;
-    const userData = new FormData();
-    userData.append('email', user.email);
-    userData.append('name', user.name);
-    userData.append('password', user.password);
 
-    const response = await fetch(
-      `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}`,
-      {
-        method: 'POST',
-        body: userData,
-      },
-    );
-
-    if (response.status === 200) {
-      const { history } = this.props;
-      history.push({ pathname: '/signin' });
-    }
-    // else {
-    //   // TODO(seogeurim) : Create Sign Up Failed Page
-    //   // console.log(response);
-    // }
+    await createUser(user);
+    await signInUser({ id: user.email, password: user.password });
+    history.push({ pathname: '/' });
   };
 
   render() {
@@ -101,4 +96,4 @@ class SignUpPage extends Component {
 SignUpPage.defaultProps = defaultProps;
 SignUpPage.propTypes = propTypes;
 
-export default SignUpPage;
+export default connect(null, mapDispatchToProps)(SignUpPage);

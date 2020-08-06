@@ -7,14 +7,12 @@ import colors from 'Constants/colors.scss';
 
 const defaultProps = {
   size: 'large',
-  color: colors.lightGray,
   onClick: null,
 };
 const propTypes = {
   size: PropTypes.oneOf(['large', 'medium', 'small']),
-  color: PropTypes.string,
   onClick: PropTypes.func,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.arrayOf(PropTypes.element).isRequired,
 };
 
 const useStyles = makeStyles({
