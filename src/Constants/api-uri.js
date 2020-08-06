@@ -23,7 +23,7 @@ export const COMMENT_API = '/comments';
 
 /* query */
 export const QUERY_EMAIL = '?email=';
-export const QUERY_NAME = '?name=';
+export const QUERY_NAME = '?nickname=';
 
 /* temporary */
 export const SKETCHER = '/sketcher';

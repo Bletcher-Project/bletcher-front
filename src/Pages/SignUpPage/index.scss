@@ -7,6 +7,8 @@
   @include content-center;
   background-color: $background-color;
   color: $light-gray;
+  overflow-y: scroll;
+  padding: 20px 0;
 
   &__header {
     padding: 10px 0;
@@ -19,8 +21,8 @@
     align-items: center;
     padding-bottom: 20px;
     background-color: $white;
-    width: 480px;
-    min-height: 540px;
+    max-width: 480px;
+    height: auto;
     border-radius: 25px;
 
     &__form {
