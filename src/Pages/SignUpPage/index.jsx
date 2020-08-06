@@ -3,6 +3,8 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 
 import Logo from 'Components/Common/Logo';
 import Button from 'Components/Form/Button';
+import SignUpFacebook from 'Components/SignUp/SignUpFacebook';
+import SignUpGoogle from 'Components/SignUp/SignUpGoogle';
 import SignUpForm from 'Components/SignUp/SignUpForm';
 
 import { INIT, USER_API } from 'Constants/api-uri';
@@ -61,7 +63,8 @@ class SignUpPage extends Component {
         <div className="signUpPage__container">
           <div className="signUpPage__container__form">
             <div className="signUpPage__container__form-linked">
-              {/* facebook, google */}
+              <SignUpFacebook />
+              <SignUpGoogle />
             </div>
             <div className="signUpPage__container__form-division">
               <hr />

@@ -8,10 +8,13 @@ $light-gray: #a7a7a7;
 
 $white: #ffffff;
 
+$facebook-blue: #1776f2;
+
 $transparent: rgba(0, 0, 0, 0);
 
 :export {
   mainColor: $main-color;
   lightGray: $light-gray;
+  facebookBlue: $facebook-blue;
   transparent: $transparent;
 }
