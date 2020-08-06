@@ -80,6 +80,7 @@ class SignUpPage extends Component {
           <div className="signUpPage__container__footer">
             <Button
               text="Create account"
+              width="250px"
               disabled={!isValid}
               onClick={this.handleSignUp}
             />
