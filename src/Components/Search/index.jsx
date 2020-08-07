@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
-import searchIcon from 'Assets/icons/search';
 import { Input } from '@material-ui/core';
+import searchIcon from 'Assets/icons/search';
 
 const defaultProps = {};
 const propTypes = {
@@ -24,12 +24,10 @@ class Search extends Component {
   handleSearchPage = () => {
     const { history } = this.props;
     const { word } = this.state;
-    setTimeout(() => {
-      history.push({
-        pathname: '/search',
-        search: `?query=${word}`,
-      });
-    }, 100);
+    history.push({
+      pathname: '/search',
+      search: `?query=${word}`,
+    });
   };
 
   handleEnter = (e) => {
