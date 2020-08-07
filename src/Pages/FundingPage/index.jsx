@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
+import Post from 'Components/Post/Post';
 import NavBar from 'Components/Common/NavBar';
+
+import dummyPost from 'dummyPost.json';
 
 const defaultProps = {};
 const propTypes = {};
@@ -15,7 +18,23 @@ class FundingPage extends Component {
     return (
       <>
         <NavBar isActive="funding" />
-        This is FundingPage
+        <div className="fundingPage">
+          <div className="fundingPage__postList">
+            {dummyPost.posts.map((data) => {
+              return (
+                <Post
+                  postId={data.id}
+                  postImg={data.postImgName}
+                  postTitle={data.postTitle}
+                  isFavorite={data.isFavorite}
+                  userId={data.UserId}
+                  key={data.id}
+                  isActive="funding"
+                />
+              );
+            })}
+          </div>
+        </div>
       </>
     );
   }

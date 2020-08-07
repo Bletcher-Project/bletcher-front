@@ -10,8 +10,9 @@ import NavBar from 'Components/Common/NavBar';
 import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
 
-import Gallery from 'react-photo-gallery';
 import { Modal } from 'reactstrap';
+
+import dummyPost from 'dummyPost.json';
 
 import settingIcon from 'Assets/images/setting.png';
 import {
@@ -28,7 +29,9 @@ const defaultProps = {
 };
 const propTypes = {
   match: ReactRouterPropTypes.match.isRequired,
-  user: PropTypes.objectOf(PropTypes.object),
+  user: PropTypes.shape({
+    id: PropTypes.number,
+  }),
 };
 
 const mapStateToProps = (state) => {
@@ -190,15 +193,23 @@ class UserPage extends Component {
             </div>
 
             <div className="userPage__contents__body">
-              {userPostImgs.length > 0 ? (
-                <Gallery
-                  photos={userPostImgs}
-                  direction="column"
-                  columns={3}
-                  margin={5}
-                  onClick={this.handleClickPost}
-                />
-              ) : null}
+              {userPostImgs.length > 0
+                ? dummyPost.posts.map((data) => {
+                    return (
+                      <Post
+                        postId={data.id}
+                        postImg={data.postImgName}
+                        postCategory={data.postCategory}
+                        postTitle={data.postTitle}
+                        postDescription={data.postDescription}
+                        isFavorite={data.isFavorite}
+                        userId={data.UserId}
+                        key={data.id}
+                        isActive="user"
+                      />
+                    );
+                  })
+                : null}
             </div>
           </div>
         ) : null}

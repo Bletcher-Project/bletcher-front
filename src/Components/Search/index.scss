@@ -2,8 +2,16 @@
   Search Component Styling
 */
 
-.searchButton {
-  border: none;
-  background-color: transparent;
-  margin-top: 5px;
+.searchTab {
+  width: 175px;
+  height: fit-content;
+  padding: 1%;
+  border: 2px solid $main-color;
+  border-radius: 25.5px;
+  display: flex;
+  flex-direction: row;
+  &__button {
+    border: none;
+    background-color: transparent;
+  }
 }

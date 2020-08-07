@@ -3,8 +3,6 @@
 */
 
 .userPage {
-  margin-top: 60px;
-
   &__contents {
     display: flex;
     flex-direction: column;
@@ -13,6 +11,7 @@
 
     &__header {
       display: flex;
+      justify-content: center;
       width: 50%;
       margin-bottom: 50px;
 
@@ -102,7 +101,12 @@
     } /* end header css */
 
     &__body {
-      width: 60%;
+      width: 100%;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: center;
+      margin-left: 2%;
+      margin-right: 2%;
     }
   }
 }

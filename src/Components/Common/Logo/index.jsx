@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import logoImg from 'Assets/logo/bletcher-logo.png';
+import logoImg from 'Assets/logo/logo.png';
 
 const defaultProps = {
   width: '100px',
@@ -15,7 +15,7 @@ function Logo(props) {
 
   return (
     <div className="logo">
-      <img src={logoImg} width={width} height="auto" alt="logo" />
+      <img src={logoImg} width={width} alt="logo" />
     </div>
   );
 }

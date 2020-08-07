@@ -1,29 +1,43 @@
 /*
-  Home Page Styling
+  Main Page Styling
 */
 
 .mainPage {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  align-content: center;
-  align-items: center;
-  margin-top: 80px;
 
-  &__newPost {
-    width: 500px;
-    border: 1px solid #ccd0d5;
-    border-radius: 20px;
-    margin-bottom: 10px;
-    text-align: center;
-    cursor: pointer;
-    &:hover {
-      background-color: #f8f8f8;
+  &__expanded {
+    height: 20rem;
+    background-color: $background-color;
+    &__content {
+      height: 100%;
+      margin-left: 80px;
+      font-family: GothamPro;
+      font-stretch: normal;
+      font-style: normal;
+      color: #a26bc3;
+      font-size: 2.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      &__title {
+        font-weight: bolder;
+      }
+
+      &__line {
+        max-width: 7rem;
+        margin: 0;
+        border: 1px solid $main-color;
+        margin-bottom: 1rem;
+      }
     }
   }
 
-  &__feed {
+  &__postList {
     display: flex;
-    flex-direction: column;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin: 2% 4% 0 4%;
   }
 }

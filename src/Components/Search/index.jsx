@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
 import searchIcon from 'Assets/icons/search';
-import Input from '../Form/Input';
+import { Input } from '@material-ui/core';
 
 const defaultProps = {};
 const propTypes = {
@@ -24,10 +24,12 @@ class Search extends Component {
   handleSearchPage = () => {
     const { history } = this.props;
     const { word } = this.state;
-    history.push({
-      pathname: '/search',
-      search: `?query=${word}`,
-    });
+    setTimeout(() => {
+      history.push({
+        pathname: '/search',
+        search: `?query=${word}`,
+      });
+    }, 100);
   };
 
   handleEnter = (e) => {
@@ -38,23 +40,20 @@ class Search extends Component {
 
   render() {
     return (
-      <>
-        <Input
-          type="text"
-          placeholder="search"
-          helperText={null}
-          width="130px"
-          onKeyPress={this.handleEnter}
-          onChange={this.handleChange}
-        />
+      <div className="searchTab">
         <button
-          className="searchButton"
+          className="searchTab__button"
           type="button"
           onClick={this.handleSearchPage}
         >
           {searchIcon}
         </button>
-      </>
+        <Input
+          disableUnderline
+          onChange={this.handleChange}
+          onKeyPress={this.handleEnter}
+        />
+      </div>
     );
   }
 }

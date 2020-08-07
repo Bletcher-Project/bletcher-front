@@ -8,6 +8,8 @@ import NavBar from 'Components/Common/NavBar';
 import Post from 'Components/Post/Post';
 import UploadPost from 'Components/Upload/UploadPost';
 
+import dummyPost from 'dummyPost.json';
+
 const defaultProps = {
   token: null,
 };
@@ -35,7 +37,7 @@ class MainPage extends Component {
   }
 
   componentDidMount() {
-    this.getAllPosts();
+    // this.getAllPosts();
   }
 
   getAllPosts = () => {
@@ -50,10 +52,19 @@ class MainPage extends Component {
   };
 
   render() {
-    const { newPostClicked, feedLoading, feed } = this.state;
+    const { newPostClicked } = this.state;
     return (
       <div className="mainPage">
         <NavBar isActive="feed" />
+        <div className="mainPage__expanded">
+          <div className="mainPage__expanded__content">
+            <hr className="mainPage__expanded__content__line" />
+            <div className="mainPage__expanded__content__title">Find out</div>
+            <div className="mainPage__expanded__content__description">
+              What other people painted
+            </div>
+          </div>
+        </div>
         {newPostClicked ? (
           <UploadPost
             userId={this.props.user.id}
@@ -63,34 +74,20 @@ class MainPage extends Component {
           />
         ) : (
           <div>
-            <div className="mainPage__newPost" onClick={this.toggleNewPost}>
-              What are you thinking now?
-            </div>
             <div className="mainPage__postList">
-              {!feedLoading && this.props.user && feed
-                ? feed.map((data) => {
-                    return (
-                      <div className="mainPage__post mb-3" key={data.id}>
-                        <Post
-                          postId={data.id}
-                          isMyPost={this.props.user.id === data.UserId}
-                          userProfileImg={data.User.profileImgName}
-                          userName={data.User.name}
-                          userType={data.User.type}
-                          postContent={data.content}
-                          postHashTags={[
-                            { id: 1, tags: 'flower' },
-                            { id: 2, tags: 'sunny' },
-                          ]} //////
-                          postImg={data.postImgName}
-                          postDate={data.createdAt}
-                          isLiked={data.isLiked}
-                          postLike={data.likeCount}
-                        />
-                      </div>
-                    );
-                  })
-                : null}
+              {dummyPost.posts.map((data) => {
+                return (
+                  <Post
+                    postId={data.id}
+                    postImg={data.postImgName}
+                    postTitle={data.postTitle}
+                    isFavorite={data.isFavorite}
+                    userId={data.UserId}
+                    key={data.id}
+                    isActive="feed"
+                  />
+                );
+              })}
             </div>
           </div>
         )}

@@ -48,7 +48,7 @@ class Thumbnail extends Component {
   };
 
   handleUserPage = () => {
-    this.props.history.push({ pathname: '/' + this.props.userName });
+    this.props.history.push({ pathname: `/user/${this.props.userName}` });
   };
 }
 
