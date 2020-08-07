@@ -1,0 +1,7 @@
+.none-style-button {
+  background-color: transparent;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+}

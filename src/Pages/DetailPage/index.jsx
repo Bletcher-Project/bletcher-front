@@ -8,7 +8,7 @@ import cx from 'classnames';
 import NavBar from 'Components/Common/NavBar';
 import { IMAGE, IMAGE_POST } from 'Constants/api-uri';
 
-import LikeStar from 'Assets/icons/LikeStar';
+import FavoriteButton from 'Assets/icons/FavoriteButton';
 import MixButton from 'Assets/icons/MixButton';
 import person from 'Assets/icons/person';
 import DueDate from 'Assets/icons/DueDate';
@@ -76,7 +76,7 @@ class DetailPage extends Component {
             ) : (
               <>
                 <div>
-                  <LikeStar liked />
+                  <FavoriteButton liked />
                   <span className="detailPage__rightTab__buttonText">
                     FAVORITE
                   </span>

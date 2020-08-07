@@ -2,7 +2,7 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-import mixImage from 'Assets/images/mixButton.png';
+import shareImg from 'Assets/images/share.png';
 import NoStyleButton from 'Components/Form/Button/NoStyleButton';
 
 const defaultProps = {
@@ -13,17 +13,19 @@ const propTypes = {
   onClick: PropTypes.func,
 };
 
-const MixButton = (props) => {
+const ShareButton = (props) => {
   const { onClick } = props;
   return (
     <NoStyleButton
       onClick={onClick}
-      content={<img src={mixImage} alt="mixButton" className="mix-button" />}
+      content={
+        <img src={shareImg} alt="shareButton" className="share-button" />
+      }
     />
   );
 };
 
-MixButton.defaultProps = defaultProps;
-MixButton.propTypes = propTypes;
+ShareButton.defaultProps = defaultProps;
+ShareButton.propTypes = propTypes;
 
-export default MixButton;
+export default ShareButton;

@@ -47,20 +47,6 @@
 
       &__icon {
         position: absolute;
-
-        .bi {
-          width: 3rem;
-          height: auto;
-          padding: 0.5rem;
-          border: 1px solid #d6c4c3;
-          border-radius: 50%;
-          color: #d2b2d9;
-          background-color: white;
-
-          &.bi-brush {
-            color: #f59b47;
-          }
-        }
       }
     }
 
@@ -108,8 +94,14 @@
       &__tab {
         width: 100%;
         display: flex;
-        justify-content: space-around;
+        justify-content: space-evenly;
+        align-items: center;
         margin-top: 1rem;
+
+        &__left,
+        &__right {
+          display: flex;
+        }
       }
 
       &__progress {
@@ -131,6 +123,23 @@
       }
     }
   }
+}
+
+.dueDate,
+.fundHeart {
+  width: 1.5rem;
+  background-color: $nav-color;
+  border-radius: 50%;
+  margin-right: 1rem;
+}
+
+.favorite-fill,
+.favorite-unfill,
+.mix-button,
+.heartIcon-hover,
+.share-button {
+  width: 3rem;
+  margin-bottom: 0.5rem;
 }
 
 @media (hover: hover) {

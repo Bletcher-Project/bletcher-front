@@ -10,10 +10,11 @@ import cx from 'classnames';
 
 import { IMAGE, IMAGE_POST } from 'Constants/api-uri';
 
-import LikeStar from 'Assets/icons/LikeStar';
+import FavoriteButton from 'Assets/icons/FavoriteButton';
 import MixButton from 'Assets/icons/MixButton';
+import ShareButton from 'Assets/icons/ShareButton';
 import DueDate from 'Assets/icons/DueDate';
-import person from 'Assets/icons/person';
+import FundHeart from 'Assets/icons/FundHeart';
 
 const defaultProps = {};
 const propTypes = {
@@ -75,6 +76,10 @@ class Post extends Component {
       // update user's favorite in database
     } else if (clickItem === 'mix') {
       // route to MixPage
+    } else if (clickItem === 'fundHeart') {
+      // update post's fundCnt in database
+    } else if (clickItem === 'share') {
+      // share funding post
     }
   };
 
@@ -109,25 +114,48 @@ class Post extends Component {
               {isActive === 'shop' ? '권혁진 X 권혁순' : postTitle}
             </div>
           </div>
-          {isHover && (isActive === 'new' || isActive === 'feed') && (
-            <div className="post__main__hover">
-              <div className="post__main__hover__icon">
-                <LikeStar
-                  liked={isFavorite}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    this.buttonClickHandler('favorite');
-                  }}
-                />
-                <MixButton
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    this.buttonClickHandler('mix');
-                  }}
-                />
+          {isHover &&
+            (isActive === 'new' ||
+              isActive === 'feed' ||
+              isActive === 'funding') && (
+              <div className="post__main__hover">
+                <div className="post__main__hover__icon">
+                  {isActive === 'funding' ? (
+                    <>
+                      <FundHeart
+                        isBgFilled
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          this.buttonClickHandler('fundHeart');
+                        }}
+                      />
+                      <ShareButton
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          this.buttonClickHandler('share');
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <FavoriteButton
+                        liked={isFavorite}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          this.buttonClickHandler('favorite');
+                        }}
+                      />
+                      <MixButton
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          this.buttonClickHandler('mix');
+                        }}
+                      />
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
           <div className="post__main__content">
             <div className="post__main__content__imgBox">
@@ -160,7 +188,9 @@ class Post extends Component {
                     <div
                       className={`post__main__footer ${isActive}__tab__right`}
                     >
-                      <span>{person}</span>
+                      <span>
+                        <FundHeart />
+                      </span>
                       <span>192/300</span>
                     </div>
                   </div>
