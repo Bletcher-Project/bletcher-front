@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+import * as AuthAction from 'Redux/auth';
+
 import {
   Nav,
   Navbar,
@@ -12,17 +15,12 @@ import {
   Collapse,
   NavbarToggler,
 } from 'reactstrap';
-
-import { connect } from 'react-redux';
-import * as AuthAction from 'Redux/auth';
-
 import Logo from 'Components/Common/Logo';
 import Search from 'Components/Search';
 import person from 'Assets/icons/person';
 import shopCart from 'Assets/icons/shopCart';
-import cx from 'classnames';
-
 import { NAV_LINK_NAME } from 'Constants/link-name';
+import cx from 'classnames';
 
 const defaultProps = {
   user: null,
