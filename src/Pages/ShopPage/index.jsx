@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import NavBar from 'Components/Common/NavBar';
 import Post from 'Components/Post/Post';
 
-import dummyPost from 'Dummies/dummyPost.json';
+import dummyPost from 'Dummies/dummyPost';
 
 const defaultProps = {};
 const propTypes = {};

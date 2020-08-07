@@ -8,7 +8,7 @@ import NavBar from 'Components/Common/NavBar';
 import Post from 'Components/Post/Post';
 import UploadPost from 'Components/Upload/UploadPost';
 
-import dummyPost from 'Dummies/dummyPost.json';
+import dummyPost from 'Dummies/dummyPost';
 
 const defaultProps = {
   token: null,
