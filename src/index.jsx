@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import ReduxThunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import reducers from './Redux';
 import App from './App';
 
@@ -11,8 +12,10 @@ import App from './App';
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.scss';
 
-const store = createStore(reducers, applyMiddleware(ReduxThunk));
-// const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStore(
+  reducers,
+  composeWithDevTools(applyMiddleware(ReduxThunk)),
+);
 
 ReactDOM.render(
   <Provider store={store}>
