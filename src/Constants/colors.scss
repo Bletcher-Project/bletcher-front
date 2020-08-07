@@ -1,0 +1,20 @@
+/* Colors */
+
+$main-color: #a26bc3;
+$background-color: #fff4c9;
+
+$dark-gray: #353535;
+$light-gray: #a7a7a7;
+
+$white: #ffffff;
+
+$facebook-blue: #1776f2;
+
+$transparent: rgba(0, 0, 0, 0);
+
+:export {
+  mainColor: $main-color;
+  lightGray: $light-gray;
+  facebookBlue: $facebook-blue;
+  transparent: $transparent;
+}

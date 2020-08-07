@@ -1,15 +1,28 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
-import NavBar from 'Components/Common/NavBar';
-import Button from 'Components/Form/Button';
-import SignUpForm from 'Components/SignUp/SignUpForm';
+import { connect } from 'react-redux';
+import * as AuthAction from 'Redux/auth';
 
-import { INIT, USER_API } from 'Constants/api-uri';
+import Logo from 'Components/Common/Logo';
+import Button from 'Components/Form/Button';
+import SignUpFacebook from 'Components/SignUp/SignUpFacebook';
+import SignUpGoogle from 'Components/SignUp/SignUpGoogle';
+import SignUpForm from 'Components/SignUp/SignUpForm';
 
 const defaultProps = {};
 const propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
+  createUser: PropTypes.func.isRequired,
+  signInUser: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createUser: (user) => dispatch(AuthAction.postUser(user)),
+    signInUser: (userInfo) => dispatch(AuthAction.postSignIn(userInfo)),
+  };
 };
 
 class SignUpPage extends Component {
@@ -27,50 +40,53 @@ class SignUpPage extends Component {
   };
 
   handleSignUp = async () => {
+    const { history, createUser, signInUser } = this.props;
     const { user } = this.state;
-    const userData = new FormData();
-    userData.append('email', user.email);
-    userData.append('name', user.name);
-    userData.append('password', user.password);
-    userData.append('img', user.profileImg);
-    userData.append('status', user.status);
-    userData.append('type', 1);
 
-    const response = await fetch(
-      `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}`,
-      {
-        method: 'POST',
-        body: userData,
-      },
-    );
-
-    if (response.status === 200) {
-      const { history } = this.props;
-      history.push({ pathname: '/signin' });
-    }
-    // else {
-    //   // TODO(seogeurim) : Create Sign Up Failed Page
-    //   // console.log(response);
-    // }
+    await createUser(user);
+    await signInUser({ id: user.email, password: user.password });
+    history.push({ pathname: '/' });
   };
 
   render() {
     const { isValid } = this.state;
     return (
       <div className="signUpPage">
-        <NavBar isActive="signUp" />
         <div className="signUpPage__header">
-          <p>Enter your personal information.</p>
+          <Logo width="130px" />
         </div>
-        <div className="signUpPage__content">
-          <SignUpForm handleValidation={this.handleValidation} />
-        </div>
-        <div className="signUpPage__footer">
-          <Button
-            text="Sign Up"
-            disabled={!isValid}
-            onClick={this.handleSignUp}
-          />
+        <div className="signUpPage__container">
+          <div className="signUpPage__container__form">
+            <div className="signUpPage__container__form-linked">
+              <SignUpFacebook />
+              <SignUpGoogle />
+            </div>
+            <div className="signUpPage__container__form-division">
+              <hr />
+              <span>or</span>
+              <hr />
+            </div>
+            <SignUpForm handleValidation={this.handleValidation} />
+            <div className="signUpPage__container__form-policy">
+              <hr />
+              <p>
+                Creating an account means you’re okay with our Terms of Service,
+                Privacy Policy, and our default Notification Settings.
+              </p>
+            </div>
+          </div>
+          <div className="signUpPage__container__footer">
+            <Button
+              text="Create account"
+              width="250px"
+              disabled={!isValid}
+              onClick={this.handleSignUp}
+            />
+            <div className="signUpPage__container__footer-signinlink">
+              <span>Already members? </span>
+              <a href="/signin">Sign in</a>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -80,4 +96,4 @@ class SignUpPage extends Component {
 SignUpPage.defaultProps = defaultProps;
 SignUpPage.propTypes = propTypes;
 
-export default SignUpPage;
+export default connect(null, mapDispatchToProps)(SignUpPage);

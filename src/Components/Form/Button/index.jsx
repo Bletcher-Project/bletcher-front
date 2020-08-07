@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { withStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
-import { purple } from '@material-ui/core/colors';
+import colors from 'Constants/colors.scss';
 
 const defaultProps = {
   text: '',
   disabled: false,
   component: 'button',
   size: 'large',
+  width: '200px',
   href: null,
   onClick: null,
 };
@@ -18,6 +19,7 @@ const propTypes = {
   disabled: PropTypes.bool,
   component: PropTypes.elementType,
   size: PropTypes.oneOf(['large', 'medium', 'small']),
+  width: PropTypes.string,
   href: PropTypes.string,
   onClick: PropTypes.func,
 };
@@ -26,16 +28,15 @@ const PurpleButton = withStyles((theme) => ({
   root: {
     boxShadow: 'none',
     textTransform: 'none',
-    width: '150px',
     fontSize: 17,
     padding: '0 20px',
-    color: theme.palette.getContrastText(purple[600]),
-    backgroundColor: purple[600],
+    color: theme.palette.getContrastText(colors.mainColor),
+    backgroundColor: colors.mainColor,
     '&:hover': {
-      color: purple[600],
+      color: colors.mainColor,
       border: '2px solid',
-      backgroundColor: 'rgba(0,0,0,0)',
-      borderColor: purple[600],
+      backgroundColor: colors.transparent,
+      borderColor: colors.mainColor,
     },
     '&:active': {
       boxShadow: 'none',
@@ -44,28 +45,23 @@ const PurpleButton = withStyles((theme) => ({
   },
 }))(Fab);
 
-class Button extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+function Button(props) {
+  const { text, onClick, disabled, component, size, width, href } = props;
 
-  render() {
-    const { text, onClick, disabled, component, size, href } = this.props;
-    return (
-      <PurpleButton
-        variant="extended"
-        color="primary"
-        size={size}
-        disabled={disabled}
-        onClick={onClick}
-        component={component}
-        href={href}
-      >
-        {text}
-      </PurpleButton>
-    );
-  }
+  return (
+    <PurpleButton
+      variant="extended"
+      color="primary"
+      style={{ width }}
+      size={size}
+      disabled={disabled}
+      onClick={onClick}
+      component={component}
+      href={href}
+    >
+      {text}
+    </PurpleButton>
+  );
 }
 
 Button.defaultProps = defaultProps;
