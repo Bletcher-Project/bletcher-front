@@ -1,7 +1,8 @@
-/* Constants - Color */
-@import 'Constants/Color.scss';
+/* Constants */
+@import 'Constants/colors.scss';
+@import 'Constants/font-size.scss';
+@import 'Constants/layout.scss';
 /* Components Style */
-@import 'Components/Common/Logo';
 @import 'Components/Common/NavBar';
 @import 'Components/Form/TextField';
 @import 'Components/Form/Button/NoStyleButton';
@@ -14,6 +15,7 @@
 /* Pages Style */
 @import 'Pages/GuidePage';
 @import 'Pages/MainPage';
+@import 'Pages/SignInPage';
 @import 'Pages/SignUpPage';
 @import 'Pages/UserPage';
 @import 'Pages/ProfilePage/';
@@ -36,6 +38,8 @@
 
 html,
 body {
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
   @media screen and (max-width: 1920px) {

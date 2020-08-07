@@ -11,6 +11,7 @@ import { Route, withRouter, Switch, Redirect } from 'react-router-dom';
 
 // Pages
 import MainPage from 'Pages/MainPage';
+import SignInPage from 'Pages/SignInPage';
 import SignUpPage from 'Pages/SignUpPage';
 import UserPage from 'Pages/UserPage';
 import ProfilePage from 'Pages/ProfilePage';
@@ -22,7 +23,6 @@ import CartPage from 'Pages/CartPage';
 import NewPage from 'Pages/NewPage';
 import NotFoundPage from 'Pages/NotFoundPage';
 import DetailPage from 'Pages/DetailPage';
-import SignInPageDummy from 'Pages/SignInPageDummy';
 
 const defaultProps = {
   token: null,
@@ -58,11 +58,10 @@ class App extends Component {
       <div className="app">
         <Switch>
           <Route exact path="/" component={MainPage} />
-          <Route exact path="/signin" component={SignInPageDummy} />
-          <Route exact path="/signup" component={SignUpPage} />
-          <Route exact path="/home">
-            {!isLogin ? <Redirect to="/" /> : <MainPage />}
+          <Route path="/signin">
+            {isLogin ? <Redirect to="/" /> : <SignInPage />}
           </Route>
+          <Route exact path="/signup" component={SignUpPage} />
           <Route exact path="/shop" component={ShopPage} />
           <Route exact path="/new" component={NewPage} />
           <Route exact path="/funding" component={FundingPage} />

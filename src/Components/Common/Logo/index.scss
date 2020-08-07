@@ -4,8 +4,12 @@
 
 .logo {
   & img {
-    margin-left: 3em;
-    width: 6rem;
-    height: auto;
+    vertical-align: bottom;
+  }
+  & span {
+    color: black;
+    font-family: 'Mansalva', cursive;
+    font-size: 1.5rem;
+    margin-left: 10px;
   }
 }

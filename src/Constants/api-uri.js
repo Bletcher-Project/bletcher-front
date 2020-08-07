@@ -8,7 +8,6 @@ export const IMAGE_POST = '/post';
 
 /* auth */
 export const AUTH_API = '/auth';
-export const AUTH_USER_INFO = '/user';
 
 /* users */
 export const USER_API = '/users';
@@ -23,8 +22,7 @@ export const COMMENT_API = '/comments';
 
 /* query */
 export const QUERY_EMAIL = '?email=';
-export const QUERY_NAME = '?name=';
+export const QUERY_NAME = '?nickname=';
 
 /* temporary */
 export const SKETCHER = '/sketcher';
-export const SIGN_IN = '/signin';

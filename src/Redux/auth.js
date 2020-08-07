@@ -1,21 +1,15 @@
 import { createAction, handleActions as authReducer } from 'redux-actions';
 
-import { INIT, AUTH_API, SIGN_IN, AUTH_USER_INFO } from 'Constants/api-uri';
+import { INIT, AUTH_API, USER_API } from 'Constants/api-uri';
 
-const REMOVE_TOKEN_SUCCESS = 'auth/REMOVE_TOKEN_SUCCESS';
-const REMOVE_TOKEN_FAIL = 'auth/REMOVE_TOKEN_FAIL';
+const SET_TOKEN = 'auth/SET_TOKEN';
+const REMOVE_TOKEN = 'auth/REMOVE_TOKEN';
 
-const SET_TOKEN_SUCCESS = 'auth/SET_TOKEN_SUCCESS';
-const SET_TOKEN_FAIL = 'auth/SET_TOKEN_FAIL';
-
-const SIGNOUT_SUCCESS = 'auth/SIGNOUT_SUCCESS';
-const SIGNOUT_FAIL = 'auth/SIGNOUT_FAIL';
+const POST_USER_SUCCESS = 'auth/POST_USER_SUCCESS';
+const POST_USER_FAIL = 'auth/POST_USER_FAIL';
 
 const GET_USER_SUCCESS = 'auth/GET_USER_SUCCESS';
 const GET_USER_FAIL = 'auth/GET_USER_FAIL';
-
-const REMOVE_USER_SUCCESS = 'auth/REMOVE_USER_SUCCESS';
-const REMOVE_USER_FAIL = 'auth/REMOVE_USER_FAIL';
 
 const initialState = {
   isLogin: !!localStorage.getItem('token'),
@@ -23,50 +17,34 @@ const initialState = {
   user: null,
 };
 
-export const removeTokenSuccess = createAction(REMOVE_TOKEN_SUCCESS);
-export const removeTokenFail = createAction(REMOVE_TOKEN_FAIL);
-export const setTokenSuccess = createAction(SET_TOKEN_SUCCESS); // result.token
-export const setTokenFail = createAction(SET_TOKEN_FAIL);
-export const signoutSuccess = createAction(SIGNOUT_SUCCESS);
-export const signoutFail = createAction(SIGNOUT_FAIL);
-export const getUserSuccess = createAction(GET_USER_SUCCESS); // result.userinfo
-export const getUserFail = createAction(GET_USER_FAIL);
-export const removeUserSuccess = createAction(REMOVE_USER_SUCCESS);
-export const removeUserFail = createAction(REMOVE_USER_FAIL);
+const setToken = createAction(SET_TOKEN); // result.data.token
+const removeToken = createAction(REMOVE_TOKEN);
+const postUserSuccess = createAction(POST_USER_SUCCESS);
+const postUserFail = createAction(POST_USER_FAIL);
+const getUserSuccess = createAction(GET_USER_SUCCESS); // result.data
+const getUserFail = createAction(GET_USER_FAIL);
 
 export default authReducer(
   {
-    [REMOVE_TOKEN_SUCCESS]: (state) => {
-      return { ...state, isLogin: false, token: null };
-    },
-    [REMOVE_TOKEN_FAIL]: (state) => {
-      return state;
-    },
-    [SET_TOKEN_SUCCESS]: (state, action) => {
+    [SET_TOKEN]: (state, action) => {
       localStorage.setItem('token', action.payload);
       return { ...state, isLogin: true, token: action.payload };
     },
-    [SET_TOKEN_FAIL]: (state) => {
-      return state;
-    },
-    [SIGNOUT_SUCCESS]: (state) => {
+    [REMOVE_TOKEN]: (state) => {
       localStorage.removeItem('token');
       return { ...state, isLogin: false, token: null, user: null };
     },
-    [SIGNOUT_FAIL]: (state) => {
+    [POST_USER_SUCCESS]: (state) => {
+      return state;
+    },
+    [POST_USER_FAIL]: (state) => {
       return state;
     },
     [GET_USER_SUCCESS]: (state, action) => {
       return { ...state, user: action.payload };
     },
     [GET_USER_FAIL]: (state) => {
-      return state;
-    },
-    [REMOVE_USER_SUCCESS]: (state) => {
-      return { ...state, user: {} };
-    },
-    [REMOVE_USER_FAIL]: (state) => {
-      return state;
+      return { ...state, user: null };
     },
   },
   initialState,
@@ -74,10 +52,9 @@ export default authReducer(
 
 export const postSignIn = (params) => {
   return async (dispatch) => {
-    let result;
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${AUTH_API}${SIGN_IN}`,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${AUTH_API}`,
         {
           method: 'POST',
           headers: {
@@ -90,28 +67,52 @@ export const postSignIn = (params) => {
         },
       );
       if (response.status === 200) {
-        result = await response.json().then((res) => {
-          return res.token;
-        });
-        await dispatch(setTokenSuccess(result));
-      } else {
-        result = await response.json().then((res) => {
-          return res.error;
-        });
+        const result = await response.json();
+        await dispatch(setToken(result.data.token));
       }
     } catch (error) {
-      await dispatch(removeTokenSuccess());
+      await dispatch(removeToken());
     }
-    return result;
+  };
+};
+
+export const postUser = (user) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: user.email,
+            nickname: user.name,
+            password: user.password,
+          }),
+        },
+      );
+      if (response.status === 200) {
+        await dispatch(postUserSuccess());
+      }
+    } catch (error) {
+      await dispatch(postUserFail());
+    }
+  };
+};
+
+export const signOut = () => {
+  return async (dispatch) => {
+    await dispatch(removeToken());
   };
 };
 
 export const getUser = (token) => {
   return async (dispatch) => {
-    let result;
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${AUTH_API}${AUTH_USER_INFO}`,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${AUTH_API}`,
         {
           method: 'GET',
           headers: {
@@ -120,24 +121,11 @@ export const getUser = (token) => {
         },
       );
       if (response.status === 200) {
-        result = await response.json().then((res) => {
-          return res.userInfo;
-        });
-        await dispatch(getUserSuccess(result));
-      } else {
-        result = await response.json().then((res) => {
-          return res.error;
-        });
+        const result = await response.json();
+        await dispatch(getUserSuccess(result.data));
       }
     } catch (error) {
-      await dispatch(removeUserSuccess());
+      await dispatch(getUserFail());
     }
-    return result;
-  };
-};
-
-export const signOut = () => {
-  return async (dispatch) => {
-    await dispatch(signoutSuccess());
   };
 };

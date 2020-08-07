@@ -1,0 +1,46 @@
+/*
+  Sign In Page Styling
+*/
+
+.signInPage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__header p {
+    font-size: $header2;
+  }
+
+  &__content form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__footer {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__signUpLink {
+      font-size: $description;
+      margin-top: 12px;
+
+      & a {
+        text-decoration: underline;
+      }
+
+      & a:hover {
+        text-decoration: underline;
+        font-weight: 700;
+        color: $dark-gray;
+      }
+    }
+  }
+}
