@@ -13,7 +13,7 @@ import MixButton from 'Assets/icons/MixButton';
 import person from 'Assets/icons/person';
 import DueDate from 'Assets/icons/DueDate';
 
-import dummyPost from 'dummyPost.json';
+import dummyPost from 'Dummies/dummyPost.json';
 
 const defaultProps = {};
 const propTypes = {
