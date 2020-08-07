@@ -106,7 +106,7 @@ class NavBar extends Component {
     return (
       <>
         <Navbar className="navBar" light expand="md">
-          <NavbarBrand className="mr-5 col-2" href="/">
+          <NavbarBrand className="navBar__logo" href="/">
             <Logo />
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
@@ -117,10 +117,7 @@ class NavBar extends Component {
             >
               {NAV_LINK_NAME.map((data) => {
                 return (
-                  <NavItem
-                    key={data.path}
-                    className={`navBar__navItems__${data.path}`}
-                  >
+                  <NavItem key={data.path} id={data.path}>
                     {data.linkName === 'Search' ? (
                       <Search
                         history={history}
