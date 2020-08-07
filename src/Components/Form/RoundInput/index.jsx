@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import colors from 'Constants/colors.scss';
+import fontSizes from 'Constants/font-size.scss';
 
 const defaultProps = {
   placeholder: '',
@@ -46,7 +47,7 @@ const RoundedTextField = withStyles({
     '& .MuiOutlinedInput-input': {
       padding: '15px 20px',
       color: colors.lightGray,
-      fontSize: '0.95rem',
+      fontSize: fontSizes.guidance,
       '&:focus': {
         color: 'black',
       },

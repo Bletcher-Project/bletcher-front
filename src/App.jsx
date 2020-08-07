@@ -61,7 +61,9 @@ class App extends Component {
           <Route path="/signin">
             {isLogin ? <Redirect to="/" /> : <SignInPage />}
           </Route>
-          <Route exact path="/signup" component={SignUpPage} />
+          <Route exact path="/signup">
+            {isLogin ? <Redirect to="/" /> : <SignUpPage />}
+          </Route>
           <Route exact path="/shop" component={ShopPage} />
           <Route exact path="/new" component={NewPage} />
           <Route exact path="/funding" component={FundingPage} />
