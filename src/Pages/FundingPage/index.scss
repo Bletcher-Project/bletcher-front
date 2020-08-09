@@ -3,10 +3,32 @@
 */
 
 .fundingPage {
+  &__optionBar {
+    margin: 2.17rem 9.6rem;
+    display: flex;
+    justify-content: space-between;
+
+    &__state {
+      width: 15%;
+      display: flex;
+      justify-content: space-around;
+      font-weight: bold;
+
+      & span.selected .none-style-button {
+        color: black;
+        opacity: 1;
+      }
+      & span .none-style-button {
+        color: #414141;
+        opacity: 0.34;
+      }
+    }
+  }
+
   &__postList {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    margin: 2% 4% 0 4%;
+    margin: 0 7.7rem;
   }
 }
