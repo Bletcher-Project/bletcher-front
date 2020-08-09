@@ -7,33 +7,6 @@
   justify-content: center;
   flex-direction: column;
 
-  &__expanded {
-    height: 20rem;
-    background-color: $background-color;
-    &__content {
-      height: 100%;
-      margin-left: 80px;
-      font-family: GothamPro;
-      font-stretch: normal;
-      font-style: normal;
-      color: #a26bc3;
-      font-size: 2.8rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      &__title {
-        font-weight: bolder;
-      }
-
-      &__line {
-        max-width: 7rem;
-        margin: 0;
-        border: 1px solid $main-color;
-        margin-bottom: 1rem;
-      }
-    }
-  }
-
   &__postList {
     display: flex;
     flex-flow: row wrap;

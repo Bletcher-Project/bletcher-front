@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import * as PostAction from 'Redux/post';
 
 import NavBar from 'Components/Common/NavBar';
+import Jumbotron from 'Components/Common/Jumbotron';
 import Post from 'Components/Post/Post';
 import UploadPost from 'Components/Upload/UploadPost';
 
@@ -56,15 +57,7 @@ class MainPage extends Component {
     return (
       <div className="mainPage">
         <NavBar isActive="feed" />
-        <div className="mainPage__expanded">
-          <div className="mainPage__expanded__content">
-            <hr className="mainPage__expanded__content__line" />
-            <div className="mainPage__expanded__content__title">Find out</div>
-            <div className="mainPage__expanded__content__description">
-              What other people painted
-            </div>
-          </div>
-        </div>
+        <Jumbotron title="Find out" description="What other peope painted" />
         {newPostClicked ? (
           <UploadPost
             userId={this.props.user.id}
