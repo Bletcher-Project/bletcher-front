@@ -8,8 +8,6 @@ import * as PostAction from 'Redux/post';
 
 import cx from 'classnames';
 
-import { IMAGE, IMAGE_POST } from 'Constants/api-uri';
-
 import FavoriteButton from 'Assets/icons/FavoriteButton';
 import MixButton from 'Assets/icons/MixButton';
 import ShareButton from 'Assets/icons/ShareButton';
@@ -161,7 +159,7 @@ class Post extends Component {
             <div className="post__main__content__imgBox">
               <img
                 className="post__main__content__imgBox__image"
-                src={`${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_POST}/${postImg}`}
+                src={postImg}
                 alt="postImage"
               />
             </div>

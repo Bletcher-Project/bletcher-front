@@ -6,14 +6,13 @@ import queryString from 'query-string';
 import cx from 'classnames';
 
 import NavBar from 'Components/Common/NavBar';
-import { IMAGE, IMAGE_POST } from 'Constants/api-uri';
 
 import FavoriteButton from 'Assets/icons/FavoriteButton';
 import MixButton from 'Assets/icons/MixButton';
 import person from 'Assets/icons/person';
 import DueDate from 'Assets/icons/DueDate';
 
-import dummyPost from 'dummyPost.json';
+import dummyPost from 'Dummies/dummyPost';
 
 const defaultProps = {};
 const propTypes = {
@@ -41,7 +40,7 @@ class DetailPage extends Component {
             <div className="detailPage__content__imageBox">
               <img
                 className="detailPage__content__imageBox__image"
-                src={`${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_POST}/${postInfo.postImgName}`}
+                src={postInfo.postImgName}
                 alt="postImage"
               />
             </div>

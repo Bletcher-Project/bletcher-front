@@ -31,7 +31,7 @@
 
       &-linked {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         padding: 10px 0 20px 0;
         width: 100%;
       }
@@ -70,13 +70,15 @@
         padding-top: 10px;
 
         & a {
-          font-weight: 700;
+          font-weight: 600;
           color: $main-color;
           border-bottom: 1px solid $main-color;
           margin-left: 8px;
 
           &:hover {
+            font-weight: 700;
             color: $main-color;
+            border: 0;
           }
         }
       }
