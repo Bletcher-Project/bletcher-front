@@ -20,20 +20,39 @@ const defaultProps = {};
 const propTypes = {};
 
 class FundingPage extends Component {
+  dummyDueDate = new Date(2020, 7, 2, 19, 45, 30, 0);
+
   constructor(props) {
     super(props);
     this.state = {
       isOpen: false,
       option: 'Ongoing',
+      filteredPosts: dummyPost.posts.filter(
+        (data) => new Date(data.createdAt) < this.dummyDueDate,
+      ),
     };
   }
 
-  optionClickHandler = (e) => {
-    if (e.target.innerText === 'End') {
-      this.setState({ option: 'End' });
-    } else {
-      this.setState({ option: 'Ongoing' });
-    }
+  filterDueDate = () => {
+    const { option } = this.state;
+    const filtered =
+      option === 'Ongoing'
+        ? dummyPost.posts.filter(
+            (data) => new Date(data.createdAt) < this.dummyDueDate,
+          )
+        : dummyPost.posts.filter(
+            (data) => new Date(data.createdAt) >= this.dummyDueDate,
+          );
+    this.setState({
+      filteredPosts: filtered,
+    });
+  };
+
+  optionClickHandler = async (e) => {
+    await new Promise((accept) =>
+      this.setState({ option: e.target.innerText }, accept),
+    );
+    this.filterDueDate();
   };
 
   toggle = () => {
@@ -42,7 +61,7 @@ class FundingPage extends Component {
   };
 
   render() {
-    const { isOpen, option } = this.state;
+    const { isOpen, option, filteredPosts } = this.state;
     return (
       <>
         <NavBar isActive="funding" />
@@ -78,7 +97,7 @@ class FundingPage extends Component {
             </div>
           </div>
           <div className="fundingPage__postList">
-            {dummyPost.posts.map((data) => {
+            {filteredPosts.map((data) => {
               return (
                 <Post
                   postId={data.id}
