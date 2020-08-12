@@ -9,8 +9,8 @@
     justify-content: space-between;
 
     &__state {
-      font-size: $header2;
-      width: 15%;
+      font-size: $guidance;
+      width: 20%;
       display: flex;
       justify-content: space-around;
       font-weight: bold;
@@ -28,7 +28,7 @@
     &__recommend {
       width: 18rem;
       & .btn.btn-secondary {
-        font-size: $header2;
+        font-size: $guidance;
         width: 100%;
         @include content-circle($main-color, 22px, white);
         padding: 0;

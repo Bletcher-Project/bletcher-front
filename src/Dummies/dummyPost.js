@@ -9,6 +9,8 @@ import image8 from 'Dummies/dummyImage/8.jpg';
 import image9 from 'Dummies/dummyImage/9.jpg';
 import image10 from 'Dummies/dummyImage/10.jpg';
 
+export const dummyDueDate = new Date(2020, 7, 2, 19, 45, 30, 0);
+
 export default {
   posts: [
     {

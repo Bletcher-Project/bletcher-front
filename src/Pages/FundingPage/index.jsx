@@ -14,21 +14,19 @@ import {
   DropdownItem,
 } from 'reactstrap';
 
-import dummyPost from 'Dummies/dummyPost';
+import dummyPost, { dummyDueDate } from 'Dummies/dummyPost';
 
 const defaultProps = {};
 const propTypes = {};
 
 class FundingPage extends Component {
-  dummyDueDate = new Date(2020, 7, 2, 19, 45, 30, 0);
-
   constructor(props) {
     super(props);
     this.state = {
       isOpen: false,
       option: 'Ongoing',
       filteredPosts: dummyPost.posts.filter(
-        (data) => new Date(data.createdAt) < this.dummyDueDate,
+        (data) => new Date(data.createdAt) < dummyDueDate,
       ),
     };
   }
@@ -38,10 +36,10 @@ class FundingPage extends Component {
     const filtered =
       option === 'Ongoing'
         ? dummyPost.posts.filter(
-            (data) => new Date(data.createdAt) < this.dummyDueDate,
+            (data) => new Date(data.createdAt) < dummyDueDate,
           )
         : dummyPost.posts.filter(
-            (data) => new Date(data.createdAt) >= this.dummyDueDate,
+            (data) => new Date(data.createdAt) >= dummyDueDate,
           );
     this.setState({
       filteredPosts: filtered,
@@ -105,6 +103,7 @@ class FundingPage extends Component {
                   postTitle={data.postTitle}
                   isFavorite={data.isFavorite}
                   userId={data.UserId}
+                  createdAt={data.createdAt}
                   key={data.id}
                   isActive={option === 'End' ? 'fundingEnd' : 'funding'}
                 />

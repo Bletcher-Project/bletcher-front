@@ -14,7 +14,11 @@ import ShareButton from 'Assets/icons/ShareButton';
 import DueDate from 'Assets/icons/DueDate';
 import FundHeart from 'Assets/icons/FundHeart';
 
-const defaultProps = {};
+import { dummyDueDate } from 'Dummies/dummyPost';
+
+const defaultProps = {
+  createdAt: '',
+};
 const propTypes = {
   postId: PropTypes.number.isRequired,
   postImg: PropTypes.string.isRequired,
@@ -23,6 +27,7 @@ const propTypes = {
   userId: PropTypes.number.isRequired,
   history: ReactRouterPropTypes.history.isRequired,
   isActive: PropTypes.string.isRequired,
+  createdAt: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
@@ -50,6 +55,11 @@ class Post extends Component {
       isFavorite,
     };
   }
+
+  calcDueDate = (createDate) => {
+    const dueDate = Date.parse(dummyDueDate) - Date.parse(createDate);
+    return new Date(dueDate).toTimeString().substring(0, 8);
+  };
 
   onClickHandler = (isActive) => {
     const { history, postId, userId } = this.props;
@@ -82,7 +92,7 @@ class Post extends Component {
   };
 
   render() {
-    const { postImg, postTitle, isActive } = this.props;
+    const { postImg, postTitle, isActive, createdAt } = this.props;
     const { isHover, isFavorite } = this.state;
     return (
       <div
@@ -187,7 +197,7 @@ class Post extends Component {
                       <span className="mr-1">
                         <DueDate />
                       </span>
-                      <span>1:32:21</span>
+                      <span>{this.calcDueDate(createdAt)}</span>
                     </div>
                     <div
                       className={`post__main__footer ${isActive}__tab__right`}
