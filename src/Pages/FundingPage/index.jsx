@@ -69,25 +69,7 @@ class FundingPage extends Component {
             <div className="fundingPage__optionBar__recommend">
               <Dropdown isOpen={isOpen} toggle={this.toggle}>
                 <DropdownToggle>Recommended</DropdownToggle>
-                <DropdownMenu
-                  modifiers={{
-                    setMaxHeight: {
-                      enabled: true,
-                      order: 890,
-                      fn: (data) => {
-                        return {
-                          ...data,
-                          styles: {
-                            ...data.styles,
-                            overflow: 'auto',
-                            maxHeight: '100px',
-                            borderRadius: '0 0 20px 20px',
-                          },
-                        };
-                      },
-                    },
-                  }}
-                >
+                <DropdownMenu>
                   <DropdownItem>Latest</DropdownItem>
                   <DropdownItem>Time Limit</DropdownItem>
                   <DropdownItem>Popular</DropdownItem>

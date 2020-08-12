@@ -6,8 +6,7 @@
   width: 175px;
   height: fit-content;
   padding: 1%;
-  border: 2px solid $main-color;
-  border-radius: 25.5px;
+  @include content-circle($main-color, 25.5px, transparent);
   display: flex;
   flex-direction: row;
   &__button {

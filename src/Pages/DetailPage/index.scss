@@ -16,9 +16,7 @@
     justify-content: center;
     align-content: center;
     &__imageBox {
-      border: 1px solid #d6c4c3;
-      border-radius: 3%;
-      background-color: #fff5f5;
+      @include content-circle($background-color, 18px, transparent);
       display: flex;
       justify-content: center;
       align-self: center;
