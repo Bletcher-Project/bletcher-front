@@ -104,12 +104,17 @@ class Post extends Component {
         >
           <div
             className={cx('post__main__header', {
-              shown: isActive === 'funding' || isActive === 'shop',
+              shown:
+                isActive === 'funding' ||
+                isActive === 'shop' ||
+                isActive === 'fundingEnd',
               none: isActive === 'user',
             })}
           >
             <div className="post__main__header__title">
-              {isActive === 'shop' ? '권혁진 X 권혁순' : postTitle}
+              {isActive === 'shop' || isActive === 'fundingEnd'
+                ? '권혁진 X 권혁순'
+                : postTitle}
             </div>
           </div>
           {isHover &&
@@ -169,6 +174,7 @@ class Post extends Component {
             className={cx('post__main__footer', {
               funding: isActive === 'funding',
               shop: isActive === 'shop',
+              fundingEnd: isActive === 'fundingEnd',
             })}
           >
             {isActive === 'funding' && (

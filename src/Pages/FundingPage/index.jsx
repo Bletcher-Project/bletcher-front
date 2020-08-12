@@ -106,7 +106,7 @@ class FundingPage extends Component {
                   isFavorite={data.isFavorite}
                   userId={data.UserId}
                   key={data.id}
-                  isActive="funding"
+                  isActive={option === 'End' ? 'fundingEnd' : 'funding'}
                 />
               );
             })}
