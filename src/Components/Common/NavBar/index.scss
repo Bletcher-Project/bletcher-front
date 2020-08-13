@@ -17,7 +17,7 @@
   &__navItems {
     width: 100%;
     align-items: flex-end;
-    padding-right: 3rem;
+    margin: 0 4rem;
 
     &.customNav__open {
       margin-top: 3rem;
@@ -31,7 +31,7 @@
     & #new,
     #funding,
     #favorite {
-      padding: 0 0.5rem;
+      padding: 0 1rem;
     }
 
     & #favorite {
@@ -39,7 +39,7 @@
     }
 
     & #search {
-      margin-right: 1rem;
+      margin-right: 1.3rem;
     }
   }
 }
@@ -47,7 +47,7 @@
 .navbar-light .navbar-nav .nav-link {
   cursor: pointer;
   color: $main-color;
-  font-size: $basic;
+  font-size: $menu;
 
   &:hover {
     color: $main-color;
