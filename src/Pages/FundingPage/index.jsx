@@ -7,6 +7,8 @@ import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
 import NoStyleButton from 'Components/Form/Button/NoStyleButton';
 
+import { RECOMMEND_OPTION } from 'Constants/link-name';
+
 import {
   Dropdown,
   DropdownToggle,
@@ -31,6 +33,23 @@ class FundingPage extends Component {
     };
   }
 
+  createDropDownItem = () => {
+    return RECOMMEND_OPTION.map((option) => (
+      <DropdownItem key={option[1]} onClick={this.dropDownHandler}>
+        {option[0]}
+      </DropdownItem>
+    ));
+  };
+
+  orderPost = (sortOption) => {
+    const sortOrder = sortOption === 'Latest' ? -1 : 1;
+    this.setState((prevState) => ({
+      filteredPosts: prevState.filteredPosts.sort((l, r) => {
+        return l.createdAt < r.createdAt ? sortOrder : -1 * sortOrder;
+      }),
+    }));
+  };
+
   filterDueDate = () => {
     const { option } = this.state;
     const filtered =
@@ -44,6 +63,14 @@ class FundingPage extends Component {
     this.setState({
       filteredPosts: filtered,
     });
+  };
+
+  dropDownHandler = (e) => {
+    if (e.target.innerText === 'Popular') {
+      // sort by funding Favorite
+    } else {
+      this.orderPost(e.target.innerText);
+    }
   };
 
   optionClickHandler = async (e) => {
@@ -86,11 +113,7 @@ class FundingPage extends Component {
             <div className="fundingPage__optionBar__recommend">
               <Dropdown isOpen={isOpen} toggle={this.toggle}>
                 <DropdownToggle>Recommended</DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem>Latest</DropdownItem>
-                  <DropdownItem>Time Limit</DropdownItem>
-                  <DropdownItem>Popular</DropdownItem>
-                </DropdownMenu>
+                <DropdownMenu>{this.createDropDownItem()}</DropdownMenu>
               </Dropdown>
             </div>
           </div>
