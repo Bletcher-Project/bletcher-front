@@ -12,9 +12,9 @@ const propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = () => {
+const mapStateToProps = (state) => {
   return {
-    isLogin: '',
+    token: state.authReducer.token,
   };
 };
 
@@ -61,16 +61,16 @@ class SignInPage extends Component {
       this.setState({ isPwValid: false, pwErrMsg: 'Fill this field.' });
     } else {
       const params = { id, password };
-      dispatch(AuthAction.postSignIn(params)).then(async (result) => {
-        if (result === 'Login failed! Check authentication credentials') {
+      dispatch(AuthAction.postSignIn(params)).then(async (token) => {
+        if (token) {
+          dispatch(AuthAction.getUser(token));
+        } else {
           this.setState({
             isIdValid: false,
             idErrMsg: 'Please check your account again.',
             isPwValid: false,
             pwErrMsg: 'Please check your account again.',
           });
-        } else {
-          await dispatch(AuthAction.getUser(result));
         }
       });
     }

@@ -34,7 +34,7 @@ const propTypes = {
   match: ReactRouterPropTypes.match.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
-    name: PropTypes.string,
+    nickname: PropTypes.string,
   }),
 };
 
@@ -74,7 +74,7 @@ class NavBar extends Component {
   handlePage = (dest) => {
     const { history, user } = this.props;
     if (dest === 'user') {
-      if (user) history.push({ pathname: `/user/${user.name}` });
+      if (user) history.push({ pathname: `/user/${user.nickname}` });
       else history.push({ pathname: `/signin` });
     } else if (dest === 'signout') {
       this.handleSignOut();
