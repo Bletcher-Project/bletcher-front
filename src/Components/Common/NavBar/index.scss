@@ -19,15 +19,6 @@
     align-items: flex-end;
     margin: 0 4rem;
 
-    &.customNav__open {
-      margin-top: 3rem;
-      align-items: flex-start;
-      & .navBar__navItems__search {
-        margin-bottom: 3rem;
-        order: -10;
-      }
-    }
-
     & #new,
     #funding,
     #favorite {
@@ -40,6 +31,33 @@
 
     & #search {
       margin-right: 1.3rem;
+    }
+
+    &__item {
+      position: relative;
+
+      &__point {
+        position: absolute;
+        left: 33%;
+        width: 22px;
+
+        &.disactive {
+          visibility: hidden;
+        }
+
+        &.active {
+          visibility: visible;
+        }
+      }
+    }
+
+    &.customNav__open {
+      margin-top: 3rem;
+      align-items: flex-start;
+      & .navBar__navItems__search {
+        margin-bottom: 3rem;
+        order: -10;
+      }
     }
   }
 }

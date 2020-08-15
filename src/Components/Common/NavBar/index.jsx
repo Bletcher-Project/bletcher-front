@@ -19,6 +19,7 @@ import Logo from 'Components/Common/Logo';
 import Search from 'Components/Search';
 import person from 'Assets/icons/person';
 import shopCart from 'Assets/icons/shopCart';
+import logoPoint from 'Assets/logo/logo-point.png';
 import { NAV_LINK_NAME } from 'Constants/link-name';
 import cx from 'classnames';
 
@@ -33,6 +34,7 @@ const propTypes = {
   match: ReactRouterPropTypes.match.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
+    name: PropTypes.string,
   }),
 };
 
@@ -82,26 +84,27 @@ class NavBar extends Component {
   };
 
   getNavLink = (linkInfo) => {
-    const { isActive } = this.props;
-    let linkName;
-    if (linkInfo.linkName === 'Cart') linkName = shopCart;
-    else if (linkInfo.linkName === 'User') linkName = person;
-    else linkName = linkInfo.linkName;
-
-    return (
-      <NavLink
-        active={isActive === linkInfo.path}
-        onClick={() => {
-          this.handlePage(linkInfo.path);
-        }}
-      >
-        {linkName}
-      </NavLink>
-    );
+    switch (linkInfo.linkName) {
+      case 'Cart':
+        return shopCart;
+      case 'User':
+        return person;
+      default:
+        return (
+          <>
+            {linkInfo.linkName}
+            <img
+              className="navBar__navItems__item__point"
+              src={logoPoint}
+              alt="point"
+            />
+          </>
+        );
+    }
   };
 
   render() {
-    const { history, match, location } = this.props;
+    const { history, match, location, isActive } = this.props;
     const { isOpen } = this.state;
     return (
       <>
@@ -125,7 +128,15 @@ class NavBar extends Component {
                         location={location}
                       />
                     ) : (
-                      this.getNavLink(data)
+                      <NavLink
+                        className="navBar__navItems__item"
+                        active={isActive === data.path}
+                        onClick={() => {
+                          this.handlePage(data.path);
+                        }}
+                      >
+                        {this.getNavLink(data)}
+                      </NavLink>
                     )}
                   </NavItem>
                 );
