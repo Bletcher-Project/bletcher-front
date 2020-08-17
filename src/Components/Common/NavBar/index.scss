@@ -33,6 +33,11 @@
       margin-right: 1.3rem;
     }
 
+    & #cart,
+    #user {
+      padding: 0 0.3rem;
+    }
+
     &__item {
       position: relative;
 
@@ -47,6 +52,18 @@
 
         &.active {
           visibility: visible;
+        }
+      }
+
+      &.active {
+        & svg g {
+          fill: $white;
+        }
+      }
+
+      &.disactive {
+        & svg g {
+          fill: $main-color;
         }
       }
     }

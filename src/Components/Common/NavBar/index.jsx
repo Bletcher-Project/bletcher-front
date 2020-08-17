@@ -20,7 +20,7 @@ import Search from 'Components/Search';
 import person from 'Assets/icons/person';
 import shopCart from 'Assets/icons/shopCart';
 import logoPoint from 'Assets/logo/logo-point.png';
-import { NAV_LINK_NAME } from 'Constants/link-name';
+import NAV_LINK_NAME from 'Constants/link-name';
 import cx from 'classnames';
 
 const defaultProps = {
