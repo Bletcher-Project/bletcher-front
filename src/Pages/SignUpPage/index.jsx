@@ -53,7 +53,7 @@ class SignUpPage extends Component {
     return (
       <div className="signUpPage">
         <div className="signUpPage__header">
-          <Logo width="130px" />
+          <Logo width={110} />
         </div>
         <div className="signUpPage__container">
           <div className="signUpPage__container__form">

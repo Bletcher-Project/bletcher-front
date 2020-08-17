@@ -55,7 +55,7 @@ class MainPage extends Component {
     const { newPostClicked } = this.state;
     return (
       <div className="mainPage">
-        <NavBar isActive="feed" />
+        <NavBar isActive="main" />
         <div className="mainPage__expanded">
           <div className="mainPage__expanded__content">
             <hr className="mainPage__expanded__content__line" />

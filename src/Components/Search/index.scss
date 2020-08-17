@@ -5,13 +5,20 @@
 .searchTab {
   width: 175px;
   height: fit-content;
-  padding: 1%;
+  padding: 0 10px 0 2px;
   border: 2px solid $main-color;
-  border-radius: 25.5px;
+  border-radius: 25px;
   display: flex;
   flex-direction: row;
+  margin: 5px 0;
+
   &__button {
     border: none;
     background-color: transparent;
+
+    &:active,
+    &:focus {
+      outline: 0;
+    }
   }
 }

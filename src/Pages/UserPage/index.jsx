@@ -31,6 +31,7 @@ const propTypes = {
   match: ReactRouterPropTypes.match.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
+    nickname: PropTypes.string,
   }),
 };
 
@@ -55,7 +56,7 @@ class UserPage extends Component {
 
   setUser = async () => {
     const { match, user } = this.props;
-    if (match.params.username === user.name) {
+    if (match.params.username === user.nickname) {
       this.setState({ userInfo: user, isMyPage: true, userPostImgs: [] });
     } else {
       try {
