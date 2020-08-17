@@ -84,8 +84,8 @@ class SignInForm extends Component {
         });
       }
     } else {
-      const params = { id, password };
-      dispatch(AuthAction.postSignIn(params)).then(async (token) => {
+      const userData = { id: id.value, password: password.value };
+      dispatch(AuthAction.postSignIn(userData)).then(async (token) => {
         if (token) {
           dispatch(AuthAction.getUser(token));
         } else {

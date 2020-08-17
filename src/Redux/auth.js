@@ -76,6 +76,7 @@ export const postSignIn = (params) => {
       return null;
     } catch (error) {
       await dispatch(removeToken());
+      return null;
     }
   };
 };
