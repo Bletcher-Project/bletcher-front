@@ -61,7 +61,7 @@ class SignInForm extends Component {
     }
   };
 
-  handleSignIn = () => {
+  handleSignIn = async () => {
     const { dispatch } = this.props;
     const { id, password } = this.state;
     if (id.value === '' || password.value === '') {
@@ -85,24 +85,23 @@ class SignInForm extends Component {
       }
     } else {
       const userData = { id: id.value, password: password.value };
-      dispatch(AuthAction.postSignIn(userData)).then(async (token) => {
-        if (token) {
-          dispatch(AuthAction.getUser(token));
-        } else {
-          this.setState({
-            id: {
-              ...id,
-              isValid: false,
-              helperText: SignInHelperText.NOT_VALID,
-            },
-            password: {
-              ...password,
-              isValid: false,
-              helperText: SignInHelperText.NOT_VALID,
-            },
-          });
-        }
-      });
+      const token = await dispatch(AuthAction.postSignIn(userData));
+      if (token) {
+        dispatch(AuthAction.getUser(token));
+      } else {
+        this.setState({
+          id: {
+            ...id,
+            isValid: false,
+            helperText: SignInHelperText.NOT_VALID,
+          },
+          password: {
+            ...password,
+            isValid: false,
+            helperText: SignInHelperText.NOT_VALID,
+          },
+        });
+      }
     }
   };
 
