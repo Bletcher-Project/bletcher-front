@@ -27,3 +27,8 @@ export const NameHelperText = {
 export const StatusHelperText = {
   MAX_WORDS: 'Should be less than 100 words.',
 };
+
+export const SignInHelperText = {
+  EMPTY_VALUE: 'Fill this field',
+  NOT_VALID: 'Please check your account again',
+};

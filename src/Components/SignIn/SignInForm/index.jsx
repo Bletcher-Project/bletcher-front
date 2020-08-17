@@ -1,102 +1,151 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { connect } from 'react-redux';
+import * as AuthAction from 'Redux/auth';
+
 import RoundInput from 'Components/Form/RoundInput';
+import Button from 'Components/Form/Button';
+import { DEFAULT_HELPER_TEXT, SignInHelperText } from 'Constants/helper-text';
 
 const propTypes = {
-  handleSignIn: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    token: state.authReducer.token,
+  };
 };
 
 class SignInForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isIdValid: true,
-      isPwValid: true,
-      idErrMsg: ' ',
-      pwErrMsg: ' ',
-      id: '',
-      password: '',
+      id: {
+        value: '',
+        isValid: true,
+        helperText: DEFAULT_HELPER_TEXT,
+      },
+      password: {
+        value: '',
+        isValid: true,
+        helperText: DEFAULT_HELPER_TEXT,
+      },
     };
   }
 
   handleId = (e) => {
-    this.setState({ id: e.target.value, isIdValid: true, idErrMsg: ' ' });
+    this.setState({
+      id: {
+        value: e.target.value,
+        isValid: true,
+        helperText: DEFAULT_HELPER_TEXT,
+      },
+    });
   };
 
   handlePassword = (e) => {
-    this.setState({ password: e.target.value, isPwValid: true, pwErrMsg: ' ' });
+    this.setState({
+      password: {
+        value: e.target.value,
+        isValid: true,
+        helperText: DEFAULT_HELPER_TEXT,
+      },
+    });
   };
 
   handleEnter = (e) => {
-    const { handleSignIn } = this.props;
     if (e.key === 'Enter') {
-      handleSignIn();
+      this.handleSignIn();
     }
   };
 
-  // handleSignIn = () => {
-  //   const { dispatch } = this.props;
-  //   const { id, password } = this.state;
-  //   if (id === '' && password === '') {
-  //     this.setState({
-  //       isIdValid: false,
-  //       idErrMsg: 'Fill this field.',
-  //       isPwValid: false,
-  //       pwErrMsg: 'Fill this field.',
-  //     });
-  //   } else if (id === '') {
-  //     this.setState({ isIdValid: false, idErrMsg: 'Fill this field.' });
-  //   } else if (password === '') {
-  //     this.setState({ isPwValid: false, pwErrMsg: 'Fill this field.' });
-  //   } else {
-  //     const params = { id, password };
-  //     dispatch(AuthAction.postSignIn(params)).then(async (token) => {
-  //       if (token) {
-  //         dispatch(AuthAction.getUser(token));
-  //       } else {
-  //         this.setState({
-  //           isIdValid: false,
-  //           idErrMsg: 'Please check your account again.',
-  //           isPwValid: false,
-  //           pwErrMsg: 'Please check your account again.',
-  //         });
-  //       }
-  //     });
-  //   }
-  // };
+  handleSignIn = () => {
+    const { dispatch } = this.props;
+    const { id, password } = this.state;
+    if (id.value === '' || password.value === '') {
+      if (id.value === '') {
+        this.setState({
+          id: {
+            ...id,
+            isValid: false,
+            helperText: SignInHelperText.EMPTY_VALUE,
+          },
+        });
+      }
+      if (password.value === '') {
+        this.setState({
+          password: {
+            ...password,
+            isValid: false,
+            helperText: SignInHelperText.EMPTY_VALUE,
+          },
+        });
+      }
+    } else {
+      const params = { id, password };
+      dispatch(AuthAction.postSignIn(params)).then(async (token) => {
+        if (token) {
+          dispatch(AuthAction.getUser(token));
+        } else {
+          this.setState({
+            id: {
+              ...id,
+              isValid: false,
+              helperText: SignInHelperText.NOT_VALID,
+            },
+            password: {
+              ...password,
+              isValid: false,
+              helperText: SignInHelperText.NOT_VALID,
+            },
+          });
+        }
+      });
+    }
+  };
 
   render() {
-    const { isIdValid, idErrMsg, isPwValid, pwErrMsg } = this.state;
+    const { id, password } = this.state;
     return (
-      <div className="signInPage__content">
-        <form>
+      <form className="signInForm">
+        <div className="signInForm__input">
           <RoundInput
             placeholder="Email / Name"
             type="text"
             autoComplete="username"
             width="100%"
-            error={!isIdValid}
-            helperText={idErrMsg}
+            error={!id.isValid}
+            helperText={id.helperText}
             onChange={(e) => this.handleId(e)}
             onKeyPress={this.handleEnter}
           />
+        </div>
+        <div className="signInForm__input">
           <RoundInput
             placeholder="Password"
             type="password"
             autoComplete="new-password"
             width="100%"
-            error={!isPwValid}
-            helperText={pwErrMsg}
+            error={!password.isValid}
+            helperText={password.helperText}
             onChange={(e) => this.handlePassword(e)}
             onKeyPress={this.handleEnter}
           />
-        </form>
-      </div>
+        </div>
+        <div className="signInForm__submit">
+          <Button
+            text="Sign In"
+            width="250px"
+            onClick={() => this.handleSignIn()}
+          />
+        </div>
+      </form>
     );
   }
 }
 
 SignInForm.propTypes = propTypes;
 
-export default SignInForm;
+export default connect(mapStateToProps)(SignInForm);

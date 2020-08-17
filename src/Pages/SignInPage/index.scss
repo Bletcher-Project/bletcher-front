@@ -37,7 +37,6 @@
       &-division {
         display: flex;
         width: 100%;
-        padding-bottom: 20px;
 
         & hr {
           width: 100%;
@@ -49,27 +48,22 @@
         }
       }
     }
+  }
 
-    &__footer {
-      @include content-center;
-      margin-top: 20px;
+  &__footer {
+    font-size: $basic;
+    padding-top: 20px;
 
-      &-signuplink {
-        font-size: $guidance;
-        padding-top: 10px;
+    & a {
+      font-weight: 600;
+      color: $main-color;
+      border-bottom: 1px solid $main-color;
+      margin-left: 8px;
 
-        & a {
-          font-weight: 600;
-          color: $main-color;
-          border-bottom: 1px solid $main-color;
-          margin-left: 8px;
-
-          &:hover {
-            font-weight: 700;
-            color: $main-color;
-            border: 0;
-          }
-        }
+      &:hover {
+        font-weight: 700;
+        color: $main-color;
+        border: 0;
       }
     }
   }
