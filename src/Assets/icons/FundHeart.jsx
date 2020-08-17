@@ -8,17 +8,17 @@ import NoStyleButton from 'Components/Form/Button/NoStyleButton';
 
 const defaultProps = {
   onClick: null,
-  isBgFilled: false,
+  fill: false,
 };
 
 const propTypes = {
   onClick: PropTypes.func,
-  isBgFilled: PropTypes.bool,
+  fill: PropTypes.bool,
 };
 
 const FundHeart = (props) => {
-  const { onClick, isBgFilled } = props;
-  return isBgFilled ? (
+  const { onClick, fill } = props;
+  return fill ? (
     <NoStyleButton
       onClick={onClick}
       content={

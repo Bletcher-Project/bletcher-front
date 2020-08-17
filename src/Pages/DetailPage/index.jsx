@@ -9,10 +9,12 @@ import NavBar from 'Components/Common/NavBar';
 
 import FavoriteButton from 'Assets/icons/FavoriteButton';
 import MixButton from 'Assets/icons/MixButton';
-import person from 'Assets/icons/person';
 import DueDate from 'Assets/icons/DueDate';
+import FundHeart from 'Assets/icons/FundHeart';
 
 import dummyPost from 'Dummies/dummyPost';
+import dummyProfile1 from 'Dummies/dummyImage/1.jpg';
+import dummyProfile2 from 'Dummies/dummyImage/2.jpg';
 
 const defaultProps = {};
 const propTypes = {
@@ -28,7 +30,7 @@ class DetailPage extends Component {
   render() {
     const { location } = this.props;
     const query = queryString.parse(location.search);
-    const { authorId, postId, active } = query;
+    const { postId, active } = query;
     const postInfo = dummyPost.posts.filter(
       (post) => JSON.stringify(post.id) === postId,
     )[0];
@@ -36,6 +38,7 @@ class DetailPage extends Component {
       <>
         <NavBar isActive="detail" />
         <div className="detailPage">
+          <div className="expand" />
           <div className="detailPage__content">
             <div className="detailPage__content__imageBox">
               <img
@@ -53,46 +56,51 @@ class DetailPage extends Component {
           >
             {active === 'funding' ? (
               <>
-                <div>
-                  <span>{/* user1 profileImg */}</span>
-                  <span>권혁진</span>
+                <div className="detailPage__rightTab fundInfo__buttons">
+                  <div>
+                    <span>
+                      <DueDate fill />
+                    </span>
+                    <span>1:32:21</span>
+                  </div>
+                  <div>
+                    <span>
+                      <FundHeart fill />
+                    </span>
+                    <span>192</span>
+                  </div>
                 </div>
-                <div>
-                  <span>{/* user2 profileImg */}</span>
-                  <span>권혁순</span>
-                </div>
-                <div>
-                  <span>
-                    <DueDate />
-                  </span>
-                  <span>1:32:21</span>
-                </div>
-                <div>
-                  <span>{person}</span>
-                  <span>192/300</span>
+                <div className="detailPage__rightTab fundInfo__authors">
+                  <div className="detailPage__rightTab fundInfo__authors__author">
+                    <span className="detailPage__rightTab fundInfo__authors__author__img">
+                      <img src={dummyProfile1} alt="profile1" />
+                    </span>
+                    <span className="detailPage__rightTab fundInfo__authors__author__name">
+                      HyoJI
+                    </span>
+                  </div>
+                  <div className="detailPage__rightTab fundInfo__authors__author">
+                    <span className="detailPage__rightTab fundInfo__authors__author__name">
+                      hangsoo
+                    </span>
+                    <span className="detailPage__rightTab fundInfo__authors__author__img">
+                      <img src={dummyProfile2} alt="profile2" />
+                    </span>
+                  </div>
                 </div>
               </>
             ) : (
-              <>
+              <div className="detailPage__rightTab__buttons">
                 <div>
                   <FavoriteButton liked />
-                  <span className="detailPage__rightTab__buttonText">
-                    FAVORITE
-                  </span>
+                  <span className="">FAVORITE</span>
                 </div>
                 <div>
                   <MixButton />
-                  <span className="detailPage__rightTab__buttonText">
-                    BLEND
-                  </span>
+                  <span className="">BLEND</span>
                 </div>
-              </>
+              </div>
             )}
-          </div>
-          <div className="detailPage__footer">
-            <div className="detailPage__footer__title">
-              {`${authorId}'s MASTERPIECE`}
-            </div>
           </div>
         </div>
       </>

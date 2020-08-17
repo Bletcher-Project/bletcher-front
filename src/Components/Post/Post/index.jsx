@@ -136,7 +136,7 @@ class Post extends Component {
                   {isActive === 'funding' ? (
                     <>
                       <FundHeart
-                        isBgFilled
+                        fill
                         onClick={(e) => {
                           e.stopPropagation();
                           this.buttonClickHandler('fundHeart');

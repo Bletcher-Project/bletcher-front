@@ -15,7 +15,7 @@
 
 @mixin content-circle($circle-color, $radius, $back-color) {
   border-radius: $radius;
-  border: 2px solid $circle-color;
+  border: 1px solid $circle-color;
   background-color: $back-color;
   color: $circle-color;
 }
