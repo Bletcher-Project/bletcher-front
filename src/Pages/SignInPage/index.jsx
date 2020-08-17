@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import NavBar from 'Components/Common/NavBar';
 import SignInForm from 'Components/SignIn/SignInForm';
-import SignUpFacebook from 'Components/SignUp/SignUpFacebook';
-import SignUpGoogle from 'Components/SignUp/SignUpGoogle';
+import facebookLogo from 'Assets/logo/facebook.png';
+import googleLogo from 'Assets/logo/google.png';
 
 class SignInPage extends Component {
   constructor(props) {
@@ -22,8 +22,8 @@ class SignInPage extends Component {
           <div className="signInPage__container">
             <div className="signInPage__container__form">
               <div className="signInPage__container__form-linked">
-                <SignUpFacebook />
-                <SignUpGoogle />
+                <img src={facebookLogo} alt="logo" />
+                <img src={googleLogo} alt="logo" />
               </div>
               <div className="signInPage__container__form-division">
                 <hr />
