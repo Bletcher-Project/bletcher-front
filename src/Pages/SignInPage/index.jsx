@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as AuthAction from 'Redux/auth';
 
-import Input from 'Components/Form/Input';
+import NavBar from 'Components/Common/NavBar';
+import SignInForm from 'Components/SignIn/SignInForm';
+import SignUpFacebook from 'Components/SignUp/SignUpFacebook';
+import SignUpGoogle from 'Components/SignUp/SignUpGoogle';
 import Button from 'Components/Form/Button';
 
 const defaultProps = {};
@@ -21,100 +24,61 @@ const mapStateToProps = (state) => {
 class SignInPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isIdValid: true,
-      isPwValid: true,
-      idErrMsg: ' ',
-      pwErrMsg: ' ',
-      id: '',
-      password: '',
-    };
+    this.state = {};
   }
-
-  handleId = (e) => {
-    this.setState({ id: e.target.value, isIdValid: true, idErrMsg: ' ' });
-  };
-
-  handlePassword = (e) => {
-    this.setState({ password: e.target.value, isPwValid: true, pwErrMsg: ' ' });
-  };
-
-  handleEnter = (e) => {
-    if (e.key === 'Enter') {
-      this.handleSignIn();
-    }
-  };
 
   handleSignIn = () => {
     const { dispatch } = this.props;
     const { id, password } = this.state;
-    if (id === '' && password === '') {
-      this.setState({
-        isIdValid: false,
-        idErrMsg: 'Fill this field.',
-        isPwValid: false,
-        pwErrMsg: 'Fill this field.',
-      });
-    } else if (id === '') {
-      this.setState({ isIdValid: false, idErrMsg: 'Fill this field.' });
-    } else if (password === '') {
-      this.setState({ isPwValid: false, pwErrMsg: 'Fill this field.' });
+    if (id === '' || password === '') {
+      // TODO(Seogeurim) "fill this field" error message
     } else {
       const params = { id, password };
       dispatch(AuthAction.postSignIn(params)).then(async (token) => {
         if (token) {
           dispatch(AuthAction.getUser(token));
         } else {
-          this.setState({
-            isIdValid: false,
-            idErrMsg: 'Please check your account again.',
-            isPwValid: false,
-            pwErrMsg: 'Please check your account again.',
-          });
+          // TODO(Seogeurim) "check your account again" error message
         }
       });
     }
   };
 
   render() {
-    const { isIdValid, idErrMsg, isPwValid, pwErrMsg } = this.state;
     return (
-      <div className="signInPage">
-        <div className="signInPage__header">
-          <p>Bletcher에 로그인 해라</p>
-        </div>
-        <div className="signInPage__content">
-          {/* TODO(Seogeurim) : create Sign In Form Component */}
-          <form>
-            <Input
-              label="Id"
-              type="text"
-              autoComplete="username"
-              width="250px"
-              error={!isIdValid}
-              helperText={idErrMsg}
-              onChange={(e) => this.handleId(e)}
-              onKeyPress={this.handleEnter}
-            />
-            <Input
-              label="Password"
-              type="password"
-              autoComplete="new-password"
-              width="250px"
-              error={!isPwValid}
-              helperText={pwErrMsg}
-              onChange={(e) => this.handlePassword(e)}
-              onKeyPress={this.handleEnter}
-            />
-          </form>
-        </div>
-        <div className="signInPage__footer">
-          <Button text="Sign In" onClick={this.handleSignIn} />
-          <div className="signInPage__footer__signUpLink">
-            <a href="/signup">아직도 회원가입 안 했어요?</a>
+      <>
+        <NavBar isActive="signIn" />
+        <div className="signInPage">
+          <div className="signInPage__header">
+            <p>Welcome to Bletcher</p>
+          </div>
+          <div className="signInPage__container">
+            <div className="signInPage__container__form">
+              <div className="signInPage__container__form-linked">
+                <SignUpFacebook />
+                <SignUpGoogle />
+              </div>
+              <div className="signInPage__container__form-division">
+                <hr />
+                <span>or</span>
+                <hr />
+              </div>
+              <SignInForm handleSignIn={this.handleSignIn} />
+            </div>
+            <div className="signInPage__container__footer">
+              <Button
+                text="Sign In"
+                width="250px"
+                onClick={this.handleSignIn}
+              />
+              <div className="signInPage__container__footer-signuplink">
+                <span>Already have an account? </span>
+                <a href="/signup">Sign Up</a>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }
