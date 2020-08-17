@@ -1,21 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import logoImg from 'Assets/logo/logo.png';
+import logoText from 'Assets/logo/logo-text.png';
+import logoPoint from 'Assets/logo/logo-point.png';
 
 const defaultProps = {
-  width: '100px',
+  width: 90,
+  point: true,
 };
 const propTypes = {
-  width: PropTypes.string,
+  width: PropTypes.number,
+  point: PropTypes.bool,
 };
 
 function Logo(props) {
-  const { width } = props;
+  const { width, point } = props;
 
   return (
     <div className="logo">
-      <img src={logoImg} width={width} alt="logo" />
+      <img className="logo__text" src={logoText} width={width} alt="logo" />
+      {point ? (
+        <img
+          className="logo__point"
+          src={logoPoint}
+          width={width / 1.7}
+          alt="logo"
+        />
+      ) : null}
     </div>
   );
 }

@@ -84,6 +84,7 @@ class NavBar extends Component {
   };
 
   getNavLink = (linkInfo) => {
+    const { isActive } = this.props;
     switch (linkInfo.linkName) {
       case 'Cart':
         return shopCart;
@@ -94,7 +95,10 @@ class NavBar extends Component {
           <>
             {linkInfo.linkName}
             <img
-              className="navBar__navItems__item__point"
+              className={cx(
+                'navBar__navItems__item__point',
+                isActive === linkInfo.path ? 'active' : 'disactive',
+              )}
               src={logoPoint}
               alt="point"
             />
@@ -110,7 +114,7 @@ class NavBar extends Component {
       <>
         <Navbar className="navBar" light expand="md">
           <NavbarBrand className="navBar__logo" href="/">
-            <Logo />
+            <Logo point={isActive === 'main'} />
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={isOpen} navbar>
