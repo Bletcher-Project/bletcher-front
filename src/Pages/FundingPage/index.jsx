@@ -7,7 +7,7 @@ import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
 import NoStyleButton from 'Components/Form/Button/NoStyleButton';
 
-import RECOMMEND_OPTION from 'Constants/funding-option';
+import FILTER from 'Constants/filter-option';
 
 import {
   Dropdown,
@@ -27,6 +27,7 @@ class FundingPage extends Component {
     this.state = {
       isOpen: false,
       option: 'Ongoing',
+      filter: 'Filter',
       filteredPosts: dummyPost.posts.filter(
         (data) => new Date(data.createdAt) < dummyDueDate,
       ),
@@ -34,7 +35,7 @@ class FundingPage extends Component {
   }
 
   createDropDownItem = () => {
-    return RECOMMEND_OPTION.map((option) => (
+    return FILTER.map((option) => (
       <DropdownItem key={option[1]} onClick={this.dropDownHandler}>
         {option[0]}
       </DropdownItem>
@@ -66,11 +67,16 @@ class FundingPage extends Component {
   };
 
   dropDownHandler = (e) => {
-    if (e.target.innerText === 'Popular') {
+    const target = e.target.innerText;
+    if (target === 'Popular') {
       // sort by funding Favorite
+    } else if (target === 'Recommended') {
+      // sort by our favorite
     } else {
-      this.orderPost(e.target.innerText);
+      this.orderPost(target);
     }
+
+    this.setState({ filter: target });
   };
 
   optionClickHandler = async (e) => {
@@ -86,7 +92,7 @@ class FundingPage extends Component {
   };
 
   render() {
-    const { isOpen, option, filteredPosts } = this.state;
+    const { isOpen, option, filteredPosts, filter } = this.state;
     return (
       <>
         <NavBar isActive="funding" />
@@ -112,7 +118,7 @@ class FundingPage extends Component {
             </div>
             <div className="fundingPage__optionBar__recommend">
               <Dropdown isOpen={isOpen} toggle={this.toggle}>
-                <DropdownToggle>Recommended</DropdownToggle>
+                <DropdownToggle>{filter}</DropdownToggle>
                 <DropdownMenu>{this.createDropDownItem()}</DropdownMenu>
               </Dropdown>
             </div>
