@@ -56,8 +56,9 @@ class MainPage extends Component {
     const { newPostClicked } = this.state;
     return (
       <div className="mainPage">
-        <NavBar isActive="feed" />
+        <NavBar isActive="main" />
         <Jumbotron title="Find out" description="What other peope painted" />
+
         {newPostClicked ? (
           <UploadPost
             userId={this.props.user.id}

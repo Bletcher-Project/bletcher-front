@@ -5,12 +5,20 @@
 .searchTab {
   width: 175px;
   height: fit-content;
-  padding: 1%;
-  @include content-circle($main-color, 25.5px, transparent);
+  padding: 0 10x 0 2px;
+  @include content-circle($main-color, 25px, transparent);
+
   display: flex;
   flex-direction: row;
+  margin: 5px 0;
+
   &__button {
     border: none;
     background-color: transparent;
+
+    &:active,
+    &:focus {
+      outline: 0;
+    }
   }
 }

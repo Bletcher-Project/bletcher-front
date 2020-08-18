@@ -44,7 +44,8 @@ export default authReducer(
       return { ...state, user: action.payload };
     },
     [GET_USER_FAIL]: (state) => {
-      return { ...state, user: null };
+      localStorage.removeItem('token');
+      return { ...state, isLogin: false, token: null, user: null };
     },
   },
   initialState,
@@ -69,9 +70,13 @@ export const postSignIn = (params) => {
       if (response.status === 200) {
         const result = await response.json();
         await dispatch(setToken(result.data.token));
+        return result.data.token;
       }
+      await dispatch(removeToken());
+      return null;
     } catch (error) {
       await dispatch(removeToken());
+      return null;
     }
   };
 };
@@ -123,6 +128,8 @@ export const getUser = (token) => {
       if (response.status === 200) {
         const result = await response.json();
         await dispatch(getUserSuccess(result.data));
+      } else {
+        await dispatch(getUserFail());
       }
     } catch (error) {
       await dispatch(getUserFail());

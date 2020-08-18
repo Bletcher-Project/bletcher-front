@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+import * as AuthAction from 'Redux/auth';
+
 import {
   Nav,
   Navbar,
@@ -12,17 +15,13 @@ import {
   Collapse,
   NavbarToggler,
 } from 'reactstrap';
-
-import { connect } from 'react-redux';
-import * as AuthAction from 'Redux/auth';
-
 import Logo from 'Components/Common/Logo';
 import Search from 'Components/Search';
 import person from 'Assets/icons/person';
 import shopCart from 'Assets/icons/shopCart';
+import logoPoint from 'Assets/logo/logo-point.png';
+import NAV_LINK_NAME from 'Constants/link-name';
 import cx from 'classnames';
-
-import { NAV_LINK_NAME } from 'Constants/link-name';
 
 const defaultProps = {
   user: null,
@@ -35,6 +34,7 @@ const propTypes = {
   match: ReactRouterPropTypes.match.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
+    nickname: PropTypes.string,
   }),
 };
 
@@ -74,7 +74,7 @@ class NavBar extends Component {
   handlePage = (dest) => {
     const { history, user } = this.props;
     if (dest === 'user') {
-      if (user) history.push({ pathname: `/user/${user.name}` });
+      if (user) history.push({ pathname: `/user/${user.nickname}` });
       else history.push({ pathname: `/signin` });
     } else if (dest === 'signout') {
       this.handleSignOut();
@@ -85,31 +85,36 @@ class NavBar extends Component {
 
   getNavLink = (linkInfo) => {
     const { isActive } = this.props;
-    let linkName;
-    if (linkInfo.linkName === 'Cart') linkName = shopCart;
-    else if (linkInfo.linkName === 'User') linkName = person;
-    else linkName = linkInfo.linkName;
-
-    return (
-      <NavLink
-        active={isActive === linkInfo.path}
-        onClick={() => {
-          this.handlePage(linkInfo.path);
-        }}
-      >
-        {linkName}
-      </NavLink>
-    );
+    switch (linkInfo.linkName) {
+      case 'Cart':
+        return shopCart;
+      case 'User':
+        return person;
+      default:
+        return (
+          <>
+            {linkInfo.linkName}
+            <img
+              className={cx(
+                'navBar__navItems__item__point',
+                isActive === linkInfo.path ? 'active' : 'disactive',
+              )}
+              src={logoPoint}
+              alt="point"
+            />
+          </>
+        );
+    }
   };
 
   render() {
-    const { history, match, location } = this.props;
+    const { history, match, location, isActive } = this.props;
     const { isOpen } = this.state;
     return (
       <>
         <Navbar className="navBar" light expand="md">
-          <NavbarBrand className="mr-5 col-2" href="/">
-            <Logo />
+          <NavbarBrand className="navBar__logo" href="/">
+            <Logo point={isActive === 'main' || isActive === 'signIn'} />
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={isOpen} navbar>
@@ -119,10 +124,7 @@ class NavBar extends Component {
             >
               {NAV_LINK_NAME.map((data) => {
                 return (
-                  <NavItem
-                    key={data.path}
-                    className={`navBar__navItems__${data.path}`}
-                  >
+                  <NavItem key={data.path} id={data.path}>
                     {data.linkName === 'Search' ? (
                       <Search
                         history={history}
@@ -130,7 +132,15 @@ class NavBar extends Component {
                         location={location}
                       />
                     ) : (
-                      this.getNavLink(data)
+                      <NavLink
+                        className="navBar__navItems__item"
+                        active={isActive === data.path}
+                        onClick={() => {
+                          this.handlePage(data.path);
+                        }}
+                      >
+                        {this.getNavLink(data)}
+                      </NavLink>
                     )}
                   </NavItem>
                 );
