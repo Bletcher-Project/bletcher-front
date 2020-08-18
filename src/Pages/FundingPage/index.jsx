@@ -7,7 +7,7 @@ import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
 import NoStyleButton from 'Components/Form/Button/NoStyleButton';
 
-import { RECOMMEND_OPTION } from 'Constants/link-name';
+import RECOMMEND_OPTION from 'Constants/funding-option';
 
 import {
   Dropdown,
