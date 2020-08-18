@@ -114,7 +114,7 @@ class NavBar extends Component {
       <>
         <Navbar className="navBar" light expand="md">
           <NavbarBrand className="navBar__logo" href="/">
-            <Logo point={isActive === 'main'} />
+            <Logo point={isActive === 'main' || isActive === 'signIn'} />
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={isOpen} navbar>
