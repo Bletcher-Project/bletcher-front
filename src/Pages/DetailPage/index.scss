@@ -17,16 +17,18 @@
     width: 60%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     &__imageBox {
       z-index: 1;
-      height: 80vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      overflow-y: scroll;
+      height: 70vh;
+      &__inner {
+        width: 75%;
+        height: 100%;
+        overflow-y: auto;
+        margin: 0 auto;
+      }
       &__image {
-        max-width: 75%;
+        max-width: 100%;
       }
     }
   }
