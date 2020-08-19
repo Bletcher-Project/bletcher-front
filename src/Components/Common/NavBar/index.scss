@@ -1,6 +1,7 @@
 /*
   NavBar Component Styling
 */
+
 .navBar {
   position: sticky;
   top: 0;
@@ -9,9 +10,64 @@
   background-color: $background-color;
   align-items: center;
 
+  &__logo {
+    padding: 0.8rem 3rem;
+  }
+
   &__navItems {
     width: 100%;
     align-items: flex-end;
+    margin: 0 4rem;
+
+    & #new,
+    #funding,
+    #favorite {
+      padding: 0 1rem;
+    }
+
+    & #favorite {
+      margin-right: auto;
+    }
+
+    & #search {
+      margin-right: 1.3rem;
+    }
+
+    & #cart,
+    #user {
+      padding: 0 0.3rem;
+    }
+
+    &__item {
+      position: relative;
+
+      &__point {
+        position: absolute;
+        left: 33%;
+        width: 22px;
+
+        &.disactive {
+          visibility: hidden;
+        }
+
+        &.active {
+          visibility: visible;
+        }
+      }
+
+      &.active {
+        & svg g {
+          fill: $white;
+        }
+      }
+
+      &.disactive {
+        & svg g {
+          fill: $main-color;
+        }
+      }
+    }
+
     &.customNav__open {
       margin-top: 3rem;
       align-items: flex-start;
@@ -20,24 +76,21 @@
         order: -10;
       }
     }
-
-    &__search {
-      margin-right: 3rem;
-    }
-
-    &__favorite {
-      margin-right: auto;
-    }
-    &__user {
-      margin-right: 5rem;
-    }
   }
 }
 
 .navbar-light .navbar-nav .nav-link {
   cursor: pointer;
-  color: #a26bc3;
+  color: $main-color;
+  font-size: $menu;
+
+  &:hover {
+    color: $main-color;
+    font-weight: 600;
+  }
+
   &.active {
-    color: #9b52c5;
+    color: $main-color;
+    font-weight: 600;
   }
 }
