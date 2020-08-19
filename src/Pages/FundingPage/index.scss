@@ -9,7 +9,7 @@
     justify-content: space-between;
 
     &__state {
-      font-size: $guidance;
+      font-size: $menu;
       width: 20%;
       display: flex;
       justify-content: space-around;
@@ -28,8 +28,8 @@
     &__recommend {
       width: 18rem;
       & .btn.btn-secondary {
-        font-size: $guidance;
         width: 100%;
+        font-size: $menu;
         @include content-circle($main-color, 22px, white);
         padding: 0;
         &:focus {
