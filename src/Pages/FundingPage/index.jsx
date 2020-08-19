@@ -6,15 +6,11 @@ import Post from 'Components/Post/Post';
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
 import NoStyleButton from 'Components/Form/Button/NoStyleButton';
+import DropFilter from 'Components/Common/DropFilter';
 
 import FILTER from 'Constants/filter-option';
 
-import {
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-} from 'reactstrap';
+import { DropdownItem } from 'reactstrap';
 
 import dummyPost, { dummyDueDate } from 'Dummies/dummyPost';
 
@@ -25,9 +21,8 @@ class FundingPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
-      option: 'Ongoing',
       filter: 'Filter',
+      option: 'Ongoing',
       filteredPosts: dummyPost.posts.filter(
         (data) => new Date(data.createdAt) < dummyDueDate,
       ),
@@ -75,7 +70,6 @@ class FundingPage extends Component {
     } else {
       this.orderPost(target);
     }
-
     this.setState({ filter: target });
   };
 
@@ -86,13 +80,8 @@ class FundingPage extends Component {
     this.filterDueDate();
   };
 
-  toggle = () => {
-    const { isOpen } = this.state;
-    this.setState({ isOpen: !isOpen });
-  };
-
   render() {
-    const { isOpen, option, filteredPosts, filter } = this.state;
+    const { option, filteredPosts, filter } = this.state;
     return (
       <>
         <NavBar isActive="funding" />
@@ -117,10 +106,10 @@ class FundingPage extends Component {
               </span>
             </div>
             <div className="fundingPage__optionBar__recommend">
-              <Dropdown isOpen={isOpen} toggle={this.toggle}>
-                <DropdownToggle>{filter}</DropdownToggle>
-                <DropdownMenu>{this.createDropDownItem()}</DropdownMenu>
-              </Dropdown>
+              <DropFilter
+                filterTitle={filter}
+                items={this.createDropDownItem()}
+              />
             </div>
           </div>
           <div className="fundingPage__postList">
