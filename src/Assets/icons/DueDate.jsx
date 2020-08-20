@@ -1,13 +1,26 @@
 import React from 'react';
 
-import dueDateImg from 'Assets/images/fundDueDate-bg-removed.png';
+import PropTypes from 'prop-types';
 
-function DueDate() {
-  return (
-    <div>
-      <img src={dueDateImg} alt="dueDate" className="dueDate" />
-    </div>
-  );
+import dueDateImgBgRemoved from 'Assets/images/fundDueDate-bg-removed.png';
+import dueDateImgBgFill from 'Assets/images/fundDueDate-bg-fill.png';
+
+const defaultProps = {
+  fill: false,
+};
+
+const propTypes = {
+  fill: PropTypes.bool,
+};
+
+function DueDate(props) {
+  const { fill } = props;
+  const imgSrc = fill ? dueDateImgBgFill : dueDateImgBgRemoved;
+  const classname = fill ? 'dueDate' : 'dueDateIcon';
+  return <img src={imgSrc} alt="dueDate" className={classname} />;
 }
+
+DueDate.defaultProps = defaultProps;
+DueDate.propTypes = propTypes;
 
 export default DueDate;

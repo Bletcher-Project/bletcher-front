@@ -5,9 +5,9 @@
 .searchTab {
   width: 175px;
   height: fit-content;
-  padding: 0 10px 0 2px;
-  border: 2px solid $main-color;
-  border-radius: 25px;
+  padding: 0 10x 0 2px;
+  @include content-circle($main-color, 25px, transparent);
+
   display: flex;
   flex-direction: row;
   margin: 5px 0;

@@ -14,7 +14,11 @@ import ShareButton from 'Assets/icons/ShareButton';
 import DueDate from 'Assets/icons/DueDate';
 import FundHeart from 'Assets/icons/FundHeart';
 
-const defaultProps = {};
+import { dummyDueDate } from 'Dummies/dummyPost';
+
+const defaultProps = {
+  createdAt: '',
+};
 const propTypes = {
   postId: PropTypes.number.isRequired,
   postImg: PropTypes.string.isRequired,
@@ -23,6 +27,7 @@ const propTypes = {
   userId: PropTypes.number.isRequired,
   history: ReactRouterPropTypes.history.isRequired,
   isActive: PropTypes.string.isRequired,
+  createdAt: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
@@ -48,8 +53,14 @@ class Post extends Component {
     this.state = {
       isHover: false,
       isFavorite,
+      isFundHeart: false, // need to chain with DB
     };
   }
+
+  calcDueDate = (createDate) => {
+    const dueDate = Date.parse(dummyDueDate) - Date.parse(createDate);
+    return new Date(dueDate).toTimeString().substring(0, 8);
+  };
 
   onClickHandler = (isActive) => {
     const { history, postId, userId } = this.props;
@@ -69,12 +80,16 @@ class Post extends Component {
     this.hoverToggler(action);
   };
 
-  buttonClickHandler = (clickItem) => {
+  buttonClickHandler = async (clickItem) => {
     if (clickItem === 'favorite') {
       // update user's favorite in database
     } else if (clickItem === 'mix') {
       // route to MixPage
     } else if (clickItem === 'fundHeart') {
+      const { isFundHeart } = this.state;
+      await new Promise((accept) =>
+        this.setState({ isFundHeart: !isFundHeart }, accept),
+      );
       // update post's fundCnt in database
     } else if (clickItem === 'share') {
       // share funding post
@@ -82,8 +97,8 @@ class Post extends Component {
   };
 
   render() {
-    const { postImg, postTitle, isActive } = this.props;
-    const { isHover, isFavorite } = this.state;
+    const { postImg, postTitle, isActive, createdAt } = this.props;
+    const { isHover, isFavorite, isFundHeart } = this.state;
     return (
       <div
         className={cx('post', {
@@ -104,12 +119,17 @@ class Post extends Component {
         >
           <div
             className={cx('post__main__header', {
-              shown: isActive === 'funding' || isActive === 'shop',
+              shown:
+                isActive === 'funding' ||
+                isActive === 'shop' ||
+                isActive === 'fundingEnd',
               none: isActive === 'user',
             })}
           >
             <div className="post__main__header__title">
-              {isActive === 'shop' ? '권혁진 X 권혁순' : postTitle}
+              {isActive === 'shop' || isActive === 'fundingEnd'
+                ? '권혁진 X 권혁순'
+                : postTitle}
             </div>
           </div>
           {isHover &&
@@ -121,7 +141,8 @@ class Post extends Component {
                   {isActive === 'funding' ? (
                     <>
                       <FundHeart
-                        isBgFilled
+                        isClicked={isFundHeart}
+                        fill
                         onClick={(e) => {
                           e.stopPropagation();
                           this.buttonClickHandler('fundHeart');
@@ -169,6 +190,7 @@ class Post extends Component {
             className={cx('post__main__footer', {
               funding: isActive === 'funding',
               shop: isActive === 'shop',
+              fundingEnd: isActive === 'fundingEnd',
             })}
           >
             {isActive === 'funding' && (
@@ -181,7 +203,7 @@ class Post extends Component {
                       <span className="mr-1">
                         <DueDate />
                       </span>
-                      <span>1:32:21</span>
+                      <span>{this.calcDueDate(createdAt)}</span>
                     </div>
                     <div
                       className={`post__main__footer ${isActive}__tab__right`}
