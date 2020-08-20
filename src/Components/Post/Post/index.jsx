@@ -53,6 +53,7 @@ class Post extends Component {
     this.state = {
       isHover: false,
       isFavorite,
+      isFundHeart: false, // need to chain with DB
     };
   }
 
@@ -79,12 +80,16 @@ class Post extends Component {
     this.hoverToggler(action);
   };
 
-  buttonClickHandler = (clickItem) => {
+  buttonClickHandler = async (clickItem) => {
     if (clickItem === 'favorite') {
       // update user's favorite in database
     } else if (clickItem === 'mix') {
       // route to MixPage
     } else if (clickItem === 'fundHeart') {
+      const { isFundHeart } = this.state;
+      await new Promise((accept) =>
+        this.setState({ isFundHeart: !isFundHeart }, accept),
+      );
       // update post's fundCnt in database
     } else if (clickItem === 'share') {
       // share funding post
@@ -93,7 +98,7 @@ class Post extends Component {
 
   render() {
     const { postImg, postTitle, isActive, createdAt } = this.props;
-    const { isHover, isFavorite } = this.state;
+    const { isHover, isFavorite, isFundHeart } = this.state;
     return (
       <div
         className={cx('post', {
@@ -136,6 +141,7 @@ class Post extends Component {
                   {isActive === 'funding' ? (
                     <>
                       <FundHeart
+                        isClicked={isFundHeart}
                         fill
                         onClick={(e) => {
                           e.stopPropagation();
