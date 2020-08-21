@@ -5,6 +5,7 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
 import * as PostAction from 'Redux/post';
+import * as AuthAction from 'Redux/auth';
 
 import NavBar from 'Components/Common/NavBar';
 import Thumbnail from 'Components/Thumbnail';
@@ -113,6 +114,12 @@ class UserPage extends Component {
     history.push({ pathname: `${match.url}/profile` });
   };
 
+  signOutHandler = async () => {
+    const { dispatch, history } = this.props;
+    await dispatch(AuthAction.signOut());
+    await history.push('/');
+  };
+
   componentDidMount = async () => {
     if (this.props.user) {
       await this.setUser();
@@ -165,6 +172,9 @@ class UserPage extends Component {
                   </div>
                   {isMyPage ? (
                     <div className="settingArea">
+                      <button type="button" onClick={this.signOutHandler}>
+                        signout
+                      </button>
                       <button
                         className="settingButton"
                         type="button"
