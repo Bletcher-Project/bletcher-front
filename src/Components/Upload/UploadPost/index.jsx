@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
@@ -44,6 +45,7 @@ class Upload extends Component {
       pictureImg: null,
       pictureImgUrl: null,
       content: '',
+      modal: false,
     };
   }
 
@@ -93,59 +95,87 @@ class Upload extends Component {
     }
   };
 
-  render() {
-    const { content } = this.state;
-    return (
-      <div className="postUpload">
-        <div className="postUpload__creator">
-          <input
-            accept="image/*"
-            type="file"
-            name="img"
-            id="art-upload"
-            style={{ display: 'none' }}
-            onChange={this.handlePictureImg}
-          />
-          <div className="postUpload__creator-uploadPic">
-            <Button size="small" fullWidth disableRipple disableFocusRipple>
-              <label htmlFor="art-upload">upload image</label>
-            </Button>
-          </div>
-          {this.state.pictureImgUrl === null ? null : (
-            <div className="postUpload__creator-previewPic">
-              <Cropper
-                className="cropper"
-                alt="original"
-                src={this.state.pictureImgUrl}
-                ref={(cropper) => {
-                  this.cropper = cropper;
-                }}
-                // Cropper.js options
-                center
-              />
-            </div>
-          )}
-          <div className="postUpload__creator-content">
-            <TextField
-              id="outlined-multiline"
-              placeholder="Type your art..."
-              value={content}
-              multiline
-              rows="3"
-              rowsMax="10"
-              variant="outlined"
-              fullWidth
-              onChange={this.handleContent}
-            />
-          </div>
-        </div>
+  toggle = () => {
+    const { modal } = this.state;
+    this.setState({ modal: !modal });
+  };
 
-        <div className="postUpload__upload">
-          <Button size="small" onClick={this.handlePostUpload}>
-            Upload
-          </Button>
-        </div>
-      </div>
+  render() {
+    const { content, modal } = this.state;
+    return (
+      <>
+        <button
+          type="button"
+          onClick={this.toggle}
+          className="uploadModalButton"
+        >
+          <span>+</span>
+        </button>
+        <Modal isOpen={modal} toggle={this.toggle} className="className">
+          <ModalHeader toggle={this.toggle}>
+            Upload Your Masterpiece!
+          </ModalHeader>
+          <ModalBody>
+            <div className="postUpload">
+              <div className="postUpload__creator">
+                <input
+                  accept="image/*"
+                  type="file"
+                  name="img"
+                  id="art-upload"
+                  style={{ display: 'none' }}
+                  onChange={this.handlePictureImg}
+                />
+                <div className="postUpload__creator-uploadPic">
+                  <Button
+                    size="small"
+                    fullWidth
+                    disableRipple
+                    disableFocusRipple
+                  >
+                    <label htmlFor="art-upload">upload image</label>
+                  </Button>
+                </div>
+                {this.state.pictureImgUrl === null ? null : (
+                  <div className="postUpload__creator-previewPic">
+                    <Cropper
+                      className="cropper"
+                      alt="original"
+                      src={this.state.pictureImgUrl}
+                      ref={(cropper) => {
+                        this.cropper = cropper;
+                      }}
+                      // Cropper.js options
+                      center
+                    />
+                  </div>
+                )}
+                <div className="postUpload__creator-content">
+                  <TextField
+                    id="outlined-multiline"
+                    placeholder="Type your art..."
+                    value={content}
+                    multiline
+                    rows="3"
+                    rowsMax="10"
+                    variant="outlined"
+                    fullWidth
+                    onChange={this.handleContent}
+                  />
+                </div>
+              </div>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.handlePostUpload}>
+              Upload
+            </Button>
+            <Button color="secondary" onClick={this.toggle}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+      </>
     );
   }
 }

@@ -7,7 +7,6 @@ import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
 import NoStyleButton from 'Components/Form/Button/NoStyleButton';
 import DropFilter from 'Components/Common/DropFilter';
-import Upload from 'Components/Upload/UploadPost';
 
 import FILTER from 'Constants/filter-option';
 
@@ -89,10 +88,6 @@ class FundingPage extends Component {
         <Jumbotron
           title="Funding"
           description="One vote for a favorite work, launching a work"
-        />
-        <Upload
-          userId={1}
-          token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkb2dAbmF2ZXIuY29tIiwiaWF0IjoxNTk3OTk0ODYzLCJleHAiOjE1OTg1OTk2NjMsImlzcyI6ImJsZXRjaGVyIiwic3ViIjoidXNlckluZm8ifQ.RhmakhIB5O1ubIjisr4SM2zrF3nttfzM1QQFlYmeqC8"
         />
         <div className="fundingPage">
           <div className="fundingPage__optionBar">

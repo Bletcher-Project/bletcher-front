@@ -10,6 +10,7 @@ import * as AuthAction from 'Redux/auth';
 import NavBar from 'Components/Common/NavBar';
 import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
+import Upload from 'Components/Upload/UploadPost';
 
 import { Modal } from 'reactstrap';
 
@@ -204,6 +205,10 @@ class UserPage extends Component {
             </div>
 
             <div className="userPage__contents__body">
+              <Upload
+                userId={1}
+                token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkb2dAbmF2ZXIuY29tIiwiaWF0IjoxNTk3OTk0ODYzLCJleHAiOjE1OTg1OTk2NjMsImlzcyI6ImJsZXRjaGVyIiwic3ViIjoidXNlckluZm8ifQ.RhmakhIB5O1ubIjisr4SM2zrF3nttfzM1QQFlYmeqC8"
+              />
               {userPostImgs.length > 0
                 ? dummyPost.posts.map((data) => {
                     return (
