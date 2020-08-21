@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import { withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import * as AuthAction from 'Redux/auth';
@@ -96,4 +97,4 @@ class SignUpPage extends Component {
 SignUpPage.defaultProps = defaultProps;
 SignUpPage.propTypes = propTypes;
 
-export default connect(null, mapDispatchToProps)(SignUpPage);
+export default connect(null, mapDispatchToProps)(withRouter(SignUpPage));
