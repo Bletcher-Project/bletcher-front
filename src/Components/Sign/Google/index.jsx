@@ -17,8 +17,8 @@ function SignGoogle(props) {
 
   return (
     <BorderedButton color={colors.lightGray}>
-      <span>{isSignUp ? 'Join' : 'Sign'}</span>
-      <span>&nbsp;in with Google</span>
+      {isSignUp ? 'Join' : 'Sign'}
+      &nbsp;in with Google
       <img
         src={googleLogo}
         alt="logo"
