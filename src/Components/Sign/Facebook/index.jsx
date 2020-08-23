@@ -1,13 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import BorderedButton from 'Components/Form/BorderedButton';
 import colors from 'Constants/colors.scss';
 import facebookLogo from 'Assets/logo/facebook.png';
 
-function SignUpFacebook() {
+const defaultProps = {
+  isSignUp: false,
+};
+const propTypes = {
+  isSignUp: PropTypes.bool,
+};
+
+function SignFacebook(props) {
+  const { isSignUp } = props;
+
   return (
     <BorderedButton color={colors.facebookBlue}>
-      <span>Join in with Facebook</span>
+      <span>{isSignUp ? 'Join' : 'Sign'}</span>
+      <span>&nbsp;in with Facebook</span>
       <img
         src={facebookLogo}
         alt="logo"
@@ -17,4 +28,7 @@ function SignUpFacebook() {
   );
 }
 
-export default SignUpFacebook;
+SignFacebook.defaultProps = defaultProps;
+SignFacebook.propTypes = propTypes;
+
+export default SignFacebook;
