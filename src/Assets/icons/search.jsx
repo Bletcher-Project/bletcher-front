@@ -1,6 +1,6 @@
 import React from 'react';
 import searchIcon from 'Assets/images/searchIcon.png';
 
-const search = <img src={searchIcon} width="20px" height="20px" alt="search" />;
+const search = <img src={searchIcon} width="15px" height="15px" alt="search" />;
 
 export default search;

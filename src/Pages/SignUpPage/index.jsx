@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import { withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import * as AuthAction from 'Redux/auth';
@@ -11,11 +12,9 @@ import SignFacebook from 'Components/Sign/Facebook';
 import SignGoogle from 'Components/Sign/Google';
 import SignUpForm from 'Components/Sign/SignUpForm';
 
-const defaultProps = {
-  history: undefined,
-};
+const defaultProps = {};
 const propTypes = {
-  history: ReactRouterPropTypes.history,
+  history: ReactRouterPropTypes.history.isRequired,
   createUser: PropTypes.func.isRequired,
   signInUser: PropTypes.func.isRequired,
 };
@@ -98,4 +97,4 @@ class SignUpPage extends Component {
 SignUpPage.defaultProps = defaultProps;
 SignUpPage.propTypes = propTypes;
 
-export default connect(null, mapDispatchToProps)(SignUpPage);
+export default withRouter(connect(null, mapDispatchToProps)(SignUpPage));

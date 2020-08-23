@@ -17,8 +17,10 @@ function SignFacebook(props) {
 
   return (
     <BorderedButton color={colors.facebookBlue}>
-      <span>{isSignUp ? 'Join' : 'Sign'}</span>
-      <span>&nbsp;in with Facebook</span>
+      <span>
+        {isSignUp ? 'Join' : 'Sign'}
+        &nbsp;in with Facebook
+      </span>
       <img
         src={facebookLogo}
         alt="logo"
