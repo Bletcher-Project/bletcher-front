@@ -6,10 +6,7 @@
   background-color: $background-color;
   &__content {
     height: 100%;
-    margin-left: 80px;
-    font-family: GothamPro;
-    font-stretch: normal;
-    font-style: normal;
+    margin-left: 5%;
     color: #a26bc3;
     font-size: 2.8rem;
     display: flex;
@@ -25,6 +22,10 @@
       margin: 0;
       border: 1px solid $main-color;
       margin-bottom: 1rem;
+    }
+
+    &__description {
+      font-weight: lighter;
     }
   }
 }

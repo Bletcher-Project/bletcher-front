@@ -4,7 +4,7 @@
 
 .fundingPage {
   &__optionBar {
-    margin: 2.17rem 9.6rem;
+    margin: 2.17rem 5% 2.17rem 2%;
     display: flex;
     justify-content: space-between;
 
@@ -25,23 +25,25 @@
       }
     }
 
-    &__recommend {
-      width: 18rem;
+    &__filter {
+      width: 13rem;
+      margin-left: auto;
       & .btn.btn-secondary {
         width: 100%;
+        padding: 0.5rem;
         font-size: $menu;
         @include content-circle($main-color, 22px, white);
-        padding: 0;
         &:focus {
           box-shadow: none;
         }
       }
 
       & .dropdown-menu {
-        width: 85%;
+        width: 100%;
         text-align: center;
-        margin-left: 1rem;
         border-radius: 0 0 18px 18px;
+        border: 1px solid #bba4c9;
+        margin: 0 auto;
       }
     }
   }
@@ -49,7 +51,6 @@
   &__postList {
     display: flex;
     flex-flow: row wrap;
-    justify-content: center;
-    margin: 0 7.7rem;
+    margin: 2% 4% 0 4%;
   }
 }

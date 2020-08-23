@@ -21,7 +21,7 @@ class FundingPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      filter: 'Filter',
+      filter: 'Recommended',
       option: 'Ongoing',
       filteredPosts: dummyPost.posts.filter(
         (data) => new Date(data.createdAt) < dummyDueDate,
@@ -105,7 +105,7 @@ class FundingPage extends Component {
                 />
               </span>
             </div>
-            <div className="fundingPage__optionBar__recommend">
+            <div className="fundingPage__optionBar__filter">
               <DropFilter
                 filterTitle={filter}
                 items={this.createDropDownItem()}
