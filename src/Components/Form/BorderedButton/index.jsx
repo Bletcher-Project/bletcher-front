@@ -20,6 +20,7 @@ const useStyles = makeStyles({
   root: {
     boxShadow: 'none',
     textTransform: 'none',
+    fontFamily: 'GothamRound, sans-serif',
     fontSize: fontSizes.guidance,
     fontWeight: 600,
     color: (props) => props.color,
