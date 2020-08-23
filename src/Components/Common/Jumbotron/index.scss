@@ -18,14 +18,14 @@
     }
 
     &__line {
-      max-width: 7rem;
+      max-width: 10rem;
       margin: 0;
       border: 1px solid $main-color;
       margin-bottom: 1rem;
     }
 
     &__description {
-      font-weight: lighter;
+      font-family: 'GothanRoundedLight';
     }
   }
 }
