@@ -42,6 +42,16 @@
   src: url('Assets/fonts/gotham-rounded/GothamRounded-Medium.otf');
 }
 
+@font-face {
+  font-family: 'GothamRoundLight';
+  src: url('Assets/fonts/gotham-rounded/GothamRounded-Light.otf');
+}
+
+@font-face {
+  font-family: 'AppleSDGothicNeo';
+  src: url('Assets/fonts/AppleSDGothicNeo/AppleSDGothicNeoM.ttf');
+}
+
 html,
 body {
   width: 100%;
