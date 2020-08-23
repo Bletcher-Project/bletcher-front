@@ -29,7 +29,11 @@ class DropFilter extends Component {
       <div className="DropFilter">
         <Dropdown isOpen={isOpen} toggle={this.toggle}>
           <DropdownToggle>{filterTitle}</DropdownToggle>
-          <DropdownMenu>{items}</DropdownMenu>
+          <DropdownMenu
+            style={{ left: '50%', transform: 'translateX(-50%)', top: '92%' }}
+          >
+            {items}
+          </DropdownMenu>
         </Dropdown>
       </div>
     );
