@@ -128,7 +128,9 @@ class Post extends Component {
             })}
           >
             <div className="post__main__header__title">
-              {isActive === 'shop' || isActive === 'fundingEnd'
+              {isActive === 'shop' ||
+              isActive === 'fundingEnd' ||
+              isActive === 'funding'
                 ? '권혁진 X 권혁순'
                 : postTitle}
             </div>
