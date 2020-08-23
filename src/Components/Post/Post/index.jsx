@@ -122,7 +122,8 @@ class Post extends Component {
               shown:
                 isActive === 'funding' ||
                 isActive === 'shop' ||
-                isActive === 'fundingEnd',
+                isActive === 'fundingEnd' ||
+                isActive === 'main',
               none: isActive === 'user',
             })}
           >

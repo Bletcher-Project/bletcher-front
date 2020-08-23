@@ -74,18 +74,19 @@ class DetailPage extends Component {
                 </div>
                 <div className="detailPage__rightTab fundInfo__authors">
                   <div className="detailPage__rightTab fundInfo__authors__author">
-                    <span className="detailPage__rightTab fundInfo__authors__author__img">
+                    <span className="detailPage__rightTab fundInfo__authors__author__imgUp">
                       <img src={dummyProfile1} alt="profile1" />
                     </span>
                     <span className="detailPage__rightTab fundInfo__authors__author__name">
                       HyoJI
                     </span>
                   </div>
+                  <div className="authorMargin" />
                   <div className="detailPage__rightTab fundInfo__authors__author">
                     <span className="detailPage__rightTab fundInfo__authors__author__name">
                       hangsoo
                     </span>
-                    <span className="detailPage__rightTab fundInfo__authors__author__img">
+                    <span className="detailPage__rightTab fundInfo__authors__author__imgDown">
                       <img src={dummyProfile2} alt="profile2" />
                     </span>
                   </div>
