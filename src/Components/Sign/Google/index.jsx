@@ -1,13 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import BorderedButton from 'Components/Form/BorderedButton';
 import colors from 'Constants/colors.scss';
 import googleLogo from 'Assets/logo/google.png';
 
-function SignUpGoogle() {
+const defaultProps = {
+  isSignUp: false,
+};
+const propTypes = {
+  isSignUp: PropTypes.bool,
+};
+
+function SignGoogle(props) {
+  const { isSignUp } = props;
+
   return (
     <BorderedButton color={colors.lightGray}>
-      <span>Join in with Google</span>
+      <span>{isSignUp ? 'Join' : 'Sign'}</span>
+      <span>&nbsp;in with Google</span>
       <img
         src={googleLogo}
         alt="logo"
@@ -17,4 +28,7 @@ function SignUpGoogle() {
   );
 }
 
-export default SignUpGoogle;
+SignGoogle.defaultProps = defaultProps;
+SignGoogle.propTypes = propTypes;
+
+export default SignGoogle;
