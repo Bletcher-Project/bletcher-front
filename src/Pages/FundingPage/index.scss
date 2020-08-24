@@ -47,7 +47,7 @@
         border-radius: 0 0 20px 20px;
         box-shadow: 0 2px 4px 0 $dark-purple;
         & > button {
-          padding: 0;
+          padding: 0rem;
           font-size: 1.2rem;
           font-family: 'GothamRoundBook';
           font-weight: 600;
@@ -57,6 +57,8 @@
           }
           &:active,
           &:hover {
+            border: 1px solid transparent;
+            border-radius: 10px;
             background-color: $light-purple;
           }
         }
