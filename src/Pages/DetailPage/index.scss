@@ -67,7 +67,7 @@
           flex-direction: row;
           justify-content: center;
           align-items: center;
-          @include content-circle(#5e5e5e, 22px, white);
+          @include content-circle(#5e5e5e, 22px, 1px, white);
           padding: 0.3rem;
 
           &__name {
@@ -79,7 +79,7 @@
           & img {
             width: 3.5rem;
             height: 3.5rem;
-            @include content-circle(transparent, 50%, transparent);
+            @include content-circle(transparent, 50%, 1px, transparent);
           }
 
           &__imgDown {

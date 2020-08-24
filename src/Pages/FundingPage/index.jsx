@@ -49,8 +49,9 @@ class FundingPage extends Component {
 
   createDropDownItem = () => {
     const user = this.props;
+    const { filter } = this.state;
     return FILTER.map((option, index) => {
-      if (index === 0 && !user) return null;
+      if ((index === 0 && !user) || option[0] === filter) return null;
       return (
         <DropdownItem key={option[1]} onClick={this.dropDownHandler}>
           {option[0]}

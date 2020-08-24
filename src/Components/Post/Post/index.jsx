@@ -127,11 +127,15 @@ class Post extends Component {
               none: isActive === 'user',
             })}
           >
-            <div className="post__main__header__title">
+            <div
+              className={cx('post__main__header__title', {
+                blended: isActive === 'funding',
+              })}
+            >
               {isActive === 'shop' ||
               isActive === 'fundingEnd' ||
               isActive === 'funding'
-                ? '권혁진 X 권혁순'
+                ? 'HyoJI X hangsoo'
                 : postTitle}
             </div>
           </div>
@@ -214,7 +218,7 @@ class Post extends Component {
                       <span>
                         <FundHeart />
                       </span>
-                      <span>192/300</span>
+                      <span>354</span>
                     </div>
                   </div>
                   <div className={`post__main__footer ${isActive}__progress`}>
