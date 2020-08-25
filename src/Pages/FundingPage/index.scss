@@ -46,6 +46,7 @@
         text-align: center;
         border-radius: 0 0 20px 20px;
         box-shadow: 0 2px 4px 0 $dark-purple;
+        overflow: hidden;
         & > button {
           padding: 0rem;
           font-size: 1.2rem;
@@ -55,10 +56,8 @@
           &:focus {
             outline: none;
           }
-          &:active,
-          &:hover {
-            border: 1px solid transparent;
-            border-radius: 10px;
+          &:hover,
+          &:active {
             background-color: $light-purple;
           }
         }
