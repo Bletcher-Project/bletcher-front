@@ -22,7 +22,6 @@ import {
   IMAGE,
   USER_API,
   QUERY_NAME,
-  IMAGE_PROFILE,
   IMAGE_POST,
 } from 'Constants/api-uri';
 
@@ -156,11 +155,7 @@ class UserPage extends Component {
               <div className="userPage__contents__header__thumb">
                 <Thumbnail
                   size="100"
-                  src={
-                    userInfo.profileImgName !== null
-                      ? `${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_PROFILE}/${userInfo.profileImgName}`
-                      : null
-                  }
+                  src={null}
                   type={userInfo.type}
                   userName={userInfo.name}
                 />

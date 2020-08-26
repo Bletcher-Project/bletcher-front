@@ -18,12 +18,13 @@ import { dummyDueDate } from 'Dummies/dummyPost';
 
 const defaultProps = {
   createdAt: '',
+  isFavorite: false,
 };
 const propTypes = {
   postId: PropTypes.number.isRequired,
   postImg: PropTypes.string.isRequired,
   postTitle: PropTypes.string.isRequired,
-  isFavorite: PropTypes.bool.isRequired,
+  isFavorite: PropTypes.bool,
   userId: PropTypes.number.isRequired,
   history: ReactRouterPropTypes.history.isRequired,
   isActive: PropTypes.string.isRequired,
