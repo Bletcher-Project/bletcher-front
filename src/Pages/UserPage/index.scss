@@ -119,7 +119,7 @@
           color: white;
           font-size: 10em;
           padding: 1rem 5rem;
-          @include content-circle(white, 50%, transparent);
+          @include content-circle(white, 50%, 1px, transparent);
         }
       }
     }
