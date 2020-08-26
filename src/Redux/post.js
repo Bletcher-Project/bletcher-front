@@ -186,7 +186,7 @@ export const getPostByPostId = (postId, token) => {
 export const uploadPost = (image, payload, token) => {
   return async (dispatch) => {
     try {
-      const responseTmp = await fetch(
+      const responseImage = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${IMAGE}${POST_API}`,
         {
           method: 'POST',
@@ -196,7 +196,7 @@ export const uploadPost = (image, payload, token) => {
           body: image,
         },
       );
-      const imgId = await responseTmp.json().then((res) => {
+      const imgId = await responseImage.json().then((res) => {
         return res.data.id;
       });
       payload.append('image_id', imgId);
