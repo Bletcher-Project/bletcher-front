@@ -122,13 +122,20 @@ class Post extends Component {
               shown:
                 isActive === 'funding' ||
                 isActive === 'shop' ||
-                isActive === 'fundingEnd',
+                isActive === 'fundingEnd' ||
+                isActive === 'main',
               none: isActive === 'user',
             })}
           >
-            <div className="post__main__header__title">
-              {isActive === 'shop' || isActive === 'fundingEnd'
-                ? '권혁진 X 권혁순'
+            <div
+              className={cx('post__main__header__title', {
+                blended: isActive === 'funding',
+              })}
+            >
+              {isActive === 'shop' ||
+              isActive === 'fundingEnd' ||
+              isActive === 'funding'
+                ? 'HyoJI X hangsoo'
                 : postTitle}
             </div>
           </div>
@@ -211,7 +218,7 @@ class Post extends Component {
                       <span>
                         <FundHeart />
                       </span>
-                      <span>192/300</span>
+                      <span>354</span>
                     </div>
                   </div>
                   <div className={`post__main__footer ${isActive}__progress`}>

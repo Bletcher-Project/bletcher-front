@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import { withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import * as AuthAction from 'Redux/auth';
 
 import Logo from 'Components/Common/Logo';
 import Button from 'Components/Form/Button';
-import SignUpFacebook from 'Components/SignUp/SignUpFacebook';
-import SignUpGoogle from 'Components/SignUp/SignUpGoogle';
-import SignUpForm from 'Components/SignUp/SignUpForm';
+import SignFacebook from 'Components/Sign/Facebook';
+import SignGoogle from 'Components/Sign/Google';
+import SignUpForm from 'Components/Sign/SignUpForm';
 
 const defaultProps = {};
 const propTypes = {
@@ -58,8 +59,8 @@ class SignUpPage extends Component {
         <div className="signUpPage__container">
           <div className="signUpPage__container__form">
             <div className="signUpPage__container__form-linked">
-              <SignUpFacebook />
-              <SignUpGoogle />
+              <SignFacebook isSignUp />
+              <SignGoogle isSignUp />
             </div>
             <div className="signUpPage__container__form-division">
               <hr />
@@ -96,4 +97,4 @@ class SignUpPage extends Component {
 SignUpPage.defaultProps = defaultProps;
 SignUpPage.propTypes = propTypes;
 
-export default connect(null, mapDispatchToProps)(SignUpPage);
+export default withRouter(connect(null, mapDispatchToProps)(SignUpPage));

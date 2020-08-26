@@ -28,6 +28,7 @@ const PurpleButton = withStyles((theme) => ({
   root: {
     boxShadow: 'none',
     textTransform: 'none',
+    fontFamily: 'GothamRound, sans-serif',
     fontSize: 17,
     padding: '0 20px',
     color: theme.palette.getContrastText(colors.mainColor),

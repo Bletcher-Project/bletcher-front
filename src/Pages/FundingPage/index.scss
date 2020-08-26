@@ -4,15 +4,15 @@
 
 .fundingPage {
   &__optionBar {
-    margin: 2.17rem 9.6rem;
+    margin: 2.17rem 5% 2.17rem 6rem;
     display: flex;
     justify-content: space-between;
 
     &__state {
-      font-size: $menu;
-      width: 20%;
+      font-size: 1.2rem;
+      width: 12%;
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
       font-weight: bold;
 
       & span.selected .none-style-button {
@@ -25,13 +25,17 @@
       }
     }
 
-    &__recommend {
-      width: 18rem;
+    &__filter {
+      width: 15rem;
+
       & .btn.btn-secondary {
         width: 100%;
-        font-size: $menu;
-        @include content-circle($main-color, 22px, white);
-        padding: 0;
+        height: fit-content;
+        padding: 0.1rem;
+        font-size: 1.2rem;
+        font-weight: 700;
+        z-index: 2;
+        @include content-circle($main-color, 22px, 2px, white);
         &:focus {
           box-shadow: none;
         }
@@ -40,8 +44,23 @@
       & .dropdown-menu {
         width: 85%;
         text-align: center;
-        margin-left: 1rem;
-        border-radius: 0 0 18px 18px;
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 2px 4px 0 $dark-purple;
+        overflow: hidden;
+        & > button {
+          padding: 0rem;
+          font-size: 1.2rem;
+          font-family: 'GothamRoundBook';
+          font-weight: 600;
+          color: black;
+          &:focus {
+            outline: none;
+          }
+          &:hover,
+          &:active {
+            background-color: $light-purple;
+          }
+        }
       }
     }
   }
@@ -49,7 +68,6 @@
   &__postList {
     display: flex;
     flex-flow: row wrap;
-    justify-content: center;
-    margin: 0 7.7rem;
+    margin: 2% 4% 0 4rem;
   }
 }

@@ -40,7 +40,7 @@ export default {
       createdAt: '2020-08-02T10:41:57.000Z',
       updatedAt: '2020-08-02T10:41:57.000Z',
       deletedAt: null,
-      UserId: 2,
+      UserId: 1,
       User: {
         name: 'JJIN',
         profileImgName: null,
@@ -125,7 +125,7 @@ export default {
       createdAt: '2020-08-02T10:42:25.000Z',
       updatedAt: '2020-08-02T10:42:25.000Z',
       deletedAt: null,
-      UserId: 2,
+      UserId: 1,
       isFavorite: true,
     },
     {
@@ -175,7 +175,7 @@ export default {
       createdAt: '2020-08-02T10:41:33.000Z',
       updatedAt: '2020-08-02T10:41:33.000Z',
       deletedAt: null,
-      UserId: 2,
+      UserId: 1,
       User: {
         name: 'JJIN',
         profileImgName: null,

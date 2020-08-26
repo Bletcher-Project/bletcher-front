@@ -1,8 +1,9 @@
 const FILTER = [
-  ['Recommended', 0],
-  ['Latest', 1],
-  ['Time Limit', 2],
-  ['Popular', 3],
+  ['My', 0],
+  ['Recommended', 1],
+  ['Latest', 2],
+  ['Time Limit', 3],
+  ['Popular', 4],
 ];
 
 export default FILTER;
