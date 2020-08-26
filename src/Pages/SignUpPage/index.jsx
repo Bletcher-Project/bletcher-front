@@ -8,9 +8,9 @@ import * as AuthAction from 'Redux/auth';
 
 import Logo from 'Components/Common/Logo';
 import Button from 'Components/Form/Button';
-import SignUpFacebook from 'Components/SignUp/SignUpFacebook';
-import SignUpGoogle from 'Components/SignUp/SignUpGoogle';
-import SignUpForm from 'Components/SignUp/SignUpForm';
+import SignFacebook from 'Components/Sign/Facebook';
+import SignGoogle from 'Components/Sign/Google';
+import SignUpForm from 'Components/Sign/SignUpForm';
 
 const defaultProps = {};
 const propTypes = {
@@ -59,8 +59,8 @@ class SignUpPage extends Component {
         <div className="signUpPage__container">
           <div className="signUpPage__container__form">
             <div className="signUpPage__container__form-linked">
-              <SignUpFacebook />
-              <SignUpGoogle />
+              <SignFacebook isSignUp />
+              <SignGoogle isSignUp />
             </div>
             <div className="signUpPage__container__form-division">
               <hr />

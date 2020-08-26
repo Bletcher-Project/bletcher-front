@@ -11,8 +11,8 @@
 @import 'Components/Post/Post';
 @import 'Components/Post/Comment';
 @import 'Components/Thumbnail';
-@import 'Components/SignIn/SignInForm';
-@import 'Components/SignUp/SignUpForm';
+@import 'Components/Sign/SignInForm';
+@import 'Components/Sign/SignUpForm';
 @import 'Components/Upload/UploadPost';
 @import 'Components/Search/';
 /* Pages Style */
@@ -40,6 +40,21 @@
 @font-face {
   font-family: 'GothamRound';
   src: url('Assets/fonts/gotham-rounded/GothamRounded-Medium.otf');
+}
+
+@font-face {
+  font-family: 'GothamRoundLight';
+  src: url('Assets/fonts/gotham-rounded/GothamRounded-Light.otf');
+}
+
+@font-face {
+  font-family: 'GothamRoundBook';
+  src: url('Assets/fonts/gotham-rounded/GothamRounded-Book.otf');
+}
+
+@font-face {
+  font-family: 'AppleSDGothicNeo';
+  src: url('Assets/fonts/AppleSDGothicNeo/AppleSDGothicNeoM.ttf');
 }
 
 html,

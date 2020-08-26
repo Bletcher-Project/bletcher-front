@@ -32,6 +32,7 @@ const propTypes = {
 const RoundedTextField = withStyles({
   root: {
     '& .MuiOutlinedInput-root': {
+      fontFamily: 'GothamRound, sans-serif',
       '& fieldset': {
         border: 0,
         borderRadius: '30px',
@@ -48,9 +49,13 @@ const RoundedTextField = withStyles({
       padding: '15px 20px',
       color: colors.lightGray,
       fontSize: fontSizes.guidance,
+      fontFamily: 'GothamRound, sans-serif',
       '&:focus': {
         color: 'black',
       },
+    },
+    '& .MuiFormHelperText-root': {
+      fontFamily: 'GothamRound, sans-serif',
     },
   },
 })(TextField);

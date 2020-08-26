@@ -55,7 +55,7 @@ class MainPage extends Component {
     return (
       <div className="mainPage">
         <NavBar isActive="main" />
-        <Jumbotron title="Find out" description="What other peope painted" />
+        <Jumbotron title="Find out" description="What other people painted" />
 
         {newPostClicked ? (
           <UploadPost

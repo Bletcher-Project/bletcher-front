@@ -13,9 +13,9 @@
   align-items: center;
 }
 
-@mixin content-circle($circle-color, $radius, $back-color) {
+@mixin content-circle($circle-color, $radius, $border, $back-color) {
   border-radius: $radius;
-  border: 1px solid $circle-color;
+  border: $border solid $circle-color;
   background-color: $back-color;
   color: $circle-color;
 }

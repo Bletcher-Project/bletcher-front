@@ -3,10 +3,10 @@
 */
 
 .searchTab {
-  width: 175px;
+  width: 160px;
   height: fit-content;
-  padding: 0 10x 0 2px;
-  @include content-circle($main-color, 25px, transparent);
+  padding: 1px 10px 1px 2px;
+  @include content-circle($main-color, 25px, 1px, transparent);
 
   display: flex;
   flex-direction: row;
