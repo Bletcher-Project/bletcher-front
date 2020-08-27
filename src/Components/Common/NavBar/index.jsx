@@ -4,7 +4,6 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import * as AuthAction from 'Redux/auth';
 
 import {
   Nav,
@@ -28,7 +27,6 @@ const defaultProps = {
 };
 const propTypes = {
   isActive: PropTypes.string.isRequired,
-  dispatch: PropTypes.func.isRequired,
   history: ReactRouterPropTypes.history.isRequired,
   location: ReactRouterPropTypes.location.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
@@ -64,20 +62,11 @@ class NavBar extends Component {
     this.setState({ isOpen: !isOpen });
   };
 
-  handleSignOut = () => {
-    const { dispatch, history } = this.props;
-    dispatch(AuthAction.signOut()).then(async () => {
-      history.push({ pathname: '/' });
-    });
-  };
-
   handlePage = (dest) => {
     const { history, user } = this.props;
     if (dest === 'user') {
-      if (user) history.push({ pathname: `/users/${user.nickname}` });
+      if (user) history.push({ pathname: `/user/${user.nickname}` });
       else history.push({ pathname: `/signin` });
-    } else if (dest === 'signout') {
-      this.handleSignOut();
     } else {
       history.push({ pathname: `/${dest}` });
     }
