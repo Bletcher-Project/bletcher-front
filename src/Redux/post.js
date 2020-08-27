@@ -3,7 +3,6 @@ import { createAction, handleActions as postReducer } from 'redux-actions';
 import {
   INIT,
   POST_LIKE,
-  SKETCHER,
   POST_ONE,
   POST_API,
   USER_ONE,
@@ -207,28 +206,6 @@ export const uploadPost = (image, payload, token) => {
           headers: {
             'x-access-token': token,
           },
-          body: payload,
-        },
-      );
-      if (response.status === 200) {
-        const result = await response.json();
-        await dispatch(uploadPostSuccess(result));
-      }
-    } catch (err) {
-      await dispatch(uploadPostFail());
-    }
-    return { type: 'UPLOAD_POST_SUCCESS' };
-  };
-};
-
-export const uploadSketcherPost = (payload, token) => {
-  return async (dispatch) => {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${SKETCHER}`,
-        {
-          method: 'POST',
-          headers: { 'x-access-token': token },
           body: payload,
         },
       );
