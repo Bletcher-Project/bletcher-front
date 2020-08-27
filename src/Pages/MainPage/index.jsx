@@ -67,19 +67,6 @@ class MainPage extends Component {
         ) : (
           <div>
             <div className="mainPage__postList">
-              {/* {dummyPost.posts.map((data) => {
-                return (
-                  <Post
-                    postId={data.id}
-                    postImg={data.postImgName}
-                    postTitle={data.postTitle}
-                    isFavorite={data.isFavorite}
-                    userId={data.UserId}
-                    key={data.id}
-                    isActive="feed"
-                  />
-                );
-              })} */}
               {feed && !feedLoading
                 ? feed.map((data) => {
                     return (
@@ -89,7 +76,7 @@ class MainPage extends Component {
                         postTitle={data.title}
                         userId={data.User.id}
                         key={data.id}
-                        isActive="feed"
+                        isActive="main"
                       />
                     );
                   })

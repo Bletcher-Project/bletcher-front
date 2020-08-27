@@ -70,9 +70,8 @@ class Upload extends Component {
     const { pictureImgUrl, pictureImg, content } = this.state;
     if (user) {
       if (pictureImgUrl) {
-        this.cropper
-          .getCroppedCanvas({ imageSmoothingQuality: 'high' })
-          .toBlob(async (croppedImg) => {
+        this.cropper.getCroppedCanvas({ imageSmoothingQuality: 'high' }).toBlob(
+          async (croppedImg) => {
             const image = new FormData();
             const params = new URLSearchParams();
             image.append('img', croppedImg, pictureImg.name);
@@ -85,7 +84,10 @@ class Upload extends Component {
             return postUpload
               ? window.location.reload()
               : alert('Failed to upload..');
-          });
+          },
+          undefined,
+          1,
+        );
       } else {
         alert('Please upload your art first :)');
       }
