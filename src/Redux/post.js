@@ -113,7 +113,6 @@ export const getAllPosts = (token) => {
           method: 'GET',
           headers: {
             'x-access-token': token,
-            SameSite: 'None',
           },
         },
       );
