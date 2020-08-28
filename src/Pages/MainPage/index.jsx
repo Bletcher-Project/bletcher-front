@@ -31,7 +31,6 @@ class MainPage extends Component {
     this.state = {
       feed: null,
       feedLoading: true,
-      newPostClicked: false,
     };
   }
 
@@ -46,44 +45,31 @@ class MainPage extends Component {
     });
   };
 
-  toggleNewPost = () => {
-    this.setState({ newPostClicked: !this.state.newPostClicked });
+  showAllPosts = () => {
+    const { feed, feedLoading } = this.state;
+    if (feed && !feedLoading) {
+      return feed.map((data) => {
+        return (
+          <Post
+            postId={data.id}
+            postImg={data.Image.path}
+            postTitle={data.title}
+            userId={data.User.id}
+            key={data.id}
+            isActive="main"
+          />
+        );
+      });
+    }
+    return null;
   };
 
   render() {
-    const { newPostClicked, feed, feedLoading } = this.state;
     return (
       <div className="mainPage">
         <NavBar isActive="main" />
         <Jumbotron title="Find out" description="What other people painted" />
-
-        {newPostClicked ? (
-          <UploadPost
-            userId={this.props.user.id}
-            userProfileImg={this.props.user.profileImgName}
-            userType={this.props.user.type}
-            handlePrevStep={this.toggleNewPost}
-          />
-        ) : (
-          <div>
-            <div className="mainPage__postList">
-              {feed && !feedLoading
-                ? feed.map((data) => {
-                    return (
-                      <Post
-                        postId={data.id}
-                        postImg={data.Image.path}
-                        postTitle={data.title}
-                        userId={data.User.id}
-                        key={data.id}
-                        isActive="main"
-                      />
-                    );
-                  })
-                : null}
-            </div>
-          </div>
-        )}
+        <div className="mainPage__postList">{this.showAllPosts()}</div>
       </div>
     );
   }
