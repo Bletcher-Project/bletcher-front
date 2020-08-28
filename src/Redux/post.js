@@ -6,7 +6,7 @@ import {
   POST_ONE,
   POST_API,
   USER_ONE,
-  IMAGE,
+  IMAGE_API,
 } from 'Constants/api-uri';
 
 const initialState = {
@@ -186,7 +186,7 @@ export const uploadPost = (image, payload, token) => {
   return async (dispatch) => {
     try {
       const responseImage = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${IMAGE}${POST_API}`,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${IMAGE_API}${POST_API}`,
         {
           method: 'POST',
           headers: {

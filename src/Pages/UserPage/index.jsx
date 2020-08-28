@@ -19,7 +19,7 @@ import dummyPost from 'Dummies/dummyPost';
 import settingIcon from 'Assets/images/setting.png';
 import {
   INIT,
-  IMAGE,
+  IMAGE_API,
   USER_API,
   QUERY_NAME,
   IMAGE_POST,
@@ -91,7 +91,7 @@ class UserPage extends Component {
       (posts) => {
         posts.forEach((post) => {
           postImg.push({
-            src: `${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_POST}/${post.postImgName}`,
+            src: `${process.env.REACT_APP_SERVER_URL}${IMAGE_API}${IMAGE_POST}/${post.postImgName}`,
             width: parseInt(post.postImgWidth),
             height: parseInt(post.postImgHeight),
             key: String(post.id),

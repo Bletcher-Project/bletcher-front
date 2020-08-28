@@ -2,7 +2,7 @@
 export const INIT = '/api';
 
 /* image */
-export const IMAGE = '/images';
+export const IMAGE_API = '/images';
 export const IMAGE_PROFILE = '/profile';
 export const IMAGE_POST = '/post';
 
