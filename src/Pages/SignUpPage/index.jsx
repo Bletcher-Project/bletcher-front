@@ -97,4 +97,4 @@ class SignUpPage extends Component {
 SignUpPage.defaultProps = defaultProps;
 SignUpPage.propTypes = propTypes;
 
-export default withRouter(connect(null, mapDispatchToProps)(SignUpPage));
+export default connect(null, mapDispatchToProps)(withRouter(SignUpPage));

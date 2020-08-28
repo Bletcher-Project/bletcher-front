@@ -5,10 +5,12 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
 import * as PostAction from 'Redux/post';
+import * as AuthAction from 'Redux/auth';
 
 import NavBar from 'Components/Common/NavBar';
 import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
+import Upload from 'Components/Upload/UploadPost';
 
 import { Modal } from 'reactstrap';
 
@@ -17,10 +19,9 @@ import dummyPost from 'Dummies/dummyPost';
 import settingIcon from 'Assets/images/setting.png';
 import {
   INIT,
-  IMAGE,
+  IMAGE_API,
   USER_API,
   QUERY_NAME,
-  IMAGE_PROFILE,
   IMAGE_POST,
 } from 'Constants/api-uri';
 
@@ -90,7 +91,7 @@ class UserPage extends Component {
       (posts) => {
         posts.forEach((post) => {
           postImg.push({
-            src: `${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_POST}/${post.postImgName}`,
+            src: `${process.env.REACT_APP_SERVER_URL}${IMAGE_API}${IMAGE_POST}/${post.postImgName}`,
             width: parseInt(post.postImgWidth),
             height: parseInt(post.postImgHeight),
             key: String(post.id),
@@ -111,6 +112,12 @@ class UserPage extends Component {
   editUserProfile = () => {
     const { history, match } = this.props;
     history.push({ pathname: `${match.url}/profile` });
+  };
+
+  signOutHandler = async () => {
+    const { dispatch, history } = this.props;
+    await dispatch(AuthAction.signOut());
+    await history.push('/');
   };
 
   componentDidMount = async () => {
@@ -148,11 +155,7 @@ class UserPage extends Component {
               <div className="userPage__contents__header__thumb">
                 <Thumbnail
                   size="100"
-                  src={
-                    userInfo.profileImgName !== null
-                      ? `${process.env.REACT_APP_SERVER_URL}${IMAGE}${IMAGE_PROFILE}/${userInfo.profileImgName}`
-                      : null
-                  }
+                  src={null}
                   type={userInfo.type}
                   userName={userInfo.name}
                 />
@@ -165,6 +168,9 @@ class UserPage extends Component {
                   </div>
                   {isMyPage ? (
                     <div className="settingArea">
+                      <button type="button" onClick={this.signOutHandler}>
+                        signout
+                      </button>
                       <button
                         className="settingButton"
                         type="button"
@@ -194,6 +200,7 @@ class UserPage extends Component {
             </div>
 
             <div className="userPage__contents__body">
+              <Upload />
               {userPostImgs.length > 0
                 ? dummyPost.posts.map((data) => {
                     return (

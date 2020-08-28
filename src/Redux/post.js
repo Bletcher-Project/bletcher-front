@@ -3,9 +3,10 @@ import { createAction, handleActions as postReducer } from 'redux-actions';
 import {
   INIT,
   POST_LIKE,
-  SKETCHER,
   POST_ONE,
   POST_API,
+  USER_ONE,
+  IMAGE_API,
 } from 'Constants/api-uri';
 
 const initialState = {
@@ -117,7 +118,7 @@ export const getAllPosts = (token) => {
       );
       if (response.status === 200) {
         result = await response.json().then((res) => {
-          return res.posts;
+          return res.data;
         });
         await dispatch(getAllPostsSuccess(result));
       }
@@ -133,7 +134,7 @@ export const getPostByUserId = (userId, token) => {
     let result;
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}/${userId}`,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${USER_ONE}/${userId}`,
         {
           method: 'GET',
           headers: {
@@ -143,7 +144,7 @@ export const getPostByUserId = (userId, token) => {
       );
       if (response.status === 200) {
         result = await response.json().then((res) => {
-          return res.posts;
+          return res.data;
         });
         await dispatch(getUserPostSuccess());
       }
@@ -180,9 +181,23 @@ export const getPostByPostId = (postId, token) => {
   };
 };
 
-export const uploadPost = (payload, token) => {
+export const uploadPost = (image, payload, token) => {
   return async (dispatch) => {
     try {
+      const responseImage = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${IMAGE_API}${POST_API}`,
+        {
+          method: 'POST',
+          headers: {
+            'x-access-token': token,
+          },
+          body: image,
+        },
+      );
+      const imgId = await responseImage.json().then((res) => {
+        return res.data.id;
+      });
+      payload.append('image_id', imgId);
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}`,
         {
@@ -190,28 +205,6 @@ export const uploadPost = (payload, token) => {
           headers: {
             'x-access-token': token,
           },
-          body: payload,
-        },
-      );
-      if (response.status === 200) {
-        const result = await response.json();
-        await dispatch(uploadPostSuccess(result));
-      }
-    } catch (err) {
-      await dispatch(uploadPostFail());
-    }
-    return { type: 'UPLOAD_POST_SUCCESS' };
-  };
-};
-
-export const uploadSketcherPost = (payload, token) => {
-  return async (dispatch) => {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${SKETCHER}`,
-        {
-          method: 'POST',
-          headers: { 'x-access-token': token },
           body: payload,
         },
       );

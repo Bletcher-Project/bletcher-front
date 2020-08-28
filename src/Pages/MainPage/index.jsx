@@ -9,8 +9,6 @@ import Jumbotron from 'Components/Common/Jumbotron';
 import Post from 'Components/Post/Post';
 import UploadPost from 'Components/Upload/UploadPost';
 
-import dummyPost from 'Dummies/dummyPost';
-
 const defaultProps = {
   token: null,
 };
@@ -38,7 +36,7 @@ class MainPage extends Component {
   }
 
   componentDidMount() {
-    // this.getAllPosts();
+    this.getAllPosts();
   }
 
   getAllPosts = () => {
@@ -53,7 +51,7 @@ class MainPage extends Component {
   };
 
   render() {
-    const { newPostClicked } = this.state;
+    const { newPostClicked, feed, feedLoading } = this.state;
     return (
       <div className="mainPage">
         <NavBar isActive="main" />
@@ -69,19 +67,20 @@ class MainPage extends Component {
         ) : (
           <div>
             <div className="mainPage__postList">
-              {dummyPost.posts.map((data) => {
-                return (
-                  <Post
-                    postId={data.id}
-                    postImg={data.postImgName}
-                    postTitle={data.postTitle}
-                    isFavorite={data.isFavorite}
-                    userId={data.UserId}
-                    key={data.id}
-                    isActive="feed"
-                  />
-                );
-              })}
+              {feed && !feedLoading
+                ? feed.map((data) => {
+                    return (
+                      <Post
+                        postId={data.id}
+                        postImg={data.Image.path}
+                        postTitle={data.title}
+                        userId={data.User.id}
+                        key={data.id}
+                        isActive="main"
+                      />
+                    );
+                  })
+                : null}
             </div>
           </div>
         )}

@@ -18,12 +18,13 @@ import { dummyDueDate } from 'Dummies/dummyPost';
 
 const defaultProps = {
   createdAt: '',
+  isFavorite: false,
 };
 const propTypes = {
   postId: PropTypes.number.isRequired,
   postImg: PropTypes.string.isRequired,
   postTitle: PropTypes.string.isRequired,
-  isFavorite: PropTypes.bool.isRequired,
+  isFavorite: PropTypes.bool,
   userId: PropTypes.number.isRequired,
   history: ReactRouterPropTypes.history.isRequired,
   isActive: PropTypes.string.isRequired,
@@ -64,7 +65,7 @@ class Post extends Component {
 
   onClickHandler = (isActive) => {
     const { history, postId, userId } = this.props;
-    if (isActive === 'new' || isActive === 'feed' || isActive === 'funding') {
+    if (isActive === 'new' || isActive === 'main' || isActive === 'funding') {
       history.push({
         pathname: '/detail',
         search: `?postId=${postId}&authorId=${userId}&active=${isActive}`,
@@ -122,8 +123,7 @@ class Post extends Component {
               shown:
                 isActive === 'funding' ||
                 isActive === 'shop' ||
-                isActive === 'fundingEnd' ||
-                isActive === 'main',
+                isActive === 'fundingEnd',
               none: isActive === 'user',
             })}
           >
@@ -141,7 +141,7 @@ class Post extends Component {
           </div>
           {isHover &&
             (isActive === 'new' ||
-              isActive === 'feed' ||
+              isActive === 'main' ||
               isActive === 'funding') && (
               <div className="post__main__hover">
                 <div className="post__main__hover__icon">

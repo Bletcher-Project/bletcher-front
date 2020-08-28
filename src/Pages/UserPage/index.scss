@@ -7,8 +7,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 50px 30px;
-
     &__header {
       display: flex;
       justify-content: center;
@@ -107,6 +105,23 @@
       justify-content: center;
       margin-left: 2%;
       margin-right: 2%;
+
+      & .uploadModalButton {
+        margin-top: 5%;
+        width: 23%;
+        height: min-content;
+        border: none;
+        background-color: rgb(179, 179, 179);
+        &:focus {
+          outline: none;
+        }
+        & span {
+          color: white;
+          font-size: 10em;
+          padding: 1rem 5rem;
+          @include content-circle(white, 50%, 1px, transparent);
+        }
+      }
     }
   }
 }
