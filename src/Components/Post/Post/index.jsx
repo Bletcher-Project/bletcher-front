@@ -103,7 +103,10 @@ class Post extends Component {
     return (
       <div
         className={cx('post', {
-          centered: isActive === 'funding' || isActive === 'shop',
+          centered:
+            isActive === 'funding' ||
+            isActive === 'shop' ||
+            isActive === 'user',
         })}
       >
         <button
@@ -124,12 +127,13 @@ class Post extends Component {
                 isActive === 'funding' ||
                 isActive === 'shop' ||
                 isActive === 'fundingEnd',
-              none: isActive === 'user',
+              bottom: isActive === 'user',
             })}
           >
             <div
               className={cx('post__main__header__title', {
                 blended: isActive === 'funding',
+                userPage: isActive === 'user',
               })}
             >
               {isActive === 'shop' ||

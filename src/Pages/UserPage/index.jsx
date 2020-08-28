@@ -12,21 +12,12 @@ import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
 import Upload from 'Components/Upload/UploadPost';
 
-import { Modal } from 'reactstrap';
-
-import dummyPost from 'Dummies/dummyPost';
-
-import settingIcon from 'Assets/images/setting.png';
-import {
-  INIT,
-  IMAGE_API,
-  USER_API,
-  QUERY_NAME,
-  IMAGE_POST,
-} from 'Constants/api-uri';
+import EditButton from 'Assets/images/editButton.svg';
+import { INIT, USER_API, QUERY_NAME } from 'Constants/api-uri';
 
 const defaultProps = {
   user: null,
+  token: null,
 };
 const propTypes = {
   match: ReactRouterPropTypes.match.isRequired,
@@ -34,6 +25,9 @@ const propTypes = {
     id: PropTypes.number,
     nickname: PropTypes.string,
   }),
+  token: PropTypes.string,
+  history: ReactRouterPropTypes.history.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -50,8 +44,6 @@ class UserPage extends Component {
       isMyPage: false,
       userInfo: null,
       userPostImgs: [],
-      selectedPost: null,
-      openModal: false,
     };
   }
 
@@ -83,30 +75,31 @@ class UserPage extends Component {
     }
   };
 
-  getUserPost = async () => {
+  getUserPosts = async () => {
     const { dispatch, token } = this.props;
-    const { userInfo, userPostImgs } = this.state;
-    const postImg = [];
-    await dispatch(PostAction.getPostByUserId(userInfo.id, token)).then(
-      (posts) => {
-        posts.forEach((post) => {
-          postImg.push({
-            src: `${process.env.REACT_APP_SERVER_URL}${IMAGE_API}${IMAGE_POST}/${post.postImgName}`,
-            width: parseInt(post.postImgWidth),
-            height: parseInt(post.postImgHeight),
-            key: String(post.id),
-          });
-        });
-      },
-    );
-    this.setState({ userPostImgs: userPostImgs.concat(postImg) });
+    const { userInfo } = this.state;
+    dispatch(PostAction.getPostByUserId(userInfo.id, token)).then((result) => {
+      this.setState({ userPostImgs: result });
+    });
   };
 
-  handleClickPost = (e, { photo, index }) => {
-    const { dispatch, token } = this.props;
-    dispatch(PostAction.getPostByPostId(photo.key, token)).then((post) => {
-      this.setState({ selectedPost: post, openModal: true });
-    });
+  showUserPosts = () => {
+    const { userPostImgs } = this.state;
+    if (userPostImgs) {
+      return userPostImgs.map((data) => {
+        return (
+          <Post
+            postId={data.id}
+            postImg={data.Image.path}
+            postTitle={data.title}
+            userId={data.User.id}
+            key={data.id}
+            isActive="user"
+          />
+        );
+      });
+    }
+    return null;
   };
 
   editUserProfile = () => {
@@ -121,133 +114,68 @@ class UserPage extends Component {
   };
 
   componentDidMount = async () => {
-    if (this.props.user) {
+    const { user } = this.props;
+    if (user) {
       await this.setUser();
-      await this.getUserPost();
+      await this.getUserPosts();
     }
   };
 
-  componentDidUpdate = async (prevProps, prevState) => {
+  componentDidUpdate = async (prevProps) => {
     const { token, user, match } = this.props;
     if (
       (token && user !== prevProps.user) ||
       prevProps.match.params.username !== match.params.username
     ) {
       await this.setUser();
-      await this.getUserPost();
+      await this.getUserPosts();
     }
   };
 
+  // <button type="button" onClick={this.signOutHandler}>
+  //   signout
+  // </button>
+
   render() {
-    const {
-      isMyPage,
-      userInfo,
-      userPostImgs,
-      selectedPost,
-      openModal,
-    } = this.state;
+    const { isMyPage } = this.state;
     return (
       <div className="userPage">
         <NavBar isActive={isMyPage ? 'user' : ''} />
-        {userInfo ? (
-          <div className="userPage__contents">
-            <div className="userPage__contents__header">
-              <div className="userPage__contents__header__thumb">
-                <Thumbnail
-                  size="100"
-                  src={null}
-                  type={userInfo.type}
-                  userName={userInfo.name}
-                />
-              </div>
-              <div className="userPage__contents__header__profile">
-                <div className="userPage__contents__header__profile-name-set">
-                  <div className="nameArea">
-                    <h1>{userInfo.name}</h1>
-                    <div id="nameUnderBar" />
-                  </div>
-                  {isMyPage ? (
-                    <div className="settingArea">
-                      <button type="button" onClick={this.signOutHandler}>
-                        signout
-                      </button>
-                      <button
-                        className="settingButton"
-                        type="button"
-                        onClick={this.editUserProfile}
-                      >
-                        <img src={settingIcon} alt="setting" />
-                      </button>
-                    </div>
-                  ) : null}
-                </div>
-                <div className="userPage__contents__header__profile-status">
-                  <p>{userInfo.status}</p>
-                </div>
-                {isMyPage ? (
-                  <div className="userPage__contents__header__profile-follow">
-                    <div className="followBox">
-                      <span className="followTitle">Followers</span>
-                      <span id="followerNum">0</span>
-                    </div>
-                    <div className="followBox">
-                      <span className="followTitle">Following</span>
-                      <span id="followingNum">0</span>
-                    </div>
-                  </div>
-                ) : null}
-              </div>
-            </div>
-
-            <div className="userPage__contents__body">
-              <Upload />
-              {userPostImgs.length > 0
-                ? dummyPost.posts.map((data) => {
-                    return (
-                      <Post
-                        postId={data.id}
-                        postImg={data.postImgName}
-                        postCategory={data.postCategory}
-                        postTitle={data.postTitle}
-                        postDescription={data.postDescription}
-                        isFavorite={data.isFavorite}
-                        userId={data.UserId}
-                        key={data.id}
-                        isActive="user"
-                      />
-                    );
-                  })
-                : null}
-            </div>
+        <div className="userPage__header">
+          <div className="userPage__header__thumb">
+            <Thumbnail size="100" src={null} />
+            {isMyPage ? (
+              <button
+                type="button"
+                onClick={this.editUserProfile}
+                className="editButton"
+              >
+                <img src={EditButton} alt="editbutton" />
+              </button>
+            ) : null}
           </div>
-        ) : null}
-
-        <div className="userPage__modal">
-          {selectedPost ? (
-            <Modal
-              isOpen={openModal}
-              toggle={() => this.setState({ openModal: !openModal })}
-              centered
-            >
-              <Post
-                postId={selectedPost.id}
-                isMyPost={isMyPage}
-                userProfileImg={selectedPost.User.profileImgName}
-                userName={selectedPost.User.name}
-                userType={selectedPost.User.type}
-                postContent={selectedPost.content}
-                postHashTags={[
-                  { id: 1, tags: 'flower' },
-                  { id: 2, tags: 'sunny' },
-                ]} /// ///
-                postImg={selectedPost.postImgName}
-                postDate={selectedPost.createdAt}
-                isLiked={selectedPost.isLiked}
-                postLike={selectedPost.likeCount}
-              />
-            </Modal>
-          ) : null}
+          <div className="userPage__header__profile">
+            <span className="userPage__header__profile__name">KWON</span>
+          </div>
+          <div className="userPage__header__rowTab">
+            <ul className="userPage__header__rowTab__buttons">
+              <div className="userPage__header__rowTab__buttons__upload">
+                <Upload />
+              </div>
+              <li>
+                <button type="button">me</button>
+              </li>
+              <li>
+                <button type="button">Made by me</button>
+              </li>
+              <li>
+                <button type="button">Used by me</button>
+              </li>
+            </ul>
+          </div>
         </div>
+
+        <div className="userPage__postList">{this.showUserPosts()}</div>
       </div>
     );
   }

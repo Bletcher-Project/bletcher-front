@@ -3,125 +3,84 @@
 */
 
 .userPage {
-  &__contents {
+  &__header {
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    &__header {
-      display: flex;
-      justify-content: center;
-      width: 50%;
-      margin-bottom: 50px;
-
-      &__thumb {
-        margin: 10px 20px 0 20px;
-      }
-
-      &__profile {
-        margin-left: 20px;
-
-        &-name-set {
-          display: flex;
-          align-items: flex-end;
-
-          & .nameArea {
-            display: inline-block;
-
-            & h1 {
-              margin: 0;
-              margin-bottom: -14px;
-              padding-left: 10px;
-              padding-right: 18px;
-              font-family: 'DM Serif Text', serif;
-              font-size: 35px;
-              color: #3d3d3d;
-            }
-
-            & #nameUnderBar {
-              width: inherit;
-              height: 12px;
-              background-image: linear-gradient(
-                to right,
-                rgba(154, 122, 243, 0.5),
-                rgba(255, 158, 174, 0.5)
-              );
-            }
-          }
-
-          & .settingArea {
-            margin-left: 17px;
-            margin-bottom: 2px;
-            cursor: pointer;
-
-            & .settingButton {
-              border: none;
-              background-color: transparent;
-            }
-            & img {
-              width: 30px;
-              height: 30px;
-              transform: rotate(30deg);
-            }
-          }
-        }
-
-        &-status {
-          padding: 5px;
-          min-height: 50px;
-
-          & p {
-            margin: 0;
-            font-size: 18px;
-            color: #4a4a4a;
-            word-break: break-all;
-          }
-        }
-
-        &-follow {
-          display: flex;
-          padding: 0 5px;
-
-          & .followBox {
-            font-size: 19px;
-
-            & .followTitle {
-              font-weight: 600;
-              color: #4a4a4a;
-              margin-right: 10px;
-            }
-          }
-
-          & .followBox:first-child {
-            margin-right: 20px;
-          }
-        }
-      }
-    } /* end header css */
-
-    &__body {
-      width: 100%;
-      display: flex;
-      flex-flow: row wrap;
-      justify-content: center;
-      margin-left: 2%;
-      margin-right: 2%;
-
-      & .uploadModalButton {
-        margin-top: 5%;
-        width: 23%;
-        height: min-content;
-        border: none;
-        background-color: rgb(179, 179, 179);
-        &:focus {
-          outline: none;
-        }
-        & span {
-          color: white;
-          font-size: 10em;
-          padding: 1rem 5rem;
-          @include content-circle(white, 50%, 1px, transparent);
-        }
+    width: 100%;
+    &__thumb {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+    &__profile {
+      margin-bottom: 3.5rem;
+      &__name {
+        font-family: 'GothamRoundBold';
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: $main-color;
+        text-shadow: 0 2px 2px $main-color;
       }
     }
+
+    &__rowTab {
+      width: 100%;
+
+      &__buttons {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        list-style: none;
+        & button {
+          @include content-circle(transparent, 42.5px, 0, $main-color);
+          color: white;
+          padding: 0.5rem 1.5rem;
+          margin: 0 2rem;
+          &:focus {
+            outline: none;
+          }
+        }
+        &__upload {
+          position: absolute;
+          left: 0;
+          & button {
+            color: black;
+            border: none;
+            background-color: transparent;
+            &:focus {
+              outline: none;
+            }
+          }
+        }
+      }
+
+      &:nth-child(1) {
+        justify-self: flex-start;
+      }
+    }
+  }
+
+  &__postList {
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+}
+
+.editButton {
+  position: relative;
+  bottom: 0;
+  right: 0;
+  @include content-circle(transparent, 50%, 0, white);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5);
+  border: none;
+  padding: 0.5rem;
+  &:focus {
+    outline: none;
   }
 }

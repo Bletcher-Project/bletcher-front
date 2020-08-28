@@ -62,8 +62,11 @@
         order: 1;
       }
 
-      &.none {
-        display: none;
+      &.bottom {
+        visibility: visible;
+        background-color: transparent;
+        order: 1;
+        padding-bottom: 1rem;
       }
 
       &__title {
@@ -73,7 +76,8 @@
         font-size: 1.2rem;
         height: 2.5rem;
         font-family: 'AppleSDGothicNeo';
-        &.blended {
+        &.blended,
+        &.userPage {
           font-family: 'GothamRound';
           font-weight: 500;
         }
