@@ -4,11 +4,12 @@
 
 .userPage {
   &__header {
-    margin-top: 1rem;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    margin-top: 1rem;
+
     &__thumb {
       position: relative;
       margin-bottom: 1rem;
@@ -26,38 +27,44 @@
 
     &__rowTab {
       width: 100%;
-
+      position: relative;
       &__buttons {
         width: 100%;
         display: flex;
         flex-direction: row;
         justify-content: center;
+        align-items: center;
         list-style: none;
-        & button {
-          @include content-circle(transparent, 42.5px, 0, $main-color);
-          color: white;
+        &__button {
           padding: 0.5rem 1.5rem;
           margin: 0 2rem;
+          border: none;
+          background-color: transparent;
           &:focus {
             outline: none;
           }
         }
         &__upload {
           position: absolute;
+          height: inherit;
           left: 0;
           & button {
             color: black;
             border: none;
-            background-color: transparent;
+            background-color: white;
+            padding: 0;
+            & span {
+              font-size: 3rem;
+            }
             &:focus {
               outline: none;
             }
           }
         }
-      }
-
-      &:nth-child(1) {
-        justify-self: flex-start;
+        &__button.activated {
+          @include content-circle(transparent, 42.5px, 0, $main-color);
+          color: white;
+        }
       }
     }
   }
@@ -73,12 +80,11 @@
 }
 
 .editButton {
-  position: relative;
-  bottom: 0;
-  right: 0;
   @include content-circle(transparent, 50%, 0, white);
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5);
-  border: none;
+  position: absolute;
+  bottom: 0;
+  right: 0;
   padding: 0.5rem;
   &:focus {
     outline: none;

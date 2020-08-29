@@ -11,6 +11,8 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
+import plus from 'Assets/images/plus.svg';
+
 const defaultProps = {
   user: null,
   token: null,
@@ -111,7 +113,7 @@ class Upload extends Component {
           onClick={this.toggle}
           className="uploadModalButton"
         >
-          <span>+</span>
+          <img src={plus} alt="plusButton" />
         </button>
         <Modal isOpen={modal} toggle={this.toggle} className="className">
           <ModalHeader toggle={this.toggle}>

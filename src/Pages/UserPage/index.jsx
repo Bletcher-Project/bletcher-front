@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import cx from 'classnames';
 
 import { connect } from 'react-redux';
 import * as PostAction from 'Redux/post';
@@ -14,6 +15,7 @@ import Upload from 'Components/Upload/UploadPost';
 
 import EditButton from 'Assets/images/editButton.svg';
 import { INIT, USER_API, QUERY_NAME } from 'Constants/api-uri';
+import FILTER from 'Constants/filter-option';
 
 const defaultProps = {
   user: null,
@@ -44,6 +46,7 @@ class UserPage extends Component {
       isMyPage: false,
       userInfo: null,
       userPostImgs: [],
+      postFilter: 'me',
     };
   }
 
@@ -107,10 +110,27 @@ class UserPage extends Component {
     history.push({ pathname: `${match.url}/profile` });
   };
 
-  signOutHandler = async () => {
-    const { dispatch, history } = this.props;
-    await dispatch(AuthAction.signOut());
-    await history.push('/');
+  filterClickHandler = (e) => {
+    this.setState({ postFilter: e.target.innerText });
+  };
+
+  createFilterList = () => {
+    const { postFilter } = this.state;
+    return FILTER.user.map((option) => {
+      return (
+        <li key={option[1]}>
+          <button
+            className={cx(`userPage__header__rowTab__buttons__button`, {
+              activated: postFilter === option[0],
+            })}
+            type="button"
+            onClick={this.filterClickHandler}
+          >
+            {option[0]}
+          </button>
+        </li>
+      );
+    });
   };
 
   componentDidMount = async () => {
@@ -131,10 +151,6 @@ class UserPage extends Component {
       await this.getUserPosts();
     }
   };
-
-  // <button type="button" onClick={this.signOutHandler}>
-  //   signout
-  // </button>
 
   render() {
     const { isMyPage } = this.state;
@@ -162,15 +178,7 @@ class UserPage extends Component {
               <div className="userPage__header__rowTab__buttons__upload">
                 <Upload />
               </div>
-              <li>
-                <button type="button">me</button>
-              </li>
-              <li>
-                <button type="button">Made by me</button>
-              </li>
-              <li>
-                <button type="button">Used by me</button>
-              </li>
+              {this.createFilterList()}
             </ul>
           </div>
         </div>
