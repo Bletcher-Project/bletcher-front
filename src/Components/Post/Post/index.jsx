@@ -8,15 +8,12 @@ import * as PostAction from 'Redux/post';
 
 import cx from 'classnames';
 
-import FavoriteButton from 'Assets/icons/FavoriteButton';
-import MixButton from 'Assets/icons/MixButton';
-import ShareButton from 'Assets/icons/ShareButton';
-import DueDate from 'Assets/icons/DueDate';
 import FundHeart from 'Assets/icons/FundHeart';
+import DueDate from 'Assets/icons/DueDate';
 
+import HoverIcon from 'Components/Post/HoverIcon';
 import { dummyDueDate } from 'Dummies/dummyPost';
-
-import FILTER from 'Constants/filter-option';
+import TARGET from 'Constants/active-target';
 
 const defaultProps = {
   createdAt: '',
@@ -83,25 +80,31 @@ class Post extends Component {
     this.hoverToggler(action);
   };
 
-  buttonClickHandler = async (clickItem) => {
-    if (clickItem === 'favorite') {
-      // update user's favorite in database
-    } else if (clickItem === 'mix') {
-      // route to MixPage
-    } else if (clickItem === 'fundHeart') {
-      const { isFundHeart } = this.state;
-      await new Promise((accept) =>
-        this.setState({ isFundHeart: !isFundHeart }, accept),
-      );
-      // update post's fundCnt in database
-    } else if (clickItem === 'share') {
-      // share funding post
+  validateAciveTarget = (isActive, toActive) => {
+    if (Object.prototype.hasOwnProperty.call(TARGET, toActive)) {
+      return TARGET[toActive].includes(isActive);
+    }
+    return false;
+  };
+
+  switchHoverIcon = (isActive) => {
+    const { isFavorite, isFundHeart } = this.state;
+    switch (isActive) {
+      case 'funding':
+        return HoverIcon('funding', isFundHeart);
+      case 'user__Made by me':
+      case 'user__Used by me':
+        return HoverIcon('user__we');
+      case 'user__me':
+        return HoverIcon('user__me');
+      default:
+        return HoverIcon('default', isFavorite);
     }
   };
 
   render() {
     const { postImg, postTitle, isActive, createdAt } = this.props;
-    const { isHover, isFavorite, isFundHeart } = this.state;
+    const { isHover } = this.state;
     return (
       <div
         className={cx('post', {
@@ -122,22 +125,15 @@ class Post extends Component {
         >
           <div
             className={cx('post__main__header', {
-              shown:
-                isActive === 'funding' ||
-                isActive === 'shop' ||
-                isActive === 'fundingEnd',
-              bottom:
-                isActive === `user__${FILTER.user[1][0]}` ||
-                isActive === `user__${FILTER.user[2][0]}`,
-              none: isActive === `user__${FILTER.user[0][0]}`,
+              shown: this.validateAciveTarget(isActive, 'shown'),
+              bottom: this.validateAciveTarget(isActive, 'bottom'),
+              none: this.validateAciveTarget(isActive, 'none'),
             })}
           >
             <div
               className={cx('post__main__header__title', {
                 blended: isActive === 'funding',
-                userPage:
-                  isActive === `user__${FILTER.user[1][0]}` ||
-                  isActive === `user__${FILTER.user[2][0]}`,
+                userPage: this.validateAciveTarget(isActive, 'userPage'),
               })}
             >
               {isActive === 'shop' ||
@@ -147,52 +143,13 @@ class Post extends Component {
                 : postTitle}
             </div>
           </div>
-          {isHover &&
-            (isActive === 'new' ||
-              isActive === 'main' ||
-              isActive === 'funding' ||
-              isActive === `user__${FILTER.user[0][0]}` ||
-              isActive === `user__${FILTER.user[1][0]}` ||
-              isActive === `user__${FILTER.user[2][0]}`) && (
-              <div className="post__main__hover">
-                <div className="post__main__hover__icon">
-                  {isActive === 'funding' ? (
-                    <>
-                      <FundHeart
-                        isClicked={isFundHeart}
-                        fill
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          this.buttonClickHandler('fundHeart');
-                        }}
-                      />
-                      <ShareButton
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          this.buttonClickHandler('share');
-                        }}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <FavoriteButton
-                        liked={isFavorite}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          this.buttonClickHandler('favorite');
-                        }}
-                      />
-                      <MixButton
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          this.buttonClickHandler('mix');
-                        }}
-                      />
-                    </>
-                  )}
-                </div>
+          {isHover && this.validateAciveTarget(isActive, 'hover') && (
+            <div className={`post__main__hover ${isActive}`}>
+              <div className="post__main__hover__icon">
+                {this.switchHoverIcon(isActive)}
               </div>
-            )}
+            </div>
+          )}
 
           <div className="post__main__content">
             <div className="post__main__content__imgBox">
@@ -204,13 +161,7 @@ class Post extends Component {
             </div>
           </div>
 
-          <div
-            className={cx('post__main__footer', {
-              funding: isActive === 'funding',
-              shop: isActive === 'shop',
-              fundingEnd: isActive === 'fundingEnd',
-            })}
-          >
+          <div className={`post__main__footer ${isActive}`}>
             {isActive === 'funding' && (
               <>
                 <div className={`post__main__footer ${isActive}`}>
