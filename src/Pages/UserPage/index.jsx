@@ -87,7 +87,7 @@ class UserPage extends Component {
   };
 
   showUserPosts = () => {
-    const { userPostImgs } = this.state;
+    const { userPostImgs, postFilter } = this.state;
     if (userPostImgs) {
       return userPostImgs.map((data) => {
         return (
@@ -97,7 +97,7 @@ class UserPage extends Component {
             postTitle={data.title}
             userId={data.User.id}
             key={data.id}
-            isActive="user"
+            isActive={`user__${postFilter}`}
           />
         );
       });
@@ -153,7 +153,7 @@ class UserPage extends Component {
   };
 
   render() {
-    const { isMyPage } = this.state;
+    const { isMyPage, postFilter } = this.state;
     return (
       <div className="userPage">
         <NavBar isActive={isMyPage ? 'user' : ''} />
@@ -176,7 +176,7 @@ class UserPage extends Component {
           <div className="userPage__header__rowTab">
             <ul className="userPage__header__rowTab__buttons">
               <div className="userPage__header__rowTab__buttons__upload">
-                <Upload />
+                {postFilter === FILTER.user[0][0] ? <Upload /> : null}
               </div>
               {this.createFilterList()}
             </ul>

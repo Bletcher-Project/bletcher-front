@@ -16,6 +16,8 @@ import FundHeart from 'Assets/icons/FundHeart';
 
 import { dummyDueDate } from 'Dummies/dummyPost';
 
+import FILTER from 'Constants/filter-option';
+
 const defaultProps = {
   createdAt: '',
   isFavorite: false,
@@ -103,10 +105,7 @@ class Post extends Component {
     return (
       <div
         className={cx('post', {
-          centered:
-            isActive === 'funding' ||
-            isActive === 'shop' ||
-            isActive === 'user',
+          centered: isActive === 'funding' || isActive === 'shop',
         })}
       >
         <button
@@ -127,13 +126,18 @@ class Post extends Component {
                 isActive === 'funding' ||
                 isActive === 'shop' ||
                 isActive === 'fundingEnd',
-              bottom: isActive === 'user',
+              bottom:
+                isActive === `user__${FILTER.user[1][0]}` ||
+                isActive === `user__${FILTER.user[2][0]}`,
+              none: isActive === `user__${FILTER.user[0][0]}`,
             })}
           >
             <div
               className={cx('post__main__header__title', {
                 blended: isActive === 'funding',
-                userPage: isActive === 'user',
+                userPage:
+                  isActive === `user__${FILTER.user[1][0]}` ||
+                  isActive === `user__${FILTER.user[2][0]}`,
               })}
             >
               {isActive === 'shop' ||
@@ -146,7 +150,10 @@ class Post extends Component {
           {isHover &&
             (isActive === 'new' ||
               isActive === 'main' ||
-              isActive === 'funding') && (
+              isActive === 'funding' ||
+              isActive === `user__${FILTER.user[0][0]}` ||
+              isActive === `user__${FILTER.user[1][0]}` ||
+              isActive === `user__${FILTER.user[2][0]}`) && (
               <div className="post__main__hover">
                 <div className="post__main__hover__icon">
                   {isActive === 'funding' ? (

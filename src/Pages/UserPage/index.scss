@@ -36,6 +36,8 @@
         align-items: center;
         list-style: none;
         &__button {
+          font-size: 1.3rem;
+          color: $disabled-gray;
           padding: 0.5rem 1.5rem;
           margin: 0 2rem;
           border: none;
@@ -47,15 +49,12 @@
         &__upload {
           position: absolute;
           height: inherit;
-          left: 0;
+          left: 5%;
           & button {
-            color: black;
             border: none;
-            background-color: white;
+            background-color: transparent;
             padding: 0;
-            & span {
-              font-size: 3rem;
-            }
+
             &:focus {
               outline: none;
             }
@@ -70,12 +69,11 @@
   }
 
   &__postList {
-    width: 100%;
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    margin-left: 2%;
-    margin-right: 2%;
+    margin-left: 4%;
+    margin-right: 4%;
   }
 }
 
