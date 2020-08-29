@@ -11,10 +11,6 @@ const buttonClickHandler = async (clickItem) => {
   } else if (clickItem === 'mix') {
     // route to MixPage
   } else if (clickItem === 'fundHeart') {
-    const { isFundHeart } = this.state;
-    await new Promise((accept) =>
-      this.setState({ isFundHeart: !isFundHeart }, accept),
-    );
     // update post's fundCnt in database
   } else if (clickItem === 'share') {
     // share funding post

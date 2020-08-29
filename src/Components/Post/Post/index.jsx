@@ -143,14 +143,6 @@ class Post extends Component {
                 : postTitle}
             </div>
           </div>
-          {isHover && this.validateAciveTarget(isActive, 'hover') && (
-            <div className={`post__main__hover ${isActive}`}>
-              <div className="post__main__hover__icon">
-                {this.switchHoverIcon(isActive)}
-              </div>
-            </div>
-          )}
-
           <div className="post__main__content">
             <div className="post__main__content__imgBox">
               <img
@@ -158,6 +150,15 @@ class Post extends Component {
                 src={postImg}
                 alt="postImage"
               />
+              {isHover && this.validateAciveTarget(isActive, 'hover') && (
+                <div
+                  className={`post__main__content__imgBox__hover ${isActive}`}
+                >
+                  <div className="post__main__content__imgBox__hover__icon">
+                    {this.switchHoverIcon(isActive)}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

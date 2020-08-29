@@ -30,7 +30,6 @@
     width: 100%;
     padding-left: 0;
     padding-right: 0;
-    position: relative;
     display: flex;
     flex-grow: 3;
     flex-direction: column;
@@ -38,17 +37,6 @@
     background-color: transparent;
     &:focus {
       outline: none;
-    }
-
-    &__hover {
-      z-index: 1;
-      position: absolute;
-      top: 40%;
-      left: 44%;
-
-      &__icon {
-        position: absolute;
-      }
     }
 
     &__header {
@@ -95,6 +83,21 @@
 
       &__imgBox {
         padding: 1rem;
+        position: relative;
+
+        &__hover {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          &.user__me {
+            top: initial;
+            left: initial;
+            right: 0;
+            bottom: 0;
+            transform: translate(-50%, -50%);
+          }
+        }
 
         &__image {
           max-width: 100%;
@@ -166,7 +169,8 @@
 @media (hover: hover) {
   .post__main:hover {
     background-color: $hover-color;
-    .post__main__content__imgBox {
+
+    .post__main__content__imgBox__image {
       opacity: 0.5;
     }
     .post__main__header {
