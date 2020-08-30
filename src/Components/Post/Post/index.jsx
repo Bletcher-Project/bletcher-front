@@ -102,13 +102,31 @@ class Post extends Component {
     }
   };
 
+  getTitleText = (isActive) => {
+    const { postTitle } = this.props;
+    switch (isActive) {
+      case 'shop':
+      case 'fundingEnd':
+      case 'funding':
+        // use Mix info to get USER X USER
+        return 'HyoJI X hangsoo';
+      case 'user__Made by me':
+      case 'user__Used by me':
+        // usx Mix info to get X USER which include my info
+        return 'X hangsoo';
+      case 'user__me':
+      default:
+        return postTitle;
+    }
+  };
+
   render() {
-    const { postImg, postTitle, isActive, createdAt } = this.props;
+    const { postImg, isActive, createdAt } = this.props;
     const { isHover } = this.state;
     return (
       <div
         className={cx('post', {
-          centered: isActive === 'funding' || isActive === 'shop',
+          centered: this.validateAciveTarget(isActive, 'centered'),
         })}
       >
         <button
@@ -127,20 +145,16 @@ class Post extends Component {
             className={cx('post__main__header', {
               shown: this.validateAciveTarget(isActive, 'shown'),
               bottom: this.validateAciveTarget(isActive, 'bottom'),
-              none: this.validateAciveTarget(isActive, 'none'),
             })}
           >
             <div
               className={cx('post__main__header__title', {
-                blended: isActive === 'funding',
+                blended: this.validateAciveTarget(isActive, 'blended'),
                 userPage: this.validateAciveTarget(isActive, 'userPage'),
+                mainPage: this.validateAciveTarget(isActive, 'mainPage'),
               })}
             >
-              {isActive === 'shop' ||
-              isActive === 'fundingEnd' ||
-              isActive === 'funding'
-                ? 'HyoJI X hangsoo'
-                : postTitle}
+              {this.getTitleText(isActive)}
             </div>
           </div>
           <div className="post__main__content">

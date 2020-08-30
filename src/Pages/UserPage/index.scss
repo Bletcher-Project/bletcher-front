@@ -13,6 +13,20 @@
     &__thumb {
       position: relative;
       margin-bottom: 1rem;
+      &__edit {
+        border: none;
+        background-color: transparent;
+        position: absolute;
+        bottom: 0;
+        right: -1.5rem;
+        &:focus {
+          outline: none;
+        }
+        & img {
+          width: 2.7rem;
+          height: 2.7rem;
+        }
+      }
     }
     &__profile {
       margin-bottom: 3.5rem;
@@ -21,7 +35,7 @@
         font-size: 1.5rem;
         font-weight: bold;
         color: $main-color;
-        text-shadow: 0 2px 2px $main-color;
+        text-shadow: 0 2.5px 2.5px $main-color;
       }
     }
 
@@ -74,17 +88,5 @@
     justify-content: center;
     margin-left: 4%;
     margin-right: 4%;
-  }
-}
-
-.editButton {
-  @include content-circle(transparent, 50%, 0, white);
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.5);
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  padding: 0.5rem;
-  &:focus {
-    outline: none;
   }
 }

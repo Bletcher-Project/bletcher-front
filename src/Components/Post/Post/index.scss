@@ -51,14 +51,9 @@
       }
 
       &.bottom {
-        visibility: visible;
         background-color: transparent;
         order: 1;
         padding-bottom: 1rem;
-      }
-
-      &.none {
-        display: none;
       }
 
       &__title {
@@ -67,11 +62,15 @@
         justify-content: center;
         font-size: 1.2rem;
         height: 2.5rem;
-        font-family: 'AppleSDGothicNeo';
         &.blended,
         &.userPage {
           font-family: 'GothamRound';
           font-weight: 500;
+          color: #595959;
+          font-size: 1.3rem;
+        }
+        &.mainPage {
+          font-family: 'AppleSDGothicNeo';
         }
       }
     }
@@ -90,13 +89,6 @@
           left: 50%;
           top: 50%;
           transform: translate(-50%, -50%);
-          &.user__me {
-            top: initial;
-            left: initial;
-            right: 0;
-            bottom: 0;
-            transform: translate(-50%, -50%);
-          }
         }
 
         &__image {

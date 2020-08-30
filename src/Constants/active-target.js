@@ -1,9 +1,10 @@
 export default {
+  centered: ['funding', 'shop'],
   shown: ['funding', 'shop', 'fundingEnd'],
-  bottom: ['user__Made by me', 'user__Used by me'],
-  none: ['user__me'],
+  bottom: ['user__Made by me', 'user__Used by me', 'user__me'],
   blended: ['funding'],
-  userPage: ['user__Made by me', 'user__Used by me'],
+  mainPage: ['main'],
+  userPage: ['user__Made by me', 'user__Used by me', 'user__me'],
   hover: [
     'new',
     'main',

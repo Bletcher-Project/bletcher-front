@@ -13,7 +13,7 @@ import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
 import Upload from 'Components/Upload/UploadPost';
 
-import EditButton from 'Assets/images/editButton.svg';
+import EditButton from 'Assets/images/editButton.png';
 import { INIT, USER_API, QUERY_NAME } from 'Constants/api-uri';
 import FILTER from 'Constants/filter-option';
 
@@ -164,7 +164,7 @@ class UserPage extends Component {
               <button
                 type="button"
                 onClick={this.editUserProfile}
-                className="editButton"
+                className="userPage__header__thumb__edit"
               >
                 <img src={EditButton} alt="editbutton" />
               </button>
