@@ -144,6 +144,7 @@ class Post extends Component {
           <div
             className={cx('post__main__header', {
               shown: this.validateAciveTarget(isActive, 'shown'),
+              bottomHidden: this.validateAciveTarget(isActive, 'bottomHidden'),
               bottom: this.validateAciveTarget(isActive, 'bottom'),
             })}
           >

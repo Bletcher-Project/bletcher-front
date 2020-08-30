@@ -50,10 +50,16 @@
         order: 1;
       }
 
-      &.bottom {
+      &.bottomHidden {
         background-color: transparent;
         order: 1;
         padding-bottom: 1rem;
+      }
+
+      &.bottom {
+        visibility: visible;
+        background-color: transparent;
+        order: 1;
       }
 
       &__title {

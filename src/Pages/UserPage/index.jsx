@@ -6,7 +6,6 @@ import cx from 'classnames';
 
 import { connect } from 'react-redux';
 import * as PostAction from 'Redux/post';
-import * as AuthAction from 'Redux/auth';
 
 import NavBar from 'Components/Common/NavBar';
 import Thumbnail from 'Components/Thumbnail';
@@ -14,7 +13,6 @@ import Post from 'Components/Post/Post';
 import Upload from 'Components/Upload/UploadPost';
 
 import EditButton from 'Assets/images/editButton.png';
-import { INIT, USER_API, QUERY_NAME } from 'Constants/api-uri';
 import FILTER from 'Constants/filter-option';
 
 const defaultProps = {
@@ -53,28 +51,15 @@ class UserPage extends Component {
   setUser = async () => {
     const { match, user } = this.props;
     if (match.params.username === user.nickname) {
-      this.setState({ userInfo: user, isMyPage: true, userPostImgs: [] });
+      await new Promise((accept) =>
+        this.setState(
+          { userInfo: user, isMyPage: true, userPostImgs: [] },
+          accept,
+        ),
+      );
     } else {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}${QUERY_NAME}${match.params.username}`,
-          {
-            method: 'GET',
-          },
-        );
-        if (response.status === 200) {
-          const result = await response.json();
-          this.setState({
-            userInfo: result.userInfo,
-            isMyPage: false,
-            userPostImgs: [],
-          });
-          return result;
-        }
-        return null;
-      } catch (error) {
-        console.error(error);
-      }
+      // Other UserPage
+      // TODO::Jinny- get other userinfo without fetch redux 'user'
     }
   };
 
@@ -154,6 +139,7 @@ class UserPage extends Component {
 
   render() {
     const { isMyPage, postFilter } = this.state;
+    const { user } = this.props;
     return (
       <div className="userPage">
         <NavBar isActive={isMyPage ? 'user' : ''} />
@@ -171,7 +157,9 @@ class UserPage extends Component {
             ) : null}
           </div>
           <div className="userPage__header__profile">
-            <span className="userPage__header__profile__name">KWON</span>
+            <span className="userPage__header__profile__name">
+              {user ? user.nickname : null}
+            </span>
           </div>
           <div className="userPage__header__rowTab">
             <ul className="userPage__header__rowTab__buttons">
