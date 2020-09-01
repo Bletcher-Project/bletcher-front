@@ -6,6 +6,7 @@
 @import 'Components/Common/Logo';
 @import 'Components/Common/NavBar';
 @import 'Components/Common/Jumbotron';
+@import 'Components/Common/Loader';
 @import 'Components/Form/TextField';
 @import 'Components/Form/Button/NoStyleButton';
 @import 'Components/Post/Post';
@@ -32,10 +33,7 @@
 @import 'Pages/SearchPage/';
 @import 'Pages/DetailPage';
 /* Fonts */
-@import url('https://use.typekit.net/dwx4ixd.css'); // (adobe) flood-std font
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap'); // (google) Roboto font
-@import url('https://fonts.googleapis.com/css?family=Mansalva&display=swap'); // (google) Mansalva
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans&display=swap'); // (google) NotoSans font
 @import url('https://fonts.googleapis.com/css?family=DM+Serif+Text&display=swap'); // (google) DM Serif Text font
 @font-face {
   font-family: 'GothamRound';

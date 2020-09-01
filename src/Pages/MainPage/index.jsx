@@ -6,13 +6,12 @@ import * as PostAction from 'Redux/post';
 
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
+import Loader from 'Components/Common/Loader';
 import Post from 'Components/Post/Post';
-import UploadPost from 'Components/Upload/UploadPost';
 
 const defaultProps = {
   token: null,
 };
-
 const propTypes = {
   dispatch: PropTypes.func.isRequired,
   token: PropTypes.string,
@@ -31,7 +30,6 @@ class MainPage extends Component {
     this.state = {
       feed: null,
       feedLoading: true,
-      newPostClicked: false,
     };
   }
 
@@ -46,44 +44,31 @@ class MainPage extends Component {
     });
   };
 
-  toggleNewPost = () => {
-    this.setState({ newPostClicked: !this.state.newPostClicked });
-  };
-
   render() {
-    const { newPostClicked, feed, feedLoading } = this.state;
+    const { feed, feedLoading } = this.state;
     return (
       <div className="mainPage">
         <NavBar isActive="main" />
         <Jumbotron title="Find out" description="What other people painted" />
 
-        {newPostClicked ? (
-          <UploadPost
-            userId={this.props.user.id}
-            userProfileImg={this.props.user.profileImgName}
-            userType={this.props.user.type}
-            handlePrevStep={this.toggleNewPost}
-          />
-        ) : (
-          <div>
-            <div className="mainPage__postList">
-              {feed && !feedLoading
-                ? feed.map((data) => {
-                    return (
-                      <Post
-                        postId={data.id}
-                        postImg={data.Image.path}
-                        postTitle={data.title}
-                        userId={data.User.id}
-                        key={data.id}
-                        isActive="main"
-                      />
-                    );
-                  })
-                : null}
-            </div>
-          </div>
-        )}
+        <div className="mainPage__postList">
+          {feed && !feedLoading ? (
+            feed.map((data) => {
+              return (
+                <Post
+                  postId={data.id}
+                  postImg={data.Image.path}
+                  postTitle={data.title}
+                  userId={data.User.id}
+                  key={data.id}
+                  isActive="main"
+                />
+              );
+            })
+          ) : (
+            <Loader />
+          )}
+        </div>
       </div>
     );
   }
