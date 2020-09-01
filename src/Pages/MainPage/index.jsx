@@ -44,6 +44,21 @@ class MainPage extends Component {
     });
   };
 
+  renderPosts = () => {
+    const { feed } = this.state;
+    console.log(feed);
+    return feed.map((data) => (
+      <Post
+        key={data.id}
+        postId={data.id}
+        postTitle={data.title}
+        postImg={data.Image.path}
+        userId={data.User.id}
+        isActive="main"
+      />
+    ));
+  };
+
   render() {
     const { feed, feedLoading } = this.state;
     return (
@@ -52,22 +67,7 @@ class MainPage extends Component {
         <Jumbotron title="Find out" description="What other people painted" />
 
         <div className="mainPage__postList">
-          {feed && !feedLoading ? (
-            feed.map((data) => {
-              return (
-                <Post
-                  postId={data.id}
-                  postImg={data.Image.path}
-                  postTitle={data.title}
-                  userId={data.User.id}
-                  key={data.id}
-                  isActive="main"
-                />
-              );
-            })
-          ) : (
-            <Loader />
-          )}
+          {feed && !feedLoading ? this.renderPosts() : <Loader />}
         </div>
       </div>
     );
