@@ -9,7 +9,7 @@ import * as AuthAction from 'Redux/auth';
 
 import NavBar from 'Components/Common/NavBar';
 import Thumbnail from 'Components/Thumbnail';
-import Post from 'Components/Post/Post';
+import Post from 'Components/Post/__Post';
 import Upload from 'Components/Upload/UploadPost';
 
 import { Modal } from 'reactstrap';

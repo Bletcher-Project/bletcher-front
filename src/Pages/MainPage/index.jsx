@@ -7,7 +7,7 @@ import * as PostAction from 'Redux/post';
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
 import Loader from 'Components/Common/Loader';
-import Post from 'Components/Post/Post';
+import Post from 'Components/Post/__Post';
 
 const defaultProps = {
   token: null,

@@ -1,4 +1,4 @@
-.post {
+.__post {
   max-height: fit-content;
   max-width: 25%;
   margin: 4% 0;
@@ -14,7 +14,7 @@
   }
 
   &.centered {
-    & .post__main {
+    & .__post__main {
       height: 100%;
       padding-bottom: 5%;
       &__header.shown {
@@ -156,12 +156,12 @@
 }
 
 @media (hover: hover) {
-  .post__main:hover {
+  .__post__main:hover {
     background-color: $hover-color;
-    .post__main__content__imgBox {
+    .__post__main__content__imgBox {
       opacity: 0.5;
     }
-    .post__main__header {
+    .__post__main__header {
       visibility: visible;
     }
   }
