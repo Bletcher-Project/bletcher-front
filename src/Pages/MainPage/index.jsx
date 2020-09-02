@@ -7,7 +7,8 @@ import * as PostAction from 'Redux/post';
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
 import Loader from 'Components/Common/Loader';
-import Post from 'Components/Post/__Post';
+import TempPost from 'Components/Post/__Post';
+import Post from 'Components/Post/Post';
 
 const defaultProps = {
   token: null,
@@ -48,7 +49,7 @@ class MainPage extends Component {
     const { feed } = this.state;
     console.log(feed);
     return feed.map((data) => (
-      <Post
+      <TempPost
         key={data.id}
         postId={data.id}
         postTitle={data.title}
@@ -65,6 +66,9 @@ class MainPage extends Component {
       <div className="mainPage">
         <NavBar isActive="main" />
         <Jumbotron title="Find out" description="What other people painted" />
+
+        {/* Test Post Component */}
+        <Post />
 
         <div className="mainPage__postList">
           {feed && !feedLoading ? this.renderPosts() : <Loader />}
