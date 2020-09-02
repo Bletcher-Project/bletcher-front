@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import cx from 'classnames';
 
-import Post from 'Components/Post/Post';
+import Post from 'Components/Post/__Post';
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
 import NoStyleButton from 'Components/Form/Button/NoStyleButton';

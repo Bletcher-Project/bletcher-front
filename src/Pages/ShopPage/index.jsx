@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import NavBar from 'Components/Common/NavBar';
-import Post from 'Components/Post/Post';
+import Post from 'Components/Post/__Post';
 
 import dummyPost from 'Dummies/dummyPost';
 

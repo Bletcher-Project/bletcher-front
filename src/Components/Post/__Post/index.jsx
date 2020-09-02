@@ -102,12 +102,12 @@ class Post extends Component {
     const { isHover, isFavorite, isFundHeart } = this.state;
     return (
       <div
-        className={cx('post', {
+        className={cx('__post', {
           centered: isActive === 'funding' || isActive === 'shop',
         })}
       >
         <button
-          className="post__main"
+          className="__post__main"
           type="button"
           onClick={() => {
             this.onClickHandler(isActive);
@@ -119,7 +119,7 @@ class Post extends Component {
           onFocus={() => {}}
         >
           <div
-            className={cx('post__main__header', {
+            className={cx('__post__main__header', {
               shown:
                 isActive === 'funding' ||
                 isActive === 'shop' ||
@@ -128,7 +128,7 @@ class Post extends Component {
             })}
           >
             <div
-              className={cx('post__main__header__title', {
+              className={cx('__post__main__header__title', {
                 blended: isActive === 'funding',
               })}
             >
@@ -143,8 +143,8 @@ class Post extends Component {
             (isActive === 'new' ||
               isActive === 'main' ||
               isActive === 'funding') && (
-              <div className="post__main__hover">
-                <div className="post__main__hover__icon">
+              <div className="__post__main__hover">
+                <div className="__post__main__hover__icon">
                   {isActive === 'funding' ? (
                     <>
                       <FundHeart
@@ -183,10 +183,10 @@ class Post extends Component {
               </div>
             )}
 
-          <div className="post__main__content">
-            <div className="post__main__content__imgBox">
+          <div className="__post__main__content">
+            <div className="__post__main__content__imgBox">
               <img
-                className="post__main__content__imgBox__image"
+                className="__post__main__content__imgBox__image"
                 src={postImg}
                 alt="postImage"
               />
@@ -194,7 +194,7 @@ class Post extends Component {
           </div>
 
           <div
-            className={cx('post__main__footer', {
+            className={cx('__post__main__footer', {
               funding: isActive === 'funding',
               shop: isActive === 'shop',
               fundingEnd: isActive === 'fundingEnd',
@@ -202,10 +202,10 @@ class Post extends Component {
           >
             {isActive === 'funding' && (
               <>
-                <div className={`post__main__footer ${isActive}`}>
-                  <div className={`post__main__footer ${isActive}__tab`}>
+                <div className={`__post__main__footer ${isActive}`}>
+                  <div className={`__post__main__footer ${isActive}__tab`}>
                     <div
-                      className={`post__main__footer ${isActive}__tab__left`}
+                      className={`__post__main__footer ${isActive}__tab__left`}
                     >
                       <span className="mr-1">
                         <DueDate />
@@ -213,7 +213,7 @@ class Post extends Component {
                       <span>{this.calcDueDate(createdAt)}</span>
                     </div>
                     <div
-                      className={`post__main__footer ${isActive}__tab__right`}
+                      className={`__post__main__footer ${isActive}__tab__right`}
                     >
                       <span>
                         <FundHeart />
@@ -221,9 +221,9 @@ class Post extends Component {
                       <span>354</span>
                     </div>
                   </div>
-                  <div className={`post__main__footer ${isActive}__progress`}>
+                  <div className={`__post__main__footer ${isActive}__progress`}>
                     <hr
-                      className={`post__main__footer ${isActive}__progress__bar`}
+                      className={`__post__main__footer ${isActive}__progress__bar`}
                     />
                   </div>
                 </div>
