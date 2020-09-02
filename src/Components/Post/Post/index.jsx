@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-const defaultProps = {};
+const defaultProps = {
+  postTitle: null,
+};
 const propTypes = {
   postImg: PropTypes.string.isRequired,
+  postTitle: PropTypes.string,
 };
 
 class Post extends Component {
@@ -13,11 +16,17 @@ class Post extends Component {
   }
 
   render() {
-    const { postImg } = this.props;
+    const { postImg, postTitle } = this.props;
     return (
       <div className="post">
-        <img className="post__image" src={postImg} alt="artwork" />
-        <div className="post__hover" />
+        <div className="post__body">
+          <img className="post__body__image" src={postImg} alt="artwork" />
+        </div>
+        <div className="post__footer">
+          {postTitle ? (
+            <div className="post__footer__title">{postTitle}</div>
+          ) : null}
+        </div>
       </div>
     );
   }

@@ -47,7 +47,6 @@ class MainPage extends Component {
 
   renderPosts = () => {
     const { feed } = this.state;
-    console.log(feed);
     return feed.map((data) => (
       <TempPost
         key={data.id}
@@ -68,7 +67,14 @@ class MainPage extends Component {
         <Jumbotron title="Find out" description="What other people painted" />
 
         {/* Test Post Component */}
-        <Post />
+        <div className="mainPage__test">
+          {feed && !feedLoading ? (
+            <>
+              <Post postImg={feed[7].Image.path} />
+              <Post postImg={feed[8].Image.path} postTitle={feed[8].title} />
+            </>
+          ) : null}
+        </div>
 
         <div className="mainPage__postList">
           {feed && !feedLoading ? this.renderPosts() : <Loader />}

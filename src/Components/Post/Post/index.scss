@@ -3,7 +3,28 @@
 */
 
 .post {
-  &__image {
-    //
+  width: 230px;
+  height: fit-content;
+  padding: 10px;
+  border: 1px solid $main-color;
+
+  &__body {
+    height: 300px;
+    display: flex;
+    justify-content: center;
+
+    &__image {
+      height: 100%;
+    }
+  }
+
+  &__footer {
+    &__title {
+      height: auto;
+      text-align: center;
+      font-size: $header2;
+      padding: 15px 0 5px 0;
+      word-break: keep-all;
+    }
   }
 }
