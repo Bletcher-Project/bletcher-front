@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 
 const defaultProps = {
   postTitle: null,
+  hoverIcon: null,
 };
 const propTypes = {
   postImg: PropTypes.string.isRequired,
   postTitle: PropTypes.string,
+  hoverIcon: PropTypes.element,
 };
-
 class Post extends Component {
   constructor(props) {
     super(props);
@@ -16,9 +17,10 @@ class Post extends Component {
   }
 
   render() {
-    const { postImg, postTitle } = this.props;
+    const { postImg, postTitle, hoverIcon } = this.props;
     return (
       <div className="post">
+        <div className="post__hover">{hoverIcon}</div>
         <div className="post__body">
           <img className="post__body__image" src={postImg} alt="artwork" />
         </div>

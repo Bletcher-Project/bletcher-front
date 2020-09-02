@@ -9,6 +9,8 @@ import Jumbotron from 'Components/Common/Jumbotron';
 import Loader from 'Components/Common/Loader';
 import TempPost from 'Components/Post/__Post';
 import Post from 'Components/Post/Post';
+import MixButton from 'Components/Post/PostButton/MixButton';
+import FavoriteButton from 'Components/Post/PostButton/FavoriteButton';
 
 const defaultProps = {
   token: null,
@@ -61,6 +63,12 @@ class MainPage extends Component {
 
   render() {
     const { feed, feedLoading } = this.state;
+    const tmp = (
+      <>
+        <MixButton />
+        <FavoriteButton />
+      </>
+    );
     return (
       <div className="mainPage">
         <NavBar isActive="main" />
@@ -70,15 +78,22 @@ class MainPage extends Component {
         <div className="mainPage__test">
           {feed && !feedLoading ? (
             <>
-              <Post postImg={feed[7].Image.path} />
-              <Post postImg={feed[8].Image.path} postTitle={feed[8].title} />
+              <Post
+                postImg={feed[0].Image.path}
+                postTitle={feed[0].title}
+                hoverIcon={tmp}
+              />
+              <Post
+                postImg={feed[1].Image.path}
+                postTitle={feed[1].title}
+                hoverIcon={tmp}
+              />
             </>
           ) : null}
         </div>
-
-        <div className="mainPage__postList">
+        {/* <div className="mainPage__postList">
           {feed && !feedLoading ? this.renderPosts() : <Loader />}
-        </div>
+        </div> */}
       </div>
     );
   }

@@ -19,17 +19,21 @@ const propTypes = {
   fill: PropTypes.bool,
 };
 
+function onClickHandler() {
+  console.log('fundHeart Clicked!');
+}
+
 const FundHeart = (props) => {
   const { onClick, fill, isClicked } = props;
   return fill ? (
     <NoStyleButton
-      onClick={onClick}
+      onClick={onClickHandler}
       content={
         // eslint-disable-next-line react/jsx-wrap-multilines
         <img
           src={isClicked ? bgFilledPurpleImg : bgFilledHeartImg}
           alt="heartIcon"
-          className="heartIcon-hover"
+          className="post__hover__fundHeart"
         />
       }
     />
