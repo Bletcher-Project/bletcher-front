@@ -8,11 +8,11 @@ import * as PostAction from 'Redux/post';
 
 import cx from 'classnames';
 
-import FavoriteButton from 'Assets/icons/FavoriteButton';
-import MixButton from 'Assets/icons/MixButton';
-import ShareButton from 'Assets/icons/ShareButton';
+import FavoriteButton from 'Components/Post/Post/PostButton/FavoriteButton';
+import MixButton from 'Components/Post/Post/PostButton/MixButton';
+import ShareButton from 'Components/Post/Post/PostButton/ShareButton';
 import DueDate from 'Assets/icons/DueDate';
-import FundHeart from 'Assets/icons/FundHeart';
+import FundHeart from 'Components/Post/Post/PostButton/FundHeart';
 
 import { dummyDueDate } from 'Dummies/dummyPost';
 

@@ -7,10 +7,10 @@ import cx from 'classnames';
 
 import NavBar from 'Components/Common/NavBar';
 
-import FavoriteButton from 'Assets/icons/FavoriteButton';
-import MixButton from 'Assets/icons/MixButton';
+import FavoriteButton from 'Components/Post/Post/PostButton/FavoriteButton';
+import MixButton from 'Components/Post/Post/PostButton/MixButton';
 import DueDate from 'Assets/icons/DueDate';
-import FundHeart from 'Assets/icons/FundHeart';
+import FundHeart from 'Components/Post/Post/PostButton/FundHeart';
 
 import dummyPost from 'Dummies/dummyPost';
 import dummyProfile1 from 'Dummies/dummyImage/1.jpg';
