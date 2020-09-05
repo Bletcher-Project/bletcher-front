@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import PostHeader from 'Components/Post/PostHeader';
+
 const defaultProps = {
   postTitle: null,
   hoverIcon: null,
@@ -21,13 +23,15 @@ class Post extends Component {
     return (
       <div className="post">
         <div className="post__hover">{hoverIcon}</div>
+        <PostHeader title={postTitle} background position="hidden" />
+
         <div className="post__body">
           <img className="post__body__image" src={postImg} alt="artwork" />
         </div>
         <div className="post__footer">
-          {postTitle ? (
+          {/* {postTitle ? (
             <div className="post__footer__title">{postTitle}</div>
-          ) : null}
+          ) : null} */}
         </div>
       </div>
     );

@@ -1,0 +1,21 @@
+/*
+  PostHeader Component Styling
+*/
+
+.post__header {
+  &.bottom {
+  }
+  &.hidden {
+    visibility: hidden;
+    color: $header-gray;
+  }
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 1.2rem;
+    height: 2.5rem;
+    font-family: 'AppleSDGothicNeo';
+  }
+}
