@@ -3,11 +3,11 @@
 */
 
 .post {
-  width: 230px;
+  width: 250px;
   height: fit-content;
-  padding: 10px;
-  border: 1px solid $main-color;
   position: relative;
+  margin: 2% 0;
+  padding: 1rem;
 
   &__hover {
     z-index: 1;
@@ -21,6 +21,7 @@
   &__body {
     height: 300px;
     display: flex;
+    flex-direction: row;
     justify-content: center;
 
     &__image {

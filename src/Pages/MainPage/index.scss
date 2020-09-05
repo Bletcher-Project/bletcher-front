@@ -15,6 +15,8 @@
 
   &__test {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    flex-flow: row wrap;
+    margin: 0 2rem;
   }
 }
