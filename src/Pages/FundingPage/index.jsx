@@ -8,12 +8,13 @@ import cx from 'classnames';
 // import Post from 'Components/Post/__Post';
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
-import NavBar from 'Components/Common/NavBar';
-import Jumbotron from 'Components/Common/Jumbotron';
-import NoStyleButton from 'Components/Form/Button/NoStyleButton';
-import DropFilter from 'Components/Common/DropFilter';
 import FundHeart from 'Components/Post/PostButton/FundHeart';
 import ShareButton from 'Components/Post/PostButton/ShareButton';
+import NavBar from 'Components/Common/NavBar';
+import Loader from 'Components/Common/Loader';
+import Jumbotron from 'Components/Common/Jumbotron';
+import DropFilter from 'Components/Common/DropFilter';
+import NoStyleButton from 'Components/Form/Button/NoStyleButton';
 
 import FILTER from 'Constants/filter-option';
 
@@ -51,6 +52,7 @@ class FundingPage extends Component {
       option: 'Ongoing',
       filteredPosts: [],
       posts: [],
+      feedLoading: true,
     };
   }
 
@@ -69,6 +71,7 @@ class FundingPage extends Component {
       this.setState(
         {
           filteredPosts: posts,
+          feedLoading: false,
         },
         accept,
       );
@@ -141,14 +144,23 @@ class FundingPage extends Component {
     this.filterDueDate();
   };
 
-  render() {
-    const { option, filteredPosts, filter } = this.state;
+  renderPosts = () => {
+    const { filteredPosts } = this.state;
     const fundIcon = (
       <>
         <FundHeart fill />
         <ShareButton />
       </>
     );
+    return filteredPosts.map((data) => (
+      <Post key={data.id} post={data} hoverIcon={fundIcon} />
+    ));
+  };
+
+  render() {
+    const { option, filteredPosts, filter, feedLoading } = this.state;
+    const post =
+      filteredPosts && !feedLoading ? this.renderPosts() : <Loader />;
     return (
       <>
         <NavBar isActive="funding" />
@@ -179,11 +191,7 @@ class FundingPage extends Component {
               />
             </div>
           </div>
-          <PostList
-            posts={filteredPosts.map((data) => {
-              return <Post key={data.id} post={data} hoverIcon={fundIcon} />;
-            })}
-          />
+          <PostList posts={post} />
         </div>
       </>
     );
