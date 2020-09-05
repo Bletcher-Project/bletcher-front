@@ -5,20 +5,26 @@ import PropTypes from 'prop-types';
 
 import cx from 'classnames';
 
-import Post from 'Components/Post/__Post';
+// import Post from 'Components/Post/__Post';
+import Post from 'Components/Post/Post';
+import PostList from 'Components/Post/PostList';
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
 import NoStyleButton from 'Components/Form/Button/NoStyleButton';
 import DropFilter from 'Components/Common/DropFilter';
+import FundHeart from 'Components/Post/PostButton/FundHeart';
+import ShareButton from 'Components/Post/PostButton/ShareButton';
 
 import FILTER from 'Constants/filter-option';
 
 import { DropdownItem } from 'reactstrap';
 
-import dummyPost, { dummyDueDate } from 'Dummies/dummyPost';
+// import { dummyDueDate } from 'Dummies/dummyPost';
+import * as PostAction from 'Redux/post';
 
 const defaultProps = {
   user: null,
+  token: null,
 };
 
 const propTypes = {
@@ -26,6 +32,8 @@ const propTypes = {
     id: PropTypes.number,
     nickname: PropTypes.string,
   }),
+  dispatch: PropTypes.func.isRequired,
+  token: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
@@ -41,11 +49,31 @@ class FundingPage extends Component {
     this.state = {
       filter: 'Recommended',
       option: 'Ongoing',
-      filteredPosts: dummyPost.posts.filter(
-        (data) => new Date(data.createdAt) < dummyDueDate,
-      ),
+      filteredPosts: [],
+      posts: [],
     };
   }
+
+  componentDidMount = async () => {
+    await this.getAllPosts();
+  };
+
+  getAllPosts = async () => {
+    const { dispatch, token } = this.props;
+    await dispatch(PostAction.getAllPosts(token)).then((result) => {
+      this.setState({ posts: result });
+    });
+
+    const { posts } = this.state;
+    await new Promise((accept) => {
+      this.setState(
+        {
+          filteredPosts: posts,
+        },
+        accept,
+      );
+    });
+  };
 
   createDropDownItem = () => {
     const user = this.props;
@@ -62,17 +90,18 @@ class FundingPage extends Component {
 
   orderPost = (sortOption) => {
     const sortOrder = sortOption === 'Latest' ? -1 : 1;
-    this.setState((prevState) => ({
-      filteredPosts: prevState.filteredPosts.sort((l, r) => {
-        return l.createdAt < r.createdAt ? sortOrder : -1 * sortOrder;
+    const { posts } = this.state;
+    this.setState(() => ({
+      filteredPosts: posts.sort((l, r) => {
+        return l.created_at < r.created_at ? sortOrder : -1 * sortOrder;
       }),
     }));
   };
 
   getMyPosts = () => {
     const { user } = this.props;
-    const { filteredPosts } = this.state;
-    return filteredPosts.filter((data) => data.UserId === user.id);
+    const { posts } = this.state;
+    return posts.filter((data) => data.User.id === user.id);
   };
 
   showMyPosts = () => {
@@ -81,17 +110,12 @@ class FundingPage extends Component {
   };
 
   filterDueDate = () => {
-    const { option } = this.state;
-    const filtered =
-      option === 'Ongoing'
-        ? dummyPost.posts.filter(
-            (data) => new Date(data.createdAt) < dummyDueDate,
-          )
-        : dummyPost.posts.filter(
-            (data) => new Date(data.createdAt) >= dummyDueDate,
-          );
+    const { option, posts } = this.state;
+    // const filtered = option === 'Ongoing' ? posts : null;
+    // ? posts.filter((data) => new Date(data.created_at) < dummyDueDate)
+    // : posts.filter((data) => new Date(data.created_at) >= dummyDueDate);
     this.setState({
-      filteredPosts: filtered,
+      filteredPosts: posts,
     });
   };
 
@@ -119,6 +143,12 @@ class FundingPage extends Component {
 
   render() {
     const { option, filteredPosts, filter } = this.state;
+    const fundIcon = (
+      <>
+        <FundHeart fill />
+        <ShareButton />
+      </>
+    );
     return (
       <>
         <NavBar isActive="funding" />
@@ -149,22 +179,11 @@ class FundingPage extends Component {
               />
             </div>
           </div>
-          <div className="fundingPage__postList">
-            {filteredPosts.map((data) => {
-              return (
-                <Post
-                  postId={data.id}
-                  postImg={data.postImgName}
-                  postTitle={data.postTitle}
-                  isFavorite={data.isFavorite}
-                  userId={data.UserId}
-                  createdAt={data.createdAt}
-                  key={data.id}
-                  isActive={option === 'End' ? 'fundingEnd' : 'funding'}
-                />
-              );
+          <PostList
+            posts={filteredPosts.map((data) => {
+              return <Post key={data.id} post={data} hoverIcon={fundIcon} />;
             })}
-          </div>
+          />
         </div>
       </>
     );

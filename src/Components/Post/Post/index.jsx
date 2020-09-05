@@ -2,15 +2,29 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import PostHeader from 'Components/Post/PostHeader';
+import PostFooter from 'Components/Post/PostFooter';
 
 const defaultProps = {
-  postTitle: null,
   hoverIcon: null,
+  headerPosition: 'bottom',
 };
 const propTypes = {
-  postImg: PropTypes.string.isRequired,
-  postTitle: PropTypes.string,
+  post: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    Image: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      path: PropTypes.string,
+    }),
+    User: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      nickname: PropTypes.string.isRequired,
+    }),
+    title: PropTypes.string.isRequired,
+    is_public: PropTypes.bool.isRequired,
+    created_at: PropTypes.string,
+  }).isRequired,
   hoverIcon: PropTypes.element,
+  headerPosition: PropTypes.string,
 };
 class Post extends Component {
   constructor(props) {
@@ -19,20 +33,21 @@ class Post extends Component {
   }
 
   render() {
-    const { postImg, postTitle, hoverIcon } = this.props;
+    const { post, hoverIcon, headerPosition } = this.props;
+    console.log(post);
     return (
       <div className="post">
         <div className="post__hover">{hoverIcon}</div>
-        <PostHeader title={postTitle} background position="hidden" />
+        <PostHeader title={post.title} background position={headerPosition} />
 
         <div className="post__body">
-          <img className="post__body__image" src={postImg} alt="artwork" />
+          <img
+            className="post__body__image"
+            src={post.Image.path}
+            alt="artwork"
+          />
         </div>
-        <div className="post__footer">
-          {/* {postTitle ? (
-            <div className="post__footer__title">{postTitle}</div>
-          ) : null} */}
-        </div>
+        <PostFooter />
       </div>
     );
   }

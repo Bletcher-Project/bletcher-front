@@ -7,7 +7,6 @@ import * as PostAction from 'Redux/post';
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
 import Loader from 'Components/Common/Loader';
-import TempPost from 'Components/Post/__Post';
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
 import MixButton from 'Components/Post/PostButton/MixButton';
@@ -59,9 +58,9 @@ class MainPage extends Component {
     return feed.map((data) => (
       <Post
         key={data.id}
-        postTitle={data.title}
-        postImg={data.Image.path}
+        post={data}
         hoverIcon={mainIcon}
+        headerPosition="hidden"
       />
     ));
   };
