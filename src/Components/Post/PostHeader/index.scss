@@ -27,3 +27,17 @@
     padding: 5px 0;
   }
 }
+
+@media (hover: hover) {
+  .post:hover {
+    .post__header {
+      &.hidden {
+        visibility: visible;
+      }
+
+      &.fill {
+        background-color: $background-color;
+      }
+    }
+  }
+}

@@ -46,11 +46,9 @@ class Post extends Component {
         />
 
         <div className="post__body">
-          <img
-            className="post__body__image"
-            src={post.Image.path}
-            alt="artwork"
-          />
+          <div className="post__body__image">
+            <img src={post.Image.path} alt="artwork" />
+          </div>
         </div>
         <PostFooter footerOption={footerOption} createdAt={post.created_at} />
       </div>
