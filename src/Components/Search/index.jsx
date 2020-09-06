@@ -38,9 +38,9 @@ class Search extends Component {
 
   render() {
     return (
-      <div className="searchTab">
+      <div className="search">
         <button
-          className="searchTab__button"
+          className="search__button"
           type="button"
           onClick={this.handleSearchPage}
         >
