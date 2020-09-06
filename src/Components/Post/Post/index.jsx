@@ -34,18 +34,15 @@ class Post extends Component {
 
   render() {
     const { post, hoverIcon, headerPosition } = this.props;
-    console.log(post);
     return (
       <div className="post">
         <div className="post__hover">{hoverIcon}</div>
         <PostHeader title={post.title} background position={headerPosition} />
 
         <div className="post__body">
-          <img
-            className="post__body__image"
-            src={post.Image.path}
-            alt="artwork"
-          />
+          <div className="post__body__image">
+            <img src={post.Image.path} alt="artwork" />
+          </div>
         </div>
         <PostFooter />
       </div>

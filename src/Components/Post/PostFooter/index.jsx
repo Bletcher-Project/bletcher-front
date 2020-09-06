@@ -1,11 +1,9 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
-import cx from 'classnames';
 
 const propTypes = {};
 
-function PostFooter(prop) {
+function PostFooter(props) {
   return <div className="post__footer"></div>;
 }
 
