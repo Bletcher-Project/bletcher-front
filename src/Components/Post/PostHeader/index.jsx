@@ -1,14 +1,18 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
+const defaultProps = {
+  position: null,
+};
 const propTypes = {
+  title: PropTypes.string.isRequired,
   background: PropTypes.bool.isRequired,
+  position: PropTypes.oneOf([null, 'hidden']),
 };
 
-function PostHeader(prop) {
-  const { title, background, position } = prop;
+function PostHeader(props) {
+  const { title, background, position } = props;
   return (
     <div
       className={cx('post__header', {
@@ -21,6 +25,7 @@ function PostHeader(prop) {
   );
 }
 
+PostHeader.defaultProps = defaultProps;
 PostHeader.propTypes = propTypes;
 
 export default PostHeader;
