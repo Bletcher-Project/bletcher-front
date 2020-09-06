@@ -14,7 +14,7 @@ import NavBar from 'Components/Common/NavBar';
 import Loader from 'Components/Common/Loader';
 import Jumbotron from 'Components/Common/Jumbotron';
 import DropFilter from 'Components/Common/DropFilter';
-import NoStyleButton from 'Components/Form/Button/NoStyleButton';
+import NoStyleButton from 'Components/Form/NoStyleButton';
 
 import FILTER from 'Constants/filter-option';
 

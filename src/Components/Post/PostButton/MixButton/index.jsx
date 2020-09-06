@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import mixImage from 'Assets/images/mixButton.png';
-import NoStyleButton from 'Components/Form/Button/NoStyleButton';
+import NoStyleButton from 'Components/Form/NoStyleButton';
 
 const defaultProps = {
   onClick: null,

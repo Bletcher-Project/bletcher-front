@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import bgFilledHeartImg from 'Assets/images/fundHeart-bg-fill.png';
 import bgFilledPurpleImg from 'Assets/images/fundHeart-bg-purple.png';
 import HeartImg from 'Assets/images/fundHeart-bg-removed.png';
-import NoStyleButton from 'Components/Form/Button/NoStyleButton';
+import NoStyleButton from 'Components/Form/NoStyleButton';
 
 const defaultProps = {
   onClick: null,

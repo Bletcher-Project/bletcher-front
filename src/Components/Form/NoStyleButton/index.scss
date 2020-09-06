@@ -1,6 +1,11 @@
-.none-style-button {
+/*
+  NoStyleButton Component Styling
+*/
+
+.noStyleButton {
   background-color: transparent;
   border: none;
+
   &:focus {
     outline: none;
   }

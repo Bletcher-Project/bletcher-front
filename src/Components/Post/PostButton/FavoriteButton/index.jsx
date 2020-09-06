@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import favoriteButton from 'Assets/images/favoriteButton.png';
-import NoStyleButton from 'Components/Form/Button/NoStyleButton';
+import NoStyleButton from 'Components/Form/NoStyleButton';
 
 const defaultProps = {
   liked: false,
