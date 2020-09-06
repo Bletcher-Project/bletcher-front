@@ -6,7 +6,7 @@ import FundFooter from 'Components/Post/PostFooter/FundFooter';
 const createdAtValidationCheck = (prop) => {
   const { footerOption, createdAt } = prop;
   if (
-    (!(footerOption === 'funding') && createdAt) ||
+    (footerOption !== 'funding' && createdAt) ||
     (footerOption === 'funding' && !createdAt)
   ) {
     return new Error(

@@ -50,7 +50,10 @@ class Post extends Component {
             <img src={post.Image.path} alt="artwork" />
           </div>
         </div>
-        <PostFooter footerOption={footerOption} createdAt={post.created_at} />
+        <PostFooter
+          footerOption={footerOption}
+          createdAt={footerOption ? post.created_at : ''}
+        />
       </div>
     );
   }
