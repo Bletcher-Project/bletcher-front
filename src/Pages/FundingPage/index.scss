@@ -15,11 +15,11 @@
       justify-content: space-between;
       font-weight: bold;
 
-      & span.selected .none-style-button {
+      & span.selected .noStyleButton {
         color: black;
         opacity: 1;
       }
-      & span .none-style-button {
+      & span .noStyleButton {
         color: #414141;
         opacity: 0.34;
       }
