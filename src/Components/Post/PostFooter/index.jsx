@@ -26,13 +26,21 @@ const propTypes = {
   createdAt: createdAtValidationCheck,
 };
 
-function PostFooter(prop) {
-  const { footerOption, createdAt } = prop;
-  return (
-    <div className="post__footer">
-      {footerOption === 'funding' ? <FundFooter createdAt={createdAt} /> : null}
-    </div>
-  );
+const switchFooter = (footerOption, createdAt) => {
+  switch (footerOption) {
+    case 'funding':
+      return <FundFooter createdAt={createdAt} />;
+    case 'shop':
+      return <div className="footer__shop" />;
+    default:
+      return null;
+  }
+};
+
+function PostFooter(props) {
+  const { footerOption, createdAt } = props;
+  const activeFooter = switchFooter(footerOption, createdAt);
+  return <div className="post__footer">{activeFooter}</div>;
 }
 
 PostFooter.propTypes = propTypes;
