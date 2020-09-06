@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 
 const defaultProps = {
   onClick: null,
-  content: null,
+  children: null,
 };
 const propTypes = {
   onClick: PropTypes.func,
-  content: PropTypes.node,
+  children: PropTypes.element,
 };
 
 function NoStyleButton(props) {
-  const { onClick, content } = props;
+  const { onClick, children } = props;
 
   return (
     <div
@@ -21,7 +21,7 @@ function NoStyleButton(props) {
       onKeyPress={onClick}
       tabIndex={0}
     >
-      {content}
+      {children}
     </div>
   );
 }

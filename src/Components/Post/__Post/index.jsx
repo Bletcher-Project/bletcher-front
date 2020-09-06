@@ -11,7 +11,7 @@ import cx from 'classnames';
 import FavoriteButton from 'Components/Post/PostButton/FavoriteButton';
 import MixButton from 'Components/Post/PostButton/MixButton';
 import ShareButton from 'Components/Post/PostButton/ShareButton';
-import FundHeart from 'Components/Post/PostButton/FundHeart';
+import FundHeart from 'Components/Post/PostButton/FundButton';
 import DueDate from 'Assets/icons/DueDate';
 
 import { dummyDueDate } from 'Dummies/dummyPost';

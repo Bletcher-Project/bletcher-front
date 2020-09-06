@@ -1,27 +1,24 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
 
-import mixImage from 'Assets/images/mixButton.png';
 import NoStyleButton from 'Components/Form/NoStyleButton';
+import mixImage from 'Assets/images/mixButton.png';
 
 const defaultProps = {
   onClick: null,
 };
-
 const propTypes = {
   onClick: PropTypes.func,
 };
 
-const MixButton = (props) => {
+function MixButton(props) {
   const { onClick } = props;
   return (
-    <NoStyleButton
-      onClick={onClick}
-      content={<img src={mixImage} alt="mixButton" className="mix-button" />}
-    />
+    <NoStyleButton onClick={onClick}>
+      <img className="postButton mix" src={mixImage} alt="mix" />
+    </NoStyleButton>
   );
-};
+}
 
 MixButton.defaultProps = defaultProps;
 MixButton.propTypes = propTypes;

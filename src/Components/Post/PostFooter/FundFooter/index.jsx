@@ -1,7 +1,7 @@
 import React from 'react';
 
-import FundHeart from 'Components/Post/PostButton/FundHeart';
 import DueDate from 'Assets/icons/DueDate';
+import HeartImg from 'Assets/images/fundHeart-bg-removed.png';
 
 import { dummyDueDate } from 'Dummies/dummyPost';
 
@@ -16,14 +16,14 @@ function FundFooter(prop) {
     <>
       <div className="post__footer__tab">
         <div className="post__footer__tab__left">
-          <span className="mr-1">
+          <span className="mr-1 dueDateIcon">
             <DueDate />
           </span>
           <span>{calcDueDate(createdAt)}</span>
         </div>
         <div className="post__footer__tab__right">
           <span>
-            <FundHeart />
+            <img className="fundHeart" src={HeartImg} alt="fund" />
           </span>
           <span>354</span>
         </div>

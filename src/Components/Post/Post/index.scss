@@ -19,25 +19,21 @@
     top: 50%;
     transform: translate(-50%, -50%);
     position: absolute;
-
-    &__fundHeart {
-      width: 3rem;
-      margin-bottom: 0.5rem;
-    }
   }
 
   &__body {
-    height: inherit;
+    height: 300px;
     display: flex;
-    justify-content: center;
-    padding: 7px 15px 17px 15px;
+    padding: 7px 25px 20px 25px;
 
     &__image {
-      width: 100%;
-      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
 
       & img {
-        width: 100%;
+        height: 100%;
       }
     }
   }

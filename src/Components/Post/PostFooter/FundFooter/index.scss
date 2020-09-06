@@ -1,6 +1,7 @@
 /*
   FundFooter Component Styling
 */
+
 .post__footer {
   &__tab {
     width: 100%;
@@ -15,6 +16,14 @@
       display: flex;
       align-items: center;
     }
+  }
+
+  .dueDateIcon,
+  .fundHeart {
+    width: 2rem;
+    background-color: $background-color;
+    border-radius: 50%;
+    margin-right: 0.5rem;
   }
 
   &__progress {

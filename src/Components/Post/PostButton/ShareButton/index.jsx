@@ -1,29 +1,24 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
 
-import shareImg from 'Assets/images/share.png';
 import NoStyleButton from 'Components/Form/NoStyleButton';
+import shareImg from 'Assets/images/share.png';
 
 const defaultProps = {
   onClick: null,
 };
-
 const propTypes = {
   onClick: PropTypes.func,
 };
 
-const ShareButton = (props) => {
+function ShareButton(props) {
   const { onClick } = props;
   return (
-    <NoStyleButton
-      onClick={onClick}
-      content={
-        <img src={shareImg} alt="shareButton" className="share-button" />
-      }
-    />
+    <NoStyleButton onClick={onClick}>
+      <img className="postButton share" src={shareImg} alt="share" />
+    </NoStyleButton>
   );
-};
+}
 
 ShareButton.defaultProps = defaultProps;
 ShareButton.propTypes = propTypes;

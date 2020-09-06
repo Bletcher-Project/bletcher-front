@@ -14,12 +14,13 @@
 @import 'Components/Sign/SignUpForm';
 @import 'Components/Upload/UploadPost';
 @import 'Components/Search/';
-@import 'Components/Post/__Post';
 @import 'Components/Post/Post';
 @import 'Components/Post/PostList';
 @import 'Components/Post/PostHeader';
 @import 'Components/Post/PostFooter';
-@import 'Components/Post/PostFooter/FundFooter/';
+@import 'Components/Post/PostFooter/FundFooter';
+@import 'Components/Post/PostButton';
+@import 'Components/Post/PostButton/FavoriteButton';
 /* Pages Style */
 @import 'Pages/GuidePage';
 @import 'Pages/MainPage';

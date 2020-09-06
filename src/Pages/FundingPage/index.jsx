@@ -5,10 +5,9 @@ import PropTypes from 'prop-types';
 
 import cx from 'classnames';
 
-// import Post from 'Components/Post/__Post';
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
-import FundHeart from 'Components/Post/PostButton/FundHeart';
+import FundButton from 'Components/Post/PostButton/FundButton';
 import ShareButton from 'Components/Post/PostButton/ShareButton';
 import NavBar from 'Components/Common/NavBar';
 import Loader from 'Components/Common/Loader';
@@ -148,7 +147,7 @@ class FundingPage extends Component {
     const { filteredPosts } = this.state;
     const fundIcon = (
       <>
-        <FundHeart fill />
+        <FundButton />
         <ShareButton />
       </>
     );
