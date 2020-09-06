@@ -67,12 +67,13 @@ class MainPage extends Component {
 
   render() {
     const { feed, feedLoading } = this.state;
-    const post = feed && !feedLoading ? this.renderPosts() : <Loader />;
     return (
       <div className="mainPage">
         <NavBar isActive="main" />
         <Jumbotron title="Find out" description="What other people painted" />
-        <PostList posts={post} />
+        <PostList
+          posts={feed && !feedLoading ? this.renderPosts() : <Loader />}
+        />
       </div>
     );
   }
