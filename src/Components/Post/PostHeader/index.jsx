@@ -8,7 +8,7 @@ const defaultProps = {
 const propTypes = {
   title: PropTypes.string.isRequired,
   background: PropTypes.bool.isRequired,
-  position: PropTypes.oneOf([null, 'hidden']),
+  position: PropTypes.oneOf([null, 'hidden', 'bottom']),
 };
 
 function PostHeader(props) {
@@ -18,6 +18,7 @@ function PostHeader(props) {
       className={cx('post__header', {
         fill: background,
         hidden: position === 'hidden',
+        bottom: position === 'bottom',
       })}
     >
       <div className="post__header__title">{title}</div>

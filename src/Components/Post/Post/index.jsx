@@ -7,6 +7,7 @@ import PostFooter from 'Components/Post/PostFooter';
 const defaultProps = {
   hoverIcon: null,
   headerPosition: 'bottom',
+  footerOption: '',
 };
 const propTypes = {
   post: PropTypes.shape({
@@ -25,6 +26,7 @@ const propTypes = {
   }).isRequired,
   hoverIcon: PropTypes.element,
   headerPosition: PropTypes.string,
+  footerOption: PropTypes.string,
 };
 class Post extends Component {
   constructor(props) {
@@ -33,12 +35,15 @@ class Post extends Component {
   }
 
   render() {
-    const { post, hoverIcon, headerPosition } = this.props;
-    console.log(post);
+    const { post, hoverIcon, headerPosition, footerOption } = this.props;
     return (
       <div className="post">
         <div className="post__hover">{hoverIcon}</div>
-        <PostHeader title={post.title} background position={headerPosition} />
+        <PostHeader
+          title={post.title}
+          background={!footerOption}
+          position={headerPosition}
+        />
 
         <div className="post__body">
           <img
@@ -47,7 +52,7 @@ class Post extends Component {
             alt="artwork"
           />
         </div>
-        <PostFooter />
+        <PostFooter footerOption={footerOption} createdAt={post.created_at} />
       </div>
     );
   }

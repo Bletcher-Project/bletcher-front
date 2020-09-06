@@ -3,6 +3,8 @@
 */
 
 .post {
+  display: flex;
+  flex-direction: column;
   width: 250px;
   height: fit-content;
   position: relative;

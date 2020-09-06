@@ -153,7 +153,12 @@ class FundingPage extends Component {
       </>
     );
     return filteredPosts.map((data) => (
-      <Post key={data.id} post={data} hoverIcon={fundIcon} />
+      <Post
+        key={data.id}
+        post={data}
+        hoverIcon={fundIcon}
+        footerOption="funding"
+      />
     ));
   };
 
