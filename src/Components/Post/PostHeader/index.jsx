@@ -2,18 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-const defaultProps = {
-  position: null,
-};
+const defaultProps = {};
 const propTypes = {
   title: PropTypes.string.isRequired,
   background: PropTypes.bool.isRequired,
-  position: PropTypes.oneOf([null, 'hidden', 'bottom']),
+  position: PropTypes.oneOf([null, 'hidden', 'bottom']).isRequired,
 };
 
 function PostHeader(props) {
   const { title, background, position } = props;
-  return (
+  return position ? (
     <div
       className={cx('post__header', {
         fill: background,
@@ -23,7 +21,7 @@ function PostHeader(props) {
     >
       <div className="post__header__title">{title}</div>
     </div>
-  );
+  ) : null;
 }
 
 PostHeader.defaultProps = defaultProps;

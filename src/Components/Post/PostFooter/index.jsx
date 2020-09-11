@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import FundFooter from 'Components/Post/PostFooter/FundFooter';
+import ShopFooter from 'Components/Post/PostFooter/ShopFooter';
 
 const createdAtValidationCheck = (prop) => {
   const { footerOption, createdAt } = prop;
@@ -31,7 +32,7 @@ const switchFooter = (footerOption, createdAt) => {
     case 'funding':
       return <FundFooter createdAt={createdAt} />;
     case 'shop':
-      return <div className="footer__shop" />;
+      return <ShopFooter />;
     default:
       return null;
   }
