@@ -1,0 +1,12 @@
+/*
+  ShopFooter Component Styling
+*/
+
+.post__footer {
+  &__shop {
+    &__username {
+      font-family: 'GothamRound';
+      color: $header-gray;
+    }
+  }
+}
