@@ -8,6 +8,7 @@ const defaultProps = {
   hoverIcon: null,
   headerPosition: 'bottom',
   footerOption: '',
+  headerBackground: false,
 };
 const propTypes = {
   post: PropTypes.shape({
@@ -26,6 +27,7 @@ const propTypes = {
   }).isRequired,
   hoverIcon: PropTypes.element,
   headerPosition: PropTypes.string,
+  headerBackground: PropTypes.bool,
   footerOption: PropTypes.string,
 };
 class Post extends Component {
@@ -35,13 +37,19 @@ class Post extends Component {
   }
 
   render() {
-    const { post, hoverIcon, headerPosition, footerOption } = this.props;
+    const {
+      post,
+      hoverIcon,
+      headerPosition,
+      footerOption,
+      headerBackground,
+    } = this.props;
     return (
       <div className="post">
         <div className="post__hover">{hoverIcon}</div>
         <PostHeader
           title={post.title}
-          background={!footerOption}
+          background={headerBackground}
           position={headerPosition}
         />
 

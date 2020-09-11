@@ -8,8 +8,10 @@ import { connect } from 'react-redux';
 import * as PostAction from 'Redux/post';
 
 import NavBar from 'Components/Common/NavBar';
+import Loader from 'Components/Common/Loader';
 import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
+import PostList from 'Components/Post/PostList';
 import MixButton from 'Components/Post/PostButton/MixButton';
 import ShareButton from 'Components/Post/PostButton/ShareButton';
 import Upload from 'Components/Upload/UploadPost';
@@ -47,6 +49,7 @@ class UserPage extends Component {
       userInfo: null,
       userPostImgs: [],
       postFilter: 'me',
+      feedLoading: true,
     };
   }
 
@@ -71,24 +74,33 @@ class UserPage extends Component {
     dispatch(PostAction.getPostByUserId(userInfo.id, token)).then((result) => {
       this.setState({ userPostImgs: result });
     });
+    this.setState({ feedLoading: false });
   };
 
-  getIconByFilter = (filter) => {
+  getPostByFilter = (filter, data) => {
+    let icon;
+    let position;
     if (filter === 'me') {
-      return <MixButton />;
+      icon = <MixButton />;
+      position = 'both';
+    } else {
+      icon = <ShareButton />;
+      position = 'bottom';
     }
-    return <ShareButton />;
+    return (
+      <Post
+        post={data}
+        key={data.id}
+        hoverIcon={icon}
+        headerBackground={false}
+        headerPosition={position}
+      />
+    );
   };
 
   showUserPosts = () => {
     const { userPostImgs, postFilter } = this.state;
-    const icon = this.getIconByFilter(postFilter);
-    if (userPostImgs) {
-      return userPostImgs.map((data) => {
-        return <Post post={data} key={data.id} hoverIcon={icon} />;
-      });
-    }
-    return null;
+    return userPostImgs.map((data) => this.getPostByFilter(postFilter, data));
   };
 
   editUserProfile = () => {
@@ -139,7 +151,7 @@ class UserPage extends Component {
   };
 
   render() {
-    const { isMyPage, postFilter } = this.state;
+    const { isMyPage, postFilter, feedLoading, userPostImgs } = this.state;
     const { user } = this.props;
     return (
       <div className="userPage">
@@ -172,7 +184,11 @@ class UserPage extends Component {
           </div>
         </div>
 
-        <div className="userPage__postList">{this.showUserPosts()}</div>
+        <PostList
+          posts={
+            !feedLoading && userPostImgs ? this.showUserPosts() : <Loader />
+          }
+        />
       </div>
     );
   }

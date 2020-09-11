@@ -8,14 +8,15 @@
   border-top-right-radius: 5px;
   padding: 0;
 
-  &.bottom {
-    order: 1;
-  }
-
   &.hidden {
     font-family: 'AppleSDGothicNeo';
     visibility: hidden;
     color: $header-gray;
+  }
+
+  &.bottom {
+    font-family: 'GothamRound';
+    order: 1;
   }
 
   &__title {
