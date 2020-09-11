@@ -61,6 +61,7 @@ class MainPage extends Component {
         post={data}
         hoverIcon={mainIcon}
         headerPosition="hidden"
+        headerBackground
       />
     ));
   };
