@@ -2,31 +2,26 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import cx from 'classnames';
 
 import { connect } from 'react-redux';
 import * as PostAction from 'Redux/post';
-import * as AuthAction from 'Redux/auth';
 
 import NavBar from 'Components/Common/NavBar';
+import Loader from 'Components/Common/Loader';
 import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
+import PostList from 'Components/Post/PostList';
+import MixButton from 'Components/Post/PostButton/MixButton';
+import ShareButton from 'Components/Post/PostButton/ShareButton';
 import Upload from 'Components/Upload/UploadPost';
 
-import { Modal } from 'reactstrap';
-
-import dummyPost from 'Dummies/dummyPost';
-
-import settingIcon from 'Assets/images/setting.png';
-import {
-  INIT,
-  IMAGE_API,
-  USER_API,
-  QUERY_NAME,
-  IMAGE_POST,
-} from 'Constants/api-uri';
+import FILTER from 'Constants/filter-option';
+import EditButton from 'Assets/images/editButton.png';
 
 const defaultProps = {
   user: null,
+  token: null,
 };
 const propTypes = {
   match: ReactRouterPropTypes.match.isRequired,
@@ -34,6 +29,9 @@ const propTypes = {
     id: PropTypes.number,
     nickname: PropTypes.string,
   }),
+  token: PropTypes.string,
+  history: ReactRouterPropTypes.history.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -50,63 +48,59 @@ class UserPage extends Component {
       isMyPage: false,
       userInfo: null,
       userPostImgs: [],
-      selectedPost: null,
-      openModal: false,
+      postFilter: 'me',
+      feedLoading: true,
     };
   }
 
   setUser = async () => {
     const { match, user } = this.props;
     if (match.params.username === user.nickname) {
-      this.setState({ userInfo: user, isMyPage: true, userPostImgs: [] });
+      await new Promise((accept) =>
+        this.setState(
+          { userInfo: user, isMyPage: true, userPostImgs: [] },
+          accept,
+        ),
+      );
     } else {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}${QUERY_NAME}${match.params.username}`,
-          {
-            method: 'GET',
-          },
-        );
-        if (response.status === 200) {
-          const result = await response.json();
-          this.setState({
-            userInfo: result.userInfo,
-            isMyPage: false,
-            userPostImgs: [],
-          });
-          return result;
-        }
-        return null;
-      } catch (error) {
-        console.error(error);
-      }
+      // Other UserPage
+      // TODO::Jinny- get other userinfo without fetch redux 'user'
     }
   };
 
-  getUserPost = async () => {
+  getUserPosts = async () => {
     const { dispatch, token } = this.props;
-    const { userInfo, userPostImgs } = this.state;
-    const postImg = [];
-    await dispatch(PostAction.getPostByUserId(userInfo.id, token)).then(
-      (posts) => {
-        posts.forEach((post) => {
-          postImg.push({
-            src: `${process.env.REACT_APP_SERVER_URL}${IMAGE_API}${IMAGE_POST}/${post.postImgName}`,
-            width: parseInt(post.postImgWidth),
-            height: parseInt(post.postImgHeight),
-            key: String(post.id),
-          });
-        });
-      },
-    );
-    this.setState({ userPostImgs: userPostImgs.concat(postImg) });
+    const { userInfo } = this.state;
+    dispatch(PostAction.getPostByUserId(userInfo.id, token)).then((result) => {
+      this.setState({ userPostImgs: result });
+    });
+    this.setState({ feedLoading: false });
   };
 
-  handleClickPost = (e, { photo, index }) => {
-    const { dispatch, token } = this.props;
-    dispatch(PostAction.getPostByPostId(photo.key, token)).then((post) => {
-      this.setState({ selectedPost: post, openModal: true });
-    });
+  getPostByFilter = (filter, data) => {
+    let icon;
+    let position;
+    if (filter === 'me') {
+      icon = <MixButton />;
+      position = 'both';
+    } else {
+      icon = <ShareButton />;
+      position = 'bottom';
+    }
+    return (
+      <Post
+        post={data}
+        key={data.id}
+        hoverIcon={icon}
+        headerBackground={false}
+        headerPosition={position}
+      />
+    );
+  };
+
+  showUserPosts = () => {
+    const { userPostImgs, postFilter } = this.state;
+    return userPostImgs.map((data) => this.getPostByFilter(postFilter, data));
   };
 
   editUserProfile = () => {
@@ -114,140 +108,87 @@ class UserPage extends Component {
     history.push({ pathname: `${match.url}/profile` });
   };
 
-  signOutHandler = async () => {
-    const { dispatch, history } = this.props;
-    await dispatch(AuthAction.signOut());
-    await history.push('/');
+  filterClickHandler = (e) => {
+    this.setState({ postFilter: e.target.innerText });
+  };
+
+  createFilterList = () => {
+    const { postFilter } = this.state;
+    return FILTER.user.map((option) => {
+      return (
+        <li key={option[1]}>
+          <button
+            className={cx(`userPage__header__rowTab__buttons__button`, {
+              activated: postFilter === option[0],
+            })}
+            type="button"
+            onClick={this.filterClickHandler}
+          >
+            {option[0]}
+          </button>
+        </li>
+      );
+    });
   };
 
   componentDidMount = async () => {
-    if (this.props.user) {
+    const { user } = this.props;
+    if (user) {
       await this.setUser();
-      await this.getUserPost();
+      await this.getUserPosts();
     }
   };
 
-  componentDidUpdate = async (prevProps, prevState) => {
+  componentDidUpdate = async (prevProps) => {
     const { token, user, match } = this.props;
     if (
       (token && user !== prevProps.user) ||
       prevProps.match.params.username !== match.params.username
     ) {
       await this.setUser();
-      await this.getUserPost();
+      await this.getUserPosts();
     }
   };
 
   render() {
-    const {
-      isMyPage,
-      userInfo,
-      userPostImgs,
-      selectedPost,
-      openModal,
-    } = this.state;
+    const { isMyPage, postFilter, feedLoading, userPostImgs } = this.state;
+    const { user } = this.props;
     return (
       <div className="userPage">
         <NavBar isActive={isMyPage ? 'user' : ''} />
-        {userInfo ? (
-          <div className="userPage__contents">
-            <div className="userPage__contents__header">
-              <div className="userPage__contents__header__thumb">
-                <Thumbnail
-                  size="100"
-                  src={null}
-                  type={userInfo.type}
-                  userName={userInfo.name}
-                />
-              </div>
-              <div className="userPage__contents__header__profile">
-                <div className="userPage__contents__header__profile-name-set">
-                  <div className="nameArea">
-                    <h1>{userInfo.name}</h1>
-                    <div id="nameUnderBar" />
-                  </div>
-                  {isMyPage ? (
-                    <div className="settingArea">
-                      <button type="button" onClick={this.signOutHandler}>
-                        signout
-                      </button>
-                      <button
-                        className="settingButton"
-                        type="button"
-                        onClick={this.editUserProfile}
-                      >
-                        <img src={settingIcon} alt="setting" />
-                      </button>
-                    </div>
-                  ) : null}
-                </div>
-                <div className="userPage__contents__header__profile-status">
-                  <p>{userInfo.status}</p>
-                </div>
-                {isMyPage ? (
-                  <div className="userPage__contents__header__profile-follow">
-                    <div className="followBox">
-                      <span className="followTitle">Followers</span>
-                      <span id="followerNum">0</span>
-                    </div>
-                    <div className="followBox">
-                      <span className="followTitle">Following</span>
-                      <span id="followingNum">0</span>
-                    </div>
-                  </div>
-                ) : null}
-              </div>
-            </div>
-
-            <div className="userPage__contents__body">
-              <Upload />
-              {userPostImgs.length > 0
-                ? dummyPost.posts.map((data) => {
-                    return (
-                      <Post
-                        postId={data.id}
-                        postImg={data.postImgName}
-                        postCategory={data.postCategory}
-                        postTitle={data.postTitle}
-                        postDescription={data.postDescription}
-                        isFavorite={data.isFavorite}
-                        userId={data.UserId}
-                        key={data.id}
-                        isActive="user"
-                      />
-                    );
-                  })
-                : null}
-            </div>
+        <div className="userPage__header">
+          <div className="userPage__header__thumb">
+            <Thumbnail size="100" src={null} />
+            {isMyPage ? (
+              <button
+                type="button"
+                onClick={this.editUserProfile}
+                className="userPage__header__thumb__edit"
+              >
+                <img src={EditButton} alt="O" />
+              </button>
+            ) : null}
           </div>
-        ) : null}
-
-        <div className="userPage__modal">
-          {selectedPost ? (
-            <Modal
-              isOpen={openModal}
-              toggle={() => this.setState({ openModal: !openModal })}
-              centered
-            >
-              <Post
-                postId={selectedPost.id}
-                isMyPost={isMyPage}
-                userProfileImg={selectedPost.User.profileImgName}
-                userName={selectedPost.User.name}
-                userType={selectedPost.User.type}
-                postContent={selectedPost.content}
-                postHashTags={[
-                  { id: 1, tags: 'flower' },
-                  { id: 2, tags: 'sunny' },
-                ]} /// ///
-                postImg={selectedPost.postImgName}
-                postDate={selectedPost.createdAt}
-                isLiked={selectedPost.isLiked}
-                postLike={selectedPost.likeCount}
-              />
-            </Modal>
-          ) : null}
+          <div className="userPage__header__profile">
+            <span className="userPage__header__profile__name">
+              {user ? user.nickname : null}
+            </span>
+          </div>
+          <div className="userPage__header__rowTab">
+            <ul className="userPage__header__rowTab__buttons">
+              <div className="userPage__header__rowTab__buttons__upload">
+                {postFilter === FILTER.user[0][0] ? <Upload /> : null}
+              </div>
+              {this.createFilterList()}
+            </ul>
+          </div>
         </div>
+
+        <PostList
+          posts={
+            !feedLoading && userPostImgs ? this.showUserPosts() : <Loader />
+          }
+        />
       </div>
     );
   }

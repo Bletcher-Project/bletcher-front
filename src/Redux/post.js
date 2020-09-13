@@ -16,6 +16,9 @@ const initialState = {
 const GET_ALLPOSTS_SUCCESS = 'post/GET_ALLPOSTS_SUCCESS';
 const GET_ALLPOSTS_FAIL = 'post/GET_ALLPOSTS_FAIL';
 
+const GET_NEWPOSTS_SUCCESS = 'post/GET_NEWPOSTS_SUCCESS';
+const GET_NEWPOSTS_FAIL = 'post/GET_NEWPOSTS_FAIL';
+
 const GET_USER_POST_SUCCESS = 'post/GET_USER_POST_SUCCESS';
 const GET_USER_POST_FAIL = 'post/GET_USER_POST_SUCCESS';
 
@@ -36,6 +39,10 @@ const DELIKE_POST_FAIL = 'post/DELIKE_POST_FAIL';
 
 export const getAllPostsSuccess = createAction(GET_ALLPOSTS_SUCCESS); // result.posts
 export const getAllPostsFail = createAction(GET_ALLPOSTS_FAIL);
+
+export const getNewPostsSuccess = createAction(GET_NEWPOSTS_SUCCESS);
+export const getNewPostsFail = createAction(GET_NEWPOSTS_FAIL);
+
 export const getUserPostSuccess = createAction(GET_USER_POST_SUCCESS);
 export const getUserPostFail = createAction(GET_USER_POST_FAIL);
 export const clickPostSuccess = createAction(CLICK_POST_SUCCESS); // result.post
@@ -57,42 +64,42 @@ export default postReducer(
     [GET_ALLPOSTS_FAIL]: (state) => {
       return state;
     },
-
+    [GET_NEWPOSTS_SUCCESS]: (state) => {
+      return { ...state };
+    },
+    [GET_NEWPOSTS_FAIL]: (state) => {
+      return { ...state };
+    },
     [GET_USER_POST_SUCCESS]: (state) => {
       return state;
     },
     [GET_USER_POST_FAIL]: (state) => {
       return state;
     },
-
     [CLICK_POST_SUCCESS]: (state) => {
       return state;
     },
     [CLICK_POST_FAIL]: (state) => {
       return state;
     },
-
     [UPLOAD_POST_SUCCESS]: (state) => {
       return state;
     },
     [UPLOAD_POST_FAIL]: (state) => {
       return state;
     },
-
     [DELETE_POST_SUCCESS]: (state) => {
       return state;
     },
     [DELETE_POST_FAIL]: (state) => {
       return state;
     },
-
     [LIKE_POST_SUCCESS]: (state) => {
       return state;
     },
     [LIKE_POST_FAIL]: (state) => {
       return state;
     },
-
     [DELIKE_POST_SUCCESS]: (state) => {
       return state;
     },
@@ -126,6 +133,27 @@ export const getAllPosts = (token) => {
       await dispatch(getAllPostsFail());
     }
     return result;
+  };
+};
+
+export const getNewPosts = () => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}`,
+        { method: 'GET' },
+      );
+      if (response.status === 200) {
+        const result = await response.json();
+        await dispatch(getNewPostsSuccess());
+        return result.data;
+      }
+      await dispatch(getNewPostsFail());
+      return null;
+    } catch (error) {
+      await dispatch(getNewPostsFail());
+      return null;
+    }
   };
 };
 

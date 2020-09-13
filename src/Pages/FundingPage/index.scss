@@ -15,11 +15,11 @@
       justify-content: space-between;
       font-weight: bold;
 
-      & span.selected .none-style-button {
+      & span.selected .noStyleButton {
         color: black;
         opacity: 1;
       }
-      & span .none-style-button {
+      & span .noStyleButton {
         color: #414141;
         opacity: 0.34;
       }
@@ -63,11 +63,5 @@
         }
       }
     }
-  }
-
-  &__postList {
-    display: flex;
-    flex-flow: row wrap;
-    margin: 2% 4% 0 4rem;
   }
 }

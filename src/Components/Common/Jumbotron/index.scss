@@ -1,14 +1,16 @@
 /*
   Jumbotron Component Styling
 */
-.Jumbotron {
+
+.jumbotron {
   height: 20rem;
   background-color: $background-color;
+
   &__content {
     height: 100%;
-    margin-left: 6rem;
-    color: #a26bc3;
-    font-size: 2.8rem;
+    margin: 0 3rem;
+    color: $main-color;
+    font-size: $max-header;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,14 +20,17 @@
     }
 
     &__line {
-      max-width: 10rem;
+      width: 9.5rem;
+      height: 0.5px;
       margin: 0;
+      background-color: $main-color;
       border: 1px solid $main-color;
+      border-radius: 10px;
       margin-bottom: 1rem;
     }
 
     &__description {
-      font-family: 'GothanRoundedLight';
+      font-family: GothanRoundedLight;
     }
   }
 }

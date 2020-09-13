@@ -1,0 +1,44 @@
+/*
+  PostHeader Component Styling
+*/
+
+.post__header {
+  width: 100%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding: 0;
+
+  &.hidden {
+    font-family: 'AppleSDGothicNeo';
+    visibility: hidden;
+    color: $header-gray;
+  }
+
+  &.bottom {
+    font-family: 'GothamRound';
+    order: 1;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $title;
+    font-weight: 500;
+    padding: 5px 0;
+  }
+}
+
+@media (hover: hover) {
+  .post:hover {
+    .post__header {
+      &.hidden {
+        visibility: visible;
+      }
+
+      &.fill {
+        background-color: $background-color;
+      }
+    }
+  }
+}
