@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import * as PostAction from 'Redux/post';
+import { getNewPosts } from 'Redux/fetch-post';
 
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
@@ -10,51 +10,75 @@ import Loader from 'Components/Common/Loader';
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
 
-const defaultProps = {};
+const defaultProps = {
+  newPost: null,
+};
 const propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  getPosts: PropTypes.func.isRequired,
+  newPost: PropTypes.arrayOf(
+    PropTypes.shape({
+      Category: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+      }),
+      Image: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        path: PropTypes.string,
+      }),
+      User: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        nickname: PropTypes.string.isRequired,
+      }),
+      created_at: PropTypes.string.isRequired,
+      description: PropTypes.string,
+      id: PropTypes.number.isRequired,
+      is_public: PropTypes.bool.isRequired,
+      title: PropTypes.string.isRequired,
+      updated_at: PropTypes.string.isRequired,
+    }).isRequired,
+  ),
 };
 
-const mapStateToProps = () => {
-  return {};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getPosts: () => dispatch(getNewPosts()),
+  };
+};
+
+const mapStateToProps = (state) => {
+  return {
+    newPost: state.fetchPostReducer.newPost,
+  };
 };
 
 class NewPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      feed: null,
-      feedLoading: true,
+      loading: true,
     };
   }
 
-  componentDidMount() {
-    this.getAllPosts();
+  async componentDidMount() {
+    const { getPosts } = this.props;
+    await getPosts();
+    this.setState({ loading: false });
   }
 
-  getAllPosts = () => {
-    const { dispatch } = this.props;
-    dispatch(PostAction.getNewPosts()).then((result) => {
-      this.setState({ feed: result, feedLoading: false });
-    });
-  };
-
   renderPosts = () => {
-    const { feed } = this.state;
-    return feed.map((data) => (
+    const { newPost } = this.props;
+    return newPost.map((data) => (
       <Post key={data.id} post={data} headerPosition="hidden" />
     ));
   };
 
   render() {
-    const { feed, feedLoading } = this.state;
+    const { loading } = this.state;
     return (
       <>
         <NavBar isActive="new" />
         <Jumbotron title="New" description="New works updated right now" />
-        <PostList
-          posts={feed && !feedLoading ? this.renderPosts() : <Loader />}
-        />
+        <PostList posts={!loading ? this.renderPosts() : <Loader />} />
       </>
     );
   }
@@ -63,4 +87,4 @@ class NewPage extends Component {
 NewPage.defaultProps = defaultProps;
 NewPage.propTypes = propTypes;
 
-export default connect(mapStateToProps)(NewPage);
+export default connect(mapStateToProps, mapDispatchToProps)(NewPage);
