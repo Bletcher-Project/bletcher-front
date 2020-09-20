@@ -43,15 +43,12 @@ export const getMainPosts = () => {
         { method: 'GET' },
       );
       if (response.status === 200) {
-        const result = response.json();
+        const result = await response.json();
         await dispatch(getMainPostsSuccess(result.data));
-        return result.data;
       }
       await dispatch(getMainPostsFail());
-      return null;
     } catch (error) {
       await dispatch(getMainPostsFail());
-      return null;
     }
   };
 };

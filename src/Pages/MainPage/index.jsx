@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import * as PostAction from 'Redux/post';
+import { getMainPosts } from 'Redux/fetch-post';
 
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
@@ -13,17 +13,45 @@ import MixButton from 'Components/Post/PostButton/MixButton';
 import FavoriteButton from 'Components/Post/PostButton/FavoriteButton';
 
 const defaultProps = {
-  token: null,
+  mainPost: null,
 };
 const propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  token: PropTypes.string,
+  getPosts: PropTypes.func.isRequired,
+  mainPost: PropTypes.arrayOf(
+    PropTypes.shape({
+      Category: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+      }),
+      Image: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        path: PropTypes.string,
+      }),
+      User: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        nickname: PropTypes.string.isRequired,
+      }),
+      created_at: PropTypes.string.isRequired,
+      description: PropTypes.string,
+      id: PropTypes.number.isRequired,
+      is_public: PropTypes.bool.isRequired,
+      title: PropTypes.string.isRequired,
+      updated_at: PropTypes.string.isRequired,
+    }).isRequired,
+  ),
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getPosts: () => dispatch(getMainPosts()),
+  };
 };
 
 const mapStateToProps = (state) => {
   return {
     token: state.authReducer.token,
     user: state.authReducer.user,
+    mainPost: state.fetchPostReducer.mainPost,
   };
 };
 
@@ -31,31 +59,25 @@ class MainPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      feed: null,
-      feedLoading: true,
+      loading: true,
     };
   }
 
-  componentDidMount() {
-    this.getAllPosts();
+  async componentDidMount() {
+    const { getPosts } = this.props;
+    await getPosts();
+    this.setState({ loading: false });
   }
 
-  getAllPosts = () => {
-    const { dispatch, token } = this.props;
-    dispatch(PostAction.getAllPosts(token)).then((result) => {
-      this.setState({ feed: result, feedLoading: false });
-    });
-  };
-
   renderPosts = () => {
-    const { feed } = this.state;
+    const { mainPost } = this.props;
     const mainIcon = (
       <>
         <MixButton />
         <FavoriteButton />
       </>
     );
-    return feed.map((data) => (
+    return mainPost.map((data) => (
       <Post
         key={data.id}
         post={data}
@@ -67,14 +89,12 @@ class MainPage extends Component {
   };
 
   render() {
-    const { feed, feedLoading } = this.state;
+    const { loading } = this.state;
     return (
       <div className="mainPage">
         <NavBar isActive="main" />
         <Jumbotron title="Find out" description="What other people painted" />
-        <PostList
-          posts={feed && !feedLoading ? this.renderPosts() : <Loader />}
-        />
+        <PostList posts={!loading ? this.renderPosts() : <Loader />} />
       </div>
     );
   }
@@ -83,4 +103,4 @@ class MainPage extends Component {
 MainPage.defaultProps = defaultProps;
 MainPage.propTypes = propTypes;
 
-export default connect(mapStateToProps)(MainPage);
+export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
