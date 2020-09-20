@@ -64,7 +64,7 @@ export const getFundingPosts = () => {
         { method: 'GET' },
       );
       // TO DO :: funding post get api
-      if (response.statuS === 200) {
+      if (response.status === 200) {
         const result = response.json();
         await dispatch(getFundingPostsSuccess(result.data));
         return result.data;
