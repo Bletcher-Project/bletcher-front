@@ -45,8 +45,7 @@ export const getMainPosts = () => {
       if (response.status === 200) {
         const result = await response.json();
         await dispatch(getMainPostsSuccess(result.data));
-      }
-      await dispatch(getMainPostsFail());
+      } else await dispatch(getMainPostsFail());
     } catch (error) {
       await dispatch(getMainPostsFail());
     }
@@ -62,15 +61,11 @@ export const getFundingPosts = () => {
       );
       // TO DO :: funding post get api
       if (response.status === 200) {
-        const result = response.json();
+        const result = await response.json();
         await dispatch(getFundingPostsSuccess(result.data));
-        return result.data;
-      }
-      await dispatch(getFundingPostsSuccess());
-      return null;
+      } else await dispatch(getFundingPostsFail());
     } catch (error) {
       await dispatch(getFundingPostsFail());
-      return null;
     }
   };
 };

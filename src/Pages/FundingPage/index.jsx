@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
 import PropTypes from 'prop-types';
 
-import cx from 'classnames';
+import { connect } from 'react-redux';
+import { getFundingPosts } from 'Redux/fetch-post';
 
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
@@ -18,13 +17,11 @@ import NoStyleButton from 'Components/Form/NoStyleButton';
 import FILTER from 'Constants/filter-option';
 
 import { DropdownItem } from 'reactstrap';
-
-// import { dummyDueDate } from 'Dummies/dummyPost';
-import * as PostAction from 'Redux/post';
+import cx from 'classnames';
 
 const defaultProps = {
   user: null,
-  token: null,
+  fundingPost: [],
 };
 
 const propTypes = {
@@ -32,14 +29,41 @@ const propTypes = {
     id: PropTypes.number,
     nickname: PropTypes.string,
   }),
-  dispatch: PropTypes.func.isRequired,
-  token: PropTypes.string,
+  getPosts: PropTypes.func.isRequired,
+  fundingPost: PropTypes.arrayOf(
+    PropTypes.shape({
+      Category: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+      }),
+      Image: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        path: PropTypes.string,
+      }),
+      User: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        nickname: PropTypes.string.isRequired,
+      }),
+      created_at: PropTypes.string.isRequired,
+      description: PropTypes.string,
+      id: PropTypes.number.isRequired,
+      is_public: PropTypes.bool.isRequired,
+      title: PropTypes.string.isRequired,
+      updated_at: PropTypes.string.isRequired,
+    }).isRequired,
+  ),
 };
 
 const mapStateToProps = (state) => {
   return {
-    token: state.authReducer.token,
     user: state.authReducer.user,
+    fundingPost: state.fetchPostReducer.fundingPost,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getPosts: () => dispatch(getFundingPosts()),
   };
 };
 
@@ -49,36 +73,29 @@ class FundingPage extends Component {
     this.state = {
       filter: 'Recommended',
       option: 'Ongoing',
-      filteredPosts: [],
       posts: [],
       feedLoading: true,
     };
   }
 
   componentDidMount = async () => {
-    await this.getAllPosts();
+    await this.fetchFundingPosts();
   };
 
-  getAllPosts = async () => {
-    const { dispatch, token } = this.props;
-    await dispatch(PostAction.getAllPosts(token)).then((result) => {
-      this.setState({ posts: result });
-    });
-
-    const { posts } = this.state;
-    await new Promise((accept) => {
-      this.setState(
-        {
-          filteredPosts: posts,
-          feedLoading: false,
-        },
-        accept,
-      );
-    });
+  fetchFundingPosts = async () => {
+    const { getPosts } = this.props;
+    await getPosts();
+    const { fundingPost } = this.props;
+    if (fundingPost) {
+      this.filterDueDate();
+      this.setState({
+        feedLoading: false,
+      });
+    }
   };
 
   createDropDownItem = () => {
-    const user = this.props;
+    const { user } = this.props;
     const { filter } = this.state;
     return FILTER.funding.map((option, index) => {
       if ((index === 0 && !user) || option[0] === filter) return null;
@@ -92,9 +109,8 @@ class FundingPage extends Component {
 
   orderPost = (sortOption) => {
     const sortOrder = sortOption === 'Latest' ? -1 : 1;
-    const { posts } = this.state;
-    this.setState(() => ({
-      filteredPosts: posts.sort((l, r) => {
+    this.setState((prevState) => ({
+      posts: prevState.posts.sort((l, r) => {
         return l.created_at < r.created_at ? sortOrder : -1 * sortOrder;
       }),
     }));
@@ -108,16 +124,23 @@ class FundingPage extends Component {
 
   showMyPosts = () => {
     const myPosts = this.getMyPosts();
-    this.setState({ filteredPosts: myPosts });
+    this.setState({ posts: myPosts });
   };
 
   filterDueDate = () => {
-    const { option, posts } = this.state;
-    // const filtered = option === 'Ongoing' ? posts : null;
-    // ? posts.filter((data) => new Date(data.created_at) < dummyDueDate)
-    // : posts.filter((data) => new Date(data.created_at) >= dummyDueDate);
+    const { option } = this.state;
+    const { fundingPost } = this.props;
+    const filteredPosts = fundingPost.filter((data) => {
+      const dueDate = new Date(data.created_at);
+      dueDate.setDate(dueDate.getDate() + 31);
+      if (option === 'Ongoing') {
+        return dueDate > new Date() ? data : null;
+      }
+      return dueDate <= new Date() ? data : null;
+    });
+
     this.setState({
-      filteredPosts: posts,
+      posts: filteredPosts,
     });
   };
 
@@ -144,14 +167,14 @@ class FundingPage extends Component {
   };
 
   renderPosts = () => {
-    const { filteredPosts } = this.state;
+    const { posts } = this.state;
     const fundIcon = (
       <>
         <FundButton />
         <ShareButton />
       </>
     );
-    return filteredPosts.map((data) => (
+    return posts.map((data) => (
       <Post
         key={data.id}
         post={data}
@@ -162,9 +185,7 @@ class FundingPage extends Component {
   };
 
   render() {
-    const { option, filteredPosts, filter, feedLoading } = this.state;
-    const post =
-      filteredPosts && !feedLoading ? this.renderPosts() : <Loader />;
+    const { option, posts, filter, feedLoading } = this.state;
     return (
       <>
         <NavBar isActive="funding" />
@@ -176,16 +197,14 @@ class FundingPage extends Component {
           <div className="fundingPage__optionBar">
             <div className="fundingPage__optionBar__state">
               <span className={cx('', { selected: option === 'Ongoing' })}>
-                <NoStyleButton
-                  onClick={this.optionClickHandler}
-                  content="Ongoing"
-                />
+                <NoStyleButton onClick={this.optionClickHandler}>
+                  Ongoing
+                </NoStyleButton>
               </span>
               <span className={cx('', { selected: option === 'End' })}>
-                <NoStyleButton
-                  onClick={this.optionClickHandler}
-                  content="End"
-                />
+                <NoStyleButton onClick={this.optionClickHandler}>
+                  End
+                </NoStyleButton>
               </span>
             </div>
             <div className="fundingPage__optionBar__filter">
@@ -195,7 +214,9 @@ class FundingPage extends Component {
               />
             </div>
           </div>
-          <PostList posts={post} />
+          <PostList
+            posts={posts && !feedLoading ? this.renderPosts() : <Loader />}
+          />
         </div>
       </>
     );
@@ -205,4 +226,4 @@ class FundingPage extends Component {
 FundingPage.defaultProps = defaultProps;
 FundingPage.propTypes = propTypes;
 
-export default connect(mapStateToProps)(FundingPage);
+export default connect(mapStateToProps, mapDispatchToProps)(FundingPage);

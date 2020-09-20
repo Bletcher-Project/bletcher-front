@@ -7,7 +7,7 @@ const defaultProps = {
 };
 const propTypes = {
   onClick: PropTypes.func,
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
 };
 
 function NoStyleButton(props) {
