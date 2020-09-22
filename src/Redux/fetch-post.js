@@ -1,12 +1,24 @@
 import { createAction, handleActions as fetchPostReducer } from 'redux-actions';
 
-import { INIT, POST_API, MY, FAVORITE_API } from 'Constants/api-uri';
+import {
+  INIT,
+  POST_API,
+  MY,
+  FAVORITE_API,
+  USER_REQ_GROUP,
+} from 'Constants/api-uri';
+import FILTER from 'Constants/filter-option';
 
 const initialState = {
   mainPost: null,
   newPost: null,
   fundingPost: null,
   favoritePost: null,
+  userPosts: {
+    me: null,
+    madeByMe: null,
+    usedByMe: null,
+  },
 };
 
 const GET_MAIN_POSTS_SUCCESS = 'post/GET_MAIN_POSTS_SUCCESS';
@@ -21,6 +33,17 @@ const GET_FUNDING_POSTS_FAIL = 'post/GET_FUNDING_POSTS_FAIL';
 const GET_FAVORITE_POSTS_SUCCESS = 'post/GET_FAVORITE_POSTS_SUCCESS';
 const GET_FAVORITE_POSTS_FAIL = 'post/GET_FAVORITE_POSTS_FAIL';
 
+const GET_USER_POSTS_SUCCESS = [
+  'post/GET_USER_POSTS_ME_SUCCESS',
+  'post/GET_USER_POSTS_MADEBYME_SUCCESS',
+  'post/GET_USER_POSTS_USEDBYME_SUCCESS',
+];
+const GET_USER_POSTS_FAIL = [
+  'post/GET_USER_POSTS_ME_FAIL',
+  'post/GET_USER_POSTS_MADEBYME_FAIL',
+  'post/GET_USER_POSTS_USEDBYME_FAIL',
+];
+
 export const getMainPostsSuccess = createAction(GET_MAIN_POSTS_SUCCESS); // result.data
 export const getMainPostsFail = createAction(GET_MAIN_POSTS_FAIL);
 export const getNewPostsSuccess = createAction(GET_NEW_POSTS_SUCCESS); // result.data
@@ -29,6 +52,16 @@ export const getFundingPostsSuccess = createAction(GET_FUNDING_POSTS_SUCCESS); /
 export const getFundingPostsFail = createAction(GET_FUNDING_POSTS_FAIL);
 export const getFavoritePostsSuccess = createAction(GET_FAVORITE_POSTS_SUCCESS); // result.data
 export const getFavoritePostsFail = createAction(GET_FAVORITE_POSTS_FAIL);
+export const getUserPostSuccess = [
+  createAction(GET_USER_POSTS_SUCCESS[0]),
+  createAction(GET_USER_POSTS_SUCCESS[1]),
+  createAction(GET_USER_POSTS_SUCCESS[2]),
+];
+export const getUserPostFail = [
+  createAction(GET_USER_POSTS_FAIL[0]),
+  createAction(GET_USER_POSTS_FAIL[1]),
+  createAction(GET_USER_POSTS_FAIL[2]),
+];
 
 export default fetchPostReducer(
   {
@@ -54,6 +87,24 @@ export default fetchPostReducer(
       return { ...state, favoritePost: action.payload };
     },
     [GET_FAVORITE_POSTS_FAIL]: (state) => {
+      return { ...state };
+    },
+    [GET_USER_POSTS_SUCCESS[0]]: (state, action) => {
+      return { ...state, userPosts: { me: action.payload } };
+    },
+    [GET_USER_POSTS_FAIL[0]]: (state) => {
+      return { ...state };
+    },
+    [GET_USER_POSTS_SUCCESS[1]]: (state, action) => {
+      return { ...state, userPosts: { madeByMe: action.payload } };
+    },
+    [GET_USER_POSTS_FAIL[1]]: (state) => {
+      return { ...state };
+    },
+    [GET_USER_POSTS_SUCCESS[2]]: (state, action) => {
+      return { ...state, userPosts: { usedByMe: action.payload } };
+    },
+    [GET_USER_POSTS_FAIL[2]]: (state) => {
       return { ...state };
     },
   },
@@ -130,6 +181,29 @@ export const getFavoritePosts = (token) => {
       } else await dispatch(getFavoritePostsFail());
     } catch (error) {
       await dispatch(getFavoritePostsFail());
+    }
+  };
+};
+
+export const getUserPosts = (tabOption, userInfo) => {
+  return async (dispatch) => {
+    try {
+      FILTER.user.map(async (option, index) => {
+        if (tabOption === option[0]) {
+          const response = await fetch(
+            `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_REQ_GROUP[index]}/${userInfo.id}}`,
+            {
+              method: 'GET',
+            },
+          );
+          if (response.status === 200) {
+            const result = await response.json();
+            await dispatch(getUserPostSuccess[index](result.data));
+          } else await dispatch(getUserPostFail[index]);
+        }
+      });
+    } catch (error) {
+      //
     }
   };
 };

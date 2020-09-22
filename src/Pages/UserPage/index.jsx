@@ -71,9 +71,11 @@ class UserPage extends Component {
   getUserPosts = async () => {
     const { dispatch, token } = this.props;
     const { userInfo } = this.state;
-    dispatch(PostAction.getPostByUserId(userInfo.id, token)).then((result) => {
-      this.setState({ userPostImgs: result });
-    });
+    dispatch(PostAction.getPostByUserId(userInfo.nickname, token)).then(
+      (result) => {
+        this.setState({ userPostImgs: result });
+      },
+    );
     this.setState({ feedLoading: false });
   };
 

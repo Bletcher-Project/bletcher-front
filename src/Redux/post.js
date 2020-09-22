@@ -157,12 +157,12 @@ export const getNewPosts = () => {
   };
 };
 
-export const getPostByUserId = (userId, token) => {
+export const getPostByUserId = (userInfo, token) => {
   return async (dispatch) => {
     let result;
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${USER_ONE}/${userId}`,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${USER_ONE}/${userInfo}`,
         {
           method: 'GET',
           headers: {
