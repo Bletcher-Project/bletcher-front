@@ -12,14 +12,15 @@ export const AUTH_API = '/auth';
 /* users */
 export const USER_API = '/users';
 export const USER_ONE = '/user';
+export const MY = '/my';
 
 /* posts */
 export const POST_API = '/posts';
 export const POST_ONE = '/one';
 export const POST_LIKE = '/like';
 
-/* comments */
-export const COMMENT_API = '/comments';
+/* favorites */
+export const FAVORITE_API = '/favorites';
 
 /* query */
 export const QUERY_EMAIL = '?email=';

@@ -1,11 +1,12 @@
 import { createAction, handleActions as fetchPostReducer } from 'redux-actions';
 
-import { INIT, POST_API } from 'Constants/api-uri';
+import { INIT, POST_API, MY, FAVORITE_API } from 'Constants/api-uri';
 
 const initialState = {
   mainPost: null,
   newPost: null,
   fundingPost: null,
+  favoritePost: null,
 };
 
 const GET_MAIN_POSTS_SUCCESS = 'post/GET_MAIN_POSTS_SUCCESS';
@@ -17,12 +18,17 @@ const GET_NEW_POSTS_FAIL = 'post/GET_NEW_POSTS_FAIL';
 const GET_FUNDING_POSTS_SUCCESS = 'post/GET_FUNDING_POSTS_SUCCESS';
 const GET_FUNDING_POSTS_FAIL = 'post/GET_FUNDING_POSTS_FAIL';
 
+const GET_FAVORITE_POSTS_SUCCESS = 'post/GET_FAVORITE_POSTS_SUCCESS';
+const GET_FAVORITE_POSTS_FAIL = 'post/GET_FAVORITE_POSTS_FAIL';
+
 export const getMainPostsSuccess = createAction(GET_MAIN_POSTS_SUCCESS); // result.data
 export const getMainPostsFail = createAction(GET_MAIN_POSTS_FAIL);
 export const getNewPostsSuccess = createAction(GET_NEW_POSTS_SUCCESS); // result.data
 export const getNewPostsFail = createAction(GET_NEW_POSTS_FAIL);
 export const getFundingPostsSuccess = createAction(GET_FUNDING_POSTS_SUCCESS); // result.data
 export const getFundingPostsFail = createAction(GET_FUNDING_POSTS_FAIL);
+export const getFavoritePostsSuccess = createAction(GET_FAVORITE_POSTS_SUCCESS); // result.data
+export const getFavoritePostsFail = createAction(GET_FAVORITE_POSTS_FAIL);
 
 export default fetchPostReducer(
   {
@@ -42,6 +48,12 @@ export default fetchPostReducer(
       return { ...state, fundingPost: action.payload };
     },
     [GET_FUNDING_POSTS_FAIL]: (state) => {
+      return { ...state };
+    },
+    [GET_FAVORITE_POSTS_SUCCESS]: (state, action) => {
+      return { ...state, favoritePost: action.payload };
+    },
+    [GET_FAVORITE_POSTS_FAIL]: (state) => {
       return { ...state };
     },
   },
@@ -96,6 +108,28 @@ export const getFundingPosts = () => {
       } else await dispatch(getFundingPostsFail());
     } catch (error) {
       await dispatch(getFundingPostsFail());
+    }
+  };
+};
+
+export const getFavoritePosts = (token) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${MY}${FAVORITE_API}`,
+        {
+          method: 'GET',
+          headers: {
+            'x-access-token': token,
+          },
+        },
+      );
+      if (response.status === 200) {
+        const result = await response.json();
+        await dispatch(getFavoritePostsSuccess(result.data));
+      } else await dispatch(getFavoritePostsFail());
+    } catch (error) {
+      await dispatch(getFavoritePostsFail());
     }
   };
 };
