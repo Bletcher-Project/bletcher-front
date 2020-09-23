@@ -17,7 +17,6 @@ export const MY = '/my';
 /* posts */
 export const POST_API = '/posts';
 export const POST_ONE = '/one';
-export const POST_LIKE = '/like';
 
 /* favorites */
 export const FAVORITE_API = '/favorites';

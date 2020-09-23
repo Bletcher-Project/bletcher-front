@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import { getFavoritePosts } from 'Redux/fetch-post';
@@ -6,9 +7,40 @@ import { getFavoritePosts } from 'Redux/fetch-post';
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
 import Post from 'Components/Post/Post';
+import PostList from 'Components/Post/PostList';
+import Loader from 'Components/Common/Loader';
 
-const defaultProps = {};
-const propTypes = {};
+const defaultProps = {
+  token: null,
+  favoritePost: null,
+};
+const propTypes = {
+  isLogin: PropTypes.bool.isRequired,
+  token: PropTypes.string,
+  getPosts: PropTypes.func.isRequired,
+  favoritePost: PropTypes.arrayOf(
+    PropTypes.shape({
+      Category: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+      }),
+      Image: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        path: PropTypes.string,
+      }),
+      User: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        nickname: PropTypes.string.isRequired,
+      }),
+      created_at: PropTypes.string.isRequired,
+      description: PropTypes.string,
+      id: PropTypes.number.isRequired,
+      is_public: PropTypes.bool.isRequired,
+      title: PropTypes.string.isRequired,
+      updated_at: PropTypes.string.isRequired,
+    }).isRequired,
+  ),
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -27,7 +59,9 @@ const mapStateToProps = (state) => {
 class FavoritePage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      loading: true,
+    };
   }
 
   async componentDidMount() {
@@ -35,13 +69,14 @@ class FavoritePage extends Component {
     if (isLogin) {
       await getPosts(token);
     }
-
-    console.log(this.props.favoritePost);
-    // this.setState({ loading: false });
+    this.setState({ loading: false });
   }
 
   renderPosts = () => {
     const { favoritePost } = this.props;
+    if (favoritePost.length === 0) {
+      return <div>There is No Posts.</div>;
+    }
     return favoritePost.map((data) => (
       <Post
         key={data.id}
@@ -53,10 +88,17 @@ class FavoritePage extends Component {
   };
 
   render() {
+    const { isLogin } = this.props;
+    const { loading } = this.state;
     return (
       <>
         <NavBar isActive="favorite" />
         <Jumbotron title="Favorite" description="My favorite works" />
+        {isLogin ? (
+          <PostList posts={!loading ? this.renderPosts() : <Loader />} />
+        ) : (
+          <div>You must Sign In.</div>
+        )}
       </>
     );
   }
