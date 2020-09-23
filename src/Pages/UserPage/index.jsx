@@ -160,7 +160,7 @@ class UserPage extends Component {
         <NavBar isActive={isMyPage ? 'user' : ''} />
         <div className="userPage__header">
           <div className="userPage__header__thumb">
-            <Thumbnail size="100" src={null} />
+            <Thumbnail size="100" />
             {isMyPage ? (
               <button
                 type="button"

@@ -83,18 +83,16 @@ class Upload extends Component {
             params.append('category_id', 5);
             params.append('is_public', true);
             const postUpload = await uploadPost(image, params, token);
-            return postUpload
-              ? window.location.reload()
-              : alert('Failed to upload..');
+            if (postUpload) window.location.reload();
+            // TO DO :: notify failed to upload image
           },
           undefined,
           1,
         );
       } else {
-        alert('Please upload your art first :)');
+        // TO DO :: notify uploading image !
       }
     } else {
-      alert('로그인하세요 !');
       // TO DO :: implement login modal !
     }
   };
@@ -105,7 +103,7 @@ class Upload extends Component {
   };
 
   render() {
-    const { content, modal } = this.state;
+    const { content, modal, pictureImgUrl } = this.state;
     return (
       <>
         <button
@@ -122,14 +120,6 @@ class Upload extends Component {
           <ModalBody>
             <div className="postUpload">
               <div className="postUpload__creator">
-                <input
-                  accept="image/*"
-                  type="file"
-                  name="img"
-                  id="art-upload"
-                  style={{ display: 'none' }}
-                  onChange={this.handlePictureImg}
-                />
                 <div className="postUpload__creator-uploadPic">
                   <Button
                     size="small"
@@ -137,15 +127,25 @@ class Upload extends Component {
                     disableRipple
                     disableFocusRipple
                   >
-                    <label htmlFor="art-upload">upload image</label>
+                    <label htmlFor="testhello">
+                      upload image
+                      <input
+                        accept="image/*"
+                        type="file"
+                        name="img"
+                        id="testhello"
+                        style={{ display: 'none' }}
+                        onChange={this.handlePictureImg}
+                      />
+                    </label>
                   </Button>
                 </div>
-                {this.state.pictureImgUrl === null ? null : (
+                {pictureImgUrl === null ? null : (
                   <div className="postUpload__creator-previewPic">
                     <Cropper
                       className="cropper"
                       alt="original"
-                      src={this.state.pictureImgUrl}
+                      src={pictureImgUrl}
                       ref={(cropper) => {
                         this.cropper = cropper;
                       }}
