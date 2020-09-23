@@ -2,11 +2,11 @@ import { createAction, handleActions as postReducer } from 'redux-actions';
 
 import {
   INIT,
-  POST_LIKE,
   POST_ONE,
   POST_API,
   USER_ONE,
   IMAGE_API,
+  FAVORITE_API,
 } from 'Constants/api-uri';
 
 const initialState = {
@@ -15,9 +15,6 @@ const initialState = {
 
 const GET_ALLPOSTS_SUCCESS = 'post/GET_ALLPOSTS_SUCCESS';
 const GET_ALLPOSTS_FAIL = 'post/GET_ALLPOSTS_FAIL';
-
-const GET_NEWPOSTS_SUCCESS = 'post/GET_NEWPOSTS_SUCCESS';
-const GET_NEWPOSTS_FAIL = 'post/GET_NEWPOSTS_FAIL';
 
 const GET_USER_POST_SUCCESS = 'post/GET_USER_POST_SUCCESS';
 const GET_USER_POST_FAIL = 'post/GET_USER_POST_SUCCESS';
@@ -31,18 +28,11 @@ const UPLOAD_POST_FAIL = 'post/UPLOAD_POST_FAIL';
 const DELETE_POST_SUCCESS = 'post/DELETE_POST_SUCCESS';
 const DELETE_POST_FAIL = 'post/DELETE_POST_FAIL';
 
-const LIKE_POST_SUCCESS = 'post/LIKE_POST_SUCCESS';
-const LIKE_POST_FAIL = 'post/LIKE_POST_FAIL';
-
-const DELIKE_POST_SUCCESS = 'post/DELIKE_POST_SUCCESS';
-const DELIKE_POST_FAIL = 'post/DELIKE_POST_FAIL';
+const ADD_FAVORITE = 'post/ADD_FAVORITE';
+const DEL_FAVORITE = 'post/DEL_FAVORITE';
 
 export const getAllPostsSuccess = createAction(GET_ALLPOSTS_SUCCESS); // result.posts
 export const getAllPostsFail = createAction(GET_ALLPOSTS_FAIL);
-
-export const getNewPostsSuccess = createAction(GET_NEWPOSTS_SUCCESS);
-export const getNewPostsFail = createAction(GET_NEWPOSTS_FAIL);
-
 export const getUserPostSuccess = createAction(GET_USER_POST_SUCCESS);
 export const getUserPostFail = createAction(GET_USER_POST_FAIL);
 export const clickPostSuccess = createAction(CLICK_POST_SUCCESS); // result.post
@@ -51,10 +41,9 @@ export const uploadPostSuccess = createAction(UPLOAD_POST_SUCCESS); // result
 export const uploadPostFail = createAction(UPLOAD_POST_FAIL);
 export const deletePostSuccess = createAction(DELETE_POST_SUCCESS);
 export const deletePostFail = createAction(DELETE_POST_FAIL);
-export const likePostSuccess = createAction(LIKE_POST_SUCCESS); // result
-export const likePostFail = createAction(LIKE_POST_FAIL);
-export const delikePostSuccess = createAction(DELIKE_POST_SUCCESS); // result
-export const delikePostFail = createAction(DELIKE_POST_FAIL);
+// TODO: Favorite Redux State
+export const addFavorite = createAction(ADD_FAVORITE);
+export const delFavorite = createAction(DEL_FAVORITE);
 
 export default postReducer(
   {
@@ -63,12 +52,6 @@ export default postReducer(
     },
     [GET_ALLPOSTS_FAIL]: (state) => {
       return state;
-    },
-    [GET_NEWPOSTS_SUCCESS]: (state) => {
-      return { ...state };
-    },
-    [GET_NEWPOSTS_FAIL]: (state) => {
-      return { ...state };
     },
     [GET_USER_POST_SUCCESS]: (state) => {
       return state;
@@ -94,16 +77,10 @@ export default postReducer(
     [DELETE_POST_FAIL]: (state) => {
       return state;
     },
-    [LIKE_POST_SUCCESS]: (state) => {
+    [ADD_FAVORITE]: (state) => {
       return state;
     },
-    [LIKE_POST_FAIL]: (state) => {
-      return state;
-    },
-    [DELIKE_POST_SUCCESS]: (state) => {
-      return state;
-    },
-    [DELIKE_POST_FAIL]: (state) => {
+    [DEL_FAVORITE]: (state) => {
       return state;
     },
   },
@@ -133,27 +110,6 @@ export const getAllPosts = (token) => {
       await dispatch(getAllPostsFail());
     }
     return result;
-  };
-};
-
-export const getNewPosts = () => {
-  return async (dispatch) => {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}`,
-        { method: 'GET' },
-      );
-      if (response.status === 200) {
-        const result = await response.json();
-        await dispatch(getNewPostsSuccess());
-        return result.data;
-      }
-      await dispatch(getNewPostsFail());
-      return null;
-    } catch (error) {
-      await dispatch(getNewPostsFail());
-      return null;
-    }
   };
 };
 
@@ -267,12 +223,11 @@ export const deletePost = (id, token) => {
   }
 };
 
-export const postLike = (postId, token) => {
+export const addFavoritePost = (postId, token) => {
   return async (dispatch) => {
-    let result;
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_LIKE}/${postId}`,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${FAVORITE_API}/${postId}`,
         {
           method: 'POST',
           headers: {
@@ -281,22 +236,21 @@ export const postLike = (postId, token) => {
         },
       );
       if (response.status === 200) {
-        result = await response.json();
-        await dispatch(likePostSuccess(result));
+        await dispatch(addFavorite());
+      } else {
+        // TODO: add error action
       }
     } catch (error) {
-      await dispatch(likePostFail());
+      // TODO: add error action
     }
-    return result;
   };
 };
 
-export const deleteLike = (postId, token) => {
+export const deleteFavoritePost = (postId, token) => {
   return async (dispatch) => {
-    let result;
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_LIKE}/${postId}`,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${FAVORITE_API}/${postId}`,
         {
           method: 'DELETE',
           headers: {
@@ -305,12 +259,12 @@ export const deleteLike = (postId, token) => {
         },
       );
       if (response.status === 200) {
-        result = await response.json();
-        await dispatch(delikePostSuccess(result));
+        await dispatch(delFavorite());
+      } else {
+        // TODO: add error action
       }
     } catch (error) {
-      await dispatch(delikePostFail());
+      // TODO: add error action
     }
-    return result;
   };
 };
