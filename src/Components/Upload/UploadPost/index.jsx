@@ -127,13 +127,13 @@ class Upload extends Component {
                     disableRipple
                     disableFocusRipple
                   >
-                    <label htmlFor="testhello">
+                    <label htmlFor="art-upload">
                       upload image
                       <input
                         accept="image/*"
                         type="file"
                         name="img"
-                        id="testhello"
+                        id="art-upload"
                         style={{ display: 'none' }}
                         onChange={this.handlePictureImg}
                       />

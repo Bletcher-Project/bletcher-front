@@ -8,6 +8,7 @@
     "animate.css": "^3.7.2",
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
+    "camelcase": "^6.0.0",
     "classnames": "^2.2.6",
     "comma-number": "^2.0.1",
     "cropperjs": "^1.5.9",

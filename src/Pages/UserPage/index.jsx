@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import cx from 'classnames';
 
 import { connect } from 'react-redux';
-import * as PostAction from 'Redux/post';
+import { getUserPosts } from 'Redux/fetch-post';
 
 import NavBar from 'Components/Common/NavBar';
 import Loader from 'Components/Common/Loader';
@@ -19,11 +18,17 @@ import Upload from 'Components/Upload/UploadPost';
 import FILTER from 'Constants/filter-option';
 import EditButton from 'Assets/images/editButton.png';
 
+import camelCase from 'camelcase';
+
+import cx from 'classnames';
+
 const defaultProps = {
-  user: null,
-  token: null,
+  user: {},
+  token: '',
+  userPosts: {},
 };
 const propTypes = {
+  getPosts: PropTypes.func.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
@@ -31,13 +36,45 @@ const propTypes = {
   }),
   token: PropTypes.string,
   history: ReactRouterPropTypes.history.isRequired,
-  dispatch: PropTypes.func.isRequired,
+  userPosts: PropTypes.objectOf(
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        Category: PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          name: PropTypes.string.isRequired,
+        }),
+        Image: PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          path: PropTypes.string,
+        }),
+        User: PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          nickname: PropTypes.string.isRequired,
+        }),
+        created_at: PropTypes.string.isRequired,
+        description: PropTypes.string,
+        id: PropTypes.number.isRequired,
+        is_public: PropTypes.bool.isRequired,
+        title: PropTypes.string.isRequired,
+        updated_at: PropTypes.string.isRequired,
+      }),
+    ),
+  ),
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = async (state) => {
   return {
     token: state.authReducer.token,
     user: state.authReducer.user,
+    userPosts: state.fetchPostReducer.userPosts,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getPosts: (tabOption, userInfo, token) => {
+      dispatch(getUserPosts(tabOption, userInfo, token));
+    },
   };
 };
 
@@ -47,8 +84,7 @@ class UserPage extends Component {
     this.state = {
       isMyPage: false,
       userInfo: null,
-      userPostImgs: [],
-      postFilter: 'me',
+      postOption: 'me',
       feedLoading: true,
     };
   }
@@ -57,10 +93,7 @@ class UserPage extends Component {
     const { match, user } = this.props;
     if (match.params.username === user.nickname) {
       await new Promise((accept) =>
-        this.setState(
-          { userInfo: user, isMyPage: true, userPostImgs: [] },
-          accept,
-        ),
+        this.setState({ userInfo: user, isMyPage: true }, accept),
       );
     } else {
       // Other UserPage
@@ -68,21 +101,21 @@ class UserPage extends Component {
     }
   };
 
-  getUserPosts = async () => {
-    const { dispatch, token } = this.props;
+  getUserPosts = async (option) => {
+    const { token, getPosts } = this.props;
     const { userInfo } = this.state;
-    dispatch(PostAction.getPostByUserId(userInfo.nickname, token)).then(
-      (result) => {
-        this.setState({ userPostImgs: result });
-      },
-    );
+
+    option.map(async (elem) => {
+      await getPosts(elem[0], userInfo, token);
+    });
+
     this.setState({ feedLoading: false });
   };
 
-  getPostByFilter = (filter, data) => {
+  getPostByOption = (option, data) => {
     let icon;
     let position;
-    if (filter === 'me') {
+    if (option === 'me') {
       icon = <MixButton />;
       position = 'both';
     } else {
@@ -101,8 +134,10 @@ class UserPage extends Component {
   };
 
   showUserPosts = () => {
-    const { userPostImgs, postFilter } = this.state;
-    return userPostImgs.map((data) => this.getPostByFilter(postFilter, data));
+    const { postOption } = this.state;
+    const { userPosts } = this.props;
+    const userPostImgs = userPosts[camelCase(postOption)];
+    return userPostImgs.map((data) => this.getPostByOption(postOption, data));
   };
 
   editUserProfile = () => {
@@ -111,17 +146,17 @@ class UserPage extends Component {
   };
 
   filterClickHandler = (e) => {
-    this.setState({ postFilter: e.target.innerText });
+    this.setState({ postOption: e.target.innerText });
   };
 
   createFilterList = () => {
-    const { postFilter } = this.state;
+    const { postOption } = this.state;
     return FILTER.user.map((option) => {
       return (
         <li key={option[1]}>
           <button
             className={cx(`userPage__header__rowTab__buttons__button`, {
-              activated: postFilter === option[0],
+              activated: postOption === option[0],
             })}
             type="button"
             onClick={this.filterClickHandler}
@@ -137,7 +172,7 @@ class UserPage extends Component {
     const { user } = this.props;
     if (user) {
       await this.setUser();
-      await this.getUserPosts();
+      await this.getUserPosts(FILTER.user);
     }
   };
 
@@ -148,26 +183,26 @@ class UserPage extends Component {
       prevProps.match.params.username !== match.params.username
     ) {
       await this.setUser();
-      await this.getUserPosts();
+      await this.getUserPosts(FILTER.user);
     }
   };
 
   render() {
-    const { isMyPage, postFilter, feedLoading, userPostImgs } = this.state;
-    const { user } = this.props;
+    const { isMyPage, postOption, feedLoading } = this.state;
+    const { user, userPosts } = this.props;
     return (
       <div className="userPage">
         <NavBar isActive={isMyPage ? 'user' : ''} />
         <div className="userPage__header">
           <div className="userPage__header__thumb">
-            <Thumbnail size="100" />
+            <Thumbnail size={100} />
             {isMyPage ? (
               <button
                 type="button"
                 onClick={this.editUserProfile}
                 className="userPage__header__thumb__edit"
               >
-                <img src={EditButton} alt="O" />
+                <img src={EditButton} alt="edit" />
               </button>
             ) : null}
           </div>
@@ -179,7 +214,7 @@ class UserPage extends Component {
           <div className="userPage__header__rowTab">
             <ul className="userPage__header__rowTab__buttons">
               <div className="userPage__header__rowTab__buttons__upload">
-                {postFilter === FILTER.user[0][0] ? <Upload /> : null}
+                {postOption === FILTER.user[0][0] ? <Upload /> : null}
               </div>
               {this.createFilterList()}
             </ul>
@@ -187,9 +222,7 @@ class UserPage extends Component {
         </div>
 
         <PostList
-          posts={
-            !feedLoading && userPostImgs ? this.showUserPosts() : <Loader />
-          }
+          posts={!feedLoading && userPosts ? this.showUserPosts() : <Loader />}
         />
       </div>
     );
@@ -199,4 +232,4 @@ class UserPage extends Component {
 UserPage.defaultProps = defaultProps;
 UserPage.propTypes = propTypes;
 
-export default connect(mapStateToProps)(UserPage);
+export default connect(mapStateToProps, mapDispatchToProps)(UserPage);

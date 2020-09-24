@@ -10,14 +10,14 @@ import {
 import FILTER from 'Constants/filter-option';
 
 const initialState = {
-  mainPost: null,
-  newPost: null,
-  fundingPost: null,
-  favoritePost: null,
+  mainPost: [],
+  newPost: [],
+  fundingPost: [],
+  favoritePost: [],
   userPosts: {
-    me: null,
-    madeByMe: null,
-    usedByMe: null,
+    me: [],
+    madeByMe: [],
+    usedByMe: [],
   },
 };
 
@@ -90,19 +90,28 @@ export default fetchPostReducer(
       return { ...state };
     },
     [GET_USER_POSTS_SUCCESS[0]]: (state, action) => {
-      return { ...state, userPosts: { me: action.payload } };
+      return {
+        ...state,
+        userPosts: { ...state.userPosts, me: action.payload },
+      };
     },
     [GET_USER_POSTS_FAIL[0]]: (state) => {
       return { ...state };
     },
     [GET_USER_POSTS_SUCCESS[1]]: (state, action) => {
-      return { ...state, userPosts: { madeByMe: action.payload } };
+      return {
+        ...state,
+        userPosts: { ...state.userPosts, madeByMe: action.payload },
+      };
     },
     [GET_USER_POSTS_FAIL[1]]: (state) => {
       return { ...state };
     },
     [GET_USER_POSTS_SUCCESS[2]]: (state, action) => {
-      return { ...state, userPosts: { usedByMe: action.payload } };
+      return {
+        ...state,
+        userPosts: { ...state.userPosts, usedByMe: action.payload },
+      };
     },
     [GET_USER_POSTS_FAIL[2]]: (state) => {
       return { ...state };
@@ -185,20 +194,24 @@ export const getFavoritePosts = (token) => {
   };
 };
 
-export const getUserPosts = (tabOption, userInfo) => {
+export const getUserPosts = (tabOption, userInfo, token) => {
   return async (dispatch) => {
     try {
       FILTER.user.map(async (option, index) => {
         if (tabOption === option[0]) {
           const response = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_REQ_GROUP[index]}/${userInfo.id}}`,
+            `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_REQ_GROUP[index]}/${userInfo.nickname}`,
             {
               method: 'GET',
+              headers: {
+                'x-access-token': token,
+              },
             },
           );
           if (response.status === 200) {
             const result = await response.json();
-            await dispatch(getUserPostSuccess[index](result.data));
+            const action = getUserPostSuccess[index];
+            await dispatch(action(result.data));
           } else await dispatch(getUserPostFail[index]);
         }
       });
