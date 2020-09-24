@@ -1,27 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { addFavoritePost, deleteFavoritePost } from 'Redux/post';
+
 import NoStyleButton from 'Components/Form/NoStyleButton';
-import favoriteButton from 'Assets/images/favoriteButton.png';
-import cx from 'classnames';
+import favorite from 'Assets/images/favorite.png';
+import filledFavorite from 'Assets/images/favorite-filled.png';
 
 const defaultProps = {
   liked: false,
-  onClick: null,
 };
 const propTypes = {
+  postId: PropTypes.number.isRequired,
   liked: PropTypes.bool,
-  onClick: PropTypes.func,
 };
 
 function FavoriteButton(props) {
-  const { liked, onClick } = props;
+  const { postId, liked } = props;
+  const [likedState, setlikedState] = useState(liked);
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.authReducer.token);
+  const isLogin = useSelector((state) => state.authReducer.isLogin);
+
+  const handleFavorite = () => {
+    if (!isLogin) {
+      alert('로그인하시길.');
+    } else {
+      if (liked) {
+        dispatch(deleteFavoritePost(postId, token));
+      } else {
+        dispatch(addFavoritePost(postId, token));
+      }
+      setlikedState(!likedState);
+    }
+  };
 
   return (
-    <NoStyleButton onClick={onClick}>
+    <NoStyleButton onClick={() => handleFavorite()}>
       <img
-        className={cx('postButton favorite', liked ? 'unfill' : 'fill')}
-        src={favoriteButton}
+        className="postButton favorite"
+        src={likedState ? filledFavorite : favorite}
         alt="favorite"
       />
     </NoStyleButton>
