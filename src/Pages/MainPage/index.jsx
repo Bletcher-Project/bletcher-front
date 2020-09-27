@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import { getMainPosts } from 'Redux/fetch-post';
+import { signOut } from 'Redux/auth';
 
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
@@ -44,6 +45,7 @@ const propTypes = {
 const mapDispatchToProps = (dispatch) => {
   return {
     getPosts: () => dispatch(getMainPosts()),
+    tmpSignOut: () => dispatch(signOut()),
   };
 };
 
@@ -89,12 +91,21 @@ class MainPage extends Component {
     ));
   };
 
+  outHandler = async () => {
+    const { tmpSignOut } = this.props;
+    await tmpSignOut();
+    window.location.reload();
+  };
+
   render() {
     const { loading } = this.state;
     return (
       <div className="mainPage">
         <NavBar isActive="main" />
         <Jumbotron title="Find out" description="What other people painted" />
+        <button type="button" onClick={this.outHandler}>
+          OUT
+        </button>
         <PostList posts={!loading ? this.renderPosts() : <Loader />} />
       </div>
     );
