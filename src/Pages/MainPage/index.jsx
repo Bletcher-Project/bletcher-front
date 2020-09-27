@@ -91,21 +91,12 @@ class MainPage extends Component {
     ));
   };
 
-  outHandler = async () => {
-    const { tmpSignOut } = this.props;
-    await tmpSignOut();
-    window.location.reload();
-  };
-
   render() {
     const { loading } = this.state;
     return (
       <div className="mainPage">
         <NavBar isActive="main" />
         <Jumbotron title="Find out" description="What other people painted" />
-        <button type="button" onClick={this.outHandler}>
-          OUT
-        </button>
         <PostList posts={!loading ? this.renderPosts() : <Loader />} />
       </div>
     );
