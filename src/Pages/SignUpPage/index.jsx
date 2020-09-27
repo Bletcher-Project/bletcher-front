@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactRouterPropTypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
@@ -14,7 +13,6 @@ import SignUpForm from 'Components/Sign/SignUpForm';
 
 const defaultProps = {};
 const propTypes = {
-  history: ReactRouterPropTypes.history.isRequired,
   createUser: PropTypes.func.isRequired,
   signInUser: PropTypes.func.isRequired,
 };

@@ -53,7 +53,7 @@ class ProfilePage extends Component {
         <div className="profilePage">
           <div className="profilePage__Header">This is ProfilePage.</div>
           <div className="profilePage__Content" />
-          {user ? user.name : ''}
+          {user ? user.nickname : ''}
           <button type="button" onClick={this.outHandler}>
             LOGOUT HERE!
           </button>
