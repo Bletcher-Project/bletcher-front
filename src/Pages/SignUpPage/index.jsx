@@ -41,12 +41,12 @@ class SignUpPage extends Component {
   };
 
   handleSignUp = async () => {
-    const { history, createUser, signInUser } = this.props;
+    const { createUser, signInUser } = this.props;
     const { user } = this.state;
 
     await createUser(user);
     await signInUser({ id: user.email, password: user.password });
-    history.push({ pathname: '/' });
+    window.location.reload('/');
   };
 
   render() {
