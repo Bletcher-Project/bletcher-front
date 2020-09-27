@@ -70,13 +70,10 @@ export const postSignIn = (params) => {
       if (response.status === 200) {
         const result = await response.json();
         await dispatch(setToken(result.data.token));
-        return result.data.token;
       }
       await dispatch(removeToken());
-      return null;
     } catch (error) {
       await dispatch(removeToken());
-      return null;
     }
   };
 };

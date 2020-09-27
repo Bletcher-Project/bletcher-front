@@ -197,10 +197,11 @@ export const getFavoritePosts = (token) => {
 export const getUserPosts = (tabOption, userInfo, token) => {
   return async (dispatch) => {
     try {
+      const userReqInfo = tabOption === 'me' ? userInfo.nickname : userInfo.id;
       FILTER.user.map(async (option, index) => {
         if (tabOption === option[0]) {
           const response = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_REQ_GROUP[index]}/${userInfo.nickname}`,
+            `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_REQ_GROUP[index]}/${userReqInfo}`,
             {
               method: 'GET',
               headers: {

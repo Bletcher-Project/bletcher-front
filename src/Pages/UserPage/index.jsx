@@ -62,7 +62,7 @@ const propTypes = {
   ),
 };
 
-const mapStateToProps = async (state) => {
+const mapStateToProps = (state) => {
   return {
     token: state.authReducer.token,
     user: state.authReducer.user,
