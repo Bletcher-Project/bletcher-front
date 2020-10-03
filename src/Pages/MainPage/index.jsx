@@ -74,20 +74,18 @@ class MainPage extends Component {
   renderPosts = () => {
     const { mainPost } = this.props;
     return mainPost.map((data) => (
-      <>
-        <Post
-          key={data.id}
-          post={data}
-          hoverIcon={
-            <>
-              <MixButton />
-              <FavoriteButton postId={data.id} liked={false} />
-            </>
-          }
-          headerPosition="hidden"
-          headerBackground
-        />
-      </>
+      <Post
+        key={data.id}
+        post={data}
+        hoverIcon={
+          <>
+            <MixButton />
+            <FavoriteButton postId={data.id} liked={false} />
+          </>
+        }
+        headerPosition="hidden"
+        headerBackground
+      />
     ));
   };
 
