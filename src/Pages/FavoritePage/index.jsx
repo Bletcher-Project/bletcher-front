@@ -9,6 +9,7 @@ import Jumbotron from 'Components/Common/Jumbotron';
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
 import Loader from 'Components/Common/Loader';
+import Button from 'Components/Form/Button';
 
 const defaultProps = {
   token: null,
@@ -72,10 +73,27 @@ class FavoritePage extends Component {
     this.setState({ loading: false });
   }
 
+  showEmptyStatus = () => {
+    return (
+      <div className="empty">
+        <div className="empty__guide">
+          <p>There&apos;s no &quot;like&quot; work on the Favorite.</p>
+          <p>Put your favorite work in it.</p>
+        </div>
+        <Button
+          text="Going to see the artwork"
+          size="medium"
+          width="280px"
+          href="/"
+        />
+      </div>
+    );
+  };
+
   renderPosts = () => {
     const { favoritePost } = this.props;
     if (favoritePost.length === 0) {
-      return <div>There is No Posts.</div>;
+      return this.showEmptyStatus();
     }
     return favoritePost.map((data) => (
       <Post
