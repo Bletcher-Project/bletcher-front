@@ -17,13 +17,15 @@
   &.bottom {
     font-family: 'GothamRound';
     order: 1;
+    .post__header__title {
+      height: 4rem;
+    }
   }
 
   &__title {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 4rem;
     font-size: $title;
     font-weight: 500;
     padding: 5px 0;
