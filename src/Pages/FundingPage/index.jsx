@@ -21,7 +21,10 @@ import cx from 'classnames';
 
 const defaultProps = {
   user: null,
-  fundingPost: [],
+  fundingPosts: {
+    onGoingPost: [],
+    endPost: [],
+  },
 };
 
 const propTypes = {
@@ -30,34 +33,36 @@ const propTypes = {
     nickname: PropTypes.string,
   }),
   getPosts: PropTypes.func.isRequired,
-  fundingPost: PropTypes.arrayOf(
-    PropTypes.shape({
-      Category: PropTypes.shape({
+  fundingPosts: PropTypes.objectOf(
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        Category: PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          name: PropTypes.string.isRequired,
+        }),
+        Image: PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          path: PropTypes.string,
+        }),
+        User: PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          nickname: PropTypes.string.isRequired,
+        }),
+        created_at: PropTypes.string.isRequired,
+        description: PropTypes.string,
         id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-      }),
-      Image: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        path: PropTypes.string,
-      }),
-      User: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        nickname: PropTypes.string.isRequired,
-      }),
-      created_at: PropTypes.string.isRequired,
-      description: PropTypes.string,
-      id: PropTypes.number.isRequired,
-      is_public: PropTypes.bool.isRequired,
-      title: PropTypes.string.isRequired,
-      updated_at: PropTypes.string.isRequired,
-    }).isRequired,
+        is_public: PropTypes.bool.isRequired,
+        title: PropTypes.string.isRequired,
+        updated_at: PropTypes.string.isRequired,
+      }).isRequired,
+    ),
   ),
 };
 
 const mapStateToProps = (state) => {
   return {
     user: state.authReducer.user,
-    fundingPost: state.fetchPostReducer.fundingPost,
+    fundingPosts: state.fetchPostReducer.fundingPosts,
   };
 };
 
@@ -82,14 +87,22 @@ class FundingPage extends Component {
     await this.fetchFundingPosts();
   };
 
+  getPostByOption = () => {
+    const { option } = this.state;
+    const { fundingPosts } = this.props;
+    const filteredPosts =
+      option === 'Ongoing' ? fundingPosts.onGoingPost : fundingPosts.endPost;
+    return filteredPosts;
+  };
+
   fetchFundingPosts = async () => {
     const { getPosts } = this.props;
     await getPosts();
-    const { fundingPost } = this.props;
-    if (fundingPost) {
-      this.filterDueDate();
+    const { fundingPosts } = this.props;
+    if (fundingPosts) {
       this.setState({
         feedLoading: false,
+        posts: this.getPostByOption(),
       });
     }
   };
@@ -109,8 +122,9 @@ class FundingPage extends Component {
 
   orderPost = (sortOption) => {
     const sortOrder = sortOption === 'Latest' ? -1 : 1;
-    this.setState((prevState) => ({
-      posts: prevState.posts.sort((l, r) => {
+    const currentPost = this.getPostByOption();
+    this.setState(() => ({
+      posts: currentPost.sort((l, r) => {
         return l.created_at < r.created_at ? sortOrder : -1 * sortOrder;
       }),
     }));
@@ -118,30 +132,12 @@ class FundingPage extends Component {
 
   getMyPosts = () => {
     const { user } = this.props;
-    const { posts } = this.state;
-    return posts.filter((data) => data.User.id === user.id);
+    const currentPost = this.getPostByOption();
+    return currentPost.filter((data) => data.User.id === user.id);
   };
 
   showMyPosts = () => {
-    const myPosts = this.getMyPosts();
-    this.setState({ posts: myPosts });
-  };
-
-  filterDueDate = () => {
-    const { option } = this.state;
-    const { fundingPost } = this.props;
-    const filteredPosts = fundingPost.filter((data) => {
-      const dueDate = new Date(data.created_at);
-      dueDate.setDate(dueDate.getDate() + 31);
-      if (option === 'Ongoing') {
-        return dueDate > new Date() ? data : null;
-      }
-      return dueDate <= new Date() ? data : null;
-    });
-
-    this.setState({
-      posts: filteredPosts,
-    });
+    this.setState({ posts: this.getMyPosts() });
   };
 
   dropDownHandler = (e) => {
@@ -162,8 +158,7 @@ class FundingPage extends Component {
     await new Promise((accept) =>
       this.setState({ option: e.target.innerText }, accept),
     );
-    this.setState({ filter: 'Recommended' });
-    this.filterDueDate();
+    this.setState({ filter: 'Recommended', posts: this.getPostByOption() });
   };
 
   renderPosts = () => {
