@@ -26,6 +26,11 @@ export const MIX_API = '/mix';
 export const MIX_ORIGIN = '/origin';
 export const MIX_SUB = '/sub';
 
+/* funding */
+export const FUND_API = '/funds';
+export const FUND_ONGOING = '/ongoing';
+export const FUND_END = '/end';
+
 /* comments */
 export const COMMENT_API = '/comments';
 

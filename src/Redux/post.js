@@ -7,6 +7,7 @@ import {
   USER_ONE,
   IMAGE_API,
   FAVORITE_API,
+  FUND_API,
 } from 'Constants/api-uri';
 
 const initialState = {
@@ -31,6 +32,9 @@ const DELETE_POST_FAIL = 'post/DELETE_POST_FAIL';
 const ADD_FAVORITE = 'post/ADD_FAVORITE';
 const DEL_FAVORITE = 'post/DEL_FAVORITE';
 
+const ADD_FUNDING_SUCCESS = 'post/ADD_FUNDING_SUCCESS';
+const ADD_FUNDING_FAIL = 'post/ADD_FUNDING_FAIL';
+
 export const getAllPostsSuccess = createAction(GET_ALLPOSTS_SUCCESS); // result.posts
 export const getAllPostsFail = createAction(GET_ALLPOSTS_FAIL);
 export const getUserPostSuccess = createAction(GET_USER_POST_SUCCESS);
@@ -44,6 +48,8 @@ export const deletePostFail = createAction(DELETE_POST_FAIL);
 // TODO: Favorite Redux State
 export const addFavorite = createAction(ADD_FAVORITE);
 export const delFavorite = createAction(DEL_FAVORITE);
+export const addFundingSuccess = createAction(ADD_FUNDING_SUCCESS);
+export const addFundingFail = createAction(ADD_FUNDING_FAIL);
 
 export default postReducer(
   {
@@ -83,6 +89,12 @@ export default postReducer(
     [DEL_FAVORITE]: (state) => {
       return state;
     },
+    [ADD_FUNDING_SUCCESS]: (state) => {
+      return state;
+    },
+    [ADD_FUNDING_FAIL]: (state) => {
+      return state;
+    },
   },
   initialState,
 );
@@ -118,7 +130,7 @@ export const getPostByUserId = (userInfo, token) => {
     let result;
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${USER_ONE}/${userInfo}`,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${USER_ONE}`,
         {
           method: 'GET',
           headers: {
@@ -165,6 +177,26 @@ export const getPostByPostId = (postId, token) => {
   };
 };
 
+export const addFundingPost = (postId, token) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${FUND_API}/${postId}`,
+        {
+          method: 'POST',
+          headers: {
+            'x-access-token': token,
+          },
+        },
+      );
+      if (response.status === 200) await dispatch(addFundingSuccess());
+      else await dispatch(addFundingFail());
+    } catch (error) {
+      await dispatch(addFundingFail());
+    }
+  };
+};
+
 export const uploadPost = (image, payload, token) => {
   return async (dispatch) => {
     try {
@@ -195,6 +227,7 @@ export const uploadPost = (image, payload, token) => {
       if (response.status === 200) {
         const result = await response.json();
         await dispatch(uploadPostSuccess(result));
+        await dispatch(addFundingPost(result.data.id, token));
       }
     } catch (err) {
       await dispatch(uploadPostFail());

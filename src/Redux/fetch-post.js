@@ -6,13 +6,19 @@ import {
   MY,
   FAVORITE_API,
   USER_REQ_GROUP,
+  FUND_API,
+  FUND_ONGOING,
+  FUND_END,
 } from 'Constants/api-uri';
 import FILTER from 'Constants/filter-option';
 
 const initialState = {
   mainPost: [],
   newPost: [],
-  fundingPost: [],
+  fundingPosts: {
+    onGoingPost: [],
+    endPost: [],
+  },
   favoritePost: [],
   userPosts: {
     me: [],
@@ -78,7 +84,7 @@ export default fetchPostReducer(
       return { ...state };
     },
     [GET_FUNDING_POSTS_SUCCESS]: (state, action) => {
-      return { ...state, fundingPost: action.payload };
+      return { ...state, fundingPosts: action.payload };
     },
     [GET_FUNDING_POSTS_FAIL]: (state) => {
       return { ...state };
@@ -157,15 +163,28 @@ export const getNewPosts = () => {
 export const getFundingPosts = () => {
   return async (dispatch) => {
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}`,
+      const responseOngoing = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${FUND_API}${FUND_ONGOING}`,
         { method: 'GET' },
       );
-      // TO DO :: funding post get api
-      if (response.status === 200) {
-        const result = await response.json();
-        await dispatch(getFundingPostsSuccess(result.data));
-      } else await dispatch(getFundingPostsFail());
+      const responseEnd = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${FUND_API}${FUND_END}`,
+        { method: 'GET' },
+      );
+      let result = {};
+      if (responseOngoing.status !== 200 && responseEnd.status !== 200) {
+        await dispatch(getFundingPostsFail());
+      } else {
+        if (responseOngoing.status === 200) {
+          const resultOngoing = await responseOngoing.json();
+          result = { ...result, onGoingPost: resultOngoing.data };
+        }
+        if (responseEnd.status === 200) {
+          const resultEnd = await responseEnd.json();
+          result = { ...result, endPost: resultEnd.data };
+        }
+        await dispatch(getFundingPostsSuccess(result));
+      }
     } catch (error) {
       await dispatch(getFundingPostsFail());
     }
