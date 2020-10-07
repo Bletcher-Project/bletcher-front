@@ -29,8 +29,11 @@ const UPLOAD_POST_FAIL = 'post/UPLOAD_POST_FAIL';
 const DELETE_POST_SUCCESS = 'post/DELETE_POST_SUCCESS';
 const DELETE_POST_FAIL = 'post/DELETE_POST_FAIL';
 
-const ADD_FAVORITE = 'post/ADD_FAVORITE';
-const DEL_FAVORITE = 'post/DEL_FAVORITE';
+const ADD_FAVORITE_SUCCESS = 'post/ADD_FAVORITE_SUCCESS';
+const ADD_FAVORITE_FAIL = 'post/ADD_FAVORITE_FAIL';
+
+const DEL_FAVORITE_SUCCESS = 'post/DEL_FAVORITE_SUCCESS';
+const DEL_FAVORITE_FAIL = 'post/DEL_FAVORITE_FAIL';
 
 const ADD_FUNDING_SUCCESS = 'post/ADD_FUNDING_SUCCESS';
 const ADD_FUNDING_FAIL = 'post/ADD_FUNDING_FAIL';
@@ -45,9 +48,10 @@ export const uploadPostSuccess = createAction(UPLOAD_POST_SUCCESS); // result
 export const uploadPostFail = createAction(UPLOAD_POST_FAIL);
 export const deletePostSuccess = createAction(DELETE_POST_SUCCESS);
 export const deletePostFail = createAction(DELETE_POST_FAIL);
-// TODO: Favorite Redux State
-export const addFavorite = createAction(ADD_FAVORITE);
-export const delFavorite = createAction(DEL_FAVORITE);
+export const addFavoriteSuccess = createAction(ADD_FAVORITE_SUCCESS);
+export const addFavoriteFail = createAction(ADD_FAVORITE_FAIL);
+export const delFavoriteSuccess = createAction(DEL_FAVORITE_SUCCESS);
+export const delFavoriteFail = createAction(DEL_FAVORITE_FAIL);
 export const addFundingSuccess = createAction(ADD_FUNDING_SUCCESS);
 export const addFundingFail = createAction(ADD_FUNDING_FAIL);
 
@@ -83,10 +87,16 @@ export default postReducer(
     [DELETE_POST_FAIL]: (state) => {
       return state;
     },
-    [ADD_FAVORITE]: (state) => {
+    [ADD_FAVORITE_SUCCESS]: (state) => {
       return state;
     },
-    [DEL_FAVORITE]: (state) => {
+    [ADD_FAVORITE_FAIL]: (state) => {
+      return state;
+    },
+    [DEL_FAVORITE_SUCCESS]: (state) => {
+      return state;
+    },
+    [DEL_FAVORITE_FAIL]: (state) => {
       return state;
     },
     [ADD_FUNDING_SUCCESS]: (state) => {
@@ -269,12 +279,12 @@ export const addFavoritePost = (postId, token) => {
         },
       );
       if (response.status === 200) {
-        await dispatch(addFavorite());
+        await dispatch(addFavoriteSuccess());
       } else {
-        // TODO: add error action
+        await dispatch(addFavoriteFail());
       }
     } catch (error) {
-      // TODO: add error action
+      await dispatch(addFavoriteFail());
     }
   };
 };
@@ -292,12 +302,12 @@ export const deleteFavoritePost = (postId, token) => {
         },
       );
       if (response.status === 200) {
-        await dispatch(delFavorite());
+        await dispatch(delFavoriteSuccess());
       } else {
-        // TODO: add error action
+        await dispatch(delFavoriteFail());
       }
     } catch (error) {
-      // TODO: add error action
+      await dispatch(delFavoriteFail());
     }
   };
 };
