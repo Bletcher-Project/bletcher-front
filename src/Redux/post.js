@@ -14,9 +14,6 @@ const initialState = {
   feed: null,
 };
 
-const GET_ALLPOSTS_SUCCESS = 'post/GET_ALLPOSTS_SUCCESS';
-const GET_ALLPOSTS_FAIL = 'post/GET_ALLPOSTS_FAIL';
-
 const GET_USER_POST_SUCCESS = 'post/GET_USER_POST_SUCCESS';
 const GET_USER_POST_FAIL = 'post/GET_USER_POST_SUCCESS';
 
@@ -38,8 +35,6 @@ const DEL_FAVORITE_FAIL = 'post/DEL_FAVORITE_FAIL';
 const ADD_FUNDING_SUCCESS = 'post/ADD_FUNDING_SUCCESS';
 const ADD_FUNDING_FAIL = 'post/ADD_FUNDING_FAIL';
 
-export const getAllPostsSuccess = createAction(GET_ALLPOSTS_SUCCESS); // result.posts
-export const getAllPostsFail = createAction(GET_ALLPOSTS_FAIL);
 export const getUserPostSuccess = createAction(GET_USER_POST_SUCCESS);
 export const getUserPostFail = createAction(GET_USER_POST_FAIL);
 export const clickPostSuccess = createAction(CLICK_POST_SUCCESS); // result.post
@@ -57,12 +52,6 @@ export const addFundingFail = createAction(ADD_FUNDING_FAIL);
 
 export default postReducer(
   {
-    [GET_ALLPOSTS_SUCCESS]: (state, action) => {
-      return { ...state, feed: action.payload };
-    },
-    [GET_ALLPOSTS_FAIL]: (state) => {
-      return state;
-    },
     [GET_USER_POST_SUCCESS]: (state) => {
       return state;
     },
@@ -108,32 +97,6 @@ export default postReducer(
   },
   initialState,
 );
-
-export const getAllPosts = (token) => {
-  return async (dispatch) => {
-    let result;
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}`,
-        {
-          method: 'GET',
-          headers: {
-            'x-access-token': token,
-          },
-        },
-      );
-      if (response.status === 200) {
-        result = await response.json().then((res) => {
-          return res.data;
-        });
-        await dispatch(getAllPostsSuccess(result));
-      }
-    } catch (error) {
-      await dispatch(getAllPostsFail());
-    }
-    return result;
-  };
-};
 
 export const getPostByUserId = (userInfo, token) => {
   return async (dispatch) => {
