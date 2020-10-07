@@ -84,8 +84,13 @@ class MainPage extends Component {
     const { loading } = this.state;
     if (user !== prevProps.user && loading) {
       await getPosts(user.id);
-      this.setState({ loading: false });
+      this.toggleLoadingState();
     }
+  }
+
+  toggleLoadingState() {
+    const { loading } = this.state;
+    this.setState({ loading: !loading });
   }
 
   renderPosts = () => {
