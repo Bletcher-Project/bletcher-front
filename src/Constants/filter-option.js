@@ -6,11 +6,6 @@ const FILTER = {
     ['Time Limit', 3],
     ['Popular', 4],
   ],
-  user: [
-    ['me', 0],
-    ['Made by me', 1],
-    ['Used by me', 2],
-  ],
 };
 
 export default FILTER;

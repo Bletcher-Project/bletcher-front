@@ -11,7 +11,7 @@ import {
   FUND_ONGOING,
   FUND_END,
 } from 'Constants/api-uri';
-import FILTER from 'Constants/filter-option';
+import USER_OPTION from 'Constants/userpage-option';
 
 const initialState = {
   mainPost: [],
@@ -218,7 +218,7 @@ export const getUserPosts = (tabOption, userInfo, token) => {
   return async (dispatch) => {
     try {
       const userReqInfo = tabOption === 'me' ? userInfo.nickname : userInfo.id;
-      FILTER.user.map(async (option, index) => {
+      USER_OPTION.map(async (option, index) => {
         if (tabOption === option[0]) {
           const response = await fetch(
             `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_REQ_GROUP[index]}/${userReqInfo}`,
@@ -237,7 +237,7 @@ export const getUserPosts = (tabOption, userInfo, token) => {
         }
       });
     } catch (error) {
-      FILTER.user.map(async (option, index) => {
+      USER_OPTION.map(async (option, index) => {
         if (tabOption === option[0]) {
           await dispatch(getUserPostFail[index]);
         }

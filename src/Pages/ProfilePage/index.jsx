@@ -9,7 +9,7 @@ import { signOut } from 'Redux/auth';
 import NavBar from 'Components/Common/NavBar';
 
 const defaultProps = {
-  user: {},
+  user: null,
 };
 const propTypes = {
   UserSignOut: PropTypes.func.isRequired,

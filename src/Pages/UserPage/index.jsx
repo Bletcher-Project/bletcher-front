@@ -15,7 +15,7 @@ import MixButton from 'Components/Post/PostButton/MixButton';
 import ShareButton from 'Components/Post/PostButton/ShareButton';
 import Upload from 'Components/Upload/UploadPost';
 
-import FILTER from 'Constants/filter-option';
+import USER_OPTION from 'Constants/userpage-option';
 import EditButton from 'Assets/images/editButton.png';
 
 import camelCase from 'camelcase';
@@ -151,7 +151,7 @@ class UserPage extends Component {
 
   createFilterList = () => {
     const { postOption } = this.state;
-    return FILTER.user.map((option) => {
+    return USER_OPTION.map((option) => {
       return (
         <li key={option[1]}>
           <button
@@ -172,7 +172,7 @@ class UserPage extends Component {
     const { user } = this.props;
     if (user) {
       await this.setUser();
-      await this.getUserPosts(FILTER.user);
+      await this.getUserPosts(USER_OPTION);
     }
   };
 
@@ -183,7 +183,7 @@ class UserPage extends Component {
       prevProps.match.params.username !== match.params.username
     ) {
       await this.setUser();
-      await this.getUserPosts(FILTER.user);
+      await this.getUserPosts(USER_OPTION);
     }
   };
 
@@ -214,7 +214,7 @@ class UserPage extends Component {
           <div className="userPage__header__rowTab">
             <ul className="userPage__header__rowTab__buttons">
               <div className="userPage__header__rowTab__buttons__upload">
-                {postOption === FILTER.user[0][0] ? <Upload /> : null}
+                {postOption === USER_OPTION[0][0] ? <Upload /> : null}
               </div>
               {this.createFilterList()}
             </ul>

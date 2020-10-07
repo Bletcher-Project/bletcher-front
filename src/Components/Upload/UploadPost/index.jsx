@@ -140,7 +140,7 @@ class Upload extends Component {
                     </label>
                   </Button>
                 </div>
-                {pictureImgUrl === null ? null : (
+                {pictureImgUrl && (
                   <div className="postUpload__creator-previewPic">
                     <Cropper
                       className="cropper"

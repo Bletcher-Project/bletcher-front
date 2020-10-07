@@ -87,7 +87,6 @@ class SignInForm extends Component {
       const userData = { id: id.value, password: password.value };
       const token = await dispatch(AuthAction.postSignIn(userData));
       if (token) {
-        dispatch(AuthAction.getUser(token));
         await dispatch(AuthAction.getUser(token));
       } else {
         this.setState({
