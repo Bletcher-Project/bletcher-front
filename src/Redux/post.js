@@ -4,18 +4,12 @@ import {
   INIT,
   POST_ONE,
   POST_API,
-  USER_ONE,
   IMAGE_API,
   FAVORITE_API,
   FUND_API,
 } from 'Constants/api-uri';
 
-const initialState = {
-  feed: null,
-};
-
-const GET_USER_POST_SUCCESS = 'post/GET_USER_POST_SUCCESS';
-const GET_USER_POST_FAIL = 'post/GET_USER_POST_SUCCESS';
+const initialState = {};
 
 const CLICK_POST_SUCCESS = 'post/CLICK_POST_SUCCESS';
 const CLICK_POST_FAIL = 'post/CLICK_POST_FAIL';
@@ -35,8 +29,6 @@ const DEL_FAVORITE_FAIL = 'post/DEL_FAVORITE_FAIL';
 const ADD_FUNDING_SUCCESS = 'post/ADD_FUNDING_SUCCESS';
 const ADD_FUNDING_FAIL = 'post/ADD_FUNDING_FAIL';
 
-export const getUserPostSuccess = createAction(GET_USER_POST_SUCCESS);
-export const getUserPostFail = createAction(GET_USER_POST_FAIL);
 export const clickPostSuccess = createAction(CLICK_POST_SUCCESS); // result.post
 export const clickPostFail = createAction(CLICK_POST_FAIL);
 export const uploadPostSuccess = createAction(UPLOAD_POST_SUCCESS); // result
@@ -52,12 +44,6 @@ export const addFundingFail = createAction(ADD_FUNDING_FAIL);
 
 export default postReducer(
   {
-    [GET_USER_POST_SUCCESS]: (state) => {
-      return state;
-    },
-    [GET_USER_POST_FAIL]: (state) => {
-      return state;
-    },
     [CLICK_POST_SUCCESS]: (state) => {
       return state;
     },
@@ -97,32 +83,6 @@ export default postReducer(
   },
   initialState,
 );
-
-export const getPostByUserId = (userInfo, token) => {
-  return async (dispatch) => {
-    let result;
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${USER_ONE}`,
-        {
-          method: 'GET',
-          headers: {
-            'x-access-token': token,
-          },
-        },
-      );
-      if (response.status === 200) {
-        result = await response.json().then((res) => {
-          return res.data;
-        });
-        await dispatch(getUserPostSuccess());
-      }
-    } catch (error) {
-      await dispatch(getUserPostFail());
-    }
-    return result;
-  };
-};
 
 export const getPostByPostId = (postId, token) => {
   return async (dispatch) => {
