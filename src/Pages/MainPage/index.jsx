@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import { getMainPosts } from 'Redux/fetch-post';
-import { signOut } from 'Redux/auth';
 
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
@@ -59,7 +58,6 @@ const propTypes = {
 const mapDispatchToProps = (dispatch) => {
   return {
     getPosts: (userId) => dispatch(getMainPosts(userId)),
-    tmpSignOut: () => dispatch(signOut()),
   };
 };
 
