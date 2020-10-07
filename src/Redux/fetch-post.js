@@ -237,7 +237,11 @@ export const getUserPosts = (tabOption, userInfo, token) => {
         }
       });
     } catch (error) {
-      //
+      FILTER.user.map(async (option, index) => {
+        if (tabOption === option[0]) {
+          await dispatch(getUserPostFail[index]);
+        }
+      });
     }
   };
 };
