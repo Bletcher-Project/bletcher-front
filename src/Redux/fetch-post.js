@@ -3,6 +3,7 @@ import { createAction, handleActions as fetchPostReducer } from 'redux-actions';
 import {
   INIT,
   POST_API,
+  POST_MAIN,
   MY,
   FAVORITE_API,
   USER_REQ_GROUP,
@@ -126,11 +127,11 @@ export default fetchPostReducer(
   initialState,
 );
 
-export const getMainPosts = () => {
+export const getMainPosts = (userId) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}`,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_MAIN}/${userId}`,
         { method: 'GET' },
       );
       if (response.status === 200) {
