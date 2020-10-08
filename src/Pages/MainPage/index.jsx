@@ -15,6 +15,7 @@ import FavoriteButton from 'Components/Post/PostButton/FavoriteButton';
 const defaultProps = {
   mainPost: null,
   user: null,
+  token: null,
 };
 const propTypes = {
   getPosts: PropTypes.func.isRequired,
@@ -53,6 +54,7 @@ const propTypes = {
     createdAt: PropTypes.string.isRequired,
     updatedAt: PropTypes.string.isRequired,
   }),
+  token: PropTypes.string,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -77,10 +79,18 @@ class MainPage extends Component {
     };
   }
 
+  async componentDidMount() {
+    const { getPosts, token } = this.props;
+    if (!token) {
+      await getPosts(0);
+      this.toggleLoadingState();
+    }
+  }
+
   async componentDidUpdate(prevProps) {
-    const { getPosts, user } = this.props;
+    const { getPosts, user, token } = this.props;
     const { loading } = this.state;
-    if (user !== prevProps.user && loading) {
+    if (token && user !== prevProps.user && loading) {
       await getPosts(user.id);
       this.toggleLoadingState();
     }
