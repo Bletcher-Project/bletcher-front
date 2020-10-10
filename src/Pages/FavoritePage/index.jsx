@@ -10,6 +10,7 @@ import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
 import Loader from 'Components/Common/Loader';
 import Button from 'Components/Form/Button';
+import favEmpty from 'Assets/images/favorite-empty.png';
 
 const defaultProps = {
   token: null,
@@ -76,6 +77,10 @@ class FavoritePage extends Component {
   showEmptyStatus = () => {
     return (
       <div className="empty">
+        <div className="empty__icon">
+          <img src={favEmpty} alt="favorite-empty" />
+          <span>Empty</span>
+        </div>
         <div className="empty__guide">
           <p>There&apos;s no &quot;like&quot; work on the Favorite.</p>
           <p>Put your favorite work in it.</p>
