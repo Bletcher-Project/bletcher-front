@@ -25,7 +25,7 @@ function FavoriteButton(props) {
 
   const handleFavorite = () => {
     if (!isLogin) {
-      alert('로그인하시길.');
+      // alert('로그인하시길.');
     } else {
       if (liked) {
         dispatch(deleteFavoritePost(postId, token));
