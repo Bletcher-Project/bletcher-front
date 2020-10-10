@@ -11,17 +11,19 @@ const propTypes = {
 
 function PostHeader(props) {
   const { title, background, position } = props;
-  return position ? (
-    <div
-      className={cx('post__header', {
-        fill: background,
-        hidden: position === 'hidden' || position === 'both',
-        bottom: position === 'bottom' || position === 'both',
-      })}
-    >
-      <div className="post__header__title">{title}</div>
-    </div>
-  ) : null;
+  return (
+    position && (
+      <div
+        className={cx('post__header', {
+          fill: background,
+          hidden: position === 'hidden' || position === 'both',
+          bottom: position === 'bottom' || position === 'both',
+        })}
+      >
+        <div className="post__header__title">{title}</div>
+      </div>
+    )
+  );
 }
 
 PostHeader.defaultProps = defaultProps;
