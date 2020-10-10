@@ -76,12 +76,12 @@ class FavoritePage extends Component {
 
   showEmptyStatus = () => {
     return (
-      <div className="empty">
-        <div className="empty__icon">
+      <div className="favoritePage__empty">
+        <div className="favoritePage__empty__icon">
           <img src={favEmpty} alt="favorite-empty" />
           <span>Empty</span>
         </div>
-        <div className="empty__guide">
+        <div className="favoritePage__empty__guide">
           <p>There&apos;s no &quot;like&quot; work on the Favorite.</p>
           <p>Put your favorite work in it.</p>
         </div>
