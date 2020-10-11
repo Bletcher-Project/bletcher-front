@@ -109,7 +109,7 @@ class MainPage extends Component {
         post={data.post}
         hoverIcon={
           <>
-            <MixButton />
+            <MixButton originId={data.post.id} />
             <FavoriteButton postId={data.post.id} liked={data.isFavorite} />
           </>
         }

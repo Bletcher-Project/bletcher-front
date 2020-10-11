@@ -8,6 +8,7 @@ import { getUserPosts } from 'Redux/fetch-post';
 
 import NavBar from 'Components/Common/NavBar';
 import Loader from 'Components/Common/Loader';
+import BottomSheet from 'Components/Common/BottomSheet';
 import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
@@ -81,11 +82,13 @@ const mapDispatchToProps = (dispatch) => {
 class UserPage extends Component {
   constructor(props) {
     super(props);
+    this.modalRef = React.createRef();
     this.state = {
       isMyPage: false,
       userInfo: null,
       postOption: 'me',
       feedLoading: true,
+      isMixModalOpen: false,
     };
   }
 
@@ -116,7 +119,7 @@ class UserPage extends Component {
     let icon;
     let position;
     if (option === 'me') {
-      icon = <MixButton />;
+      icon = <MixButton originId={data.id} onClick={this.mixModalHandler} />;
       position = 'both';
     } else {
       icon = <ShareButton />;
@@ -168,12 +171,28 @@ class UserPage extends Component {
     });
   };
 
+  mixModalHandler = () => {
+    this.setState({ isMixModalOpen: true });
+  };
+
+  clickOutsideHandler = (e) => {
+    const { isMixModalOpen } = this.state;
+    if (
+      isMixModalOpen &&
+      !this.modalRef.current.contains(e.target) &&
+      e.target.className !== 'postButton mix'
+    ) {
+      this.setState({ isMixModalOpen: false });
+    }
+  };
+
   componentDidMount = async () => {
     const { user } = this.props;
     if (user) {
       await this.setUser();
       await this.getUserPosts(USER_OPTION);
     }
+    window.addEventListener('click', this.clickOutsideHandler);
   };
 
   componentDidUpdate = async (prevProps) => {
@@ -187,8 +206,12 @@ class UserPage extends Component {
     }
   };
 
+  componentWillUnmount = () => {
+    window.removeEventListener('click', this.clickOutsideHandler);
+  };
+
   render() {
-    const { isMyPage, postOption, feedLoading } = this.state;
+    const { isMyPage, postOption, feedLoading, isMixModalOpen } = this.state;
     const { user, userPosts } = this.props;
     return (
       <div className="userPage">
@@ -224,6 +247,7 @@ class UserPage extends Component {
         <PostList
           posts={!feedLoading && userPosts ? this.showUserPosts() : <Loader />}
         />
+        {isMixModalOpen && <BottomSheet modalRef={this.modalRef} />}
       </div>
     );
   }
