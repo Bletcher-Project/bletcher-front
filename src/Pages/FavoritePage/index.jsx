@@ -90,6 +90,7 @@ class FavoritePage extends Component {
           size="medium"
           width="280px"
           href="/"
+          white
         />
       </div>
     );
