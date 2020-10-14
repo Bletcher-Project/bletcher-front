@@ -5,6 +5,7 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
 import { getUserPosts } from 'Redux/fetch-post';
+import { getPostByPostId } from 'Redux/post';
 
 import NavBar from 'Components/Common/NavBar';
 import Loader from 'Components/Common/Loader';
@@ -29,6 +30,7 @@ const defaultProps = {
   userPosts: {},
 };
 const propTypes = {
+  getPostById: PropTypes.func.isRequired,
   getPosts: PropTypes.func.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
   user: PropTypes.shape({
@@ -76,6 +78,9 @@ const mapDispatchToProps = (dispatch) => {
     getPosts: (tabOption, userInfo, token) => {
       dispatch(getUserPosts(tabOption, userInfo, token));
     },
+    getPostById: (postId, token) => {
+      return dispatch(getPostByPostId(postId, token));
+    },
   };
 };
 
@@ -89,6 +94,7 @@ class UserPage extends Component {
       postOption: 'me',
       feedLoading: true,
       isMixModalOpen: false,
+      selectedPost: null,
     };
   }
 
@@ -119,7 +125,12 @@ class UserPage extends Component {
     let icon;
     let position;
     if (option === 'me') {
-      icon = <MixButton originId={data.id} onClick={this.mixModalHandler} />;
+      icon = (
+        <MixButton
+          originId={data.id}
+          onClick={() => this.mixModalHandler(data.id)}
+        />
+      );
       position = 'both';
     } else {
       icon = <ShareButton />;
@@ -171,8 +182,10 @@ class UserPage extends Component {
     });
   };
 
-  mixModalHandler = () => {
-    this.setState({ isMixModalOpen: true });
+  mixModalHandler = async (postId) => {
+    const { token, getPostById } = this.props;
+    const tmp = await getPostById(postId, token);
+    this.setState({ isMixModalOpen: true, selectedPost: tmp });
   };
 
   clickOutsideHandler = (e) => {
@@ -211,11 +224,22 @@ class UserPage extends Component {
   };
 
   render() {
-    const { isMyPage, postOption, feedLoading, isMixModalOpen } = this.state;
+    const {
+      isMyPage,
+      postOption,
+      feedLoading,
+      isMixModalOpen,
+      selectedPost,
+    } = this.state;
     const { user, userPosts } = this.props;
     return (
       <div className="userPage">
         <NavBar isActive={isMyPage ? 'user' : ''} />
+        {isMixModalOpen && (
+          <div className="selectedPost">
+            <Post post={selectedPost} />
+          </div>
+        )}
         <div className="userPage__header">
           <div className="userPage__header__thumb">
             <Thumbnail size={100} />
@@ -243,7 +267,6 @@ class UserPage extends Component {
             </ul>
           </div>
         </div>
-
         <PostList
           posts={!feedLoading && userPosts ? this.showUserPosts() : <Loader />}
         />
