@@ -11,7 +11,7 @@ const propTypes = {
   modalRef: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-  ]),
+  ]).isRequired,
 };
 
 class BottomSheet extends Component {
@@ -53,25 +53,28 @@ class BottomSheet extends Component {
     const { isExpanded } = this.state;
     const { modalRef } = this.props;
     return (
-      <div
-        ref={modalRef}
-        className={cx('bottomSheet', {
-          expanded: isExpanded,
-        })}
-      >
-        <div className="bottomSheet__header">
-          <NoStyleButton onClick={this.toggle}>
-            <span className="bottomSheet__header__buttonText">
-              {isExpanded ? '∨' : '∧'}
-            </span>
-          </NoStyleButton>
-        </div>
-        <div className="bottomSheet__content">
-          <div className="bottomSheet__content__postList">
-            {this.tmpMapper()}
+      <>
+        <div className="blackMask" />
+        <div
+          ref={modalRef}
+          className={cx('bottomSheet', {
+            expanded: isExpanded,
+          })}
+        >
+          <div className="bottomSheet__header">
+            <NoStyleButton onClick={this.toggle}>
+              <span className="bottomSheet__header__buttonText">
+                {isExpanded ? '∨' : '∧'}
+              </span>
+            </NoStyleButton>
+          </div>
+          <div className="bottomSheet__content">
+            <div className="bottomSheet__content__postList">
+              {this.tmpMapper()}
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }
