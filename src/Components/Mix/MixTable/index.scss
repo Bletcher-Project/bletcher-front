@@ -1,8 +1,8 @@
 /*
-  BottomSheet Component Styling
+  MixTable Component Styling
 */
 
-.bottomSheet {
+.mixTable {
   background-color: white;
   z-index: 1005;
   width: 100%;
@@ -14,7 +14,7 @@
   &.expanded {
     height: 80%;
 
-    .bottomSheet__content {
+    .mixTable__content {
       overflow-y: auto;
     }
   }

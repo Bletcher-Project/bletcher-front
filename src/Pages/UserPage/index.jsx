@@ -9,7 +9,8 @@ import { getPostByPostId } from 'Redux/post';
 
 import NavBar from 'Components/Common/NavBar';
 import Loader from 'Components/Common/Loader';
-import BottomSheet from 'Components/Common/BottomSheet';
+import MixTable from 'Components/Mix/MixTable';
+import MixPalette from 'Components/Mix/MixPalette';
 import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
@@ -87,14 +88,16 @@ const mapDispatchToProps = (dispatch) => {
 class UserPage extends Component {
   constructor(props) {
     super(props);
-    this.modalRef = React.createRef();
+    this.tableRef = React.createRef();
+    this.paletteRef = React.createRef();
     this.state = {
       isMyPage: false,
       userInfo: null,
       postOption: 'me',
       feedLoading: true,
       isMixModalOpen: false,
-      selectedPost: null,
+      chosenOriginPost: null,
+      chosenSubPost: null,
     };
   }
 
@@ -185,18 +188,31 @@ class UserPage extends Component {
   mixModalHandler = async (postId) => {
     const { token, getPostById } = this.props;
     const tmp = await getPostById(postId, token);
-    this.setState({ isMixModalOpen: true, selectedPost: tmp });
+    this.setState({ isMixModalOpen: true, chosenOriginPost: tmp });
+  };
+
+  isRefContain = (target) => {
+    if (this.tableRef.current) return this.tableRef.current.contains(target);
+    if (this.paletteRef.current)
+      return this.paletteRef.current.contains(target);
+    return true;
   };
 
   clickOutsideHandler = (e) => {
     const { isMixModalOpen } = this.state;
     if (
       isMixModalOpen &&
-      !this.modalRef.current.contains(e.target) &&
-      e.target.className !== 'postButton mix'
+      !this.isRefContain(e.target) &&
+      e.target.alt !== 'subPost'
     ) {
       this.setState({ isMixModalOpen: false });
     }
+  };
+
+  postSubPost = async (subPost) => {
+    await new Promise((accept) =>
+      this.setState({ chosenSubPost: subPost }, accept),
+    );
   };
 
   componentDidMount = async () => {
@@ -229,15 +245,16 @@ class UserPage extends Component {
       postOption,
       feedLoading,
       isMixModalOpen,
-      selectedPost,
+      chosenOriginPost,
+      chosenSubPost,
     } = this.state;
     const { user, userPosts } = this.props;
     return (
       <div className="userPage">
         <NavBar isActive={isMyPage ? 'user' : ''} />
-        {isMixModalOpen && (
+        {isMixModalOpen && !chosenSubPost && (
           <div className="selectedPost">
-            <Post post={selectedPost} />
+            <Post post={chosenOriginPost} />
           </div>
         )}
         <div className="userPage__header">
@@ -270,7 +287,20 @@ class UserPage extends Component {
         <PostList
           posts={!feedLoading && userPosts ? this.showUserPosts() : <Loader />}
         />
-        {isMixModalOpen && <BottomSheet modalRef={this.modalRef} />}
+        {isMixModalOpen && chosenSubPost && (
+          <MixPalette
+            paletteRef={this.paletteRef}
+            originPost={chosenOriginPost}
+            subPost={chosenSubPost}
+          />
+        )}
+        {isMixModalOpen && !chosenSubPost && (
+          <MixTable
+            tableRef={this.tableRef}
+            originPostId={chosenOriginPost.id}
+            postSubPost={this.postSubPost}
+          />
+        )}
       </div>
     );
   }

@@ -2,7 +2,6 @@ import { createAction, handleActions as postReducer } from 'redux-actions';
 
 import {
   INIT,
-  POST_ONE,
   POST_API,
   IMAGE_API,
   FAVORITE_API,
