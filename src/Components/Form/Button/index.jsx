@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import colors from 'Constants/colors.scss';
 
@@ -24,33 +24,39 @@ const propTypes = {
   onClick: PropTypes.func,
 };
 
-const PurpleButton = withStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     boxShadow: 'none',
     textTransform: 'none',
     fontFamily: 'GothamRound, sans-serif',
     fontSize: 17,
     padding: '0 20px',
-    color: theme.palette.getContrastText(colors.mainColor),
-    backgroundColor: colors.mainColor,
+    color: (props) =>
+      props.white
+        ? colors.mainColor
+        : theme.palette.getContrastText(colors.mainColor),
+    backgroundColor: (props) => (props.white ? colors.white : colors.mainColor),
+    border: (props) => (props.white ? `1px solid ${colors.mainColor}` : null),
     '&:hover': {
-      color: colors.mainColor,
-      border: '2px solid',
-      backgroundColor: colors.transparent,
-      borderColor: colors.mainColor,
+      color: (props) => (props.white ? colors.white : colors.mainColor),
+      backgroundColor: (props) =>
+        props.white ? colors.mainColor : colors.transparent,
+      border: `2px solid ${colors.mainColor}`,
     },
     '&:active': {
       boxShadow: 'none',
     },
     '&:focus': { outline: 'none' },
   },
-}))(Fab);
+}));
 
 function Button(props) {
+  const classes = useStyles(props);
   const { text, onClick, disabled, component, size, width, href } = props;
 
   return (
-    <PurpleButton
+    <Fab
+      className={classes.root}
       variant="extended"
       color="primary"
       style={{ width }}
@@ -61,7 +67,7 @@ function Button(props) {
       href={href}
     >
       {text}
-    </PurpleButton>
+    </Fab>
   );
 }
 

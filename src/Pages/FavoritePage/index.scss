@@ -2,20 +2,41 @@
   Favorite Page Styling
 */
 
-.empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.favoritePage {
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
 
-  &__guide {
-    margin-bottom: 30px;
+    &__icon {
+      margin-bottom: 20px;
+      position: relative;
 
-    & p {
-      margin: 0;
-      font-size: $header3;
-      font-weight: lighter;
-      text-align: center;
-      color: $header-gray;
+      & img {
+        width: 11rem;
+      }
+
+      & span {
+        font-weight: bold;
+        font-size: $header2;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    &__guide {
+      margin-bottom: 30px;
+
+      & p {
+        margin: 0;
+        font-size: $header3;
+        font-weight: lighter;
+        text-align: center;
+        color: $header-gray;
+      }
     }
   }
 }

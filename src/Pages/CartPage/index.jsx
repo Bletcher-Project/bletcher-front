@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
 import NavBar from 'Components/Common/NavBar';
+import Empty from 'Components/Common/Empty';
+import cartEmptyIcon from 'Assets/images/cart-empty.png';
 
 const defaultProps = {};
 const propTypes = {};
@@ -15,7 +17,9 @@ class CartPage extends Component {
     return (
       <>
         <NavBar isActive="cart" />
-        This is CartPage
+        <Empty>
+          <img src={cartEmptyIcon} alt="cart-empty" />
+        </Empty>
       </>
     );
   }

@@ -1,0 +1,23 @@
+/*
+  Empty Component Styling
+*/
+
+.empty {
+  @include content-center;
+  color: $main-color;
+  margin-top: 10rem;
+
+  &__header {
+    font-size: $header1;
+    font-weight: bold;
+  }
+
+  & img {
+    width: 20rem;
+  }
+
+  &__description {
+    text-align: center;
+    font-size: $header3;
+  }
+}
