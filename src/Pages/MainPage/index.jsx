@@ -85,6 +85,7 @@ class MainPage extends Component {
       await getPosts(0);
       this.toggleLoadingState();
     }
+    window.addEventListener('scroll', this.infiniteScroll, true);
   }
 
   async componentDidUpdate(prevProps) {
@@ -96,10 +97,22 @@ class MainPage extends Component {
     }
   }
 
-  toggleLoadingState() {
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.infiniteScroll);
+  }
+
+  infiniteScroll = () => {
+    const { scrollHeight, scrollTop } = document.body;
+    const { clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight === scrollHeight) {
+      console.log('페이지끝!');
+    }
+  };
+
+  toggleLoadingState = () => {
     const { loading } = this.state;
     this.setState({ loading: !loading });
-  }
+  };
 
   renderPosts = () => {
     const { mainPost } = this.props;
@@ -122,7 +135,12 @@ class MainPage extends Component {
   render() {
     const { loading } = this.state;
     return (
-      <div className="mainPage">
+      <div
+        className="mainPage"
+        ref={(main) => {
+          this.main = main;
+        }}
+      >
         <NavBar isActive="main" />
         <Jumbotron title="Find out" description="What other people painted" />
         <PostList posts={!loading ? this.renderPosts() : <Loader />} />
