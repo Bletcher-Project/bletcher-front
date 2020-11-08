@@ -61,8 +61,12 @@ class MixPalette extends Component {
             </div>
           </div>
           <div className="mixPalette__content">
-            <img src={originPost.Image.path} alt="originPost" />
-            <img src={subPost.Image.path} alt="subPost" />
+            <div className="mixPalette__content__borderBox">
+              <img src={originPost.Image.path} alt="originPost" />
+            </div>
+            <div className="mixPalette__content__borderBox">
+              <img src={subPost.Image.path} alt="subPost" />
+            </div>
           </div>
           <div className="mixPalette__footer">
             <NoStyleButton>
