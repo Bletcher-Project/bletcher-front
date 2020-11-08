@@ -5,9 +5,6 @@ import NoStyleButton from 'Components/Form/NoStyleButton';
 
 import mixButton from 'Assets/images/mixButton.png';
 
-import cx from 'classnames';
-import post from 'Redux/post';
-
 const postPropTypes = () => {
   return PropTypes.shape({
     Category: PropTypes.shape({
@@ -46,6 +43,10 @@ class MixPalette extends Component {
     this.state = {};
   }
 
+  requestPostMix = () => {
+    console.log("Let's begin!");
+  };
+
   render() {
     const { paletteRef, originPost, subPost } = this.props;
     return (
@@ -69,7 +70,7 @@ class MixPalette extends Component {
             </div>
           </div>
           <div className="mixPalette__footer">
-            <NoStyleButton>
+            <NoStyleButton onClick={this.requestPostMix}>
               <div className="mixPalette__footer__mix">
                 <img src={mixButton} alt="mixbutton" />
                 <div className="mixPalette__footer__mix__text">Mix with</div>

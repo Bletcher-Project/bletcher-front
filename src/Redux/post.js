@@ -6,9 +6,12 @@ import {
   IMAGE_API,
   FAVORITE_API,
   FUND_API,
+  MIX_API,
 } from 'Constants/api-uri';
 
-const initialState = {};
+const initialState = {
+  isMixing: false,
+};
 
 const CLICK_POST_SUCCESS = 'post/CLICK_POST_SUCCESS';
 const CLICK_POST_FAIL = 'post/CLICK_POST_FAIL';
@@ -28,6 +31,9 @@ const DEL_FAVORITE_FAIL = 'post/DEL_FAVORITE_FAIL';
 const ADD_FUNDING_SUCCESS = 'post/ADD_FUNDING_SUCCESS';
 const ADD_FUNDING_FAIL = 'post/ADD_FUNDING_FAIL';
 
+const MIX_POST_SUCCESS = 'post/MIX_POST_SUCCESS';
+const MIX_POST_FAIL = 'post/MIX_POST_FAIL';
+
 export const clickPostSuccess = createAction(CLICK_POST_SUCCESS); // result.post
 export const clickPostFail = createAction(CLICK_POST_FAIL);
 export const uploadPostSuccess = createAction(UPLOAD_POST_SUCCESS); // result
@@ -40,6 +46,8 @@ export const delFavoriteSuccess = createAction(DEL_FAVORITE_SUCCESS);
 export const delFavoriteFail = createAction(DEL_FAVORITE_FAIL);
 export const addFundingSuccess = createAction(ADD_FUNDING_SUCCESS);
 export const addFundingFail = createAction(ADD_FUNDING_FAIL);
+export const mixPostSuccess = createAction(MIX_POST_SUCCESS);
+export const mixPostFail = createAction(MIX_POST_FAIL);
 
 export default postReducer(
   {
@@ -77,6 +85,12 @@ export default postReducer(
       return state;
     },
     [ADD_FUNDING_FAIL]: (state) => {
+      return state;
+    },
+    [MIX_POST_SUCCESS]: (state) => {
+      return state;
+    },
+    [MIX_POST_FAIL]: (state) => {
       return state;
     },
   },
@@ -230,6 +244,29 @@ export const deleteFavoritePost = (postId, token) => {
       }
     } catch (error) {
       await dispatch(delFavoriteFail());
+    }
+  };
+};
+
+export const mixPost = (originId, subId, token) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${MIX_API}/${originId}/${subId}`,
+        {
+          method: 'POST',
+          headers: {
+            'x-access-token': token,
+          },
+        },
+      );
+      if (response.status === 200) {
+        await dispatch(mixPostSuccess);
+      } else {
+        await dispatch(mixPostFail());
+      }
+    } catch (error) {
+      await dispatch(mixPostFail());
     }
   };
 };
