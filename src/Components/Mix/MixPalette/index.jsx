@@ -53,12 +53,12 @@ class MixPalette extends Component {
         <div className="blackMask" />
         <div className="mixPalette" ref={paletteRef}>
           <div className="mixPalette__header">
-            <h1 className="mixPalette__header__title">
+            <div className="mixPalette__header__title">
               Please Select a work to upload
-            </h1>
-            <p className="mixPalette__header__description">
+            </div>
+            <div className="mixPalette__header__description">
               Both public and private works are automatically saved on my feed.
-            </p>
+            </div>
           </div>
           <div className="mixPalette__content">
             <img src={originPost.Image.path} alt="originPost" />
