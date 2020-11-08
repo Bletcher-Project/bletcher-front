@@ -19,6 +19,7 @@ const defaultProps = {
 };
 const propTypes = {
   getPosts: PropTypes.func.isRequired,
+  mainPage: PropTypes.number.isRequired,
   mainPost: PropTypes.arrayOf(
     PropTypes.shape({
       post: PropTypes.shape({
@@ -44,6 +45,7 @@ const propTypes = {
       isFavorite: PropTypes.bool.isRequired,
     }).isRequired,
   ),
+  mainWillFetch: PropTypes.bool.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number.isRequired,
     email: PropTypes.string.isRequired,
@@ -59,7 +61,7 @@ const propTypes = {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPosts: (userId) => dispatch(getMainPosts(userId)),
+    getPosts: (userId, page) => dispatch(getMainPosts(userId, page)),
   };
 };
 
@@ -67,7 +69,9 @@ const mapStateToProps = (state) => {
   return {
     token: state.authReducer.token,
     user: state.authReducer.user,
+    mainPage: state.fetchPostReducer.mainPage,
     mainPost: state.fetchPostReducer.mainPost,
+    mainWillFetch: state.fetchPostReducer.mainWillFetch,
   };
 };
 
@@ -80,9 +84,9 @@ class MainPage extends Component {
   }
 
   async componentDidMount() {
-    const { getPosts, token } = this.props;
+    const { getPosts, token, mainPage } = this.props;
     if (!token) {
-      await getPosts(0);
+      await getPosts(0, mainPage);
       this.toggleLoadingState();
     }
     window.addEventListener('scroll', this.infiniteScroll, true);
@@ -101,11 +105,14 @@ class MainPage extends Component {
     window.removeEventListener('scroll', this.infiniteScroll);
   }
 
-  infiniteScroll = () => {
+  infiniteScroll = async () => {
+    const { getPosts, mainPage, mainWillFetch } = this.props;
     const { scrollHeight, scrollTop } = document.body;
     const { clientHeight } = document.documentElement;
-    if (scrollTop + clientHeight === scrollHeight) {
-      console.log('페이지끝!');
+
+    if (mainWillFetch && scrollTop + clientHeight === scrollHeight) {
+      await getPosts(0, mainPage);
+      // console.log('페이지끝!');
     }
   };
 

@@ -14,7 +14,9 @@ import {
 import USER_OPTION from 'Constants/userpage-option';
 
 const initialState = {
+  mainPage: 1,
   mainPost: [],
+  mainWillFetch: true,
   newPost: [],
   fundingPosts: {
     onGoingPost: [],
@@ -29,6 +31,7 @@ const initialState = {
 };
 
 const GET_MAIN_POSTS_SUCCESS = 'post/GET_MAIN_POSTS_SUCCESS';
+const GET_MAIN_POSTS_COMPLETE = 'post/GET_MAIN_POSTS_COMPLETE';
 const GET_MAIN_POSTS_FAIL = 'post/GET_MAIN_POSTS_FAIL';
 
 const GET_NEW_POSTS_SUCCESS = 'post/GET_NEW_POSTS_SUCCESS';
@@ -52,6 +55,7 @@ const GET_USER_POSTS_FAIL = [
 ];
 
 export const getMainPostsSuccess = createAction(GET_MAIN_POSTS_SUCCESS); // result.data
+export const getMainPostsComplete = createAction(GET_MAIN_POSTS_COMPLETE);
 export const getMainPostsFail = createAction(GET_MAIN_POSTS_FAIL);
 export const getNewPostsSuccess = createAction(GET_NEW_POSTS_SUCCESS); // result.data
 export const getNewPostsFail = createAction(GET_NEW_POSTS_FAIL);
@@ -73,7 +77,17 @@ export const getUserPostFail = [
 export default fetchPostReducer(
   {
     [GET_MAIN_POSTS_SUCCESS]: (state, action) => {
-      return { ...state, mainPost: action.payload };
+      return {
+        ...state,
+        mainPage: state.mainPage + 1,
+        mainPost: state.mainPost.concat(action.payload),
+      };
+    },
+    [GET_MAIN_POSTS_COMPLETE]: (state) => {
+      return {
+        ...state,
+        mainWillFetch: false,
+      };
     },
     [GET_MAIN_POSTS_FAIL]: (state) => {
       return { ...state };
@@ -127,16 +141,20 @@ export default fetchPostReducer(
   initialState,
 );
 
-export const getMainPosts = (userId) => {
+export const getMainPosts = (userId, page) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_MAIN}/${userId}`,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_MAIN}/${userId}?page=${page}`,
         { method: 'GET' },
       );
       if (response.status === 200) {
         const result = await response.json();
-        await dispatch(getMainPostsSuccess(result.data));
+        if (result.data.length > 0) {
+          await dispatch(getMainPostsSuccess(result.data));
+        } else {
+          await dispatch(getMainPostsComplete());
+        }
       } else await dispatch(getMainPostsFail());
     } catch (error) {
       await dispatch(getMainPostsFail());
