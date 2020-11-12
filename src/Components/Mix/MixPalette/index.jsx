@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { connect } from 'react-redux';
+
 import NoStyleButton from 'Components/Form/NoStyleButton';
 
 import mixButton from 'Assets/images/mixButton.png';
+
+import { mixPost } from 'Redux/post';
 
 const postPropTypes = () => {
   return PropTypes.shape({
@@ -28,13 +32,35 @@ const postPropTypes = () => {
   });
 };
 
+const defaultProps = {
+  mixPosts: null,
+  token: '',
+};
+
 const propTypes = {
+  token: PropTypes.string,
   paletteRef: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
   ]).isRequired,
   originPost: postPropTypes().isRequired,
   subPost: postPropTypes().isRequired,
+  mixPosts: PropTypes.func,
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    mixPosts: (originId, subId, token) => {
+      return dispatch(mixPost(originId, subId, token));
+    },
+  };
+};
+
+const mapStateToProps = (state) => {
+  return {
+    token: state.authReducer.token,
+    isMixing: state.postReducer.isMixing,
+  };
 };
 
 class MixPalette extends Component {
@@ -44,7 +70,11 @@ class MixPalette extends Component {
   }
 
   requestPostMix = () => {
-    console.log("Let's begin!");
+    const { originPost, subPost, mixPosts, token } = this.props;
+    mixPosts(originPost.id, subPost.id, token).then(
+      console.log('mix successed!'),
+      // TODO:: KimKwon - 백그라운드 프로그레스바 삽입.
+    );
   };
 
   render() {
@@ -84,5 +114,6 @@ class MixPalette extends Component {
 }
 
 MixPalette.propTypes = propTypes;
+MixPalette.defaultProps = defaultProps;
 
-export default MixPalette;
+export default connect(mapStateToProps, mapDispatchToProps)(MixPalette);
