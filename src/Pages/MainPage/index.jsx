@@ -112,7 +112,6 @@ class MainPage extends Component {
 
     if (mainWillFetch && scrollTop + clientHeight === scrollHeight) {
       await getPosts(0, mainPage);
-      // console.log('페이지끝!');
     }
   };
 
