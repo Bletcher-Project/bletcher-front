@@ -1,0 +1,18 @@
+/*
+  ProgressBar Component Styling
+*/
+
+.progressBar {
+  display: flex;
+  align-items: center;
+  border-radius: 1.8rem;
+  background-color: $main-color;
+  margin-top: 0.5rem;
+  &__bar {
+    width: 50%;
+    display: inline-block;
+    border-radius: 1.8rem;
+    background: white;
+    margin-left: 1rem;
+  }
+}

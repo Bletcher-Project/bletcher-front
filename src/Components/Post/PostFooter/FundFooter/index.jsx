@@ -1,5 +1,7 @@
 import React from 'react';
 
+import ProgressBar from 'Components/Common/ProgressBar';
+
 import DueDate from 'Assets/icons/DueDate';
 import HeartImg from 'Assets/images/fundHeart-bg-removed.png';
 
@@ -28,9 +30,7 @@ function FundFooter(prop) {
           <span>354</span>
         </div>
       </div>
-      <div className="post__footer__progress">
-        <hr className="post__footer__progress__bar" />
-      </div>
+      <ProgressBar width={75} barSize={0.5} />
     </>
   );
 }

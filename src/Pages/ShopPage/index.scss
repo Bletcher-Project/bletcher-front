@@ -3,6 +3,8 @@
 */
 
 .shopPage {
+  display: flex;
+  justify-content: center;
   &__postList {
     display: flex;
     flex-flow: row wrap;
