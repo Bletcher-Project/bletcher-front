@@ -93,10 +93,10 @@ class MainPage extends Component {
   }
 
   async componentDidUpdate(prevProps) {
-    const { getPosts, user, token } = this.props;
+    const { getPosts, user, token, mainPage } = this.props;
     const { loading } = this.state;
     if (token && user !== prevProps.user && loading) {
-      await getPosts(user.id);
+      await getPosts(user.id, mainPage);
       this.toggleLoadingState();
     }
   }
