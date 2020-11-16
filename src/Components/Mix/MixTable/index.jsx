@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { getNewPosts } from 'Redux/fetch-post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
+import BlackMask from 'Components/Common/BlackMask';
 
 import cx from 'classnames';
 
@@ -105,7 +106,7 @@ class MixTable extends Component {
     const { tableRef } = this.props;
     return (
       <>
-        <div className="blackMask" />
+        <BlackMask />
         <div
           ref={tableRef}
           className={cx('mixTable', {

@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
+import { mixPost } from 'Redux/post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
+import BlackMask from 'Components/Common/BlackMask';
 
 import mixButton from 'Assets/images/mixButton.png';
 
-import { mixPost } from 'Redux/post';
+import { withRouter } from 'react-router-dom';
 
 const postPropTypes = () => {
   return PropTypes.shape({
@@ -38,6 +41,7 @@ const defaultProps = {
 };
 
 const propTypes = {
+  history: ReactRouterPropTypes.history.isRequired,
   token: PropTypes.string,
   paletteRef: PropTypes.oneOfType([
     PropTypes.func,
@@ -70,18 +74,16 @@ class MixPalette extends Component {
   }
 
   requestPostMix = () => {
-    const { originPost, subPost, mixPosts, token } = this.props;
-    mixPosts(originPost.id, subPost.id, token).then(
-      console.log('mix successed!'),
-      // TODO:: KimKwon - 백그라운드 프로그레스바 삽입.
-    );
+    const { originPost, subPost, mixPosts, token, history } = this.props;
+    mixPosts(originPost.id, subPost.id, token);
+    history.push('/shop');
   };
 
   render() {
     const { paletteRef, originPost, subPost } = this.props;
     return (
       <>
-        <div className="blackMask" />
+        <BlackMask />
         <div className="mixPalette" ref={paletteRef}>
           <div className="mixPalette__header">
             <div className="mixPalette__header__title">
@@ -116,4 +118,6 @@ class MixPalette extends Component {
 MixPalette.propTypes = propTypes;
 MixPalette.defaultProps = defaultProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MixPalette);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(MixPalette),
+);
