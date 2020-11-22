@@ -13,7 +13,7 @@ function ShopPage() {
       <NavBar isActive="shop" />
       <Jumbotron title="Bletcher Shop" />
       <div className="shopPage">
-        <ProgressBar width={50} height={4} barSize={1} />
+        <ProgressBar width={50} height={3} barSize={1} />
       </div>
     </>
   );
