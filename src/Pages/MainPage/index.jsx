@@ -83,21 +83,24 @@ class MainPage extends Component {
     };
   }
 
-  async componentDidMount() {
-    const { getPosts, token, mainPage } = this.props;
+  componentDidMount() {
+    const { user, token } = this.props;
+
     if (!token) {
-      await getPosts(0, mainPage);
-      this.toggleLoadingState();
+      this.getMainPosts(0);
+    } else if (user) {
+      this.getMainPosts(user.id);
     }
+
     window.addEventListener('scroll', this.infiniteScroll, true);
   }
 
-  async componentDidUpdate(prevProps) {
-    const { getPosts, user, token, mainPage } = this.props;
+  componentDidUpdate(prevProps) {
+    const { user } = this.props;
     const { loading } = this.state;
-    if (token && user !== prevProps.user && loading) {
-      await getPosts(user.id, mainPage);
-      this.toggleLoadingState();
+
+    if (user !== prevProps.user && loading) {
+      this.getMainPosts(user.id);
     }
   }
 
@@ -105,19 +108,25 @@ class MainPage extends Component {
     window.removeEventListener('scroll', this.infiniteScroll);
   }
 
+  getMainPosts = async (userId) => {
+    const { getPosts, mainPage } = this.props;
+
+    await getPosts(userId, mainPage);
+    this.setState({ loading: false });
+  };
+
   infiniteScroll = async () => {
-    const { getPosts, mainPage, mainWillFetch } = this.props;
+    const { user, mainWillFetch } = this.props;
     const { scrollHeight, scrollTop } = document.body;
     const { clientHeight } = document.documentElement;
 
     if (mainWillFetch && scrollTop + clientHeight === scrollHeight) {
-      await getPosts(0, mainPage);
+      if (user) {
+        this.getMainPosts(user.id);
+      } else {
+        this.getMainPosts(0);
+      }
     }
-  };
-
-  toggleLoadingState = () => {
-    const { loading } = this.state;
-    this.setState({ loading: !loading });
   };
 
   renderPosts = () => {
