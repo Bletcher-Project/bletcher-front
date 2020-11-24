@@ -14,8 +14,8 @@ import {
 import USER_OPTION from 'Constants/userpage-option';
 
 const initialState = {
-  mainPage: 1,
   mainPost: [],
+  mainPageNum: 1,
   mainWillFetch: true,
   newPost: [],
   fundingPosts: {
@@ -79,8 +79,8 @@ export default fetchPostReducer(
     [GET_MAIN_POSTS_SUCCESS]: (state, action) => {
       return {
         ...state,
-        mainPage: state.mainPage + 1,
         mainPost: state.mainPost.concat(action.payload),
+        mainPageNum: state.mainPageNum + 1,
       };
     },
     [GET_MAIN_POSTS_COMPLETE]: (state) => {
@@ -141,11 +141,11 @@ export default fetchPostReducer(
   initialState,
 );
 
-export const getMainPosts = (userId, page) => {
+export const getMainPosts = (userId, pageNum) => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_MAIN}/${userId}?page=${page}`,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_MAIN}/${userId}?page=${pageNum}`,
         { method: 'GET' },
       );
       if (response.status === 200) {

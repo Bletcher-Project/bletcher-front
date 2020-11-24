@@ -21,7 +21,7 @@ const defaultProps = {
 const propTypes = {
   getPosts: PropTypes.func.isRequired,
   mainPost: postType,
-  mainPage: PropTypes.number.isRequired,
+  mainPageNum: PropTypes.number.isRequired,
   mainWillFetch: PropTypes.bool.isRequired,
   user: userType,
   token: PropTypes.string,
@@ -29,7 +29,7 @@ const propTypes = {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPosts: (userId, page) => dispatch(getMainPosts(userId, page)),
+    getPosts: (userId, pageNum) => dispatch(getMainPosts(userId, pageNum)),
   };
 };
 
@@ -37,8 +37,8 @@ const mapStateToProps = (state) => {
   return {
     token: state.authReducer.token,
     user: state.authReducer.user,
-    mainPage: state.fetchPostReducer.mainPage,
     mainPost: state.fetchPostReducer.mainPost,
+    mainPageNum: state.fetchPostReducer.mainPageNum,
     mainWillFetch: state.fetchPostReducer.mainWillFetch,
   };
 };
@@ -52,12 +52,12 @@ class MainPage extends Component {
   }
 
   componentDidMount() {
-    const { user, token } = this.props;
+    const { token, user } = this.props;
 
     if (!token) {
-      this.getMainPosts(0);
+      this.fetchMainPosts(0);
     } else if (user) {
-      this.getMainPosts(user.id);
+      this.fetchMainPosts(user.id);
     }
 
     window.addEventListener('scroll', this.infiniteScroll, true);
@@ -65,23 +65,15 @@ class MainPage extends Component {
 
   componentDidUpdate(prevProps) {
     const { user } = this.props;
-    const { loading } = this.state;
 
-    if (user !== prevProps.user && loading) {
-      this.getMainPosts(user.id);
+    if (user !== prevProps.user) {
+      this.fetchMainPosts(user.id);
     }
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.infiniteScroll);
   }
-
-  getMainPosts = async (userId) => {
-    const { getPosts, mainPage } = this.props;
-
-    await getPosts(userId, mainPage);
-    this.setState({ loading: false });
-  };
 
   infiniteScroll = async () => {
     const { user, mainWillFetch } = this.props;
@@ -90,11 +82,18 @@ class MainPage extends Component {
 
     if (mainWillFetch && scrollTop + clientHeight === scrollHeight) {
       if (user) {
-        this.getMainPosts(user.id);
+        this.fetchMainPosts(user.id);
       } else {
-        this.getMainPosts(0);
+        this.fetchMainPosts(0);
       }
     }
+  };
+
+  fetchMainPosts = async (userId) => {
+    const { getPosts, mainPageNum } = this.props;
+
+    await getPosts(userId, mainPageNum);
+    this.setState({ loading: false });
   };
 
   renderPosts = () => {
