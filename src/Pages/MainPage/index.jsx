@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { postType, userType } from 'PropTypes';
 
 import { connect } from 'react-redux';
 import { getMainPosts } from 'Redux/fetch-post';
@@ -13,49 +14,16 @@ import MixButton from 'Components/Post/PostButton/MixButton';
 import FavoriteButton from 'Components/Post/PostButton/FavoriteButton';
 
 const defaultProps = {
-  mainPost: null,
+  mainPost: [],
   user: null,
   token: null,
 };
 const propTypes = {
   getPosts: PropTypes.func.isRequired,
+  mainPost: postType,
   mainPage: PropTypes.number.isRequired,
-  mainPost: PropTypes.arrayOf(
-    PropTypes.shape({
-      post: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        created_at: PropTypes.string.isRequired,
-        updated_at: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired,
-        description: PropTypes.string,
-        is_public: PropTypes.bool.isRequired,
-        Category: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          name: PropTypes.string.isRequired,
-        }),
-        Image: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          path: PropTypes.string,
-        }),
-        User: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          nickname: PropTypes.string.isRequired,
-        }),
-      }),
-      isFavorite: PropTypes.bool.isRequired,
-    }).isRequired,
-  ),
   mainWillFetch: PropTypes.bool.isRequired,
-  user: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    email: PropTypes.string.isRequired,
-    nickname: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired,
-    introduce: PropTypes.string,
-    profile_image: PropTypes.string,
-    createdAt: PropTypes.string.isRequired,
-    updatedAt: PropTypes.string.isRequired,
-  }),
+  user: userType,
   token: PropTypes.string,
 };
 
