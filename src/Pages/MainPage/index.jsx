@@ -11,6 +11,7 @@ import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
 import MixButton from 'Components/Post/PostButton/MixButton';
 import FavoriteButton from 'Components/Post/PostButton/FavoriteButton';
+import ProgressBar from 'Components/Common/ProgressBar';
 
 const defaultProps = {
   mainPost: null,
@@ -125,6 +126,7 @@ class MainPage extends Component {
       <div className="mainPage">
         <NavBar isActive="main" />
         <Jumbotron title="Find out" description="What other people painted" />
+        <ProgressBar width={50} height={3} barSize={0.8} value={0} mode="mix" />
         <PostList posts={!loading ? this.renderPosts() : <Loader />} />
       </div>
     );

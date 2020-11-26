@@ -8,12 +8,29 @@
   border-radius: 1.8rem;
   background-color: $main-color;
   margin-top: 0.5rem;
+  position: relative;
   &__bar {
-    width: 50%;
     display: inline-block;
     border-radius: 1.8rem;
     background: $hover-color;
     margin-left: 2rem;
-    margin-right: 2rem;
+    margin-right: 5.5rem;
+    animation: progressbar 3s ease-out;
+    animation-fill-mode: forwards;
+  }
+  &__icon {
+    position: absolute;
+    right: 1rem;
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+@keyframes progressbar {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
   }
 }

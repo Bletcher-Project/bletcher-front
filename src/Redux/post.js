@@ -34,6 +34,8 @@ const ADD_FUNDING_FAIL = 'post/ADD_FUNDING_FAIL';
 const MIX_POST_SUCCESS = 'post/MIX_POST_SUCCESS';
 const MIX_POST_FAIL = 'post/MIX_POST_FAIL';
 
+const MODIFY_IS_MIXING = 'post/MODIFY_IS_MIXING';
+
 export const clickPostSuccess = createAction(CLICK_POST_SUCCESS); // result.post
 export const clickPostFail = createAction(CLICK_POST_FAIL);
 export const uploadPostSuccess = createAction(UPLOAD_POST_SUCCESS); // result
@@ -48,6 +50,7 @@ export const addFundingSuccess = createAction(ADD_FUNDING_SUCCESS);
 export const addFundingFail = createAction(ADD_FUNDING_FAIL);
 export const mixPostSuccess = createAction(MIX_POST_SUCCESS);
 export const mixPostFail = createAction(MIX_POST_FAIL);
+export const modifyIsMixing = createAction(MODIFY_IS_MIXING);
 
 export default postReducer(
   {
@@ -92,6 +95,9 @@ export default postReducer(
     },
     [MIX_POST_FAIL]: (state) => {
       return state;
+    },
+    [MODIFY_IS_MIXING]: (state, action) => {
+      return { ...state, isMixing: action.payload };
     },
   },
   initialState,
@@ -251,6 +257,12 @@ export const deleteFavoritePost = (postId, token) => {
 export const mixPost = (originId, subId, token) => {
   return async (dispatch) => {
     try {
+      await dispatch(modifyIsMixing(true));
+      console.log('just a minute...');
+      setTimeout(async () => {
+        console.log('150000ms spent');
+        await dispatch(modifyIsMixing(false));
+      }, 150000);
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${MIX_API}/${originId}/${subId}`,
         {
@@ -261,7 +273,7 @@ export const mixPost = (originId, subId, token) => {
         },
       );
       if (response.status === 200) {
-        await dispatch(mixPostSuccess);
+        await dispatch(mixPostSuccess());
       } else {
         await dispatch(mixPostFail());
       }
