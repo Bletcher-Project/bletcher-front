@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { postType, userType } from 'PropTypes';
 
 import { connect } from 'react-redux';
-import { getMainPosts } from 'Redux/fetch-post';
+import { getMainPosts, initPosts } from 'Redux/fetch-post';
 
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
@@ -20,6 +20,7 @@ const defaultProps = {
 };
 const propTypes = {
   getPosts: PropTypes.func.isRequired,
+  init: PropTypes.func.isRequired,
   mainPost: postType,
   mainPageNum: PropTypes.number.isRequired,
   mainWillFetch: PropTypes.bool.isRequired,
@@ -30,6 +31,7 @@ const propTypes = {
 const mapDispatchToProps = (dispatch) => {
   return {
     getPosts: (userId, pageNum) => dispatch(getMainPosts(userId, pageNum)),
+    init: () => dispatch(initPosts()),
   };
 };
 
@@ -51,9 +53,10 @@ class MainPage extends Component {
     };
   }
 
-  componentDidMount() {
-    const { token, user } = this.props;
+  async componentDidMount() {
+    const { token, user, init } = this.props;
 
+    await init();
     if (!token) {
       this.fetchMainPosts(0);
     } else if (user) {

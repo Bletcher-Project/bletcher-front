@@ -54,6 +54,8 @@ const GET_USER_POSTS_FAIL = [
   'post/GET_USER_POSTS_USEDBYME_FAIL',
 ];
 
+const INIT_ALL_POSTS = 'post/INIT_ALL_POSTS';
+
 export const getMainPostsSuccess = createAction(GET_MAIN_POSTS_SUCCESS); // result.data
 export const getMainPostsComplete = createAction(GET_MAIN_POSTS_COMPLETE);
 export const getMainPostsFail = createAction(GET_MAIN_POSTS_FAIL);
@@ -73,6 +75,7 @@ export const getUserPostFail = [
   createAction(GET_USER_POSTS_FAIL[1]),
   createAction(GET_USER_POSTS_FAIL[2]),
 ];
+export const initAllPosts = createAction(INIT_ALL_POSTS);
 
 export default fetchPostReducer(
   {
@@ -137,13 +140,38 @@ export default fetchPostReducer(
     [GET_USER_POSTS_FAIL[2]]: (state) => {
       return { ...state };
     },
+    [INIT_ALL_POSTS]: () => {
+      return {
+        mainPost: [],
+        mainPageNum: 1,
+        mainWillFetch: true,
+        newPost: [],
+        fundingPosts: {
+          onGoingPost: [],
+          endPost: [],
+        },
+        favoritePost: [],
+        userPosts: {
+          me: [],
+          madeByMe: [],
+          usedByMe: [],
+        },
+      };
+    },
   },
   initialState,
 );
 
+export const initPosts = () => {
+  return async (dispatch) => {
+    await dispatch(initAllPosts());
+  };
+};
+
 export const getMainPosts = (userId, pageNum) => {
   return async (dispatch) => {
     try {
+      console.log(userId, pageNum);
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_MAIN}/${userId}?page=${pageNum}`,
         { method: 'GET' },
