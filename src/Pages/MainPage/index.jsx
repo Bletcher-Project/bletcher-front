@@ -67,10 +67,14 @@ class MainPage extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { user } = this.props;
+    const { token, user } = this.props;
 
     if (user !== prevProps.user) {
-      this.fetchMainPosts(user.id);
+      if (!token) {
+        this.fetchMainPosts(0);
+      } else if (user) {
+        this.fetchMainPosts(user.id);
+      }
     }
   }
 
