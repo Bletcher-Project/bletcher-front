@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
+import NoStyleButton from 'Components/Form/NoStyleButton';
+import MixComplete from 'Components/Mix/MixComplete';
+
 import photoImg from 'Assets/images/photo.svg';
 import rightArrow from 'Assets/images/rightArrow.svg';
 
@@ -25,6 +28,7 @@ const propTypes = {
 
 function ProgressBar(props) {
   const [isEnd, setIsEnd] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const barRef = useRef();
   useEffect(() => {
     let refCurrent = null;
@@ -54,28 +58,34 @@ function ProgressBar(props) {
     width: `${value}%`,
     height: `${barSize}rem`,
   };
-  // console.log(isEnd);
   return (
     <>
       <div className="progressBar" style={styleOption}>
         <hr className="progressBar__bar" style={barStyleOption} ref={barRef} />
         {mode === 'mix' && (
-          <div
-            className={cx('progressBar__icon', { 'wow shake': !isEnd })}
-            data-wow-iteration="infinite"
-            data-wow-duration="5s"
-            data-wow-delay="2s"
-            style={{ opacity: isEnd ? '50%' : '100%' }}
+          <NoStyleButton
+            onClick={() => {
+              if (!isEnd) setIsOpen(true);
+            }}
           >
-            <div className="progressBar__icon__photo">
-              <img src={photoImg} alt="" />
+            <div
+              className={cx('progressBar__icon', { 'wow shake': !isEnd })}
+              data-wow-iteration="infinite"
+              data-wow-duration="5s"
+              data-wow-delay="2s"
+              style={{ opacity: isEnd ? '50%' : '100%' }}
+            >
+              <div className="progressBar__icon__photo">
+                <img src={photoImg} alt="" />
+              </div>
+              <div className="progresBar__icon__arrow">
+                <img src={rightArrow} alt="" />
+              </div>
             </div>
-            <div className="progresBar__icon__arrow">
-              <img src={rightArrow} alt="" />
-            </div>
-          </div>
+          </NoStyleButton>
         )}
       </div>
+      {isOpen && <MixComplete />}
     </>
   );
 }

@@ -258,11 +258,6 @@ export const mixPost = (originId, subId, token) => {
   return async (dispatch) => {
     try {
       await dispatch(modifyIsMixing(true));
-      console.log('just a minute...');
-      setTimeout(async () => {
-        console.log('150000ms spent');
-        await dispatch(modifyIsMixing(false));
-      }, 150000);
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${MIX_API}/${originId}/${subId}`,
         {
@@ -277,6 +272,7 @@ export const mixPost = (originId, subId, token) => {
       } else {
         await dispatch(mixPostFail());
       }
+      await dispatch(modifyIsMixing(false));
     } catch (error) {
       await dispatch(mixPostFail());
     }
