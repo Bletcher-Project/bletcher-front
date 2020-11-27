@@ -38,18 +38,33 @@
     display: flex;
     width: 100%;
     height: 75%;
+
     &__leftBox {
+      display: flex;
+      align-items: center;
       width: 50%;
       padding: 0 1%;
+      &__imgBox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        & img {
+          max-width: 85%;
+        }
+      }
     }
     &__rightBox {
       margin: 3rem 0;
       width: 50%;
-      padding: 0 5%;
+      padding: 0 3%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-around;
+      justify-content: space-between;
+
+      & div {
+        margin-bottom: 1rem;
+      }
 
       &__checkBox {
         width: 100%;
@@ -70,7 +85,7 @@
         width: 100%;
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: space-around;
         &__category {
           &__name {
             color: $main-color;
@@ -92,6 +107,7 @@
           color: #676767;
           font-family: 'GothamRoundLight';
           font-size: 1rem;
+          line-height: 1rem;
         }
       }
 

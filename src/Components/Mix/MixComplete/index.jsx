@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import NoStyleButton from 'Components/Form/NoStyleButton';
 import BlackMask from 'Components/Common/BlackMask';
 
+import tmpImage from 'Dummies/dummyImage/1.jpg';
+
 import { withRouter } from 'react-router-dom';
 
 const defaultProps = {};
@@ -60,7 +62,7 @@ class MixComplete extends Component {
           <div className="mixComplete__content">
             <div className="mixComplete__content__leftBox">
               <div className="mixComplete__content__leftBox__imgBox">
-                <img src="" alt="" />
+                <img src={tmpImage} alt="" />
               </div>
             </div>
             <div className="mixComplete__content__rightBox">
