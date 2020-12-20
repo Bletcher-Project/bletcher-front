@@ -15,6 +15,8 @@ import USER_OPTION from 'Constants/userpage-option';
 
 const initialState = {
   mainPost: [],
+  mainPageNum: 1,
+  mainWillFetch: true,
   newPost: [],
   fundingPosts: {
     onGoingPost: [],
@@ -29,6 +31,7 @@ const initialState = {
 };
 
 const GET_MAIN_POSTS_SUCCESS = 'post/GET_MAIN_POSTS_SUCCESS';
+const GET_MAIN_POSTS_COMPLETE = 'post/GET_MAIN_POSTS_COMPLETE';
 const GET_MAIN_POSTS_FAIL = 'post/GET_MAIN_POSTS_FAIL';
 
 const GET_NEW_POSTS_SUCCESS = 'post/GET_NEW_POSTS_SUCCESS';
@@ -51,7 +54,10 @@ const GET_USER_POSTS_FAIL = [
   'post/GET_USER_POSTS_USEDBYME_FAIL',
 ];
 
+const INIT_ALL_POSTS = 'post/INIT_ALL_POSTS';
+
 export const getMainPostsSuccess = createAction(GET_MAIN_POSTS_SUCCESS); // result.data
+export const getMainPostsComplete = createAction(GET_MAIN_POSTS_COMPLETE);
 export const getMainPostsFail = createAction(GET_MAIN_POSTS_FAIL);
 export const getNewPostsSuccess = createAction(GET_NEW_POSTS_SUCCESS); // result.data
 export const getNewPostsFail = createAction(GET_NEW_POSTS_FAIL);
@@ -69,11 +75,22 @@ export const getUserPostFail = [
   createAction(GET_USER_POSTS_FAIL[1]),
   createAction(GET_USER_POSTS_FAIL[2]),
 ];
+export const initAllPosts = createAction(INIT_ALL_POSTS);
 
 export default fetchPostReducer(
   {
     [GET_MAIN_POSTS_SUCCESS]: (state, action) => {
-      return { ...state, mainPost: action.payload };
+      return {
+        ...state,
+        mainPost: state.mainPost.concat(action.payload),
+        mainPageNum: state.mainPageNum + 1,
+      };
+    },
+    [GET_MAIN_POSTS_COMPLETE]: (state) => {
+      return {
+        ...state,
+        mainWillFetch: false,
+      };
     },
     [GET_MAIN_POSTS_FAIL]: (state) => {
       return { ...state };
@@ -123,20 +140,49 @@ export default fetchPostReducer(
     [GET_USER_POSTS_FAIL[2]]: (state) => {
       return { ...state };
     },
+    [INIT_ALL_POSTS]: () => {
+      return {
+        mainPost: [],
+        mainPageNum: 1,
+        mainWillFetch: true,
+        newPost: [],
+        fundingPosts: {
+          onGoingPost: [],
+          endPost: [],
+        },
+        favoritePost: [],
+        userPosts: {
+          me: [],
+          madeByMe: [],
+          usedByMe: [],
+        },
+      };
+    },
   },
   initialState,
 );
 
-export const getMainPosts = (userId) => {
+export const initPosts = () => {
+  return async (dispatch) => {
+    await dispatch(initAllPosts());
+  };
+};
+
+export const getMainPosts = (userId, pageNum) => {
   return async (dispatch) => {
     try {
+      // console.log(userId, pageNum);
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_MAIN}/${userId}`,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_MAIN}/${userId}?page=${pageNum}`,
         { method: 'GET' },
       );
       if (response.status === 200) {
         const result = await response.json();
-        await dispatch(getMainPostsSuccess(result.data));
+        if (result.data.length > 0) {
+          await dispatch(getMainPostsSuccess(result.data));
+        } else {
+          await dispatch(getMainPostsComplete());
+        }
       } else await dispatch(getMainPostsFail());
     } catch (error) {
       await dispatch(getMainPostsFail());

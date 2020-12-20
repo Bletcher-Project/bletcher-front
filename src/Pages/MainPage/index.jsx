@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { postType, userType } from 'PropTypes';
 
 import { connect } from 'react-redux';
-import { getMainPosts } from 'Redux/fetch-post';
+import { getMainPosts, initPosts } from 'Redux/fetch-post';
 
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
@@ -13,53 +14,24 @@ import MixButton from 'Components/Post/PostButton/MixButton';
 import FavoriteButton from 'Components/Post/PostButton/FavoriteButton';
 
 const defaultProps = {
-  mainPost: null,
+  mainPost: [],
   user: null,
   token: null,
 };
 const propTypes = {
   getPosts: PropTypes.func.isRequired,
-  mainPost: PropTypes.arrayOf(
-    PropTypes.shape({
-      post: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        created_at: PropTypes.string.isRequired,
-        updated_at: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired,
-        description: PropTypes.string,
-        is_public: PropTypes.bool.isRequired,
-        Category: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          name: PropTypes.string.isRequired,
-        }),
-        Image: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          path: PropTypes.string,
-        }),
-        User: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          nickname: PropTypes.string.isRequired,
-        }),
-      }),
-      isFavorite: PropTypes.bool.isRequired,
-    }).isRequired,
-  ),
-  user: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    email: PropTypes.string.isRequired,
-    nickname: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired,
-    introduce: PropTypes.string,
-    profile_image: PropTypes.string,
-    createdAt: PropTypes.string.isRequired,
-    updatedAt: PropTypes.string.isRequired,
-  }),
+  init: PropTypes.func.isRequired,
+  mainPost: postType,
+  mainPageNum: PropTypes.number.isRequired,
+  mainWillFetch: PropTypes.bool.isRequired,
+  user: userType,
   token: PropTypes.string,
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPosts: (userId) => dispatch(getMainPosts(userId)),
+    getPosts: (userId, pageNum) => dispatch(getMainPosts(userId, pageNum)),
+    init: () => dispatch(initPosts()),
   };
 };
 
@@ -68,6 +40,8 @@ const mapStateToProps = (state) => {
     token: state.authReducer.token,
     user: state.authReducer.user,
     mainPost: state.fetchPostReducer.mainPost,
+    mainPageNum: state.fetchPostReducer.mainPageNum,
+    mainWillFetch: state.fetchPostReducer.mainWillFetch,
   };
 };
 
@@ -80,26 +54,54 @@ class MainPage extends Component {
   }
 
   async componentDidMount() {
-    const { getPosts, token } = this.props;
+    const { token, user, init } = this.props;
+
+    await init();
     if (!token) {
-      await getPosts(0);
-      this.toggleLoadingState();
+      this.fetchMainPosts(0);
+    } else if (user) {
+      this.fetchMainPosts(user.id);
+    }
+
+    window.addEventListener('scroll', this.infiniteScroll, true);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { token, user } = this.props;
+
+    if (user !== prevProps.user) {
+      if (!token) {
+        this.fetchMainPosts(0);
+      } else if (user) {
+        this.fetchMainPosts(user.id);
+      }
     }
   }
 
-  async componentDidUpdate(prevProps) {
-    const { getPosts, user, token } = this.props;
-    const { loading } = this.state;
-    if (token && user !== prevProps.user && loading) {
-      await getPosts(user.id);
-      this.toggleLoadingState();
-    }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.infiniteScroll);
   }
 
-  toggleLoadingState() {
-    const { loading } = this.state;
-    this.setState({ loading: !loading });
-  }
+  infiniteScroll = async () => {
+    const { user, mainWillFetch } = this.props;
+    const { scrollHeight, scrollTop } = document.body;
+    const { clientHeight } = document.documentElement;
+
+    if (mainWillFetch && scrollTop + clientHeight === scrollHeight) {
+      if (user) {
+        this.fetchMainPosts(user.id);
+      } else {
+        this.fetchMainPosts(0);
+      }
+    }
+  };
+
+  fetchMainPosts = async (userId) => {
+    const { getPosts, mainPageNum } = this.props;
+
+    await getPosts(userId, mainPageNum);
+    this.setState({ loading: false });
+  };
 
   renderPosts = () => {
     const { mainPost } = this.props;
@@ -122,7 +124,12 @@ class MainPage extends Component {
   render() {
     const { loading } = this.state;
     return (
-      <div className="mainPage">
+      <div
+        className="mainPage"
+        ref={(main) => {
+          this.main = main;
+        }}
+      >
         <NavBar isActive="main" />
         <Jumbotron title="Find out" description="What other people painted" />
         <PostList posts={!loading ? this.renderPosts() : <Loader />} />
