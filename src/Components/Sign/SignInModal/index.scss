@@ -1,0 +1,18 @@
+/*
+  Sign In Modal Component Styling
+*/
+
+.signInModal {
+  &__header {
+    font-size: $header1;
+    font-weight: bold;
+    color: $main-color;
+    text-align: center;
+    padding-top: 25px;
+  }
+
+  & .modal-content {
+    border: none;
+    border-radius: 20px;
+  }
+}

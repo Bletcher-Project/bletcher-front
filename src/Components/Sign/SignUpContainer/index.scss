@@ -12,6 +12,7 @@
   max-width: 480px;
   height: auto;
   border-radius: 25px;
+  color: $light-gray;
 
   &__form {
     @include content-center;

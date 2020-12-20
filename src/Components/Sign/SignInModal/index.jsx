@@ -1,16 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
-const defaultProps = {};
-const propTypes = {};
+import { Modal } from 'reactstrap';
+import SignUpContainer from 'Components/Sign/SignUpContainer';
 
-function SignInModal(props) {
-  const {} = props;
+function SignInModal() {
+  const [modal, setModal] = useState(true);
+  const toggle = () => setModal(!modal);
 
-  return <></>;
+  return (
+    <Modal className="signInModal" isOpen={modal} toggle={toggle} centered>
+      <div className="signInModal__header">Please log in and use it.</div>
+      <SignUpContainer />
+    </Modal>
+  );
 }
-
-SignInModal.defaultProps = defaultProps;
-SignInModal.propTypes = propTypes;
 
 export default SignInModal;

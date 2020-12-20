@@ -10,6 +10,7 @@ import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
 import Loader from 'Components/Common/Loader';
 import Button from 'Components/Form/Button';
+import SignInModal from 'Components/Sign/SignInModal';
 import favEmpty from 'Assets/images/favorite-empty.png';
 
 const defaultProps = {
@@ -121,7 +122,7 @@ class FavoritePage extends Component {
         {isLogin ? (
           <PostList posts={!loading ? this.renderPosts() : <Loader />} />
         ) : (
-          <div>You must Sign In.</div>
+          <SignInModal />
         )}
       </>
     );
