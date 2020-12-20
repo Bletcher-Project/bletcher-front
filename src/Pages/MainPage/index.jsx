@@ -21,7 +21,7 @@ const defaultProps = {
 const propTypes = {
   getPosts: PropTypes.func.isRequired,
   init: PropTypes.func.isRequired,
-  mainPost: postType,
+  mainPost: postType.mainPost,
   mainPageNum: PropTypes.number.isRequired,
   mainWillFetch: PropTypes.bool.isRequired,
   user: userType,
