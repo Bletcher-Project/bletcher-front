@@ -171,7 +171,7 @@ export const initPosts = () => {
 export const getMainPosts = (userId, pageNum) => {
   return async (dispatch) => {
     try {
-      console.log(userId, pageNum);
+      // console.log(userId, pageNum);
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_MAIN}/${userId}?page=${pageNum}`,
         { method: 'GET' },
