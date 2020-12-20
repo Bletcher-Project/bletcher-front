@@ -38,7 +38,10 @@ class MixComplete extends Component {
   categoryMapper = (array) => {
     return array.map((category) => {
       return (
-        <div className="mixComplete__content__rightBox__categories__category">
+        <div
+          key={category}
+          className="mixComplete__content__rightBox__categories__category"
+        >
           <span>#</span>
           <span className="mixComplete__content__rightBox__categories__category__name">
             {category}
@@ -51,9 +54,19 @@ class MixComplete extends Component {
   getTos = () => {
     const { isPublic } = this.state;
     const tos = publicTos.map((t) => {
-      return <li>{t}</li>;
+      return <li key={t[0]}>{t}</li>;
     });
     return isPublic ? tos : privateTos;
+  };
+
+  checkBoxToggler = (e) => {
+    const { isPublic } = this.state;
+    const pubBox = document.getElementsByName('public')[0];
+    const prvBox = document.getElementsByName('private')[0];
+    pubBox.checked = false;
+    prvBox.checked = false;
+    e.target.checked = true;
+    this.setState({ isPublic: !isPublic });
   };
 
   render() {
@@ -77,29 +90,34 @@ class MixComplete extends Component {
                 <img src={tmpImage} alt="" />
               </div>
             </div>
-            <div className="mixComplete__content__rightBox">
+            <div
+              className="mixComplete__content__rightBox"
+              style={{ justifyContent: isPublic ? 'space-around' : 'center' }}
+            >
               <div className="mixComplete__content__rightBox__checkBox">
                 <div className="mixComplete__content__rightBox__checkBox__option">
                   <input
                     type="checkbox"
-                    checked={isPublic}
-                    onClick={() => this.setState({ isPublic: true })}
+                    name="public"
+                    defaultChecked
+                    onChange={this.checkBoxToggler}
                   />
                   <span>Public</span>
                 </div>
                 <div className="mixComplete__content__rightBox__checkBox__option">
                   <input
                     type="checkbox"
-                    checked={!isPublic}
-                    onClick={() => this.setState({ isPublic: false })}
+                    name="private"
+                    onChange={this.checkBoxToggler}
                   />
                   <span>Non-disclosure</span>
                 </div>
               </div>
-              <div className="mixComplete__content__rightBox__categories">
-                {this.categoryMapper(tmpCategory)}
-              </div>
-
+              {isPublic && (
+                <div className="mixComplete__content__rightBox__categories">
+                  {this.categoryMapper(tmpCategory)}
+                </div>
+              )}
               <div className="mixComplete__content__rightBox__tos">
                 <div className="mixComplete__content__rightBox__tos__header">
                   {isPublic && 'SHOP_40% stake'}

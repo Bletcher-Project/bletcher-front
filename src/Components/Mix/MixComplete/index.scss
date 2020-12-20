@@ -70,13 +70,16 @@
         width: 100%;
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: space-around;
         &__option {
           display: flex;
           align-items: center;
           width: 50%;
           & input {
             margin-right: 2rem;
+          }
+          & span {
+            font-size: 1.6rem;
           }
         }
       }
@@ -85,8 +88,8 @@
         width: 100%;
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
         &__category {
+          margin-right: auto;
           &__name {
             color: $main-color;
           }
@@ -103,6 +106,7 @@
           margin-top: 1rem;
           & li {
             list-style: none;
+            margin-top: 1rem;
           }
           color: #676767;
           font-family: 'GothamRoundLight';
