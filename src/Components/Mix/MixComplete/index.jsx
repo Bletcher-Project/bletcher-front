@@ -6,6 +6,7 @@ import NoStyleButton from 'Components/Form/NoStyleButton';
 import BlackMask from 'Components/Common/BlackMask';
 
 import tmpImage from 'Dummies/dummyImage/1.jpg';
+import { publicTos, privateTos } from 'Constants/mix-tos';
 
 import { withRouter } from 'react-router-dom';
 
@@ -29,7 +30,9 @@ const mapStateToProps = (state) => {
 class MixComplete extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isPublic: true,
+    };
   }
 
   categoryMapper = (array) => {
@@ -45,7 +48,16 @@ class MixComplete extends Component {
     });
   };
 
+  getTos = () => {
+    const { isPublic } = this.state;
+    const tos = publicTos.map((t) => {
+      return <li>{t}</li>;
+    });
+    return isPublic ? tos : privateTos;
+  };
+
   render() {
+    const { isPublic } = this.state;
     const tmpCategory = ['watercolor', 'contemporary', 'people'];
     return (
       <>
@@ -68,11 +80,19 @@ class MixComplete extends Component {
             <div className="mixComplete__content__rightBox">
               <div className="mixComplete__content__rightBox__checkBox">
                 <div className="mixComplete__content__rightBox__checkBox__option">
-                  <input type="radio" name="isPublic" value="Public" />
+                  <input
+                    type="checkbox"
+                    checked={isPublic}
+                    onClick={() => this.setState({ isPublic: true })}
+                  />
                   <span>Public</span>
                 </div>
                 <div className="mixComplete__content__rightBox__checkBox__option">
-                  <input type="radio" name="isPublic" value="Non-disclosure" />
+                  <input
+                    type="checkbox"
+                    checked={!isPublic}
+                    onClick={() => this.setState({ isPublic: false })}
+                  />
                   <span>Non-disclosure</span>
                 </div>
               </div>
@@ -82,23 +102,10 @@ class MixComplete extends Component {
 
               <div className="mixComplete__content__rightBox__tos">
                 <div className="mixComplete__content__rightBox__tos__header">
-                  SHOP_40% stake
+                  {isPublic && 'SHOP_40% stake'}
                 </div>
                 <div className="mixComplete__content__rightBox__tos__description">
-                  <li>
-                    1. If you upload your work, you will get 10% profit from our
-                    website. The rate of return for work by the original author
-                    and the provider changes according to the composite rate.
-                  </li>
-                  <li>
-                    2. If you upload your work, you will get 10% profit from our
-                    website.
-                  </li>
-                  <li>
-                    3. If you upload your work, you will get 10% profit from our
-                    website. The rate of return for work by the original author
-                    and the provider changes according to the composite rate.
-                  </li>
+                  {this.getTos()}
                 </div>
               </div>
               <div className="mixComplete__content__rightBox__buttons">
