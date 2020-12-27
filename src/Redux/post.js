@@ -10,7 +10,12 @@ import {
 } from 'Constants/api-uri';
 
 const initialState = {
-  isMixing: false,
+  mixState: {
+    isMixing: false,
+    originId: null,
+    subId: null,
+    mixId: null,
+  },
 };
 
 const CLICK_POST_SUCCESS = 'post/CLICK_POST_SUCCESS';
@@ -97,7 +102,17 @@ export default postReducer(
       return state;
     },
     [MODIFY_IS_MIXING]: (state, action) => {
-      return { ...state, isMixing: action.payload };
+      const { isMixing, originId, subId, mixId } = action.payload;
+      return {
+        ...state,
+        mixState: {
+          ...state.mixState,
+          isMixing,
+          originId,
+          subId,
+          mixId,
+        },
+      };
     },
   },
   initialState,
@@ -257,7 +272,11 @@ export const deleteFavoritePost = (postId, token) => {
 export const mixPost = (originId, subId, token) => {
   return async (dispatch) => {
     try {
-      await dispatch(modifyIsMixing(true));
+      await dispatch(modifyIsMixing({ isMixing: true, originId, subId }));
+      setTimeout(() => {
+        console.log('Complete!');
+      }, 5000);
+      let mixId = null;
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${MIX_API}/${originId}/${subId}`,
         {
@@ -269,10 +288,11 @@ export const mixPost = (originId, subId, token) => {
       );
       if (response.status === 200) {
         await dispatch(mixPostSuccess());
+        mixId = (await response.json()).data;
       } else {
         await dispatch(mixPostFail());
       }
-      await dispatch(modifyIsMixing(false));
+      await dispatch(modifyIsMixing({ isMixing: false, mixId }));
     } catch (error) {
       await dispatch(mixPostFail());
     }

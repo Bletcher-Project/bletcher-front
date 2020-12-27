@@ -16,7 +16,7 @@ const propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    isMixing: state.postReducer.isMixing,
+    isMixing: state.postReducer.mixState.isMixing,
   };
 };
 
@@ -27,15 +27,7 @@ function ShopPage(props) {
       <NavBar isActive="shop" />
       <Jumbotron title="Bletcher Shop" />
       <div className="shopPage">
-        {isMixing && (
-          <ProgressBar
-            width={50}
-            height={3}
-            barSize={0.8}
-            value={0}
-            mode="mix"
-          />
-        )}
+        <ProgressBar width={50} height={3} barSize={0.8} value={0} mode="mix" />
       </div>
     </>
   );

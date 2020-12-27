@@ -42,12 +42,14 @@
     &__leftBox {
       display: flex;
       align-items: center;
+      justify-content: center;
       width: 50%;
       padding: 0 1%;
       &__imgBox {
+        height: 90%;
         display: flex;
         justify-content: center;
-        align-items: center;
+
         & img {
           max-width: 85%;
         }

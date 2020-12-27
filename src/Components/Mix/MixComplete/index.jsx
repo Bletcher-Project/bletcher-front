@@ -1,29 +1,40 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
+import { getPostByPostId } from 'Redux/post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
 import BlackMask from 'Components/Common/BlackMask';
 
-import tmpImage from 'Dummies/dummyImage/1.jpg';
 import { publicTos, privateTos } from 'Constants/mix-tos';
 
 import { withRouter } from 'react-router-dom';
 
-const defaultProps = {};
+const defaultProps = {
+  mixId: null,
+  token: '',
+  getMixedPost: null,
+};
 
-const propTypes = {};
+const propTypes = {
+  mixId: PropTypes.number,
+  token: PropTypes.string,
+  getMixedPost: PropTypes.func,
+};
 
-const mapDispatchToProps = () => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    //
+    getMixedPost: (postId, token) => {
+      return dispatch(getPostByPostId(postId, token));
+    },
   };
 };
 
 const mapStateToProps = (state) => {
   return {
     token: state.authReducer.token,
-    isMixing: state.postReducer.isMixing,
+    mixId: state.postReducer.mixState.mixId,
   };
 };
 
@@ -32,6 +43,7 @@ class MixComplete extends Component {
     super(props);
     this.state = {
       isPublic: true,
+      mixedPost: null,
     };
   }
 
@@ -69,8 +81,18 @@ class MixComplete extends Component {
     this.setState({ isPublic: !isPublic });
   };
 
+  testValid = (testing, sub) => {
+    return testing && sub;
+  };
+
+  componentDidMount = async () => {
+    const { getMixedPost, mixId, token } = this.props;
+    const mPost = await getMixedPost(mixId, token);
+    this.setState({ mixedPost: mPost });
+  };
+
   render() {
-    const { isPublic } = this.state;
+    const { isPublic, mixedPost } = this.state;
     const tmpCategory = ['watercolor', 'contemporary', 'people'];
     return (
       <>
@@ -87,7 +109,7 @@ class MixComplete extends Component {
           <div className="mixComplete__content">
             <div className="mixComplete__content__leftBox">
               <div className="mixComplete__content__leftBox__imgBox">
-                <img src={tmpImage} alt="" />
+                <img src={mixedPost ? mixedPost.Image.path : null} alt="" />
               </div>
             </div>
             <div
@@ -113,14 +135,15 @@ class MixComplete extends Component {
                   <span>Non-disclosure</span>
                 </div>
               </div>
-              {isPublic && (
+              {this.testValid(
+                isPublic,
                 <div className="mixComplete__content__rightBox__categories">
                   {this.categoryMapper(tmpCategory)}
-                </div>
+                </div>,
               )}
               <div className="mixComplete__content__rightBox__tos">
                 <div className="mixComplete__content__rightBox__tos__header">
-                  {isPublic && 'SHOP_40% stake'}
+                  {this.testValid(isPublic, 'SHOP_40% stake')}
                 </div>
                 <div className="mixComplete__content__rightBox__tos__description">
                   {this.getTos()}
