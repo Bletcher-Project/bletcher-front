@@ -13,43 +13,6 @@
     font-size: $header2;
   }
 
-  &__container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-    background-color: $white;
-    width: 480px;
-    height: auto;
-    border-radius: 25px;
-
-    &__form {
-      width: 80%;
-
-      &-linked {
-        display: flex;
-        justify-content: space-around;
-        padding: 10px 0 20px 0;
-        width: 100%;
-      }
-
-      &-division {
-        display: flex;
-        width: 100%;
-
-        & hr {
-          width: 100%;
-        }
-
-        & span {
-          font-size: $guidance;
-          padding: 5px 10px 0 10px;
-        }
-      }
-    }
-  }
-
   &__footer {
     font-size: $basic;
     padding-top: 20px;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { postType } from 'PropTypes';
 
 import { connect } from 'react-redux';
 import { getFavoritePosts } from 'Redux/fetch-post';
@@ -10,6 +11,7 @@ import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
 import Loader from 'Components/Common/Loader';
 import Button from 'Components/Form/Button';
+import SignInModal from 'Components/Sign/SignInModal';
 import favEmpty from 'Assets/images/favorite-empty.png';
 
 const defaultProps = {
@@ -20,28 +22,7 @@ const propTypes = {
   isLogin: PropTypes.bool.isRequired,
   token: PropTypes.string,
   getPosts: PropTypes.func.isRequired,
-  favoritePost: PropTypes.arrayOf(
-    PropTypes.shape({
-      Category: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-      }),
-      Image: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        path: PropTypes.string,
-      }),
-      User: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        nickname: PropTypes.string.isRequired,
-      }),
-      created_at: PropTypes.string.isRequired,
-      description: PropTypes.string,
-      id: PropTypes.number.isRequired,
-      is_public: PropTypes.bool.isRequired,
-      title: PropTypes.string.isRequired,
-      updated_at: PropTypes.string.isRequired,
-    }).isRequired,
-  ),
+  favoritePost: postType.favoritePost,
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -121,7 +102,7 @@ class FavoritePage extends Component {
         {isLogin ? (
           <PostList posts={!loading ? this.renderPosts() : <Loader />} />
         ) : (
-          <div>You must Sign In.</div>
+          <SignInModal />
         )}
       </>
     );
