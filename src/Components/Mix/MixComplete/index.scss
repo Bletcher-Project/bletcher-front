@@ -77,8 +77,11 @@
           display: flex;
           align-items: center;
           width: 100%;
-          input#private,
-          input#public {
+
+          & * {
+            margin-right: auto;
+          }
+          & input[type='checkbox'] {
             position: absolute;
             width: 1px;
             height: 1px;
@@ -89,8 +92,7 @@
             border: 0;
           }
 
-          & label input[type='checkbox'],
-          & label:before {
+          & input[type='checkbox'] + label:before {
             content: ' ';
             display: inline-block;
             width: 25px;
@@ -104,8 +106,7 @@
             border-radius: 5px;
           }
 
-          & label input[type='checkbox'],
-          & label {
+          & input[type='checkbox'] + label:before {
             display: inline-block;
             position: relative;
             cursor: pointer;
@@ -115,8 +116,7 @@
             user-select: none;
           }
 
-          & label input[type='checkbox']:checked,
-          & label:before {
+          & input[type='checkbox']:checked + label:before {
             content: '\2713';
             color: white;
             background: $main-color;

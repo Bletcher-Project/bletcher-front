@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -72,8 +73,8 @@ class MixComplete extends Component {
   };
 
   checkBoxToggler = (e) => {
-    const pubBox = document.getElementsById('public')[0];
-    const prvBox = document.getElementsById('private')[0];
+    const pubBox = document.getElementById('public');
+    const prvBox = document.getElementById('private');
     pubBox.checked = false;
     prvBox.checked = false;
     e.target.checked = true;
@@ -114,25 +115,21 @@ class MixComplete extends Component {
             <div className="mixComplete__content__rightBox">
               <div className="mixComplete__content__rightBox__checkBox">
                 <div className="mixComplete__content__rightBox__checkBox__option">
-                  <label htmlFor="public">
-                    Public
-                    <input
-                      type="checkbox"
-                      id="public"
-                      defaultChecked
-                      onChange={this.checkBoxToggler}
-                    />
-                  </label>
+                  <input
+                    type="checkbox"
+                    id="public"
+                    defaultChecked
+                    onChange={this.checkBoxToggler}
+                  />
+                  <label htmlFor="public">Public</label>
                 </div>
                 <div className="mixComplete__content__rightBox__checkBox__option">
-                  <label htmlFor="private">
-                    Non-disclosure
-                    <input
-                      type="checkbox"
-                      id="private"
-                      onChange={this.checkBoxToggler}
-                    />
-                  </label>
+                  <input
+                    type="checkbox"
+                    id="private"
+                    onChange={this.checkBoxToggler}
+                  />
+                  <label htmlFor="private">Non-disclosure</label>
                 </div>
               </div>
               {this.testValid(
