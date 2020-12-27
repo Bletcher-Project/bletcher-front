@@ -72,13 +72,12 @@ class MixComplete extends Component {
   };
 
   checkBoxToggler = (e) => {
-    const { isPublic } = this.state;
-    const pubBox = document.getElementsByName('public')[0];
-    const prvBox = document.getElementsByName('private')[0];
+    const pubBox = document.getElementsById('public')[0];
+    const prvBox = document.getElementsById('private')[0];
     pubBox.checked = false;
     prvBox.checked = false;
     e.target.checked = true;
-    this.setState({ isPublic: !isPublic });
+    this.setState({ isPublic: e.target.id === 'public' });
   };
 
   testValid = (testing, sub) => {
@@ -112,27 +111,28 @@ class MixComplete extends Component {
                 <img src={mixedPost ? mixedPost.Image.path : null} alt="" />
               </div>
             </div>
-            <div
-              className="mixComplete__content__rightBox"
-              style={{ justifyContent: isPublic ? 'space-around' : 'center' }}
-            >
+            <div className="mixComplete__content__rightBox">
               <div className="mixComplete__content__rightBox__checkBox">
                 <div className="mixComplete__content__rightBox__checkBox__option">
-                  <input
-                    type="checkbox"
-                    name="public"
-                    defaultChecked
-                    onChange={this.checkBoxToggler}
-                  />
-                  <span>Public</span>
+                  <label htmlFor="public">
+                    Public
+                    <input
+                      type="checkbox"
+                      id="public"
+                      defaultChecked
+                      onChange={this.checkBoxToggler}
+                    />
+                  </label>
                 </div>
                 <div className="mixComplete__content__rightBox__checkBox__option">
-                  <input
-                    type="checkbox"
-                    name="private"
-                    onChange={this.checkBoxToggler}
-                  />
-                  <span>Non-disclosure</span>
+                  <label htmlFor="private">
+                    Non-disclosure
+                    <input
+                      type="checkbox"
+                      id="private"
+                      onChange={this.checkBoxToggler}
+                    />
+                  </label>
                 </div>
               </div>
               {this.testValid(
