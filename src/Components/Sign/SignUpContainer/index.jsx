@@ -39,6 +39,14 @@ class SignUpContainer extends Component {
     else this.setState({ isValid: false });
   };
 
+  handleEnter = (e) => {
+    const { isValid } = this.state;
+
+    if (isValid && e.key === 'Enter') {
+      this.handleSignUp();
+    }
+  };
+
   handleSignUp = async () => {
     const { createUser, signInUser } = this.props;
     const { user } = this.state;
@@ -65,7 +73,10 @@ class SignUpContainer extends Component {
             <span>or</span>
             <hr />
           </div>
-          <SignUpForm handleValidation={this.handleValidation} />
+          <SignUpForm
+            handleValidation={this.handleValidation}
+            handleEnter={(e) => this.handleEnter(e)}
+          />
           <div className="signUpContainer__form-policy">
             <hr />
             <p>
