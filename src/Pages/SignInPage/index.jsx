@@ -23,8 +23,8 @@ class SignInPage extends Component {
             <span>Already have an account? </span>
             <a href="/signup">Sign Up</a>
           </div>
-          <RoundLoader />
         </div>
+        <RoundLoader />
       </>
     );
   }
