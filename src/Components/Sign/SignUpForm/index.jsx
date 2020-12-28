@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import RoundInput from 'Components/Form/RoundInput';
 import CheckIcon from 'Components/Form/CheckIcon';
-
 import {
   DEFAULT_HELPER_TEXT,
   EmailHelperText,
