@@ -6,16 +6,26 @@ import * as AuthAction from 'Redux/auth';
 
 import RoundInput from 'Components/Form/RoundInput';
 import Button from 'Components/Form/Button';
-import RoundLoader from 'Components/Loader/Round';
 import { DEFAULT_HELPER_TEXT, SignInHelperText } from 'Constants/helper-text';
 
 const propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  postSignIn: PropTypes.func.isRequired,
+  getUser: PropTypes.func.isRequired,
+  setLoadingState: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
     token: state.authReducer.token,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    postSignIn: (userData) => dispatch(AuthAction.postSignIn(userData)),
+    getUser: (token) => dispatch(AuthAction.getUser(token)),
+    setLoadingState: (loadingState) =>
+      dispatch(AuthAction.setLoadingState(loadingState)),
   };
 };
 
@@ -33,7 +43,6 @@ class SignInForm extends Component {
         isValid: true,
         helperText: DEFAULT_HELPER_TEXT,
       },
-      loading: false,
     };
   }
 
@@ -64,9 +73,9 @@ class SignInForm extends Component {
   };
 
   handleSignIn = async () => {
-    const { dispatch } = this.props;
+    const { postSignIn, getUser, setLoadingState } = this.props;
     const { id, password } = this.state;
-    this.setState({ loading: true });
+    setLoadingState(true);
     if (id.value === '' || password.value === '') {
       if (id.value === '') {
         this.setState({
@@ -88,9 +97,9 @@ class SignInForm extends Component {
       }
     } else {
       const userData = { id: id.value, password: password.value };
-      const token = await dispatch(AuthAction.postSignIn(userData));
+      const token = await postSignIn(userData);
       if (token) {
-        await dispatch(AuthAction.getUser(token));
+        await getUser(token);
       } else {
         this.setState({
           id: {
@@ -106,11 +115,11 @@ class SignInForm extends Component {
         });
       }
     }
-    this.setState({ loading: false });
+    setLoadingState(false);
   };
 
   render() {
-    const { id, password, loading } = this.state;
+    const { id, password } = this.state;
     return (
       <form className="signInForm">
         <div className="signInForm__input">
@@ -144,7 +153,6 @@ class SignInForm extends Component {
             onClick={() => this.handleSignIn()}
           />
         </div>
-        {loading ? <RoundLoader /> : null}
       </form>
     );
   }
@@ -152,4 +160,4 @@ class SignInForm extends Component {
 
 SignInForm.propTypes = propTypes;
 
-export default connect(mapStateToProps)(SignInForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);
