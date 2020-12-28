@@ -6,6 +6,7 @@ import * as AuthAction from 'Redux/auth';
 
 import RoundInput from 'Components/Form/RoundInput';
 import Button from 'Components/Form/Button';
+import RoundLoader from 'Components/Loader/Round';
 import { DEFAULT_HELPER_TEXT, SignInHelperText } from 'Constants/helper-text';
 
 const propTypes = {
@@ -32,6 +33,7 @@ class SignInForm extends Component {
         isValid: true,
         helperText: DEFAULT_HELPER_TEXT,
       },
+      loading: false,
     };
   }
 
@@ -64,6 +66,7 @@ class SignInForm extends Component {
   handleSignIn = async () => {
     const { dispatch } = this.props;
     const { id, password } = this.state;
+    this.setState({ loading: true });
     if (id.value === '' || password.value === '') {
       if (id.value === '') {
         this.setState({
@@ -103,10 +106,11 @@ class SignInForm extends Component {
         });
       }
     }
+    this.setState({ loading: false });
   };
 
   render() {
-    const { id, password } = this.state;
+    const { id, password, loading } = this.state;
     return (
       <form className="signInForm">
         <div className="signInForm__input">
@@ -140,6 +144,7 @@ class SignInForm extends Component {
             onClick={() => this.handleSignIn()}
           />
         </div>
+        {loading ? <RoundLoader /> : null}
       </form>
     );
   }

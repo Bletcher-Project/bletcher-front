@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import NavBar from 'Components/Common/NavBar';
 import SignInContainer from 'Components/Sign/SignInContainer';
-import RoundLoader from 'Components/Loader/Round';
 
 class SignInPage extends Component {
   constructor(props) {
@@ -24,7 +23,6 @@ class SignInPage extends Component {
             <a href="/signup">Sign Up</a>
           </div>
         </div>
-        <RoundLoader />
       </>
     );
   }
