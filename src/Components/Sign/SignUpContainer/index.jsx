@@ -9,6 +9,7 @@ import Button from 'Components/Form/Button';
 import SignFacebook from 'Components/Sign/Facebook';
 import SignGoogle from 'Components/Sign/Google';
 import SignUpForm from 'Components/Sign/SignUpForm';
+import RoundLoader from 'Components/Loader/Round';
 
 const defaultProps = {};
 const propTypes = {
@@ -29,6 +30,7 @@ class SignUpContainer extends Component {
     this.state = {
       user: {},
       isValid: false,
+      loading: false,
     };
   }
 
@@ -41,13 +43,16 @@ class SignUpContainer extends Component {
     const { createUser, signInUser } = this.props;
     const { user } = this.state;
 
+    this.setState({ loading: true });
     await createUser(user);
     await signInUser({ id: user.email, password: user.password });
+    this.setState({ loading: false });
+
     window.location.reload('/');
   };
 
   render() {
-    const { isValid } = this.state;
+    const { isValid, loading } = this.state;
     return (
       <div className="signUpContainer">
         <div className="signUpContainer__form">
@@ -81,6 +86,7 @@ class SignUpContainer extends Component {
             <a href="/signin">Sign in</a>
           </div>
         </div>
+        {loading ? <RoundLoader /> : null}
       </div>
     );
   }
