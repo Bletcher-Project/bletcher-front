@@ -1,0 +1,18 @@
+/*
+  Sidebar Component Styling
+*/
+
+.sidebar {
+  width: 30%;
+  height: 100%;
+  padding: 5%;
+  border: 1px solid red;
+
+  &__menu {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    font-size: $menu;
+    border: 1px solid blue;
+  }
+}

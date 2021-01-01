@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { signOut } from 'Redux/auth';
 
 import NavBar from 'Components/Common/NavBar';
+import Sidebar from 'Components/Profile/Sidebar';
 
 const defaultProps = {
   user: null,
@@ -51,6 +52,7 @@ class ProfilePage extends Component {
       <>
         <NavBar isActive="profile" />
         <div className="profilePage">
+          <Sidebar />
           <div className="profilePage__Header">This is ProfilePage.</div>
           <div className="profilePage__Content" />
           {user ? user.nickname : ''}
