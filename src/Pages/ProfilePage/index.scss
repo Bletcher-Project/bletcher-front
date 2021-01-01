@@ -12,11 +12,13 @@
   &__sidebar {
     width: 25%;
     height: 100%;
+    padding: 5% 4% 5% 4%;
+    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.07);
   }
 
   &__content {
     width: 75%;
     height: 100%;
-    background-color: green;
+    padding: 5%;
   }
 }
