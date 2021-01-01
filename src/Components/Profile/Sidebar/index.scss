@@ -5,14 +5,23 @@
 .sidebar {
   width: 100%;
   height: 100%;
-  padding: 12% 7% 12% 7%;
-  border: 1px solid red;
+  padding: 18% 15% 20% 15%;
 
   &__menu {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 5px;
-    font-size: $menu;
-    border: 1px solid blue;
+    padding: 9px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    & img {
+      width: 25px;
+      height: 25px;
+      margin-right: 12px;
+    }
+
+    & span {
+      font-size: $menu;
+    }
   }
 }
