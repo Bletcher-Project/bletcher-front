@@ -1,74 +1,61 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import ReactRouterPropTypes from 'react-router-prop-types';
 import PropTypes from 'prop-types';
 
-import userCreatorImage from 'Assets/images/Creator.png';
-
 const defaultProps = {
   src: null,
-  size: 100,
   userName: '',
+  size: 100,
 };
 const propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
   src: PropTypes.string,
-  size: PropTypes.number,
   userName: PropTypes.string,
+  size: PropTypes.number,
 };
 
-class Thumbnail extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      defaultImage: userCreatorImage,
-      imageURL: props.src,
-    };
-  }
+function Thumbnail(props) {
+  const { src, userName, size } = props;
+  const [error, setError] = useState(!src);
 
-  handleError = () => {
-    const { defaultImage } = this.state;
-    this.setState({ imageURL: defaultImage });
-  };
-
-  handleUserPage = () => {
-    const { history, userName } = this.props;
+  const handleUserPage = () => {
+    const { history } = props;
     history.push({ pathname: `/user/${userName}` });
   };
 
-  render() {
-    const { size } = this.props;
-    const { defaultImage, imageURL } = this.state;
-    return (
-      <div
-        className="thumbnail"
-        role="button"
-        onKeyPress={this.handleUserPage}
-        onClick={this.handleUserPage}
-        tabIndex={0}
-      >
-        {imageURL === null || imageURL === undefined ? (
-          <img
-            className="thumbnail__image"
-            src={defaultImage}
-            width={size}
-            height={size}
-            alt="defaultProfile"
-          />
-        ) : (
-          <img
-            className="thumbnail__image"
-            src={imageURL}
-            onError={this.handleError}
-            width={size}
-            height={size}
-            alt="userProfile"
-          />
-        )}
-      </div>
-    );
-  }
+  const handleError = () => {
+    setError(true);
+  };
+
+  return (
+    <div
+      className="thumbnail"
+      role="button"
+      onKeyPress={handleUserPage}
+      onClick={handleUserPage}
+      tabIndex={0}
+    >
+      {!error ? (
+        <img
+          className="thumbnail__image"
+          src={src}
+          width={size}
+          height={size}
+          onError={handleError}
+          alt="profile"
+        />
+      ) : (
+        <div
+          className="thumbnail__image default"
+          style={{ width: size, height: size, fontSize: size / 2 }}
+        >
+          <span>{userName && userName.substr(0, 1)}</span>
+        </div>
+      )}
+    </div>
+  );
 }
 
 Thumbnail.defaultProps = defaultProps;
