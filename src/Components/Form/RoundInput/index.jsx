@@ -8,7 +8,7 @@ import fontSizes from 'Constants/font-size.scss';
 
 const defaultProps = {
   placeholder: '',
-  autoComplete: '',
+  autoComplete: 'off',
   width: '200px',
   disabled: false,
   error: false,

@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
-import { purple } from '@material-ui/core/colors';
+import TextField from '@material-ui/core/TextField';
+import colors from 'Constants/colors.scss';
+import fontSizes from 'Constants/font-size.scss';
 
 const defaultProps = {
-  label: '',
-  autoComplete: '',
+  placeholder: '',
+  autoComplete: 'off',
   width: '200px',
   disabled: false,
   error: false,
@@ -16,7 +17,7 @@ const defaultProps = {
   onKeyPress: null,
 };
 const propTypes = {
-  label: PropTypes.string,
+  placeholder: PropTypes.string,
   type: PropTypes.string.isRequired,
   autoComplete: PropTypes.string,
   width: PropTypes.string,
@@ -28,26 +29,39 @@ const propTypes = {
   onKeyPress: PropTypes.func,
 };
 
-const PurpleInput = withStyles({
+const CustomTextField = withStyles({
   root: {
-    '& label.Mui-focused': {
-      color: purple[700],
+    '& .MuiOutlinedInput-root': {
+      fontFamily: 'GothamRound, sans-serif',
+      '& fieldset': {
+        border: `1px solid ${colors.lightGray}`,
+        borderRadius: '30px',
+      },
+      '&.Mui-focused fieldset': {
+        border: `1px solid ${colors.darkGray}`,
+      },
+      '&.Mui-error fieldset': {
+        border: `1px solid red`,
+      },
     },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: purple[700],
+    '& .MuiOutlinedInput-input': {
+      padding: '12px 15px',
+      color: colors.lightGray,
+      fontSize: fontSizes.basic,
+      fontFamily: 'GothamRound, sans-serif',
+      '&:focus': {
+        color: 'black',
+      },
     },
-    '& label.Mui-error': {
-      color: 'red',
-    },
-    '& .Mui-error:after': {
-      borderBottomColor: 'red',
+    '& .MuiFormHelperText-root': {
+      fontFamily: 'GothamRound, sans-serif',
     },
   },
 })(TextField);
 
 function Input(props) {
   const {
-    label,
+    placeholder,
     type,
     autoComplete,
     width,
@@ -60,8 +74,9 @@ function Input(props) {
   } = props;
 
   return (
-    <PurpleInput
-      label={label}
+    <CustomTextField
+      variant="outlined"
+      placeholder={placeholder}
       type={type}
       autoComplete={autoComplete}
       style={{ width }}
