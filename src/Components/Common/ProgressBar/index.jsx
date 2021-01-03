@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { increasePbIndex } from 'Redux/post';
+
 import NoStyleButton from 'Components/Form/NoStyleButton';
 import MixComplete from 'Components/Mix/MixComplete';
 import Bar from 'Components/Common/Bar';
 
-import progressText from 'Constants/progressbar-text';
+import { pgBarText, pgBarCompleteText } from 'Constants/progressbar-text';
 import photoImg from 'Assets/images/photo.svg';
 import rightArrow from 'Assets/images/rightArrow.svg';
 
@@ -19,35 +22,45 @@ const defaultProps = {
   height: 2,
   barSize: 0.5,
   value: 0,
-  isMixing: true,
 };
 const propTypes = {
   width: PropTypes.number.isRequired,
   height: PropTypes.number,
   barSize: PropTypes.number,
   value: PropTypes.number,
-  isMixing: PropTypes.bool,
 };
 
 function ProgressBar(props) {
+  const { width, height, barSize, value } = props;
+  const dispatch = useDispatch();
+  const mixState = useSelector((state) => state.postReducer.mixState);
+  const { progressIndex, isMixing, mixId } = mixState;
   const [isOpen, setIsOpen] = useState(false);
-  const [index, setIndex] = useState(0);
   const barRef = useRef();
-
   const toggle = () => {
     setIsOpen(!isOpen);
   };
 
+  const getText = () => {
+    if (!isMixing && mixId) {
+      barRef.current.style.animationIterationCount = 1;
+      return pgBarCompleteText;
+    }
+    return pgBarText[progressIndex];
+  };
+
   useEffect(() => {
-    let refCurrent = null;
     new WOW.WOW({
       live: false,
     }).init();
+  });
+
+  useEffect(() => {
+    let refCurrent = null;
     if (barRef.current !== undefined) {
       refCurrent = barRef.current;
       refCurrent.addEventListener('animationiteration', () => {
-        if (index === 5) setIndex(0);
-        else setIndex(index + 1);
+        dispatch(increasePbIndex());
       });
     }
     return () => {
@@ -55,11 +68,11 @@ function ProgressBar(props) {
         refCurrent && refCurrent.removeEventListener('animationiteration', null)
       );
     };
-  });
-  const { width, height, barSize, value, isMixing } = props;
+  }, [progressIndex, dispatch]);
+
   return (
     <div className="container">
-      <div className="pgText">{progressText[index]}</div>
+      <div className="pgText">{getText()}</div>
       <Bar
         barRef={barRef}
         value={value}
@@ -70,11 +83,13 @@ function ProgressBar(props) {
       >
         <NoStyleButton
           onClick={() => {
-            if (!isMixing) setIsOpen(true);
+            if (!isMixing && mixId) setIsOpen(true);
           }}
         >
           <div
-            className={cx('progressBar__icon', { 'wow shake': !isMixing })}
+            className={cx('progressBar__icon', {
+              'wow shake': !isMixing && mixId,
+            })}
             data-wow-iteration="infinite"
             data-wow-duration="5s"
             data-wow-delay="2s"

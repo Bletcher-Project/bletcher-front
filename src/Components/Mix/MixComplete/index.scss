@@ -172,6 +172,10 @@
           border: 2px solid $main-color;
           margin-bottom: 1rem;
         }
+        .noStyleButton:hover {
+          color: white;
+          background-color: $main-color;
+        }
       }
     }
   }

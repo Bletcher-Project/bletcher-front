@@ -15,7 +15,7 @@ const propTypes = {
   height: PropTypes.number,
   barSize: PropTypes.number,
   value: PropTypes.number,
-  children: PropTypes.arrayOf(PropTypes.element),
+  children: PropTypes.element,
   className: PropTypes.string,
   barRef: PropTypes.oneOfType([
     PropTypes.func,
@@ -33,7 +33,6 @@ function Bar(props) {
 
   const { width, height, barSize, value, children, barRef, className } = props;
   return (
-    // <div className="Bar__container">
     <div className={className} style={getStyle(width, height)}>
       <div
         className={`${className}__bar`}
@@ -42,7 +41,6 @@ function Bar(props) {
       />
       {children}
     </div>
-    // </div>
   );
 }
 

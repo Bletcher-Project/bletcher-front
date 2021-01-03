@@ -1,3 +1,5 @@
+export const pgBarCompleteText = 'Mix is completed.';
+
 export const pgBarText = [
   "Extracting origin's feature...",
   "Extracting sub's feature...",
@@ -6,5 +8,3 @@ export const pgBarText = [
   'Mixing...',
   'Almost Done...',
 ];
-
-export default pgBarText;
