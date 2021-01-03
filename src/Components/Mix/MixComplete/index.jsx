@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { getPostByPostId } from 'Redux/post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
-import BlackMask from 'Components/Common/BlackMask';
 
 import { publicTos, privateTos } from 'Constants/mix-tos';
 
@@ -96,7 +95,6 @@ class MixComplete extends Component {
     const tmpCategory = ['watercolor', 'contemporary', 'people'];
     return (
       <>
-        <BlackMask />
         <div className="mixComplete">
           <div className="mixComplete__header">
             <div className="mixComplete__header__title">
