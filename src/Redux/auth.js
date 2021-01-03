@@ -11,10 +11,14 @@ const POST_USER_FAIL = 'auth/POST_USER_FAIL';
 const GET_USER_SUCCESS = 'auth/GET_USER_SUCCESS';
 const GET_USER_FAIL = 'auth/GET_USER_FAIL';
 
+const SET_LOADING_TRUE = 'auth/SET_LOADING_TRUE';
+const SET_LOADING_FALSE = 'auth/SET_LOADING_FALSE';
+
 const initialState = {
   isLogin: !!localStorage.getItem('token'),
   token: localStorage.getItem('token'),
   user: null,
+  loading: false,
 };
 
 const setToken = createAction(SET_TOKEN); // result.data.token
@@ -23,6 +27,8 @@ const postUserSuccess = createAction(POST_USER_SUCCESS);
 const postUserFail = createAction(POST_USER_FAIL);
 const getUserSuccess = createAction(GET_USER_SUCCESS); // result.data
 const getUserFail = createAction(GET_USER_FAIL);
+const setLoadingTrue = createAction(SET_LOADING_TRUE);
+const setLoadingFalse = createAction(SET_LOADING_FALSE);
 
 export default authReducer(
   {
@@ -46,6 +52,12 @@ export default authReducer(
     [GET_USER_FAIL]: (state) => {
       localStorage.removeItem('token');
       return { ...state, isLogin: false, token: null, user: null };
+    },
+    [SET_LOADING_TRUE]: (state) => {
+      return { ...state, loading: true };
+    },
+    [SET_LOADING_FALSE]: (state) => {
+      return { ...state, loading: false };
     },
   },
   initialState,
@@ -134,5 +146,12 @@ export const getUser = (token) => {
     } catch (error) {
       await dispatch(getUserFail());
     }
+  };
+};
+
+export const setLoadingState = (makeLoading) => {
+  return (dispatch) => {
+    if (makeLoading) dispatch(setLoadingTrue());
+    else dispatch(setLoadingFalse());
   };
 };

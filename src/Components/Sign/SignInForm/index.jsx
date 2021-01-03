@@ -9,12 +9,23 @@ import Button from 'Components/Form/Button';
 import { DEFAULT_HELPER_TEXT, SignInHelperText } from 'Constants/helper-text';
 
 const propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  postSignIn: PropTypes.func.isRequired,
+  getUser: PropTypes.func.isRequired,
+  setLoadingState: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
     token: state.authReducer.token,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    postSignIn: (userData) => dispatch(AuthAction.postSignIn(userData)),
+    getUser: (token) => dispatch(AuthAction.getUser(token)),
+    setLoadingState: (loadingState) =>
+      dispatch(AuthAction.setLoadingState(loadingState)),
   };
 };
 
@@ -62,8 +73,9 @@ class SignInForm extends Component {
   };
 
   handleSignIn = async () => {
-    const { dispatch } = this.props;
+    const { postSignIn, getUser, setLoadingState } = this.props;
     const { id, password } = this.state;
+    setLoadingState(true);
     if (id.value === '' || password.value === '') {
       if (id.value === '') {
         this.setState({
@@ -85,9 +97,9 @@ class SignInForm extends Component {
       }
     } else {
       const userData = { id: id.value, password: password.value };
-      const token = await dispatch(AuthAction.postSignIn(userData));
+      const token = await postSignIn(userData);
       if (token) {
-        await dispatch(AuthAction.getUser(token));
+        await getUser(token);
       } else {
         this.setState({
           id: {
@@ -103,6 +115,7 @@ class SignInForm extends Component {
         });
       }
     }
+    setLoadingState(false);
   };
 
   render() {
@@ -147,4 +160,4 @@ class SignInForm extends Component {
 
 SignInForm.propTypes = propTypes;
 
-export default connect(mapStateToProps)(SignInForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);

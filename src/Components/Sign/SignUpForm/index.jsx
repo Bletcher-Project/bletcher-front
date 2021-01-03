@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import RoundInput from 'Components/Form/RoundInput';
 import CheckIcon from 'Components/Form/CheckIcon';
-
 import {
   DEFAULT_HELPER_TEXT,
   EmailHelperText,
@@ -14,6 +13,7 @@ import { INIT, USER_API, QUERY_EMAIL, QUERY_NAME } from 'Constants/api-uri';
 
 const propTypes = {
   handleValidation: PropTypes.func.isRequired,
+  handleEnter: PropTypes.func.isRequired,
 };
 
 class SignUpForm extends Component {
@@ -223,6 +223,7 @@ class SignUpForm extends Component {
   };
 
   render() {
+    const { handleEnter } = this.props;
     const { isValid, helperText } = this.state;
 
     return (
@@ -237,6 +238,7 @@ class SignUpForm extends Component {
               helperText={helperText.email}
               InputProps={isValid.email ? <CheckIcon /> : null}
               onChange={(e) => this.handleEmail(e)}
+              onKeyPress={(e) => handleEnter(e)}
             />
           </div>
           <div className="signUpForm__input">
@@ -249,6 +251,7 @@ class SignUpForm extends Component {
               helperText={helperText.name}
               InputProps={isValid.name ? <CheckIcon /> : null}
               onChange={(e) => this.handleName(e)}
+              onKeyPress={(e) => handleEnter(e)}
             />
           </div>
           <div className="signUpForm__input">
@@ -261,6 +264,7 @@ class SignUpForm extends Component {
               helperText={helperText.password}
               InputProps={isValid.password ? <CheckIcon /> : null}
               onChange={(e) => this.handlePassword(e)}
+              onKeyPress={(e) => handleEnter(e)}
             />
           </div>
         </form>

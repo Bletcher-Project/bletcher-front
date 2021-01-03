@@ -1,0 +1,51 @@
+/*
+  Round Loader Component Styling
+*/
+
+.roundLoader {
+  @include content-full;
+  z-index: 9999;
+
+  &.overlay {
+    background-color: rgba($color: $black, $alpha: 0.2);
+  }
+
+  &__spinner {
+    @include absolute-center;
+    width: 3rem;
+    height: 3rem;
+
+    &-blade {
+      width: 0.3rem;
+      height: 1.2rem;
+      border-radius: 30%;
+      background-color: transparent;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform-origin: center -60%;
+      animation: spinner-fade 1s infinite linear;
+
+      $animation-delay: 0s;
+      $blade-rotation: 0deg;
+      @for $i from 1 through 12 {
+        &:nth-child(#{$i}) {
+          animation-delay: $animation-delay;
+          transform: rotate($blade-rotation);
+          $blade-rotation: $blade-rotation + 30;
+          $animation-delay: $animation-delay + 0.083;
+        }
+      }
+    }
+  }
+}
+
+@keyframes spinner-fade {
+  0% {
+    background-color: $main-color;
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
