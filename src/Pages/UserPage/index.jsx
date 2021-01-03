@@ -11,6 +11,7 @@ import NavBar from 'Components/Common/NavBar';
 import Loader from 'Components/Common/Loader';
 import MixTable from 'Components/Mix/MixTable';
 import MixPalette from 'Components/Mix/MixPalette';
+import MixChecker from 'Components/Mix/MixChecker';
 import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
@@ -284,6 +285,7 @@ class UserPage extends Component {
             </ul>
           </div>
         </div>
+        <MixChecker />
         <PostList
           posts={!feedLoading && userPosts ? this.showUserPosts() : <Loader />}
         />

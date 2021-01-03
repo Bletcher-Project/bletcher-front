@@ -9,6 +9,7 @@ import Jumbotron from 'Components/Common/Jumbotron';
 import Loader from 'Components/Common/Loader';
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
+import MixChecker from 'Components/Mix/MixChecker';
 
 const defaultProps = {
   newPost: null,
@@ -78,6 +79,7 @@ class NewPage extends Component {
       <>
         <NavBar isActive="new" />
         <Jumbotron title="New" description="New works updated right now" />
+        <MixChecker />
         <PostList posts={!loading ? this.renderPosts() : <Loader />} />
       </>
     );

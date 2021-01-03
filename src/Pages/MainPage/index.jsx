@@ -7,6 +7,7 @@ import { getMainPosts } from 'Redux/fetch-post';
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
 import Loader from 'Components/Common/Loader';
+import MixChecker from 'Components/Mix/MixChecker';
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
 import MixButton from 'Components/Post/PostButton/MixButton';
@@ -96,11 +97,6 @@ class MainPage extends Component {
     }
   }
 
-  toggleLoadingState() {
-    const { loading } = this.state;
-    this.setState({ loading: !loading });
-  }
-
   renderPosts = () => {
     const { mainPost } = this.props;
     return mainPost.map((data) => (
@@ -119,12 +115,18 @@ class MainPage extends Component {
     ));
   };
 
+  toggleLoadingState() {
+    const { loading } = this.state;
+    this.setState({ loading: !loading });
+  }
+
   render() {
     const { loading } = this.state;
     return (
       <div className="mainPage">
         <NavBar isActive="main" />
         <Jumbotron title="Find out" description="What other people painted" />
+        <MixChecker />
         <PostList posts={!loading ? this.renderPosts() : <Loader />} />
       </div>
     );

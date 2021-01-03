@@ -10,6 +10,7 @@ import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
 import Loader from 'Components/Common/Loader';
 import Button from 'Components/Form/Button';
+import MixChecker from 'Components/Mix/MixChecker';
 
 const defaultProps = {
   token: null,
@@ -112,6 +113,7 @@ class FavoritePage extends Component {
       <>
         <NavBar isActive="favorite" />
         <Jumbotron title="Favorite" description="My favorite works" />
+        <MixChecker />
         {isLogin ? (
           <PostList posts={!loading ? this.renderPosts() : <Loader />} />
         ) : (

@@ -12,6 +12,7 @@ import NavBar from 'Components/Common/NavBar';
 import Loader from 'Components/Common/Loader';
 import Jumbotron from 'Components/Common/Jumbotron';
 import DropFilter from 'Components/Common/DropFilter';
+import MixChecker from 'Components/Mix/MixChecker';
 import NoStyleButton from 'Components/Form/NoStyleButton';
 
 import FILTER from 'Constants/filter-option';
@@ -188,6 +189,7 @@ class FundingPage extends Component {
           title="Funding"
           description="One vote for a favorite work, launching a work"
         />
+        <MixChecker />
         <div className="fundingPage">
           <div className="fundingPage__optionBar">
             <div className="fundingPage__optionBar__state">
