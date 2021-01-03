@@ -43,7 +43,8 @@ function ProgressBar(props) {
 
   const getText = () => {
     if (!isMixing && mixId) {
-      barRef.current.style.animationIterationCount = 1;
+      if (barRef.current !== undefined)
+        barRef.current.style.animationIterationCount = 1;
       return pgBarCompleteText;
     }
     return pgBarText[progressIndex];

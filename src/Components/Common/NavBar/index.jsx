@@ -96,13 +96,18 @@ class NavBar extends Component {
     }
   };
 
+  onClickLogo = () => {
+    const { history } = this.props;
+    history.push({ pathname: '/' });
+  };
+
   render() {
     const { history, match, location, isActive } = this.props;
     const { isOpen } = this.state;
     return (
       <>
         <Navbar className="navBar" light expand="md">
-          <NavbarBrand className="navBar__logo" href="/">
+          <NavbarBrand className="navBar__logo" onClick={this.onClickLogo}>
             <Logo point={isActive === 'main' || isActive === 'signIn'} />
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
