@@ -4,9 +4,22 @@
 
 .profile {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
 
-  &__content {
+  &__form {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-photo {
+      margin-bottom: 40px;
+    }
+
+    &-desc {
+      font-size: $guidance;
+      color: $dark-gray;
+      margin-bottom: 30px;
+    }
   }
 }
