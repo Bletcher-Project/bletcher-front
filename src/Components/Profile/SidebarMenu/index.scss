@@ -1,0 +1,21 @@
+/*
+  Sidebar Menu Component Styling
+*/
+
+.sidebarMenu {
+  width: 100%;
+  padding: 9px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  & img {
+    width: 32px;
+    margin-right: 12px;
+  }
+
+  & span {
+    font-size: $menu;
+    color: $light-gray;
+  }
+}
