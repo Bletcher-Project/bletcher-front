@@ -1,16 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import NoStyleButton from 'Components/Form/NoStyleButton';
+
 import profile from 'Assets/images/profile/profile.png';
-import profile_active from 'Assets/images/profile/profile-active.png';
+import profileActive from 'Assets/images/profile/profile-active.png';
 import account from 'Assets/images/profile/account.png';
-import account_active from 'Assets/images/profile/account-active.png';
+import accountActive from 'Assets/images/profile/account-active.png';
 import bank from 'Assets/images/profile/bank.png';
-import bank_active from 'Assets/images/profile/bank-active.png';
+import bankActive from 'Assets/images/profile/bank-active.png';
 import noti from 'Assets/images/profile/noti.png';
-import noti_active from 'Assets/images/profile/noti-active.png';
+import notiActive from 'Assets/images/profile/noti-active.png';
 import info from 'Assets/images/profile/info.png';
-import info_active from 'Assets/images/profile/info-active.png';
+import infoActive from 'Assets/images/profile/info-active.png';
 
 import cx from 'classnames';
 
@@ -27,22 +29,22 @@ const propTypes = {
 function SidebarMenu(props) {
   const { icon, name, active, onClick } = props;
 
-  const setIcon = (iconName, active) => {
+  const setIcon = (iconName, isActive) => {
     switch (iconName) {
       case 'profile':
-        if (active) return profile_active;
+        if (isActive) return profileActive;
         return profile;
       case 'account':
-        if (active) return account_active;
+        if (isActive) return accountActive;
         return account;
       case 'bank':
-        if (active) return bank_active;
+        if (isActive) return bankActive;
         return bank;
       case 'noti':
-        if (active) return noti_active;
+        if (isActive) return notiActive;
         return noti;
       case 'info':
-        if (active) return info_active;
+        if (isActive) return infoActive;
         return info;
       default:
         return profile;
@@ -50,7 +52,7 @@ function SidebarMenu(props) {
   };
 
   return (
-    <div className="sidebarMenu" onClick={() => onClick()}>
+    <NoStyleButton className="sidebarMenu" onClick={() => onClick()}>
       <img
         className="sidebarMenu__icon"
         src={setIcon(icon, active)}
@@ -59,7 +61,7 @@ function SidebarMenu(props) {
       <span className={cx('sidebarMenu__name', active && 'active')}>
         {name}
       </span>
-    </div>
+    </NoStyleButton>
   );
 }
 
