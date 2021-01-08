@@ -4,6 +4,10 @@ import Thumbnail from 'Components/Thumbnail';
 import Input from 'Components/Form/Input';
 
 function Profile() {
+  const handleChange = () => {
+    // TODO: 다음 PR에서 구현 예정
+  };
+
   return (
     <div className="profile">
       <div className="profile__form">
@@ -19,14 +23,21 @@ function Profile() {
           type="text"
           autoComplete="username"
           width="100%"
+          onChange={handleChange}
         />
         <Input
           placeholder="Website"
           type="text"
           autoComplete="url"
           width="100%"
+          onChange={handleChange}
         />
-        <Input placeholder="Short Introduce" type="text" width="100%" />
+        <Input
+          placeholder="Short Introduce"
+          type="text"
+          width="100%"
+          onChange={handleChange}
+        />
       </div>
     </div>
   );
