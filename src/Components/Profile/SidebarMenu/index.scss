@@ -9,13 +9,17 @@
   flex-direction: row;
   align-items: center;
 
-  & img {
+  &__icon {
     width: 32px;
     margin-right: 12px;
   }
 
-  & span {
+  &__name {
     font-size: $menu;
     color: $light-gray;
+
+    &.active {
+      color: $black;
+    }
   }
 }
