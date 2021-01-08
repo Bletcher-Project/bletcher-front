@@ -3,11 +3,17 @@
 */
 
 .sidebarMenu {
-  width: 100%;
-  padding: 9px;
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 100%;
+  padding: 9px;
+  border-radius: 10px;
+
+  &:hover {
+    background-color: $white-gray;
+  }
 
   &__icon {
     width: 32px;

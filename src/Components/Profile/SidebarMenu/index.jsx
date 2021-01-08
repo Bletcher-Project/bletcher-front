@@ -21,10 +21,11 @@ const propTypes = {
   icon: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   active: PropTypes.bool,
+  onClick: PropTypes.func.isRequired,
 };
 
 function SidebarMenu(props) {
-  const { icon, name, active } = props;
+  const { icon, name, active, onClick } = props;
 
   const setIcon = (iconName, active) => {
     switch (iconName) {
@@ -49,7 +50,7 @@ function SidebarMenu(props) {
   };
 
   return (
-    <div className="sidebarMenu">
+    <div className="sidebarMenu" onClick={() => onClick()}>
       <img
         className="sidebarMenu__icon"
         src={setIcon(icon, active)}
