@@ -8,7 +8,11 @@ import NoStyleButton from 'Components/Form/NoStyleButton';
 import MixComplete from 'Components/Mix/MixComplete';
 import Bar from 'Components/Common/Bar';
 
-import { pgBarText, pgBarCompleteText } from 'Constants/progressbar-text';
+import {
+  pgBarText,
+  pgBarCompleteText,
+  pgBarErrorText,
+} from 'Constants/progressbar-text';
 import photoImg from 'Assets/images/photo.svg';
 import rightArrow from 'Assets/images/rightArrow.svg';
 
@@ -32,20 +36,30 @@ const propTypes = {
 
 function ProgressBar(props) {
   const { width, height, barSize, value } = props;
-  const dispatch = useDispatch();
   const mixState = useSelector((state) => state.postReducer.mixState);
   const { progressIndex, isMixing, mixId } = mixState;
+
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const barRef = useRef();
+
   const toggle = () => {
     setIsOpen(!isOpen);
   };
 
+  const stopAnimationIterate = () => {
+    if (barRef.current !== undefined)
+      barRef.current.style.animationIterationCount = 1;
+  };
+
   const getText = () => {
     if (!isMixing && mixId) {
-      if (barRef.current !== undefined)
-        barRef.current.style.animationIterationCount = 1;
+      stopAnimationIterate();
       return pgBarCompleteText;
+    }
+    if (mixId === 0) {
+      stopAnimationIterate();
+      return pgBarErrorText;
     }
     return pgBarText[progressIndex];
   };
@@ -54,7 +68,7 @@ function ProgressBar(props) {
     new WOW.WOW({
       live: false,
     }).init();
-  });
+  }, []);
 
   useEffect(() => {
     let refCurrent = null;

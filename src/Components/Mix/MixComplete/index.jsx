@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
-import { getPostByPostId } from 'Redux/post';
+import { getPostByPostId, recomposeMixing } from 'Redux/post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
 
@@ -13,14 +14,24 @@ import { withRouter } from 'react-router-dom';
 
 const defaultProps = {
   mixId: null,
+  originId: null,
   token: '',
   getMixedPost: null,
+  recomposePost: null,
+  user: null,
 };
 
 const propTypes = {
+  history: ReactRouterPropTypes.history.isRequired,
   mixId: PropTypes.number,
+  originId: PropTypes.number,
   token: PropTypes.string,
   getMixedPost: PropTypes.func,
+  recomposePost: PropTypes.func,
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    nickname: PropTypes.string,
+  }),
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -28,13 +39,18 @@ const mapDispatchToProps = (dispatch) => {
     getMixedPost: (postId, token) => {
       return dispatch(getPostByPostId(postId, token));
     },
+    recomposePost: () => {
+      return dispatch(recomposeMixing());
+    },
   };
 };
 
 const mapStateToProps = (state) => {
   return {
+    user: state.authReducer.user,
     token: state.authReducer.token,
     mixId: state.postReducer.mixState.mixId,
+    originId: state.postReducer.mixState.originId,
   };
 };
 
@@ -47,8 +63,9 @@ class MixComplete extends Component {
     };
   }
 
-  categoryMapper = (array) => {
-    return array.map((category) => {
+  categoryMapper = () => {
+    const tmpCategory = ['watercolor', 'contemporary', 'people'];
+    return tmpCategory.map((category) => {
       return (
         <div
           key={category}
@@ -80,8 +97,19 @@ class MixComplete extends Component {
     this.setState({ isPublic: e.target.id === 'public' });
   };
 
-  testValid = (testing, sub) => {
-    return testing && sub;
+  validate = (condition, element) => {
+    return condition && element;
+  };
+
+  recompose = () => {
+    const { originId, user, history, recomposePost } = this.props;
+    if (user) {
+      recomposePost();
+      history.push({
+        pathname: `/user/${user.nickname}`,
+        search: `?recompose=${originId}`,
+      });
+    }
   };
 
   componentDidMount = async () => {
@@ -91,8 +119,8 @@ class MixComplete extends Component {
   };
 
   render() {
+    const { history, user } = this.props;
     const { isPublic, mixedPost } = this.state;
-    const tmpCategory = ['watercolor', 'contemporary', 'people'];
     return (
       <>
         <div className="mixComplete">
@@ -130,23 +158,29 @@ class MixComplete extends Component {
                   <label htmlFor="private">Non-disclosure</label>
                 </div>
               </div>
-              {this.testValid(
-                isPublic,
-                <div className="mixComplete__content__rightBox__categories">
-                  {this.categoryMapper(tmpCategory)}
-                </div>,
-              )}
+              <div className="mixComplete__content__rightBox__categories">
+                {this.validate(isPublic, this.categoryMapper())}
+              </div>
               <div className="mixComplete__content__rightBox__tos">
                 <div className="mixComplete__content__rightBox__tos__header">
-                  {this.testValid(isPublic, 'SHOP_40% stake')}
+                  {this.validate(isPublic, 'SHOP_40% stake')}
                 </div>
                 <div className="mixComplete__content__rightBox__tos__description">
                   {this.getTos()}
                 </div>
               </div>
               <div className="mixComplete__content__rightBox__buttons">
-                <NoStyleButton>Shortcut to My Feeds</NoStyleButton>
-                <NoStyleButton>To recompose</NoStyleButton>
+                <NoStyleButton
+                  onClick={() => {
+                    if (user)
+                      history.push({ pathname: `/user/${user.nickname}` });
+                  }}
+                >
+                  Shortcut to My Feeds
+                </NoStyleButton>
+                <NoStyleButton onClick={this.recompose}>
+                  To recompose
+                </NoStyleButton>
               </div>
             </div>
           </div>

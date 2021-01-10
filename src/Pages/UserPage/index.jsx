@@ -23,6 +23,8 @@ import USER_OPTION from 'Constants/userpage-option';
 import EditButton from 'Assets/images/editButton.png';
 
 import camelCase from 'camelcase';
+import { withRouter } from 'react-router-dom';
+import queryString from 'query-string';
 
 import cx from 'classnames';
 
@@ -34,13 +36,14 @@ const defaultProps = {
 const propTypes = {
   getPostById: PropTypes.func.isRequired,
   getPosts: PropTypes.func.isRequired,
-  match: ReactRouterPropTypes.match.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
     nickname: PropTypes.string,
   }),
   token: PropTypes.string,
   history: ReactRouterPropTypes.history.isRequired,
+  location: ReactRouterPropTypes.location.isRequired,
+  match: ReactRouterPropTypes.match.isRequired,
   userPosts: PropTypes.objectOf(
     PropTypes.arrayOf(
       PropTypes.shape({
@@ -129,12 +132,7 @@ class UserPage extends Component {
     let icon;
     let position;
     if (option === 'me') {
-      icon = (
-        <MixButton
-          originId={data.id}
-          onClick={() => this.mixModalHandler(data.id)}
-        />
-      );
+      icon = <MixButton onClick={() => this.mixModalHandler(data.id)} />;
       position = 'both';
     } else {
       icon = <ShareButton />;
@@ -217,10 +215,15 @@ class UserPage extends Component {
   };
 
   componentDidMount = async () => {
-    const { user } = this.props;
+    const { user, location } = this.props;
     if (user) {
       await this.setUser();
       await this.getUserPosts(USER_OPTION);
+    }
+    if (location) {
+      const query = queryString.parse(location.search);
+      const originId = query.recompose;
+      if (originId !== undefined) this.mixModalHandler(originId);
     }
     window.addEventListener('click', this.clickOutsideHandler);
   };
@@ -311,4 +314,6 @@ class UserPage extends Component {
 UserPage.defaultProps = defaultProps;
 UserPage.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserPage);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(UserPage),
+);
