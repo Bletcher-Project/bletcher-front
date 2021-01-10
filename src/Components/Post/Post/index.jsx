@@ -36,6 +36,11 @@ class Post extends Component {
     this.state = {};
   }
 
+  getSrc = (post) => {
+    if (post.Image !== undefined) return post.Image.path;
+    return post['Image.path'];
+  };
+
   render() {
     const {
       post,
@@ -55,7 +60,7 @@ class Post extends Component {
 
         <div className="post__body">
           <div className="post__body__image">
-            <img src={post.Image.path} alt="artwork" />
+            <img src={this.getSrc(post)} alt="artwork" />
           </div>
         </div>
         <PostFooter
