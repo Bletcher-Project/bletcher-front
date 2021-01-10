@@ -11,10 +11,10 @@ const propTypes = {
 
 function Sidebar(props) {
   const { switchPage } = props;
-  const [isActive, setIsActive] = useState('profile');
+  const [activeMenu, setActiveMenu] = useState('profile');
 
   const handlePage = (dest) => {
-    setIsActive(dest);
+    setActiveMenu(dest);
     switchPage(dest);
   };
 
@@ -26,7 +26,7 @@ function Sidebar(props) {
             key={data.icon}
             icon={data.icon}
             name={data.menuName}
-            active={isActive === data.icon}
+            active={activeMenu === data.icon}
             onClick={() => handlePage(data.icon)}
           />
         );

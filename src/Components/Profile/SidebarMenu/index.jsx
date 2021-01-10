@@ -29,22 +29,22 @@ const propTypes = {
 function SidebarMenu(props) {
   const { icon, name, active, onClick } = props;
 
-  const setIcon = (iconName, isActive) => {
+  const setIcon = (iconName, isActiveIcon) => {
     switch (iconName) {
       case 'profile':
-        if (isActive) return profileActive;
+        if (isActiveIcon) return profileActive;
         return profile;
       case 'account':
-        if (isActive) return accountActive;
+        if (isActiveIcon) return accountActive;
         return account;
       case 'bank':
-        if (isActive) return bankActive;
+        if (isActiveIcon) return bankActive;
         return bank;
       case 'noti':
-        if (isActive) return notiActive;
+        if (isActiveIcon) return notiActive;
         return noti;
       case 'info':
-        if (isActive) return infoActive;
+        if (isActiveIcon) return infoActive;
         return info;
       default:
         return profile;
