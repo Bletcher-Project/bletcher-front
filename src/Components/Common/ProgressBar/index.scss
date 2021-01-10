@@ -6,6 +6,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .pgText {
+    display: flex;
+    & .noStyleButton {
+      margin-left: 1rem;
+    }
+  }
 }
 
 .progressBar {

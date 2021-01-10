@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { increasePbIndex } from 'Redux/post';
@@ -15,12 +16,14 @@ import {
 } from 'Constants/progressbar-text';
 import photoImg from 'Assets/images/photo.svg';
 import rightArrow from 'Assets/images/rightArrow.svg';
+import refresh from 'Assets/images/refresh.svg';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import WOW from 'wowjs';
 import cx from 'classnames';
 import { Modal } from 'reactstrap';
+import { withRouter } from 'react-router-dom';
 
 const defaultProps = {
   height: 2,
@@ -28,6 +31,7 @@ const defaultProps = {
   value: 0,
 };
 const propTypes = {
+  history: ReactRouterPropTypes.history.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number,
   barSize: PropTypes.number,
@@ -35,12 +39,13 @@ const propTypes = {
 };
 
 function ProgressBar(props) {
-  const { width, height, barSize, value } = props;
+  const { width, height, barSize, value, history } = props;
   const mixState = useSelector((state) => state.postReducer.mixState);
   const { progressIndex, isMixing, mixId } = mixState;
 
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [error, setError] = useState(false);
   const barRef = useRef();
 
   const toggle = () => {
@@ -59,6 +64,7 @@ function ProgressBar(props) {
     }
     if (mixId === 0) {
       stopAnimationIterate();
+      setError(true);
       return pgBarErrorText;
     }
     return pgBarText[progressIndex];
@@ -87,7 +93,18 @@ function ProgressBar(props) {
 
   return (
     <div className="container">
-      <div className="pgText">{getText()}</div>
+      <div className="pgText">
+        {getText()}
+        {!error && (
+          <NoStyleButton
+            onClick={() => {
+              history.push({ pathname: '/' });
+            }}
+          >
+            <img src={refresh} alt="refresh" />
+          </NoStyleButton>
+        )}
+      </div>
       <Bar
         barRef={barRef}
         value={value}
@@ -129,4 +146,4 @@ function ProgressBar(props) {
 ProgressBar.defaultProps = defaultProps;
 ProgressBar.propTypes = propTypes;
 
-export default ProgressBar;
+export default withRouter(ProgressBar);
