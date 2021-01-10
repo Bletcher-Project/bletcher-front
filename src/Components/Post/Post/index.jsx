@@ -22,7 +22,7 @@ const propTypes = {
       nickname: PropTypes.string.isRequired,
     }),
     title: PropTypes.string.isRequired,
-    is_public: PropTypes.bool.isRequired,
+    is_public: PropTypes.oneOf([1, 0, true, false]).isRequired,
     created_at: PropTypes.string,
   }).isRequired,
   hoverIcon: PropTypes.element,
@@ -35,6 +35,11 @@ class Post extends Component {
     super(props);
     this.state = {};
   }
+
+  getSrc = (post) => {
+    if (post.Image !== undefined) return post.Image.path;
+    return post['Image.path'];
+  };
 
   render() {
     const {
@@ -55,7 +60,7 @@ class Post extends Component {
 
         <div className="post__body">
           <div className="post__body__image">
-            <img src={post.Image.path} alt="artwork" />
+            <img src={this.getSrc(post)} alt="artwork" />
           </div>
         </div>
         <PostFooter

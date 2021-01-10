@@ -29,7 +29,7 @@ const postPropTypes = () => {
     created_at: PropTypes.string.isRequired,
     description: PropTypes.string,
     id: PropTypes.number.isRequired,
-    is_public: PropTypes.bool.isRequired,
+    is_public: PropTypes.oneOf([0, 1, true, false]).isRequired,
     title: PropTypes.string.isRequired,
     updated_at: PropTypes.string.isRequired,
   });
@@ -79,6 +79,11 @@ class MixPalette extends Component {
     history.push('/shop');
   };
 
+  getSrc = (post) => {
+    if (post.Image !== undefined) return post.Image.path;
+    return post['Image.path'];
+  };
+
   render() {
     const { paletteRef, originPost, subPost } = this.props;
     return (
@@ -95,10 +100,10 @@ class MixPalette extends Component {
           </div>
           <div className="mixPalette__content">
             <div className="mixPalette__content__borderBox">
-              <img src={originPost.Image.path} alt="originPost" />
+              <img src={this.getSrc(originPost)} alt="originPost" />
             </div>
             <div className="mixPalette__content__borderBox">
-              <img src={subPost.Image.path} alt="subPost" />
+              <img src={this.getSrc(subPost)} alt="subPost" />
             </div>
           </div>
           <div className="mixPalette__footer">

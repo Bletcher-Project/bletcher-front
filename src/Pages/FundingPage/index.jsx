@@ -52,7 +52,7 @@ const propTypes = {
         created_at: PropTypes.string.isRequired,
         description: PropTypes.string,
         id: PropTypes.number.isRequired,
-        is_public: PropTypes.bool.isRequired,
+        is_public: PropTypes.oneOf([0, 1, true, false]).isRequired,
         title: PropTypes.string.isRequired,
         updated_at: PropTypes.string.isRequired,
       }).isRequired,
