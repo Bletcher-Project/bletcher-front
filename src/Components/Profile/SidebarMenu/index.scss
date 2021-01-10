@@ -1,0 +1,31 @@
+/*
+  Sidebar Menu Component Styling
+*/
+
+.sidebarMenu {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  padding: 9px;
+  border-radius: 10px;
+
+  &:hover {
+    background-color: $white-gray;
+  }
+
+  &__icon {
+    width: 32px;
+    margin-right: 12px;
+  }
+
+  &__name {
+    font-size: $menu;
+    color: $light-gray;
+
+    &.active {
+      color: $black;
+    }
+  }
+}

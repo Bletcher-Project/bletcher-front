@@ -3,14 +3,27 @@
 */
 
 .thumbnail {
-  display: contents;
+  display: flex;
   cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
 
   &__image {
     border-radius: 50%;
-    background: 
-     linear-gradient(ghostwhite, ghostwhite) padding-box,
-     linear-gradient(127deg,#9a7af3, #ff9eae) border-box;
-    border: 2px solid transparent;
+    background: $white-gray;
+    border: 1px solid $border-gray;
+    overflow: hidden;
+
+    &.default {
+      @include content-center;
+      user-select: none;
+
+      & span {
+        font-weight: bold;
+        color: $light-gray;
+      }
+    }
   }
 }

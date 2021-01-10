@@ -1,69 +1,48 @@
-import React, { Component } from 'react';
-
-import PropTypes from 'prop-types';
-import ReactRouterPropTypes from 'react-router-prop-types';
-
-import { connect } from 'react-redux';
-import { signOut } from 'Redux/auth';
+import React, { useState } from 'react';
 
 import NavBar from 'Components/Common/NavBar';
+import Sidebar from 'Components/Profile/Sidebar';
+import Profile from 'Components/Profile/Contents/Profile';
+import Account from 'Components/Profile/Contents/Account';
+import Bank from 'Components/Profile/Contents/Bank';
+import Noti from 'Components/Profile/Contents/Noti';
+import Info from 'Components/Profile/Contents/Info';
 
-const defaultProps = {
-  user: null,
-};
-const propTypes = {
-  UserSignOut: PropTypes.func.isRequired,
-  history: ReactRouterPropTypes.history.isRequired,
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    nickname: PropTypes.string,
-  }),
-};
+function ProfilePage() {
+  const [content, setContent] = useState('profile');
 
-const mapStateToProps = (state) => {
-  return {
-    token: state.authReducer.token,
-    user: state.authReducer.user,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    UserSignOut: () => dispatch(signOut()),
-  };
-};
-
-class ProfilePage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  outHandler = async () => {
-    const { UserSignOut, history } = this.props;
-    await UserSignOut();
-    history.push('/');
+  const switchPage = (dest) => {
+    setContent(dest);
   };
 
-  render() {
-    const { user } = this.props;
-    return (
-      <>
-        <NavBar isActive="profile" />
-        <div className="profilePage">
-          <div className="profilePage__Header">This is ProfilePage.</div>
-          <div className="profilePage__Content" />
-          {user ? user.nickname : ''}
-          <button type="button" onClick={this.outHandler}>
-            LOGOUT HERE!
-          </button>
+  const renderContent = () => {
+    switch (content) {
+      case 'profile':
+        return <Profile />;
+      case 'account':
+        return <Account />;
+      case 'bank':
+        return <Bank />;
+      case 'noti':
+        return <Noti />;
+      case 'info':
+        return <Info />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <>
+      <NavBar isActive="profile" />
+      <div className="profilePage">
+        <div className="profilePage__sidebar">
+          <Sidebar switchPage={(dest) => switchPage(dest)} />
         </div>
-      </>
-    );
-  }
+        <div className="profilePage__content">{renderContent()}</div>
+      </div>
+    </>
+  );
 }
 
-ProfilePage.defaultProps = defaultProps;
-ProfilePage.propTypes = propTypes;
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);
+export default ProfilePage;

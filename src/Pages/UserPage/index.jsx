@@ -32,7 +32,13 @@ const propTypes = {
   match: ReactRouterPropTypes.match.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
+    email: PropTypes.string,
     nickname: PropTypes.string,
+    introduce: PropTypes.string,
+    profile_image: PropTypes.string,
+    password: PropTypes.string,
+    createdAt: PropTypes.string,
+    updatedAt: PropTypes.string,
   }),
   token: PropTypes.string,
   history: ReactRouterPropTypes.history.isRequired,
@@ -195,7 +201,11 @@ class UserPage extends Component {
         <NavBar isActive={isMyPage ? 'user' : ''} />
         <div className="userPage__header">
           <div className="userPage__header__thumb">
-            <Thumbnail size={100} />
+            <Thumbnail
+              src={user ? user.profile_image : null}
+              userName={user ? user.nickname : null}
+              size={100}
+            />
             {isMyPage ? (
               <button
                 type="button"
