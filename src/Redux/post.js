@@ -14,6 +14,7 @@ const initialState = {
     isMixing: false,
     mixId: null,
     progressIndex: 0,
+    originId: null,
   },
 };
 
@@ -40,6 +41,7 @@ const MIX_POST_FAIL = 'post/MIX_POST_FAIL';
 
 const MODIFY_IS_MIXING = 'post/MODIFY_IS_MIXING';
 const INCREASE_PB_INDEX = 'post/INCREASE_PB_INDEX';
+const RECOMPOSE_MIXING = 'post/RECOMPOSE_MIXING';
 
 export const clickPostSuccess = createAction(CLICK_POST_SUCCESS); // result.post
 export const clickPostFail = createAction(CLICK_POST_FAIL);
@@ -57,6 +59,7 @@ export const mixPostSuccess = createAction(MIX_POST_SUCCESS);
 export const mixPostFail = createAction(MIX_POST_FAIL);
 export const modifyIsMixing = createAction(MODIFY_IS_MIXING);
 export const increasePbIndex = createAction(INCREASE_PB_INDEX);
+export const recomposeMixing = createAction(RECOMPOSE_MIXING);
 
 export default postReducer(
   {
@@ -99,19 +102,24 @@ export default postReducer(
     [MIX_POST_SUCCESS]: (state) => {
       return state;
     },
-    [MIX_POST_FAIL]: () => {
+    [MIX_POST_FAIL]: (state) => {
       return {
-        initialState,
+        ...state,
+        mixState: {
+          ...state.mixState,
+          mixId: 0,
+        },
       };
     },
     [MODIFY_IS_MIXING]: (state, action) => {
-      const { isMixing, mixId } = action.payload;
+      const { isMixing, mixId, originId } = action.payload;
       return {
         ...state,
         mixState: {
           ...state.mixState,
           isMixing,
           mixId,
+          originId,
         },
       };
     },
@@ -124,6 +132,16 @@ export default postReducer(
           progressIndex: incFlag
             ? state.mixState.progressIndex + 1
             : state.mixState.progressIndex,
+        },
+      };
+    },
+    [RECOMPOSE_MIXING]: (state) => {
+      const { originId } = state.mixState;
+      return {
+        ...initialState,
+        mixState: {
+          ...initialState,
+          originId,
         },
       };
     },
@@ -286,7 +304,7 @@ export const mixPost = (originId, subId, token) => {
   return async (dispatch) => {
     try {
       const { mixState } = initialState;
-      await dispatch(modifyIsMixing({ ...mixState, isMixing: true }));
+      await dispatch(modifyIsMixing({ ...mixState, isMixing: true, originId }));
       let mixId = null;
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${MIX_API}/${originId}/${subId}`,
@@ -300,12 +318,20 @@ export const mixPost = (originId, subId, token) => {
       if (response.status === 200) {
         await dispatch(mixPostSuccess());
         mixId = (await response.json()).data;
-        setTimeout(async () => {
-          console.log('Complete!');
-          await dispatch(
-            modifyIsMixing({ isMixing: false, mixId, progressIndex: 0 }),
-          );
-        }, 30000);
+        await dispatch(
+          modifyIsMixing({
+            isMixing: false,
+            mixId,
+            progressIndex: 0,
+            originId,
+          }),
+        );
+        // setTimeout(async () => {
+        //   console.log('Complete!');
+        //   await dispatch(
+        //     modifyIsMixing({ isMixing: false, mixId, progressIndex: 0 }),
+        //   );
+        // }, 30000);
       } else {
         await dispatch(mixPostFail());
       }
