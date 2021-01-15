@@ -1,39 +1,67 @@
 import React, { Component } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import { getPostByPostId } from 'Redux/post';
+
+import NavBar from 'Components/Common/NavBar';
+import FavoriteButton from 'Components/Post/PostButton/FavoriteButton';
+import MixButton from 'Components/Post/PostButton/MixButton';
+
+import DueDate from 'Assets/icons/DueDate';
+import HeartImg from 'Assets/images/fundHeart-bg-removed.png';
 
 import queryString from 'query-string';
 import cx from 'classnames';
 
-import NavBar from 'Components/Common/NavBar';
-
-import FavoriteButton from 'Components/Post/PostButton/FavoriteButton';
-import MixButton from 'Components/Post/PostButton/MixButton';
-import DueDate from 'Assets/icons/DueDate';
-import HeartImg from 'Assets/images/fundHeart-bg-removed.png';
-
-import dummyPost from 'Dummies/dummyPost';
-import dummyProfile1 from 'Dummies/dummyImage/1.jpg';
-import dummyProfile2 from 'Dummies/dummyImage/2.jpg';
-
 const defaultProps = {};
 const propTypes = {
+  getPost: PropTypes.func.isRequired,
   location: ReactRouterPropTypes.location.isRequired,
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getPost: async (postId, token) => dispatch(getPostByPostId(postId, token)),
+  };
+};
 class DetailPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      post: {},
+    };
   }
 
-  render() {
+  getSrc = () => {
+    const { post } = this.state;
+    if (post.Image !== undefined) return post.Image.path;
+    return post['Image.path'];
+  };
+
+  getPostIdByQuery = () => {
     const { location } = this.props;
     const query = queryString.parse(location.search);
-    const { postId, active } = query;
-    const postInfo = dummyPost.posts.filter(
-      (post) => JSON.stringify(post.id) === postId,
-    )[0];
+    const { postId } = query;
+    return postId;
+  };
+
+  componentDidMount = async () => {
+    const { getPost } = this.props;
+    const postId = this.getPostIdByQuery();
+
+    if (postId) {
+      const detailedPost = await getPost(postId);
+      await new Promise((accept) =>
+        this.setState({ post: detailedPost }, accept),
+      );
+    }
+  };
+
+  render() {
+    const active = 'funding';
     return (
       <>
         <NavBar isActive="detail" />
@@ -44,7 +72,7 @@ class DetailPage extends Component {
               <div className="detailPage__content__imageBox__inner">
                 <img
                   className="detailPage__content__imageBox__image"
-                  src={postInfo.postImgName}
+                  src={this.getSrc()}
                   alt="postImage"
                 />
               </div>
@@ -75,7 +103,7 @@ class DetailPage extends Component {
                 <div className="detailPage__rightTab fundInfo__authors">
                   <div className="detailPage__rightTab fundInfo__authors__author">
                     <span className="detailPage__rightTab fundInfo__authors__author__imgUp">
-                      <img src={dummyProfile1} alt="profile1" />
+                      <img src={null} alt="profile1" />
                     </span>
                     <span className="detailPage__rightTab fundInfo__authors__author__name">
                       HyoJI
@@ -87,7 +115,7 @@ class DetailPage extends Component {
                       hangsoo
                     </span>
                     <span className="detailPage__rightTab fundInfo__authors__author__imgDown">
-                      <img src={dummyProfile2} alt="profile2" />
+                      <img src={null} alt="profile2" />
                     </span>
                   </div>
                 </div>
@@ -114,4 +142,4 @@ class DetailPage extends Component {
 DetailPage.defaultProps = defaultProps;
 DetailPage.propTypes = propTypes;
 
-export default withRouter(DetailPage);
+export default withRouter(connect(null, mapDispatchToProps)(DetailPage));
