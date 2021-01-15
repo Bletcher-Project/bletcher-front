@@ -315,7 +315,7 @@ export const mixPost = (originId, subId, token) => {
           },
         },
       );
-      if (response.status === 200) {
+      if (response.status !== 200) {
         await dispatch(mixPostSuccess());
         mixId = (await response.json()).data;
         await dispatch(

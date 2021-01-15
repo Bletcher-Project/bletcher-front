@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { increasePbIndex } from 'Redux/post';
@@ -23,7 +22,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import WOW from 'wowjs';
 import cx from 'classnames';
 import { Modal } from 'reactstrap';
-import { withRouter } from 'react-router-dom';
 
 const defaultProps = {
   height: 2,
@@ -31,7 +29,6 @@ const defaultProps = {
   value: 0,
 };
 const propTypes = {
-  history: ReactRouterPropTypes.history.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number,
   barSize: PropTypes.number,
@@ -39,7 +36,7 @@ const propTypes = {
 };
 
 function ProgressBar(props) {
-  const { width, height, barSize, value, history } = props;
+  const { width, height, barSize, value } = props;
   const mixState = useSelector((state) => state.postReducer.mixState);
   const { progressIndex, isMixing, mixId } = mixState;
 
@@ -50,6 +47,10 @@ function ProgressBar(props) {
 
   const toggle = () => {
     setIsOpen(!isOpen);
+  };
+
+  const refreshToRoot = () => {
+    window.location.replace('/');
   };
 
   const stopAnimationIterate = () => {
@@ -63,8 +64,8 @@ function ProgressBar(props) {
       return pgBarCompleteText;
     }
     if (mixId === 0) {
+      if (!error) setError(true);
       stopAnimationIterate();
-      setError(true);
       return pgBarErrorText;
     }
     return pgBarText[progressIndex];
@@ -95,12 +96,8 @@ function ProgressBar(props) {
     <div className="container">
       <div className="pgText">
         {getText()}
-        {!error && (
-          <NoStyleButton
-            onClick={() => {
-              history.push({ pathname: '/' });
-            }}
-          >
+        {error && (
+          <NoStyleButton onClick={refreshToRoot}>
             <img src={refresh} alt="refresh" />
           </NoStyleButton>
         )}
@@ -146,4 +143,4 @@ function ProgressBar(props) {
 ProgressBar.defaultProps = defaultProps;
 ProgressBar.propTypes = propTypes;
 
-export default withRouter(ProgressBar);
+export default ProgressBar;
