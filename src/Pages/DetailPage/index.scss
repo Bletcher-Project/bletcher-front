@@ -2,10 +2,15 @@
   Detail Page Styling
 */
 
+.wrapper {
+  & > .navBar {
+    height: 7rem;
+  }
+}
+
 .detailPage {
   display: flex;
-  height: 80vh;
-  flex-wrap: wrap;
+  height: calc(100vh - 7rem);
   .expand {
     width: 100%;
     height: 25%;
@@ -15,23 +20,19 @@
   }
   &__content {
     width: 65%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    &__imageBox {
-      z-index: 1;
-      height: 70vh;
+    height: 90%;
+    text-align: center;
+    margin-top: auto;
 
-      &__inner {
-        width: 90%;
-        height: 100%;
-        overflow-y: auto;
-        margin: 0 auto;
-        direction: rtl;
-      }
-      &__image {
-        max-width: 100%;
-      }
+    &__inner {
+      width: 90%;
+      height: 100%;
+      overflow-y: auto;
+      margin: 0 auto;
+      direction: rtl;
+    }
+    &__image {
+      max-width: 100%;
     }
   }
 
@@ -40,62 +41,59 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    &.fundInfo {
-      &__buttons {
-        width: 100%;
+    align-items: center;
+    &__buttons {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      & div {
+        display: flex;
+        align-items: center;
+        font-size: $header2;
+        font-family: 'GothamRounded';
+      }
+      & img {
+        width: 4rem;
+        margin-right: 1rem;
+        margin-bottom: 0;
+      }
+    }
+
+    &__authors {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &__author {
+        position: relative;
+        width: 60%;
+        height: 45%;
         display: flex;
         flex-direction: row;
-        justify-content: space-evenly;
-        & div {
-          display: flex;
-          align-items: center;
-          font-size: $header2;
-        }
-        & img {
-          width: 4rem;
-          margin-right: 1rem;
-          margin-bottom: 0;
-        }
-      }
-
-      &__authors {
-        width: 100%;
         align-items: center;
-        margin-top: 10rem;
+        justify-content: space-evenly;
+        padding: 1rem 0;
+        font-size: 1.8rem;
+        @include content-circle(#5e5e5e, 58px, 1px, white);
 
-        &__author {
-          width: 50%;
-          flex-direction: row;
-          justify-content: center;
-          align-items: center;
-          @include content-circle(#5e5e5e, 22px, 1px, white);
-          padding: 0.3rem;
+        & img {
+          width: 3.5rem;
+          height: 3.5rem;
+          @include content-circle(transparent, 50%, 1px, transparent);
+        }
 
-          &__name {
-            text-align: center;
-            font-size: 1.5rem;
-            margin-left: 1rem;
-          }
+        & > span:first-child {
+          overflow: hidden;
+          width: fit-content;
+          position: absolute;
+          left: 1rem;
+        }
 
-          & img {
-            width: 3.5rem;
-            height: 3.5rem;
-            @include content-circle(transparent, 50%, 1px, transparent);
-          }
-
-          &__imgDown {
-            overflow: hidden;
-            width: fit-content;
-            margin-left: auto;
-            margin-right: 1rem;
-          }
-
-          &__imgUp {
-            overflow: hidden;
-            width: fit-content;
-            margin-right: auto;
-            margin-left: 1rem;
-          }
+        & > span:last-child {
+          margin-left: auto;
+          margin-right: 1rem;
         }
       }
     }
