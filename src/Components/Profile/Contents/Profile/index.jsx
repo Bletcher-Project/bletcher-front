@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { userType } from 'PropTypes';
 
+import UploadImgFile from 'Components/Upload/UploadImgFile';
 import Thumbnail from 'Components/Thumbnail';
 import Input from 'Components/Form/Input';
 
@@ -10,7 +10,20 @@ const propTypes = { user: userType };
 
 function Profile(props) {
   const { user } = props;
-  console.log(user);
+  const [image, setImage] = useState({
+    preview: user && user.profile_image,
+    raw: null,
+  });
+
+  const handleUploadImg = (e) => {
+    if (e.target.files.length) {
+      setImage({
+        preview: URL.createObjectURL(e.target.files[0]),
+        raw: e.target.files[0],
+      });
+    }
+  };
+
   const handleChange = () => {
     // TODO: 다음 PR에서 구현 예정
   };
@@ -19,10 +32,9 @@ function Profile(props) {
     <div className="profile">
       <div className="profile__form">
         <div className="profile__form-photo">
-          <Thumbnail
-            src={user && user.profile_image}
-            userName={user && user.nickname}
-          />
+          <UploadImgFile handleUploadImg={handleUploadImg}>
+            <Thumbnail src={image.preview} userName={user && user.nickname} />
+          </UploadImgFile>
         </div>
         <p className="profile__form-desc">
           Bletcher users will be able to identify you with the information
