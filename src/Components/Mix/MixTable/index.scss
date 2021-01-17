@@ -64,3 +64,11 @@
   z-index: 1004;
   opacity: 40%;
 }
+
+.arrUp {
+  @include arrow(up);
+}
+
+.arrDown {
+  @include arrow(down);
+}

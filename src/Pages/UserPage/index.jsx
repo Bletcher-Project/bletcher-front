@@ -205,7 +205,8 @@ class UserPage extends Component {
     if (
       isMixModalOpen &&
       !this.isRefContain(e.target) &&
-      e.target.alt !== 'subPost'
+      e.target.alt !== 'subPost' &&
+      e.target.className !== 'arrow'
     ) {
       this.setState({ isMixModalOpen: false, chosenSubPost: null });
     }

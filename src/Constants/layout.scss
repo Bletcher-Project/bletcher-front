@@ -28,3 +28,32 @@
   background-color: $back-color;
   color: $circle-color;
 }
+
+@mixin arrow($direction) {
+  $dir: 135deg;
+  @if $direction == up {
+    $dir: 315deg;
+  }
+
+  @if $direction == down {
+    $dir: 135deg;
+  }
+
+  span {
+    position: relative;
+  }
+
+  span::after {
+    content: '';
+    width: 35px;
+    height: 35px;
+    border-top: 5px solid $main-color;
+    border-right: 5px solid $main-color;
+    border-radius: 3px;
+    display: inline-block;
+    transform: rotate($dir);
+    position: absolute;
+    top: 1rem;
+    left: 0;
+  }
+}

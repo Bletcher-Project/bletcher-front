@@ -117,7 +117,9 @@ class MixTable extends Component {
           <div className="mixTable__header">
             <NoStyleButton onClick={this.toggle}>
               <span className="mixTable__header__buttonText">
-                {isExpanded ? '∨' : '∧'}
+                <div className={isExpanded ? 'arrDown' : 'arrUp'}>
+                  <span className="arrow" />
+                </div>
               </span>
             </NoStyleButton>
           </div>
