@@ -5,9 +5,12 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
 import { getUserPosts } from 'Redux/fetch-post';
+import { getPostByPostId } from 'Redux/post';
 
 import NavBar from 'Components/Common/NavBar';
 import Loader from 'Components/Common/Loader';
+import MixTable from 'Components/Mix/MixTable';
+import MixPalette from 'Components/Mix/MixPalette';
 import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
@@ -28,6 +31,7 @@ const defaultProps = {
   userPosts: {},
 };
 const propTypes = {
+  getPostById: PropTypes.func.isRequired,
   getPosts: PropTypes.func.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
   user: PropTypes.shape({
@@ -81,17 +85,25 @@ const mapDispatchToProps = (dispatch) => {
     getPosts: (tabOption, userInfo, token) => {
       dispatch(getUserPosts(tabOption, userInfo, token));
     },
+    getPostById: (postId, token) => {
+      return dispatch(getPostByPostId(postId, token));
+    },
   };
 };
 
 class UserPage extends Component {
   constructor(props) {
     super(props);
+    this.tableRef = React.createRef();
+    this.paletteRef = React.createRef();
     this.state = {
       isMyPage: false,
       userInfo: null,
       postOption: 'me',
       feedLoading: true,
+      isMixModalOpen: false,
+      chosenOriginPost: null,
+      chosenSubPost: null,
     };
   }
 
@@ -122,7 +134,7 @@ class UserPage extends Component {
     let icon;
     let position;
     if (option === 'me') {
-      icon = <MixButton />;
+      icon = <MixButton onClick={() => this.mixModalHandler(data.id)} />;
       position = 'both';
     } else {
       icon = <ShareButton />;
@@ -174,12 +186,44 @@ class UserPage extends Component {
     });
   };
 
+  mixModalHandler = async (postId) => {
+    console.log('isclicked?');
+    const { token, getPostById } = this.props;
+    const tmp = await getPostById(postId, token);
+    this.setState({ isMixModalOpen: true, chosenOriginPost: tmp });
+  };
+
+  isRefContain = (target) => {
+    if (this.tableRef.current) return this.tableRef.current.contains(target);
+    if (this.paletteRef.current)
+      return this.paletteRef.current.contains(target);
+    return true;
+  };
+
+  clickOutsideHandler = (e) => {
+    const { isMixModalOpen } = this.state;
+    if (
+      isMixModalOpen &&
+      !this.isRefContain(e.target) &&
+      e.target.alt !== 'subPost'
+    ) {
+      this.setState({ isMixModalOpen: false, chosenSubPost: null });
+    }
+  };
+
+  postSubPost = async (subPost) => {
+    await new Promise((accept) =>
+      this.setState({ chosenSubPost: subPost }, accept),
+    );
+  };
+
   componentDidMount = async () => {
     const { user } = this.props;
     if (user) {
       await this.setUser();
       await this.getUserPosts(USER_OPTION);
     }
+    window.addEventListener('click', this.clickOutsideHandler);
   };
 
   componentDidUpdate = async (prevProps) => {
@@ -193,12 +237,28 @@ class UserPage extends Component {
     }
   };
 
+  componentWillUnmount = () => {
+    window.removeEventListener('click', this.clickOutsideHandler);
+  };
+
   render() {
-    const { isMyPage, postOption, feedLoading } = this.state;
+    const {
+      isMyPage,
+      postOption,
+      feedLoading,
+      isMixModalOpen,
+      chosenOriginPost,
+      chosenSubPost,
+    } = this.state;
     const { user, userPosts } = this.props;
     return (
       <div className="userPage">
         <NavBar isActive={isMyPage ? 'user' : ''} />
+        {isMixModalOpen && !chosenSubPost && (
+          <div className="selectedPost">
+            <Post post={chosenOriginPost} />
+          </div>
+        )}
         <div className="userPage__header">
           <div className="userPage__header__thumb">
             <Thumbnail
@@ -234,6 +294,20 @@ class UserPage extends Component {
         <PostList
           posts={!feedLoading && userPosts ? this.showUserPosts() : <Loader />}
         />
+        {isMixModalOpen && chosenSubPost && (
+          <MixPalette
+            paletteRef={this.paletteRef}
+            originPost={chosenOriginPost}
+            subPost={chosenSubPost}
+          />
+        )}
+        {isMixModalOpen && !chosenSubPost && (
+          <MixTable
+            tableRef={this.tableRef}
+            originPostId={chosenOriginPost.id}
+            postSubPost={this.postSubPost}
+          />
+        )}
       </div>
     );
   }
