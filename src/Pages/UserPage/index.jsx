@@ -21,6 +21,7 @@ import USER_OPTION from 'Constants/userpage-option';
 import EditButton from 'Assets/images/editButton.png';
 
 import camelCase from 'camelcase';
+import { Modal } from 'reactstrap';
 
 import cx from 'classnames';
 
@@ -93,8 +94,6 @@ const mapDispatchToProps = (dispatch) => {
 class UserPage extends Component {
   constructor(props) {
     super(props);
-    this.tableRef = React.createRef();
-    this.paletteRef = React.createRef();
     this.state = {
       isMyPage: false,
       userInfo: null,
@@ -205,6 +204,11 @@ class UserPage extends Component {
     }
   };
 
+  toggle = () => {
+    const { isMixModalOpen } = this.state;
+    this.setState({ isMixModalOpen: !isMixModalOpen });
+  };
+
   componentDidUpdate = async (prevProps) => {
     const { token, user, match } = this.props;
     if (
@@ -229,11 +233,6 @@ class UserPage extends Component {
     return (
       <div className="userPage">
         <NavBar isActive={isMyPage ? 'user' : ''} />
-        {isMixModalOpen && !chosenSubPost && (
-          <div className="selectedPost">
-            <Post post={chosenOriginPost} />
-          </div>
-        )}
         <div className="userPage__header">
           <div className="userPage__header__thumb">
             <Thumbnail
@@ -269,25 +268,13 @@ class UserPage extends Component {
         <PostList
           posts={!feedLoading && userPosts ? this.showUserPosts() : <Loader />}
         />
-        {/* {isMixModalOpen && chosenSubPost && (
-          <MixPalette
-            paletteRef={this.paletteRef}
-            originPost={chosenOriginPost}
-            subPost={chosenSubPost}
+        <Modal size="xxl" isOpen={isMixModalOpen} toggle={this.toggle}>
+          <MixHandler
+            chosenSubPost={chosenSubPost}
+            chosenOriginPost={chosenOriginPost}
+            subPostFunc={this.postSubPost}
           />
-        )}
-        {isMixModalOpen && !chosenSubPost && (
-          <MixTable
-            tableRef={this.tableRef}
-            originPostId={chosenOriginPost.id}
-            postSubPost={this.postSubPost}
-          />
-        )} */}
-        <MixHandler
-          chosenSubPost
-          chosenOriginPost
-          subPostFunc={this.postSubPost}
-        />
+        </Modal>
       </div>
     );
   }

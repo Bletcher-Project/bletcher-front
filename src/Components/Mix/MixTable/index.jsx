@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { getNewPosts } from 'Redux/fetch-post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
-import BlackMask from 'Components/Common/BlackMask';
 
 import cx from 'classnames';
 
@@ -14,10 +13,6 @@ const defaultProps = {
 };
 
 const propTypes = {
-  tableRef: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-  ]).isRequired,
   postSubPost: PropTypes.func.isRequired,
   getPostList: PropTypes.func.isRequired,
   originPostId: PropTypes.number.isRequired,
@@ -103,12 +98,9 @@ class MixTable extends Component {
 
   render() {
     const { subPostList, isExpanded } = this.state;
-    const { tableRef } = this.props;
     return (
       <>
-        <BlackMask />
         <div
-          ref={tableRef}
           className={cx('mixTable', {
             expanded: isExpanded,
           })}

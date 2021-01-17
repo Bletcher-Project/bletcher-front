@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { mixPost } from 'Redux/post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
-import BlackMask from 'Components/Common/BlackMask';
 
 import mixButton from 'Assets/images/mixButton.png';
 
@@ -43,10 +42,6 @@ const defaultProps = {
 const propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
   token: PropTypes.string,
-  paletteRef: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-  ]).isRequired,
   originPost: postPropTypes().isRequired,
   subPost: postPropTypes().isRequired,
   mixPosts: PropTypes.func,
@@ -74,9 +69,8 @@ class MixPalette extends Component {
   }
 
   requestPostMix = () => {
-    const { originPost, subPost, mixPosts, token, history } = this.props;
+    const { originPost, subPost, mixPosts, token } = this.props;
     mixPosts(originPost.id, subPost.id, token);
-    history.push('/shop');
   };
 
   getSrc = (post) => {
@@ -85,11 +79,10 @@ class MixPalette extends Component {
   };
 
   render() {
-    const { paletteRef, originPost, subPost } = this.props;
+    const { originPost, subPost } = this.props;
     return (
       <>
-        <BlackMask />
-        <div className="mixPalette" ref={paletteRef}>
+        <div className="mixPalette">
           <div className="mixPalette__header">
             <div className="mixPalette__header__title">
               Please Select a work to upload
