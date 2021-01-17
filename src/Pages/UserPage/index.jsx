@@ -268,7 +268,7 @@ class UserPage extends Component {
         <PostList
           posts={!feedLoading && userPosts ? this.showUserPosts() : <Loader />}
         />
-        <Modal size="xxl" isOpen={isMixModalOpen} toggle={this.toggle}>
+        <Modal isOpen={isMixModalOpen} toggle={this.toggle}>
           <MixHandler
             chosenSubPost={chosenSubPost}
             chosenOriginPost={chosenOriginPost}
