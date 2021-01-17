@@ -104,7 +104,6 @@ class MixTable extends Component {
   render() {
     const { subPostList, isExpanded } = this.state;
     const { tableRef } = this.props;
-    console.log('mixtable rendered');
     return (
       <>
         <BlackMask />
