@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { useSelector } from 'react-redux';
+
 import NavBar from 'Components/Common/NavBar';
 import Sidebar from 'Components/Profile/Sidebar';
 import Profile from 'Components/Profile/Contents/Profile';
@@ -10,7 +12,7 @@ import Info from 'Components/Profile/Contents/Info';
 
 function ProfilePage() {
   const [content, setContent] = useState('profile');
-
+  const user = useSelector((state) => state.authReducer.user);
   const switchPage = (dest) => {
     setContent(dest);
   };
@@ -18,7 +20,7 @@ function ProfilePage() {
   const renderContent = () => {
     switch (content) {
       case 'profile':
-        return <Profile />;
+        return <Profile user={user} />;
       case 'account':
         return <Account />;
       case 'bank':
