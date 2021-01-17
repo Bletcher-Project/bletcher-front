@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { postType } from 'PropTypes';
 
 import MixPalette from 'Components/Mix/MixPalette';
 import MixTable from 'Components/Mix/MixTable';
+import Post from 'Components/Post/Post';
 
-import { Modal } from 'reactstrap';
+import { makeStyles } from '@material-ui/core/styles';
 
 const defaultProps = {
   chosenOriginPost: null,
@@ -17,25 +18,30 @@ const propTypes = {
   subPostFunc: PropTypes.func.isRequired,
 };
 
+const useStyles = makeStyles({
+  root: {
+    position: 'fixed',
+    transform: 'translate(-50%, -50%)',
+    left: '50%',
+    top: '30%',
+    zIndex: 1005,
+    backgroundColor: '#fff9e7',
+    borderRadius: '10px',
+  },
+});
+
 function MixHandler(props) {
-  const [isOpen, setIsOpen] = useState(false);
-
   const { chosenSubPost, chosenOriginPost, subPostFunc } = props;
-  const toggle = () => {
-    setIsOpen(!isOpen);
-  };
-
-  return (
-    <Modal isOpen={isOpen} toggle={toggle}>
-      {chosenSubPost ? (
-        <MixPalette originPost={chosenOriginPost} subPost={chosenSubPost} />
-      ) : (
-        <MixTable
-          originPostId={chosenOriginPost && chosenOriginPost.id}
-          postSubPost={subPostFunc}
-        />
-      )}
-    </Modal>
+  const classes = useStyles();
+  return chosenSubPost ? (
+    <MixPalette originPost={chosenOriginPost} subPost={chosenSubPost} />
+  ) : (
+    <>
+      <div className={classes.root}>
+        <Post post={chosenOriginPost} />
+      </div>
+      <MixTable originPostId={chosenOriginPost.id} postSubPost={subPostFunc} />
+    </>
   );
 }
 
