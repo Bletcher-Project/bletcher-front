@@ -15,6 +15,7 @@ import profile1 from 'Dummies/dummyImage/1.jpg';
 import profile2 from 'Dummies/dummyImage/2.jpg';
 
 import queryString from 'query-string';
+import cx from 'classnames';
 
 const defaultProps = {};
 const propTypes = {
@@ -32,6 +33,7 @@ class DetailPage extends Component {
     super(props);
     this.state = {
       post: {},
+      isActive: '',
     };
   }
 
@@ -41,17 +43,26 @@ class DetailPage extends Component {
     return post && post['Image.path'];
   };
 
-  getPostIdByQuery = () => {
+  // getPostIdByQuery = () => {
+  //   const { location } = this.props;
+  //   const query = queryString.parse(location.search);
+  //   const { postId } = query;
+
+  //   return postId;
+  // };
+
+  getParamsByQuery = () => {
     const { location } = this.props;
     const query = queryString.parse(location.search);
-    const { postId } = query;
-
-    return postId;
+    return query;
   };
 
   componentDidMount = async () => {
     const { getPost } = this.props;
-    const postId = this.getPostIdByQuery();
+    // const postId = this.getPostIdByQuery();
+    const params = this.getParamsByQuery();
+    const { postId, isActive } = params;
+
     if (postId) {
       const detailedPost = await getPost(postId);
       await new Promise((accept) =>
@@ -60,9 +71,11 @@ class DetailPage extends Component {
     } else {
       window.location.replace('/notFound');
     }
+    await new Promise((accept) => this.setState({ isActive }, accept));
   };
 
   render() {
+    const { isActive } = this.state;
     return (
       <div className="wrapper">
         <NavBar isActive="detail" />
@@ -78,22 +91,32 @@ class DetailPage extends Component {
             </div>
           </div>
 
-          <div className="detailPage__rightTab">
-            <div className="detailPage__rightTab__buttons">
-              <div>
-                <span>
-                  <img src={DueDate} alt="dueDate" />
-                </span>
-                <span>1:32:21</span>
+          <div
+            className={cx('detailPage__rightTab', {
+              end: isActive === 'End',
+            })}
+          >
+            {isActive !== 'End' && (
+              <div className="detailPage__rightTab__buttons">
+                <div>
+                  <span>
+                    <img src={DueDate} alt="dueDate" />
+                  </span>
+                  <span>1:32:21</span>
+                </div>
+                <div>
+                  <span>
+                    <img src={HeartImg} alt="fund-heart" />
+                  </span>
+                  <span>362</span>
+                </div>
               </div>
-              <div>
-                <span>
-                  <img src={HeartImg} alt="fund-heart" />
-                </span>
-                <span>362</span>
-              </div>
-            </div>
-            <div className="detailPage__rightTab__authors">
+            )}
+            <div
+              className={cx('detailPage__rightTab__authors', {
+                end: isActive === 'End',
+              })}
+            >
               <div className="detailPage__rightTab__authors__author">
                 <span className="detailPage__rightTab__authors__author__img">
                   <img src={profile1} alt="profile1" />

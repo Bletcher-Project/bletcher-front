@@ -166,7 +166,9 @@ class FundingPage extends Component {
 
   showPostDetail = (postId) => {
     const { history } = this.props;
-    history.push({ pathname: '/detail', search: `?postId=${postId}` });
+    const { option } = this.state;
+    const searchQuery = `?postId=${postId}&isActive=${option}`;
+    history.push({ pathname: '/detail', search: searchQuery });
   };
 
   renderPosts = () => {
