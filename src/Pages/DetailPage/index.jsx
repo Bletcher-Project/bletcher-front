@@ -43,18 +43,14 @@ class DetailPage extends Component {
     return post && post['Image.path'];
   };
 
-  // getPostIdByQuery = () => {
-  //   const { location } = this.props;
-  //   const query = queryString.parse(location.search);
-  //   const { postId } = query;
-
-  //   return postId;
-  // };
-
   getParamsByQuery = () => {
     const { location } = this.props;
     const query = queryString.parse(location.search);
     return query;
+  };
+
+  linkToNotFound = () => {
+    window.location.replace('/notFound');
   };
 
   componentDidMount = async () => {
@@ -68,10 +64,11 @@ class DetailPage extends Component {
       await new Promise((accept) =>
         this.setState({ post: detailedPost }, accept),
       );
-    } else {
-      window.location.replace('/notFound');
-    }
-    await new Promise((accept) => this.setState({ isActive }, accept));
+    } else this.linkToNotFound();
+
+    if (isActive === 'Ongoing' || isActive === 'End')
+      await new Promise((accept) => this.setState({ isActive }, accept));
+    else this.linkToNotFound();
   };
 
   render() {
