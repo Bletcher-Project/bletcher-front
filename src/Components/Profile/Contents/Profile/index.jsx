@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { userType } from 'PropTypes';
 
 import UploadImgFile from 'Components/Upload/UploadImgFile';
@@ -14,6 +14,13 @@ function Profile(props) {
     preview: user && user.profile_image,
     raw: null,
   });
+  const [name, setName] = useState();
+  const [introduce, setIntroduce] = useState();
+
+  useEffect(() => {
+    setName(user && user.nickname);
+    setIntroduce(user && user.introduce);
+  }, [user]);
 
   const handleUploadImg = (e) => {
     if (e.target.files.length) {
@@ -24,8 +31,12 @@ function Profile(props) {
     }
   };
 
-  const handleChange = () => {
-    // TODO: 다음 PR에서 구현 예정
+  const handleChangeName = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleChangeIntroduce = (e) => {
+    setIntroduce(e.target.value);
   };
 
   return (
@@ -42,23 +53,18 @@ function Profile(props) {
         </p>
         <Input
           placeholder="User Name"
+          value={name}
           type="text"
           autoComplete="username"
           width="100%"
-          onChange={handleChange}
-        />
-        <Input
-          placeholder="Website"
-          type="text"
-          autoComplete="url"
-          width="100%"
-          onChange={handleChange}
+          onChange={(e) => handleChangeName(e)}
         />
         <Input
           placeholder="Short Introduce"
+          value={introduce}
           type="text"
           width="100%"
-          onChange={handleChange}
+          onChange={(e) => handleChangeIntroduce(e)}
         />
       </div>
     </div>

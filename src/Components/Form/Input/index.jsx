@@ -8,6 +8,7 @@ import fontSizes from 'Constants/font-size.scss';
 
 const defaultProps = {
   placeholder: '',
+  value: '',
   autoComplete: 'off',
   width: '200px',
   disabled: false,
@@ -18,6 +19,7 @@ const defaultProps = {
 };
 const propTypes = {
   placeholder: PropTypes.string,
+  value: PropTypes.string,
   type: PropTypes.string.isRequired,
   autoComplete: PropTypes.string,
   width: PropTypes.string,
@@ -62,6 +64,7 @@ const CustomTextField = withStyles({
 function Input(props) {
   const {
     placeholder,
+    value,
     type,
     autoComplete,
     width,
@@ -77,6 +80,7 @@ function Input(props) {
     <CustomTextField
       variant="outlined"
       placeholder={placeholder}
+      value={value || ''}
       type={type}
       autoComplete={autoComplete}
       style={{ width }}
