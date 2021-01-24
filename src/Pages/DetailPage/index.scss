@@ -11,6 +11,7 @@
 .detailPage {
   display: flex;
   height: calc(100vh - 7rem);
+  overflow: hidden;
   .expand {
     width: 100%;
     height: 25%;
@@ -22,7 +23,7 @@
     width: 65%;
     height: 90%;
     text-align: center;
-    margin-top: auto;
+    margin: 3rem 0;
 
     &__inner {
       width: 90%;
@@ -33,6 +34,8 @@
     }
     &__image {
       max-width: 100%;
+      max-height: 100%;
+      min-width: 55%;
     }
   }
 
@@ -49,10 +52,10 @@
     }
 
     &__buttons {
-      width: 100%;
+      width: 70%;
       display: flex;
       flex-direction: row;
-      justify-content: space-around;
+      justify-content: space-between;
       & div {
         display: flex;
         align-items: center;
@@ -66,7 +69,7 @@
       }
     }
     &__authors {
-      width: 100%;
+      width: 70%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -83,7 +86,7 @@
 
       &__author {
         position: relative;
-        width: 60%;
+        width: 100%;
         height: 45%;
         display: flex;
         flex-direction: row;

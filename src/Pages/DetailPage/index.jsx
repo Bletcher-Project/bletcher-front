@@ -55,7 +55,6 @@ class DetailPage extends Component {
 
   componentDidMount = async () => {
     const { getPost } = this.props;
-    // const postId = this.getPostIdByQuery();
     const params = this.getParamsByQuery();
     const { postId, isActive } = params;
 
