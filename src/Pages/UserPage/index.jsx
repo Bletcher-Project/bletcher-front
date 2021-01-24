@@ -10,6 +10,7 @@ import { getPostByPostId } from 'Redux/post';
 import NavBar from 'Components/Common/NavBar';
 import Loader from 'Components/Common/Loader';
 import MixHandler from 'Components/Mix/MixHandler';
+import MixChecker from 'Components/Mix/MixChecker';
 import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
@@ -29,8 +30,11 @@ const defaultProps = {
   user: {},
   token: '',
   userPosts: {},
+  mixId: null,
 };
 const propTypes = {
+  mixId: PropTypes.number,
+  isMixing: PropTypes.bool.isRequired,
   getPostById: PropTypes.func.isRequired,
   getPosts: PropTypes.func.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
@@ -77,6 +81,8 @@ const mapStateToProps = (state) => {
     token: state.authReducer.token,
     user: state.authReducer.user,
     userPosts: state.fetchPostReducer.userPosts,
+    mixId: state.postReducer.mixState.mixId,
+    isMixing: state.postReducer.mixState.isMixing,
   };
 };
 
@@ -233,7 +239,7 @@ class UserPage extends Component {
       chosenOriginPost,
       chosenSubPost,
     } = this.state;
-    const { user, userPosts } = this.props;
+    const { user, userPosts, mixId, isMixing } = this.props;
     return (
       <div className="userPage">
         <NavBar isActive={isMyPage ? 'user' : ''} />
@@ -268,13 +274,13 @@ class UserPage extends Component {
             </ul>
           </div>
         </div>
-
+        <MixChecker />
         <PostList
           posts={!feedLoading && userPosts ? this.showUserPosts() : <Loader />}
         />
 
         <Modal
-          isOpen={isMixModalOpen}
+          isOpen={isMixModalOpen && !(isMixing || mixId)}
           toggle={this.toggle}
           onClosed={this.modalOnClose}
         >

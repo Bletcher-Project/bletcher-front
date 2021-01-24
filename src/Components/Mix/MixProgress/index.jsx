@@ -108,7 +108,7 @@ function MixProgress(props) {
         width={width}
         height={height}
         barSize={barSize}
-        className="progressBar"
+        className="mixProgress"
       >
         <NoStyleButton
           onClick={() => {
@@ -116,7 +116,7 @@ function MixProgress(props) {
           }}
         >
           <div
-            className={cx('progressBar__icon', {
+            className={cx('mixProgress__icon', {
               'wow shake': !isMixing && mixId,
             })}
             data-wow-iteration="infinite"
@@ -124,10 +124,10 @@ function MixProgress(props) {
             data-wow-delay="2s"
             style={{ opacity: isMixing ? '50%' : '100%' }}
           >
-            <div className="progressBar__icon__photo">
+            <div className="mixProgress__icon__photo">
               <img src={photoImg} alt="" />
             </div>
-            <div className="progresBar__icon__arrow">
+            <div className="mixProgress__icon__arrow">
               <img src={rightArrow} alt="" />
             </div>
           </div>

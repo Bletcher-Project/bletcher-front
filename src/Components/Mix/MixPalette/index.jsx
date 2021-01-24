@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
 import { mixPost } from 'Redux/post';
@@ -41,7 +40,6 @@ const defaultProps = {
 };
 
 const propTypes = {
-  history: ReactRouterPropTypes.history.isRequired,
   token: PropTypes.string,
   originPost: postPropTypes().isRequired,
   subPost: postPropTypes().isRequired,
