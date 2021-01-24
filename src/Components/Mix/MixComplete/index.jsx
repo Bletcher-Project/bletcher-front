@@ -9,6 +9,7 @@ import { getPostByPostId, recomposeMixing } from 'Redux/post';
 import NoStyleButton from 'Components/Form/NoStyleButton';
 
 import { publicTos, privateTos } from 'Constants/mix-tos';
+import { completeTitle, completeDescription } from 'Constants/mix-text';
 
 import { withRouter } from 'react-router-dom';
 
@@ -125,11 +126,9 @@ class MixComplete extends Component {
       <>
         <div className="mixComplete">
           <div className="mixComplete__header">
-            <div className="mixComplete__header__title">
-              Composition completed successfully.
-            </div>
+            <div className="mixComplete__header__title">{completeTitle}</div>
             <div className="mixComplete__header__description">
-              Both public and private works are automatically saved on my feed.
+              {completeDescription}
             </div>
           </div>
           <div className="mixComplete__content">
