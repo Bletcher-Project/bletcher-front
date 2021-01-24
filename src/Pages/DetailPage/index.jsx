@@ -33,7 +33,6 @@ class DetailPage extends Component {
     super(props);
     this.state = {
       post: {},
-      isActive: '',
     };
   }
 
