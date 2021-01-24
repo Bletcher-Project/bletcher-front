@@ -64,6 +64,7 @@ function Profile(props) {
     setName(user && user.nickname);
     setEmail(user && user.email);
     setIntroduce(user && user.introduce);
+    setPassword({ raw: '', confirm: '' });
   };
 
   return (
@@ -124,7 +125,7 @@ function Profile(props) {
             save
           </Button>
           <Button size="small" width="80px" white onClick={initChanges}>
-            cancle
+            cancel
           </Button>
         </div>
       </div>
