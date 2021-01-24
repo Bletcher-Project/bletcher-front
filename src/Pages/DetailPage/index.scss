@@ -20,18 +20,10 @@
     background-color: $background-color;
   }
   &__content {
+    @include content-center;
     width: 65%;
     height: 90%;
-    text-align: center;
-    margin: 3rem 0;
 
-    &__inner {
-      width: 90%;
-      height: 100%;
-      overflow-y: auto;
-      margin: 0 auto;
-      direction: rtl;
-    }
     &__image {
       max-width: 100%;
       max-height: 100%;

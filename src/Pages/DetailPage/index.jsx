@@ -78,13 +78,11 @@ class DetailPage extends Component {
         <div className="detailPage">
           <div className="expand" />
           <div className="detailPage__content">
-            <div className="detailPage__content__inner">
-              <img
-                className="detailPage__content__image"
-                src={this.getSrc()}
-                alt="postImage"
-              />
-            </div>
+            <img
+              className="detailPage__content__image"
+              src={this.getSrc()}
+              alt="postImage"
+            />
           </div>
 
           <div
