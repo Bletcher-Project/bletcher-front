@@ -6,20 +6,23 @@ import Fab from '@material-ui/core/Fab';
 import colors from 'Constants/colors.scss';
 
 const defaultProps = {
-  text: '',
   disabled: false,
-  component: 'button',
   size: 'large',
   width: '200px',
+  white: false,
   href: null,
   onClick: null,
 };
 const propTypes = {
-  text: PropTypes.string,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.element),
+  ]).isRequired,
   disabled: PropTypes.bool,
-  component: PropTypes.elementType,
   size: PropTypes.oneOf(['large', 'medium', 'small']),
   width: PropTypes.string,
+  white: PropTypes.bool,
   href: PropTypes.string,
   onClick: PropTypes.func,
 };
@@ -31,16 +34,16 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'GothamRound, sans-serif',
     fontSize: 17,
     padding: '0 20px',
-    color: (props) =>
-      props.white
+    color: (white) =>
+      white
         ? colors.mainColor
         : theme.palette.getContrastText(colors.mainColor),
-    backgroundColor: (props) => (props.white ? colors.white : colors.mainColor),
-    border: (props) => (props.white ? `1px solid ${colors.mainColor}` : null),
+    backgroundColor: (white) => (white ? colors.white : colors.mainColor),
+    border: (white) => (white ? `1px solid ${colors.mainColor}` : null),
     '&:hover': {
-      color: (props) => (props.white ? colors.white : colors.mainColor),
-      backgroundColor: (props) =>
-        props.white ? colors.mainColor : colors.transparent,
+      color: (white) => (white ? colors.white : colors.mainColor),
+      backgroundColor: (white) =>
+        white ? colors.mainColor : colors.transparent,
       border: `2px solid ${colors.mainColor}`,
     },
     '&:active': {
@@ -51,22 +54,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Button(props) {
-  const classes = useStyles(props);
-  const { text, onClick, disabled, component, size, width, href } = props;
+  const { children, disabled, size, width, white, href, onClick } = props;
+  const classes = useStyles(white);
 
   return (
     <Fab
       className={classes.root}
       variant="extended"
       color="primary"
-      style={{ width }}
-      size={size}
+      component="button"
       disabled={disabled}
-      onClick={onClick}
-      component={component}
+      size={size}
+      style={{ width }}
       href={href}
+      onClick={onClick}
     >
-      {text}
+      {children}
     </Fab>
   );
 }

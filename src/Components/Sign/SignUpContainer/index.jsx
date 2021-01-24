@@ -98,12 +98,9 @@ class SignUpContainer extends Component {
           </div>
         </div>
         <div className="signUpContainer__footer">
-          <Button
-            text="Create account"
-            width="250px"
-            disabled={!isValid}
-            onClick={this.handleSignUp}
-          />
+          <Button width="250px" disabled={!isValid} onClick={this.handleSignUp}>
+            Create account
+          </Button>
           <div className="signUpContainer__footer-signinlink">
             <span>Already members? </span>
             <a href="/signin">Sign in</a>

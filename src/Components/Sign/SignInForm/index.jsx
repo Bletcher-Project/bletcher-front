@@ -147,11 +147,9 @@ class SignInForm extends Component {
           />
         </div>
         <div className="signInForm__submit">
-          <Button
-            text="Sign In"
-            width="250px"
-            onClick={() => this.handleSignIn()}
-          />
+          <Button width="250px" onClick={() => this.handleSignIn()}>
+            Sign In
+          </Button>
         </div>
       </form>
     );

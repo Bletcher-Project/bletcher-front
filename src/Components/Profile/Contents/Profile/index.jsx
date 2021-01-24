@@ -4,6 +4,7 @@ import { userType } from 'PropTypes';
 import UploadImgFile from 'Components/Upload/UploadImgFile';
 import Thumbnail from 'Components/Thumbnail';
 import Input from 'Components/Form/Input';
+import Button from 'Components/Form/Button';
 
 const defaultProps = { user: null };
 const propTypes = { user: userType };
@@ -80,6 +81,12 @@ function Profile(props) {
           width="100%"
           onChange={(e) => handleChangeIntroduce(e)}
         />
+        <Button size="small" width="80px">
+          save
+        </Button>
+        <Button size="small" width="80px" white>
+          cancle
+        </Button>
       </div>
     </div>
   );
