@@ -7,6 +7,7 @@ import { mixPost } from 'Redux/post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
 
+import { paletteTitle, paletteDescription } from 'Constants/mix-text';
 import mixButton from 'Assets/images/mixButton.png';
 
 import { withRouter } from 'react-router-dom';
@@ -84,11 +85,9 @@ class MixPalette extends Component {
       <>
         <div className="mixPalette">
           <div className="mixPalette__header">
-            <div className="mixPalette__header__title">
-              Please Select a work to upload
-            </div>
+            <div className="mixPalette__header__title">{paletteTitle}</div>
             <div className="mixPalette__header__description">
-              Both public and private works are automatically saved on my feed.
+              {paletteDescription}
             </div>
           </div>
           <div className="mixPalette__content">
