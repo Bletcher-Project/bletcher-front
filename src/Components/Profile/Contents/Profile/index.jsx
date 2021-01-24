@@ -81,12 +81,14 @@ function Profile(props) {
           width="100%"
           onChange={(e) => handleChangeIntroduce(e)}
         />
-        <Button size="small" width="80px">
-          save
-        </Button>
-        <Button size="small" width="80px" white>
-          cancle
-        </Button>
+        <div className="profile__form-submit">
+          <Button size="small" width="80px">
+            save
+          </Button>
+          <Button size="small" width="80px" white>
+            cancle
+          </Button>
+        </div>
       </div>
     </div>
   );

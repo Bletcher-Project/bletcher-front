@@ -21,5 +21,16 @@
       color: $dark-gray;
       margin-bottom: 30px;
     }
+
+    &-submit {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+
+      & button:first-child {
+        margin-right: 10px;
+      }
+    }
   }
 }
