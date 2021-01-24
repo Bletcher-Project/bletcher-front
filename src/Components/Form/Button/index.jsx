@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
       color: (white) => (white ? colors.white : colors.mainColor),
       backgroundColor: (white) =>
         white ? colors.mainColor : colors.transparent,
-      border: `2px solid ${colors.mainColor}`,
+      border: `1px solid ${colors.mainColor}`,
     },
     '&:active': {
       boxShadow: 'none',

@@ -46,6 +46,17 @@ function Profile(props) {
     setIntroduce(e.target.value);
   };
 
+  const updateProfile = () => {
+    // TODO: update Profile
+  };
+
+  const initChanges = () => {
+    setImage({ preview: user && user.profile_image, raw: null });
+    setName(user && user.nickname);
+    setEmail(user && user.email);
+    setIntroduce(user && user.introduce);
+  };
+
   return (
     <div className="profile">
       <div className="profile__form">
@@ -82,10 +93,10 @@ function Profile(props) {
           onChange={(e) => handleChangeIntroduce(e)}
         />
         <div className="profile__form-submit">
-          <Button size="small" width="80px">
+          <Button size="small" width="80px" onClick={updateProfile}>
             save
           </Button>
-          <Button size="small" width="80px" white>
+          <Button size="small" width="80px" white onClick={initChanges}>
             cancle
           </Button>
         </div>
