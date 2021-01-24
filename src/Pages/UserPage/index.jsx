@@ -196,17 +196,21 @@ class UserPage extends Component {
     );
   };
 
+  toggle = () => {
+    const { isMixModalOpen } = this.state;
+    this.setState({ isMixModalOpen: !isMixModalOpen });
+  };
+
+  modalOnClose = () => {
+    this.setState({ chosenSubPost: null, chosenOriginPost: null });
+  };
+
   componentDidMount = async () => {
     const { user } = this.props;
     if (user) {
       await this.setUser();
       await this.getUserPosts(USER_OPTION);
     }
-  };
-
-  toggle = () => {
-    const { isMixModalOpen } = this.state;
-    this.setState({ isMixModalOpen: !isMixModalOpen });
   };
 
   componentDidUpdate = async (prevProps) => {
@@ -268,7 +272,12 @@ class UserPage extends Component {
         <PostList
           posts={!feedLoading && userPosts ? this.showUserPosts() : <Loader />}
         />
-        <Modal isOpen={isMixModalOpen} toggle={this.toggle}>
+
+        <Modal
+          isOpen={isMixModalOpen}
+          toggle={this.toggle}
+          onClosed={this.modalOnClose}
+        >
           <MixHandler
             chosenSubPost={chosenSubPost}
             chosenOriginPost={chosenOriginPost}
