@@ -65,13 +65,12 @@ class DetailPage extends Component {
       );
     } else this.linkToNotFound();
 
-    if (isActive === 'Ongoing' || isActive === 'End')
-      await new Promise((accept) => this.setState({ isActive }, accept));
-    else this.linkToNotFound();
+    if (!(isActive === 'Ongoing' || isActive === 'End')) this.linkToNotFound();
   };
 
   render() {
-    const { isActive } = this.state;
+    const params = this.getParamsByQuery();
+    const { isActive } = params;
     return (
       <div className="wrapper">
         <NavBar isActive="detail" />
