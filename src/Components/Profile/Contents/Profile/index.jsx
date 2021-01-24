@@ -15,10 +15,12 @@ function Profile(props) {
     raw: null,
   });
   const [name, setName] = useState();
+  const [email, setEmail] = useState();
   const [introduce, setIntroduce] = useState();
 
   useEffect(() => {
     setName(user && user.nickname);
+    setEmail(user && user.email);
     setIntroduce(user && user.introduce);
   }, [user]);
 
@@ -33,6 +35,10 @@ function Profile(props) {
 
   const handleChangeName = (e) => {
     setName(e.target.value);
+  };
+
+  const handleChangeEmail = (e) => {
+    setEmail(e.target.value);
   };
 
   const handleChangeIntroduce = (e) => {
@@ -58,6 +64,14 @@ function Profile(props) {
           autoComplete="username"
           width="100%"
           onChange={(e) => handleChangeName(e)}
+        />
+        <Input
+          placeholder="Email"
+          value={email}
+          type="text"
+          autoComplete="email"
+          width="100%"
+          onChange={(e) => handleChangeEmail(e)}
         />
         <Input
           placeholder="Short Introduce"

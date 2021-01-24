@@ -48,7 +48,7 @@ const CustomTextField = withStyles({
     },
     '& .MuiOutlinedInput-input': {
       padding: '14px 18px',
-      color: colors.lightGray,
+      color: colors.darkGray,
       fontSize: fontSizes.basic,
       fontFamily: 'GothamRound, sans-serif',
       '&:focus': {
