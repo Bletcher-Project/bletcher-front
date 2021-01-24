@@ -1,0 +1,42 @@
+/*
+  ProgressBar Component Styling
+*/
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .pgText {
+    display: flex;
+    & .noStyleButton {
+      margin-left: 1rem;
+    }
+  }
+}
+
+.progressBar {
+  position: relative;
+  &__bar {
+    margin-right: 5.5rem;
+    animation: progressbar 5s ease-out;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+  }
+  &__icon {
+    position: absolute;
+    right: 1rem;
+    top: 0.8rem;
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+@keyframes progressbar {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
