@@ -18,6 +18,7 @@ function Profile(props) {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [introduce, setIntroduce] = useState();
+  const [password, setPassword] = useState({ raw: '', confirm: '' });
 
   useEffect(() => {
     setName(user && user.nickname);
@@ -44,6 +45,14 @@ function Profile(props) {
 
   const handleChangeIntroduce = (e) => {
     setIntroduce(e.target.value);
+  };
+
+  const handleChangePassword = (e) => {
+    setPassword({ ...password, raw: e.target.value });
+  };
+
+  const handleChangeRePassword = (e) => {
+    setPassword({ ...password, confirm: e.target.value });
   };
 
   const updateProfile = () => {
@@ -85,6 +94,24 @@ function Profile(props) {
           width="100%"
           onChange={(e) => handleChangeEmail(e)}
         />
+        <div className="profile__form-div">
+          <Input
+            placeholder="Password"
+            value={password.raw}
+            type="text"
+            autoComplete="password"
+            width="49%"
+            onChange={(e) => handleChangePassword(e)}
+          />
+          <Input
+            placeholder="Re-Password"
+            value={password.confirm}
+            type="text"
+            autoComplete="password"
+            width="49%"
+            onChange={(e) => handleChangeRePassword(e)}
+          />
+        </div>
         <Input
           placeholder="Short Introduce"
           value={introduce}
