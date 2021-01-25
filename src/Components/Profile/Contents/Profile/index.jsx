@@ -99,7 +99,7 @@ function Profile(props) {
           <Input
             placeholder="Password"
             value={password.raw}
-            type="text"
+            type="password"
             autoComplete="password"
             width="49%"
             onChange={(e) => handleChangePassword(e)}
@@ -107,7 +107,7 @@ function Profile(props) {
           <Input
             placeholder="Re-Password"
             value={password.confirm}
-            type="text"
+            type="password"
             autoComplete="password"
             width="49%"
             onChange={(e) => handleChangeRePassword(e)}
