@@ -15,9 +15,13 @@
     background: $white-gray;
     border: 1px solid $border-gray;
     overflow: hidden;
+    @include content-center;
+
+    & img {
+      height: 100%;
+    }
 
     &.default {
-      @include content-center;
       user-select: none;
 
       & span {
