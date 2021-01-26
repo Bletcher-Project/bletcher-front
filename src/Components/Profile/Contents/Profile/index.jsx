@@ -79,48 +79,51 @@ function Profile(props) {
           Bletcher users will be able to identify you with the information
           below.
         </p>
-        <Input
-          placeholder="User Name"
-          value={name}
-          type="text"
-          autoComplete="username"
-          width="100%"
-          onChange={(e) => handleChangeName(e)}
-        />
-        <Input
-          placeholder="Email"
-          value={email}
-          type="text"
-          autoComplete="email"
-          width="100%"
-          onChange={(e) => handleChangeEmail(e)}
-        />
-        <div className="profile__form-div">
+        <form className="profile__form__inputs">
           <Input
-            placeholder="Password"
-            value={password.raw}
-            type="password"
-            autoComplete="password"
-            width="49%"
-            onChange={(e) => handleChangePassword(e)}
+            placeholder="User Name"
+            value={name}
+            type="text"
+            autoComplete="username"
+            width="100%"
+            onChange={(e) => handleChangeName(e)}
           />
           <Input
-            placeholder="Re-Password"
-            value={password.confirm}
-            type="password"
-            autoComplete="password"
-            width="49%"
-            onChange={(e) => handleChangeRePassword(e)}
+            placeholder="Email"
+            value={email}
+            type="text"
+            autoComplete="email"
+            width="100%"
+            onChange={(e) => handleChangeEmail(e)}
           />
-        </div>
-        <Input
-          placeholder="Short Introduce"
-          value={introduce}
-          type="text"
-          width="100%"
-          multiline
-          onChange={(e) => handleChangeIntroduce(e)}
-        />
+          <div className="profile__form__inputs-div">
+            <Input
+              placeholder="Password"
+              value={password.raw}
+              type="password"
+              autoComplete="password"
+              width="49%"
+              onChange={(e) => handleChangePassword(e)}
+            />
+            <Input
+              placeholder="Re-Password"
+              value={password.confirm}
+              type="password"
+              autoComplete="password"
+              width="49%"
+              onChange={(e) => handleChangeRePassword(e)}
+            />
+          </div>
+          <Input
+            placeholder="Short Introduce"
+            value={introduce}
+            type="text"
+            width="100%"
+            multiline
+            onChange={(e) => handleChangeIntroduce(e)}
+          />
+        </form>
+
         <div className="profile__form-submit">
           <Button size="small" width="80px" onClick={updateProfile}>
             save

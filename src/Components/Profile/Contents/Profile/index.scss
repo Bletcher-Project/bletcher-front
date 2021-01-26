@@ -22,10 +22,14 @@
       margin-bottom: 30px;
     }
 
-    &-div {
+    &__inputs {
       width: 100%;
-      display: flex;
-      justify-content: space-between;
+
+      &-div {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
     }
 
     &-submit {
