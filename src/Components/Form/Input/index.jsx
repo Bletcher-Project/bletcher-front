@@ -11,6 +11,8 @@ const defaultProps = {
   value: '',
   autoComplete: 'off',
   width: '200px',
+  multiline: false,
+  rows: 2,
   disabled: false,
   error: false,
   helperText: ' ',
@@ -23,6 +25,8 @@ const propTypes = {
   type: PropTypes.string.isRequired,
   autoComplete: PropTypes.string,
   width: PropTypes.string,
+  multiline: PropTypes.bool,
+  rows: PropTypes.number,
   disabled: PropTypes.bool,
   error: PropTypes.bool,
   helperText: PropTypes.string,
@@ -55,6 +59,9 @@ const CustomTextField = withStyles({
         color: 'black',
       },
     },
+    '& textarea.MuiInputBase-input': {
+      padding: '5px',
+    },
     '& .MuiFormHelperText-root': {
       fontFamily: 'GothamRound, sans-serif',
     },
@@ -68,6 +75,8 @@ function Input(props) {
     type,
     autoComplete,
     width,
+    multiline,
+    rows,
     disabled,
     error,
     helperText,
@@ -84,6 +93,8 @@ function Input(props) {
       type={type}
       autoComplete={autoComplete}
       style={{ width }}
+      multiline={multiline}
+      rows={rows}
       disabled={disabled}
       error={error}
       helperText={helperText}

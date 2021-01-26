@@ -118,6 +118,7 @@ function Profile(props) {
           value={introduce}
           type="text"
           width="100%"
+          multiline
           onChange={(e) => handleChangeIntroduce(e)}
         />
         <div className="profile__form-submit">
