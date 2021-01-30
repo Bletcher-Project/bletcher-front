@@ -29,3 +29,4 @@ export const mainPost = PropTypes.arrayOf(
 );
 
 export const favoritePost = PropTypes.arrayOf(basicType.isRequired);
+export const fundingPost = PropTypes.arrayOf(basicType.isRequired);

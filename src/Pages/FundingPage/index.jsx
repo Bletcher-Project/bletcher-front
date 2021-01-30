@@ -16,6 +16,7 @@ import DropFilter from 'Components/Common/DropFilter';
 import NoStyleButton from 'Components/Form/NoStyleButton';
 
 import FILTER from 'Constants/filter-option';
+import { fundingPost } from 'PropTypes/post';
 
 import { withRouter } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
@@ -36,30 +37,7 @@ const propTypes = {
     nickname: PropTypes.string,
   }),
   getPosts: PropTypes.func.isRequired,
-  fundingPosts: PropTypes.objectOf(
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        Category: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          name: PropTypes.string.isRequired,
-        }),
-        Image: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          path: PropTypes.string,
-        }),
-        User: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          nickname: PropTypes.string.isRequired,
-        }),
-        created_at: PropTypes.string.isRequired,
-        description: PropTypes.string,
-        id: PropTypes.number.isRequired,
-        is_public: PropTypes.oneOf([0, 1, true, false]).isRequired,
-        title: PropTypes.string.isRequired,
-        updated_at: PropTypes.string.isRequired,
-      }).isRequired,
-    ),
-  ),
+  fundingPosts: PropTypes.objectOf(fundingPost),
 };
 
 const mapStateToProps = (state) => {
