@@ -11,6 +11,8 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
+import RoundLoader from 'Components/Loader/Round';
+
 import plusButton from 'Assets/images/plus.svg';
 
 const defaultProps = {
@@ -18,6 +20,7 @@ const defaultProps = {
   token: null,
 };
 const propTypes = {
+  isUploading: PropTypes.bool.isRequired,
   uploadPost: PropTypes.func.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
@@ -30,6 +33,7 @@ const mapStateToProps = (state) => {
   return {
     token: state.authReducer.token,
     user: state.authReducer.user,
+    isUploading: state.postReducer.uploadState.isUploading,
   };
 };
 
@@ -104,8 +108,10 @@ class Upload extends Component {
 
   render() {
     const { content, modal, pictureImgUrl } = this.state;
+    const { isUploading } = this.props;
     return (
       <>
+        {isUploading && <RoundLoader />}
         <button
           type="button"
           onClick={this.toggle}

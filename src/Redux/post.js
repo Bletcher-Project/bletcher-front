@@ -16,6 +16,9 @@ const initialState = {
     progressIndex: 0,
     originId: null,
   },
+  uploadState: {
+    isUploading: false,
+  },
 };
 
 const CLICK_POST_SUCCESS = 'post/CLICK_POST_SUCCESS';
@@ -23,6 +26,7 @@ const CLICK_POST_FAIL = 'post/CLICK_POST_FAIL';
 
 const UPLOAD_POST_SUCCESS = 'post/UPLOAD_POST_SUCCESS';
 const UPLOAD_POST_FAIL = 'post/UPLOAD_POST_FAIL';
+const UPLOAD_POST_START = 'post/UPLOAD_POST_START';
 
 const DELETE_POST_SUCCESS = 'post/DELETE_POST_SUCCESS';
 const DELETE_POST_FAIL = 'post/DELETE_POST_FAIL';
@@ -60,6 +64,7 @@ export const mixPostFail = createAction(MIX_POST_FAIL);
 export const modifyIsMixing = createAction(MODIFY_IS_MIXING);
 export const increasePbIndex = createAction(INCREASE_PB_INDEX);
 export const recomposeMixing = createAction(RECOMPOSE_MIXING);
+export const uploadPostStart = createAction(UPLOAD_POST_START);
 
 export default postReducer(
   {
@@ -70,10 +75,28 @@ export default postReducer(
       return state;
     },
     [UPLOAD_POST_SUCCESS]: (state) => {
-      return state;
+      return {
+        ...state,
+        uploadState: {
+          isUploading: false,
+        },
+      };
     },
     [UPLOAD_POST_FAIL]: (state) => {
-      return state;
+      return {
+        ...state,
+        uploadState: {
+          isUploading: false,
+        },
+      };
+    },
+    [UPLOAD_POST_START]: (state) => {
+      return {
+        ...state,
+        uploadState: {
+          isUploading: true,
+        },
+      };
     },
     [DELETE_POST_SUCCESS]: (state) => {
       return state;
@@ -198,6 +221,7 @@ export const addFundingPost = (postId, token) => {
 export const uploadPost = (image, payload, token) => {
   return async (dispatch) => {
     try {
+      await dispatch(uploadPostStart());
       const responseImage = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${IMAGE_API}${POST_API}`,
         {
@@ -224,7 +248,7 @@ export const uploadPost = (image, payload, token) => {
       );
       if (response.status === 200) {
         const result = await response.json();
-        await dispatch(uploadPostSuccess(result));
+        await dispatch(uploadPostSuccess());
         await dispatch(addFundingPost(result.data.id, token));
       }
     } catch (err) {
