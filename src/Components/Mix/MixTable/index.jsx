@@ -6,6 +6,8 @@ import { getNewPosts } from 'Redux/fetch-post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
 
+import { basicType } from 'PropTypes/post';
+
 import cx from 'classnames';
 
 const defaultProps = {
@@ -16,28 +18,7 @@ const propTypes = {
   postSubPost: PropTypes.func.isRequired,
   getPostList: PropTypes.func.isRequired,
   originPostId: PropTypes.number.isRequired,
-  subPosts: PropTypes.arrayOf(
-    PropTypes.shape({
-      Category: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-      }),
-      Image: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        path: PropTypes.string,
-      }),
-      User: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        nickname: PropTypes.string.isRequired,
-      }),
-      created_at: PropTypes.string.isRequired,
-      description: PropTypes.string,
-      id: PropTypes.number.isRequired,
-      is_public: PropTypes.bool.isRequired,
-      title: PropTypes.string.isRequired,
-      updated_at: PropTypes.string.isRequired,
-    }),
-  ),
+  subPosts: PropTypes.arrayOf(basicType),
 };
 
 const mapDispatchToProps = (dispatch) => {

@@ -19,6 +19,7 @@ import ShareButton from 'Components/Post/PostButton/ShareButton';
 import Upload from 'Components/Upload/UploadPost';
 
 import USER_OPTION from 'Constants/userpage-option';
+import { basicType } from 'PropTypes/post';
 import EditButton from 'Assets/images/editButton.png';
 
 import camelCase from 'camelcase';
@@ -50,30 +51,7 @@ const propTypes = {
   }),
   token: PropTypes.string,
   history: ReactRouterPropTypes.history.isRequired,
-  userPosts: PropTypes.objectOf(
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        Category: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          name: PropTypes.string.isRequired,
-        }),
-        Image: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          path: PropTypes.string,
-        }),
-        User: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          nickname: PropTypes.string.isRequired,
-        }),
-        created_at: PropTypes.string.isRequired,
-        description: PropTypes.string,
-        id: PropTypes.number.isRequired,
-        is_public: PropTypes.bool.isRequired,
-        title: PropTypes.string.isRequired,
-        updated_at: PropTypes.string.isRequired,
-      }),
-    ),
-  ),
+  userPosts: PropTypes.objectOf(PropTypes.arrayOf(basicType)),
 };
 
 const mapStateToProps = (state) => {

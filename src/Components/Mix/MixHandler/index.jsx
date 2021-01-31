@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { postType } from 'PropTypes';
+import { basicType } from 'PropTypes/post';
 
 import MixPalette from 'Components/Mix/MixPalette';
 import MixTable from 'Components/Mix/MixTable';
@@ -13,8 +13,8 @@ const defaultProps = {
   chosenSubPost: null,
 };
 const propTypes = {
-  chosenOriginPost: postType.basicType,
-  chosenSubPost: postType.basicType,
+  chosenOriginPost: basicType,
+  chosenSubPost: basicType,
   subPostFunc: PropTypes.func.isRequired,
 };
 
