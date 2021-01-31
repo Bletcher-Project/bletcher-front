@@ -113,6 +113,12 @@ class MixComplete extends Component {
     }
   };
 
+  getSrc = (post) => {
+    if (!post) return null;
+    if (post.Image !== undefined) return post.Image.path;
+    return post['Image.path'];
+  };
+
   componentDidMount = async () => {
     const { getMixedPost, mixId, token } = this.props;
     const mPost = await getMixedPost(mixId, token);
@@ -134,7 +140,7 @@ class MixComplete extends Component {
           <div className="mixComplete__content">
             <div className="mixComplete__content__leftBox">
               <div className="mixComplete__content__leftBox__imgBox">
-                <img src={mixedPost ? mixedPost.Image.path : null} alt="" />
+                <img src={this.getSrc(mixedPost)} alt="" />
               </div>
             </div>
             <div className="mixComplete__content__rightBox">
