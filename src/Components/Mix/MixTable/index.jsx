@@ -68,6 +68,11 @@ class MixTable extends Component {
     this.setState({ isExpanded: !isExpanded });
   };
 
+  getSrc = (post) => {
+    if (post.Image !== undefined) return post.Image.path;
+    return post['Image.path'];
+  };
+
   initSubPostList = async () => {
     const { subPosts, originPostId, postSubPost } = this.props;
     const tmpSubPostList = subPosts.filter((post) => {
@@ -82,7 +87,7 @@ class MixTable extends Component {
                 postSubPost(post);
               }}
             >
-              <img src={post.Image.path} alt="subPost" />
+              <img src={this.getSrc(post)} alt="subPost" />
             </NoStyleButton>
           </div>
         );
