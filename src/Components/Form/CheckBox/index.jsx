@@ -33,7 +33,7 @@ const CustomFormControlLabel = withStyles({
 function CheckBox(props) {
   const { label } = props;
 
-  const [checked, setChecked] = React.useState(true);
+  const [checked, setChecked] = React.useState(false);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
