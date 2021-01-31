@@ -53,86 +53,56 @@ function MixProgress(props) {
     window.location.replace('/');
   };
 
-  const stopAnimationIterate = () => {
-    if (barRef.current !== undefined)
-      barRef.current.style.animationIterationCount = 1;
-  };
-
   const getText = () => {
     if (!isMixing && mixId) {
-      stopAnimationIterate();
       return pgBarCompleteText;
     }
     if (mixId === 0) {
       if (!error) setError(true);
-      stopAnimationIterate();
-      return pgBarErrorText;
+      return (
+        <>
+          <span>{pgBarErrorText}</span>
+          <NoStyleButton onClick={refreshToRoot}>
+            <div className="refresh">
+              <img src={refresh} alt="refresh" />
+            </div>
+          </NoStyleButton>
+        </>
+      );
     }
     return pgBarText[progressIndex];
   };
 
   useEffect(() => {
-    new WOW.WOW({
-      live: false,
-    }).init();
-  }, []);
-
-  useEffect(() => {
-    let refCurrent = null;
-    if (barRef.current !== undefined) {
-      refCurrent = barRef.current;
-      refCurrent.addEventListener('animationiteration', () => {
-        dispatch(increasePbIndex());
-      });
-    }
-    return () => {
-      return (
-        refCurrent && refCurrent.removeEventListener('animationiteration', null)
-      );
-    };
-  }, [progressIndex, dispatch]);
+    setInterval(() => {
+      dispatch(increasePbIndex());
+    }, 30000);
+  });
 
   return (
     <div className="container">
-      <div className="pgText">
-        {getText()}
-        {error && (
-          <NoStyleButton onClick={refreshToRoot}>
-            <img src={refresh} alt="refresh" />
-          </NoStyleButton>
-        )}
-      </div>
-      <Bar
-        barRef={barRef}
-        value={value}
-        width={width}
-        height={height}
-        barSize={barSize}
-        className="mixProgress"
-      >
+      <div className="pgText">{getText()}</div>
+      <Progress
+        animated
+        value={100}
+        style={{ backgroundColor: colors.mainColor }}
+      />
+      {isMixEnd() && (
         <NoStyleButton
           onClick={() => {
-            if (!isMixing && mixId) setIsOpen(true);
+            if (isMixEnd()) setIsOpen(true);
           }}
         >
-          <div
-            className={cx('mixProgress__icon', {
-              'wow shake': !isMixing && mixId,
-            })}
-            data-wow-iteration="infinite"
-            data-wow-duration="5s"
-            data-wow-delay="2s"
-            style={{ opacity: isMixing ? '50%' : '100%' }}
-          >
+          <div className="mixProgress__icon">
             <div className="mixProgress__icon__photo">
-              <img src={photoImg} alt="" />
+              <img src={photoImg} alt="photoicon" />
             </div>
             <div className="mixProgress__icon__arrow">
-              <img src={rightArrow} alt="" />
+              <img src={rightArrow} alt="right" />
             </div>
           </div>
         </NoStyleButton>
-      </Bar>
+      )}
       <Modal isOpen={isOpen} toggle={toggle}>
         <MixComplete />
       </Modal>

@@ -6,37 +6,27 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
   .pgText {
     display: flex;
+    justify-content: center;
+    align-items: center;
+
     & .noStyleButton {
       margin-left: 1rem;
     }
   }
-}
 
-.mixProgress {
-  position: relative;
-  &__bar {
-    margin-right: 5.5rem;
-    animation: progressbar 5s ease-out;
-    animation-fill-mode: forwards;
-    animation-iteration-count: infinite;
-  }
-  &__icon {
-    position: absolute;
-    right: 1rem;
-    top: 0.8rem;
+  .mixProgress__icon {
     display: flex;
-    flex-direction: row;
+    @include purpleButton;
   }
 }
 
-@keyframes progressbar {
-  0% {
-    width: 0%;
-  }
-  100% {
-    width: 100%;
-  }
+.progress {
+  width: 50%;
+  margin: 1rem auto;
+}
+
+.refresh {
+  @include purpleButton;
 }
