@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import { withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { getUserPosts } from 'Redux/fetch-post';
@@ -19,39 +20,31 @@ import ShareButton from 'Components/Post/PostButton/ShareButton';
 import Upload from 'Components/Upload/UploadPost';
 
 import USER_OPTION from 'Constants/userpage-option';
-import { basicType } from 'PropTypes/post';
+import { postType, userType } from 'PropTypes';
 import EditButton from 'Assets/images/editButton.png';
 
 import camelCase from 'camelcase';
 import { Modal } from 'reactstrap';
-
 import cx from 'classnames';
+import queryString from 'query-string';
 
 const defaultProps = {
   user: {},
   token: '',
   userPosts: {},
   mixId: null,
+  isMixing: false,
 };
 const propTypes = {
   mixId: PropTypes.number,
-  isMixing: PropTypes.bool.isRequired,
+  isMixing: PropTypes.bool,
   getPostById: PropTypes.func.isRequired,
   getPosts: PropTypes.func.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    email: PropTypes.string,
-    nickname: PropTypes.string,
-    introduce: PropTypes.string,
-    profile_image: PropTypes.string,
-    password: PropTypes.string,
-    createdAt: PropTypes.string,
-    updatedAt: PropTypes.string,
-  }),
+  user: userType,
   token: PropTypes.string,
   history: ReactRouterPropTypes.history.isRequired,
-  userPosts: PropTypes.objectOf(PropTypes.arrayOf(basicType)),
+  userPosts: PropTypes.objectOf(PropTypes.arrayOf(postType.basicType)),
 };
 
 const mapStateToProps = (state) => {
@@ -170,8 +163,8 @@ class UserPage extends Component {
 
   mixModalHandler = async (postId) => {
     const { token, getPostById } = this.props;
-    const tmp = await getPostById(postId, token);
-    this.setState({ isMixModalOpen: true, chosenOriginPost: tmp });
+    const originPost = await getPostById(postId, token);
+    this.setState({ isMixModalOpen: true, chosenOriginPost: originPost });
   };
 
   postSubPost = async (subPost) => {
@@ -189,12 +182,24 @@ class UserPage extends Component {
     this.setState({ chosenSubPost: null, chosenOriginPost: null });
   };
 
+  addLocationListener = () => {
+    const { history } = this.props;
+    history.listen((location) => {
+      if (location) {
+        const query = queryString.parse(location.search);
+        const originId = query.recompose;
+        if (originId !== undefined) this.mixModalHandler(originId);
+      }
+    });
+  };
+
   componentDidMount = async () => {
     const { user } = this.props;
     if (user) {
       await this.setUser();
       await this.getUserPosts(USER_OPTION);
     }
+    this.addLocationListener();
   };
 
   componentDidUpdate = async (prevProps) => {
@@ -256,9 +261,8 @@ class UserPage extends Component {
         <PostList
           posts={!feedLoading && userPosts ? this.showUserPosts() : <Loader />}
         />
-
         <Modal
-          isOpen={isMixModalOpen && !(isMixing || mixId)}
+          isOpen={chosenOriginPost && isMixModalOpen && !(isMixing || mixId)}
           toggle={this.toggle}
           onClosed={this.modalOnClose}
         >
@@ -276,4 +280,6 @@ class UserPage extends Component {
 UserPage.defaultProps = defaultProps;
 UserPage.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserPage);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(UserPage),
+);

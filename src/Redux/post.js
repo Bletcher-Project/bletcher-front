@@ -163,7 +163,7 @@ export default postReducer(
       return {
         ...initialState,
         mixState: {
-          ...initialState,
+          ...initialState.mixState,
           originId,
         },
       };
