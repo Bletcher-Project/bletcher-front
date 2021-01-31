@@ -340,18 +340,16 @@ export const mixPost = (originId, subId, token) => {
         },
       );
       if (response.status === 200) {
-        setTimeout(async () => {
-          await dispatch(mixPostSuccess());
-          mixId = (await response.json()).data;
-          await dispatch(
-            modifyIsMixing({
-              isMixing: false,
-              mixId,
-              progressIndex: 0,
-              originId,
-            }),
-          );
-        }, 10000);
+        await dispatch(mixPostSuccess());
+        mixId = (await response.json()).data;
+        await dispatch(
+          modifyIsMixing({
+            isMixing: false,
+            mixId,
+            progressIndex: 0,
+            originId,
+          }),
+        );
       } else {
         await dispatch(mixPostFail());
       }

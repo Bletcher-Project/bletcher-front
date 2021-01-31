@@ -1,49 +1,38 @@
-import React, { useEffect, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { increasePbIndex } from 'Redux/post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
 import MixComplete from 'Components/Mix/MixComplete';
-import Bar from 'Components/Common/Bar';
 
 import {
   pgBarText,
   pgBarCompleteText,
   pgBarErrorText,
 } from 'Constants/progressbar-text';
+import colors from 'Constants/colors.scss';
+
 import photoImg from 'Assets/images/photo.svg';
 import rightArrow from 'Assets/images/rightArrow.svg';
 import refresh from 'Assets/images/refresh.svg';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Modal, Progress } from 'reactstrap';
 
-import WOW from 'wowjs';
-import cx from 'classnames';
-import { Modal } from 'reactstrap';
+const defaultProps = {};
+const propTypes = {};
 
-const defaultProps = {
-  height: 2,
-  barSize: 0.5,
-  value: 0,
-};
-const propTypes = {
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number,
-  barSize: PropTypes.number,
-  value: PropTypes.number,
-};
-
-function MixProgress(props) {
-  const { width, height, barSize, value } = props;
+function MixProgress() {
   const mixState = useSelector((state) => state.postReducer.mixState);
   const { progressIndex, isMixing, mixId } = mixState;
 
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState(false);
-  const barRef = useRef();
+
+  const isMixEnd = () => {
+    return !isMixing && mixId;
+  };
 
   const toggle = () => {
     setIsOpen(!isOpen);
