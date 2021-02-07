@@ -46,6 +46,10 @@
       align-items: center;
       justify-content: space-between;
       padding-top: 15px;
+
+      & h4 {
+        margin: 0;
+      }
     }
   }
 }

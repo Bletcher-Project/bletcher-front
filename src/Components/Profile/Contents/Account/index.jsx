@@ -1,13 +1,14 @@
 import React from 'react';
 
 import CheckBox from 'Components/Form/CheckBox';
-import Button from 'Components/Form/Button';
+import DangerButton from 'Components/Form/DangerButton';
 
 function Account() {
   return (
     <div className="account">
       <p className="account__desc">
-        Setting up a login environment can help you provide <br />
+        Setting up a login environment can help you provide
+        <br />
         customized services. You can change your account here.
       </p>
 
@@ -33,15 +34,11 @@ function Account() {
         <h3>Account Change</h3>
         <div className="account__change-op">
           <h4>Hide Profile</h4>
-          <Button size="small" width="230px">
-            Account deactivation
-          </Button>
+          <DangerButton>Account deactivation</DangerButton>
         </div>
         <div className="account__change-op">
           <h4>Deleting accounts and account data</h4>
-          <Button size="small" width="230px">
-            Account termination
-          </Button>
+          <DangerButton secondColor>Account termination</DangerButton>
         </div>
       </div>
     </div>

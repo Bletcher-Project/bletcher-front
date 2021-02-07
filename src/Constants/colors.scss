@@ -5,7 +5,7 @@ $background-color: #fff4c9;
 
 $hover-color: #fff9e7;
 $dark-purple: #9a82aa;
-$light-purple: #f5e7ff;
+$light-purple: #e9d5f7;
 
 $dark-gray: #353535;
 $light-gray: #a7a7a7;
@@ -22,6 +22,7 @@ $transparent: rgba(0, 0, 0, 0);
 
 :export {
   mainColor: $main-color;
+  lightPurple: $light-purple;
   darkGray: $dark-gray;
   lightGray: $light-gray;
   white: $white;
