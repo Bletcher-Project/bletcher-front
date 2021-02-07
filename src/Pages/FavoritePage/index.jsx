@@ -12,6 +12,8 @@ import PostList from 'Components/Post/PostList';
 import Loader from 'Components/Common/Loader';
 import Button from 'Components/Form/Button';
 import SignInModal from 'Components/Sign/SignInModal';
+import MixChecker from 'Components/Mix/MixChecker';
+
 import favEmpty from 'Assets/images/favorite-empty.png';
 
 const defaultProps = {
@@ -99,6 +101,7 @@ class FavoritePage extends Component {
       <>
         <NavBar isActive="favorite" />
         <Jumbotron title="Favorite" description="My favorite works" />
+        <MixChecker />
         {isLogin ? (
           <PostList posts={!loading ? this.renderPosts() : <Loader />} />
         ) : (
