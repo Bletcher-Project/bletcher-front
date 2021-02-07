@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { increasePbIndex } from 'Redux/post';
+import { useSelector } from 'react-redux';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
 import MixComplete from 'Components/Mix/MixComplete';
@@ -25,8 +24,6 @@ const propTypes = {};
 function MixProgress() {
   const mixState = useSelector((state) => state.postReducer.mixState);
   const { progressIndex, isMixing, mixId } = mixState;
-
-  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState(false);
 
@@ -42,9 +39,27 @@ function MixProgress() {
     window.location.replace('/');
   };
 
+  const getImageDiv = (className, src) => {
+    return (
+      <div className={className}>
+        <img src={src} alt={className} />
+      </div>
+    );
+  };
+
   const getText = () => {
-    if (!isMixing && mixId) {
-      return pgBarCompleteText;
+    if (isMixEnd()) {
+      return (
+        <>
+          <span>{pgBarCompleteText}</span>
+          <NoStyleButton onClick={() => setIsOpen(true)}>
+            <div className="pgStatus__icon">
+              {getImageDiv('pgStatus__icon__photo', photoImg)}
+              {getImageDiv('pgStatus__icon__arrow', rightArrow)}
+            </div>
+          </NoStyleButton>
+        </>
+      );
     }
     if (mixId === 0) {
       if (!error) setError(true);
@@ -52,9 +67,7 @@ function MixProgress() {
         <>
           <span>{pgBarErrorText}</span>
           <NoStyleButton onClick={refreshToRoot}>
-            <div className="refresh">
-              <img src={refresh} alt="refresh" />
-            </div>
+            {getImageDiv('refresh', refresh)}
           </NoStyleButton>
         </>
       );
@@ -62,38 +75,20 @@ function MixProgress() {
     return pgBarText[progressIndex];
   };
 
-  useEffect(() => {
-    setInterval(() => {
-      dispatch(increasePbIndex());
-    }, 30000);
-  });
+  const getProgressBar = () => {
+    const style = { backgroundColor: colors.mainColor };
+    if (error || isMixEnd())
+      return <Progress striped value={100} style={style} />;
+
+    return <Progress animated value={100} style={style} />;
+  };
 
   return (
     <div className="container">
-      <div className="pgText">{getText()}</div>
-      <Progress
-        animated
-        value={100}
-        style={{ backgroundColor: colors.mainColor }}
-      />
-      {isMixEnd() && (
-        <NoStyleButton
-          onClick={() => {
-            if (isMixEnd()) setIsOpen(true);
-          }}
-        >
-          <div className="mixProgress__icon">
-            <div className="mixProgress__icon__photo">
-              <img src={photoImg} alt="photoicon" />
-            </div>
-            <div className="mixProgress__icon__arrow">
-              <img src={rightArrow} alt="right" />
-            </div>
-          </div>
-        </NoStyleButton>
-      )}
+      <div className="pgStatus">{getText()}</div>
+      {getProgressBar()}
       <Modal isOpen={isOpen} toggle={toggle}>
-        <MixComplete />
+        <MixComplete toggle={toggle} />
       </Modal>
     </div>
   );

@@ -194,8 +194,8 @@ class UserPage extends Component {
   };
 
   componentDidMount = async () => {
-    const { user } = this.props;
-    if (user) {
+    const { user, mixId, isMixing } = this.props;
+    if (user || (!isMixing && mixId)) {
       await this.setUser();
       await this.getUserPosts(USER_OPTION);
     }

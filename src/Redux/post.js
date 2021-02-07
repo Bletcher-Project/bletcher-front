@@ -339,17 +339,23 @@ export const mixPost = (originId, subId, token) => {
           },
         },
       );
+      const interval = setInterval(() => {
+        dispatch(increasePbIndex());
+      }, 5000);
       if (response.status === 200) {
-        await dispatch(mixPostSuccess());
-        mixId = (await response.json()).data;
-        await dispatch(
-          modifyIsMixing({
-            isMixing: false,
-            mixId,
-            progressIndex: 0,
-            originId,
-          }),
-        );
+        setTimeout(async () => {
+          await dispatch(mixPostSuccess());
+          mixId = (await response.json()).data;
+          await dispatch(
+            modifyIsMixing({
+              isMixing: false,
+              mixId,
+              progressIndex: 0,
+              originId,
+            }),
+          );
+          clearInterval(interval);
+        }, 50000);
       } else {
         await dispatch(mixPostFail());
       }

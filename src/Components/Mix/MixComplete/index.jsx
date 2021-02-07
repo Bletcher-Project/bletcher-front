@@ -5,6 +5,7 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
 import { getPostByPostId, recomposeMixing } from 'Redux/post';
+import { getUserPosts } from 'Redux/fetch-post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
 
@@ -17,18 +18,21 @@ const defaultProps = {
   mixId: null,
   originId: null,
   token: '',
+  user: null,
   getMixedPost: null,
   recomposePost: null,
-  user: null,
+  patchUserPost: null,
 };
 
 const propTypes = {
+  toggle: PropTypes.func.isRequired,
   history: ReactRouterPropTypes.history.isRequired,
   mixId: PropTypes.number,
   originId: PropTypes.number,
   token: PropTypes.string,
   getMixedPost: PropTypes.func,
   recomposePost: PropTypes.func,
+  patchUserPost: PropTypes.func,
   user: PropTypes.shape({
     id: PropTypes.number,
     nickname: PropTypes.string,
@@ -42,6 +46,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     recomposePost: () => {
       return dispatch(recomposeMixing());
+    },
+    patchUserPost: (tabOption, userInfo, token) => {
+      return dispatch(getUserPosts(tabOption, userInfo, token));
     },
   };
 };
@@ -126,7 +133,7 @@ class MixComplete extends Component {
   };
 
   render() {
-    const { history, user } = this.props;
+    const { user, token, toggle, patchUserPost } = this.props;
     const { isPublic, mixedPost } = this.state;
     return (
       <>
@@ -177,8 +184,8 @@ class MixComplete extends Component {
               <div className="mixComplete__content__rightBox__buttons">
                 <NoStyleButton
                   onClick={() => {
-                    if (user)
-                      history.push({ pathname: `/user/${user.nickname}` });
+                    toggle();
+                    patchUserPost('me', user, token);
                   }}
                 >
                   Shortcut to My Feeds
