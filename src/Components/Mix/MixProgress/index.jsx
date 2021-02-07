@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { initializeMixState } from 'Redux/post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
 import MixComplete from 'Components/Mix/MixComplete';
@@ -22,6 +23,7 @@ const defaultProps = {};
 const propTypes = {};
 
 function MixProgress() {
+  const dispatch = useDispatch();
   const mixState = useSelector((state) => state.postReducer.mixState);
   const { progressIndex, isMixing, mixId } = mixState;
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +37,8 @@ function MixProgress() {
     setIsOpen(!isOpen);
   };
 
-  const refreshToRoot = () => {
+  const refreshMix = () => {
+    dispatch(initializeMixState());
     window.location.replace('/');
   };
 
@@ -66,7 +69,7 @@ function MixProgress() {
       return (
         <>
           <span>{pgBarErrorText}</span>
-          <NoStyleButton onClick={refreshToRoot}>
+          <NoStyleButton onClick={refreshMix}>
             {getImageDiv('refresh', refresh)}
           </NoStyleButton>
         </>

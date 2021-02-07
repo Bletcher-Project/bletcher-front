@@ -46,6 +46,7 @@ const MIX_POST_FAIL = 'post/MIX_POST_FAIL';
 const MODIFY_IS_MIXING = 'post/MODIFY_IS_MIXING';
 const INCREASE_PB_INDEX = 'post/INCREASE_PB_INDEX';
 const RECOMPOSE_MIXING = 'post/RECOMPOSE_MIXING';
+const INITIALIZE_MIXSTATE = 'post/INITIALIZE_MIXSTATE';
 
 export const clickPostSuccess = createAction(CLICK_POST_SUCCESS); // result.post
 export const clickPostFail = createAction(CLICK_POST_FAIL);
@@ -65,6 +66,7 @@ export const modifyIsMixing = createAction(MODIFY_IS_MIXING);
 export const increasePbIndex = createAction(INCREASE_PB_INDEX);
 export const recomposeMixing = createAction(RECOMPOSE_MIXING);
 export const uploadPostStart = createAction(UPLOAD_POST_START);
+export const initializeMixState = createAction(INITIALIZE_MIXSTATE);
 
 export default postReducer(
   {
@@ -165,6 +167,14 @@ export default postReducer(
         mixState: {
           ...initialState.mixState,
           originId,
+        },
+      };
+    },
+    [INITIALIZE_MIXSTATE]: (state) => {
+      return {
+        ...state,
+        mixState: {
+          ...initialState.mixState,
         },
       };
     },
