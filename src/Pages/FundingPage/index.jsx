@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
 import { getFundingPosts } from 'Redux/fetch-post';
@@ -15,7 +16,9 @@ import DropFilter from 'Components/Common/DropFilter';
 import NoStyleButton from 'Components/Form/NoStyleButton';
 
 import FILTER from 'Constants/filter-option';
+import { fundingPost } from 'PropTypes/post';
 
+import { withRouter } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
 import cx from 'classnames';
 
@@ -28,35 +31,13 @@ const defaultProps = {
 };
 
 const propTypes = {
+  history: ReactRouterPropTypes.history.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
     nickname: PropTypes.string,
   }),
   getPosts: PropTypes.func.isRequired,
-  fundingPosts: PropTypes.objectOf(
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        Category: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          name: PropTypes.string.isRequired,
-        }),
-        Image: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          path: PropTypes.string,
-        }),
-        User: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          nickname: PropTypes.string.isRequired,
-        }),
-        created_at: PropTypes.string.isRequired,
-        description: PropTypes.string,
-        id: PropTypes.number.isRequired,
-        is_public: PropTypes.bool.isRequired,
-        title: PropTypes.string.isRequired,
-        updated_at: PropTypes.string.isRequired,
-      }).isRequired,
-    ),
-  ),
+  fundingPosts: PropTypes.objectOf(fundingPost),
 };
 
 const mapStateToProps = (state) => {
@@ -133,7 +114,7 @@ class FundingPage extends Component {
   getMyPosts = () => {
     const { user } = this.props;
     const currentPost = this.getPostByOption();
-    return currentPost.filter((data) => data.User.id === user.id);
+    return currentPost.filter((data) => data['User.id'] === user.id);
   };
 
   showMyPosts = () => {
@@ -161,6 +142,13 @@ class FundingPage extends Component {
     this.setState({ filter: 'Recommended', posts: this.getPostByOption() });
   };
 
+  showPostDetail = (postId) => {
+    const { history } = this.props;
+    const { option } = this.state;
+    const searchQuery = `?postId=${postId}&isActive=${option}`;
+    history.push({ pathname: '/detail', search: searchQuery });
+  };
+
   renderPosts = () => {
     const { posts } = this.state;
     const fundIcon = (
@@ -175,6 +163,7 @@ class FundingPage extends Component {
         post={data}
         hoverIcon={fundIcon}
         footerOption="funding"
+        onClick={() => this.showPostDetail(data.id)}
       />
     ));
   };
@@ -221,4 +210,6 @@ class FundingPage extends Component {
 FundingPage.defaultProps = defaultProps;
 FundingPage.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(FundingPage);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(FundingPage),
+);

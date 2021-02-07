@@ -2,7 +2,6 @@ import { createAction, handleActions as postReducer } from 'redux-actions';
 
 import {
   INIT,
-  POST_ONE,
   POST_API,
   IMAGE_API,
   FAVORITE_API,
@@ -89,7 +88,7 @@ export const getPostByPostId = (postId, token) => {
     let result;
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${POST_ONE}/${postId}`,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}/${postId}`,
         {
           method: 'GET',
           headers: {
@@ -99,7 +98,7 @@ export const getPostByPostId = (postId, token) => {
       );
       if (response.status === 200) {
         result = await response.json().then((res) => {
-          return res.post;
+          return res.data;
         });
         await dispatch(clickPostSuccess(result));
       }

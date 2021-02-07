@@ -6,7 +6,7 @@ export const basicType = PropTypes.shape({
   updated_at: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
-  is_public: PropTypes.bool.isRequired,
+  is_public: PropTypes.oneOf([0, 1, true, false]).isRequired,
   Category: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
@@ -29,3 +29,4 @@ export const mainPost = PropTypes.arrayOf(
 );
 
 export const favoritePost = PropTypes.arrayOf(basicType.isRequired);
+export const fundingPost = PropTypes.arrayOf(basicType.isRequired);
