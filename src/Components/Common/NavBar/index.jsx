@@ -102,7 +102,10 @@ class NavBar extends Component {
     return (
       <>
         <Navbar className="navBar" light expand="md">
-          <NavbarBrand className="navBar__logo" href="/">
+          <NavbarBrand
+            className="navBar__logo"
+            onClick={() => history.push('/')}
+          >
             <Logo point={isActive === 'main' || isActive === 'signIn'} />
           </NavbarBrand>
           <NavbarToggler onClick={this.toggle} />

@@ -39,7 +39,6 @@ function MixProgress() {
 
   const refreshMix = () => {
     dispatch(initializeMixState());
-    window.location.replace('/');
   };
 
   const getImageDiv = (className, src) => {
@@ -75,7 +74,15 @@ function MixProgress() {
         </>
       );
     }
-    return pgBarText[progressIndex];
+
+    return (
+      <>
+        <span>{pgBarText[progressIndex]}</span>
+        <NoStyleButton className="cancelBtn" onClick={refreshMix}>
+          cancel
+        </NoStyleButton>
+      </>
+    );
   };
 
   const getProgressBar = () => {

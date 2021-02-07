@@ -338,7 +338,13 @@ export const mixPost = (originId, subId, token) => {
   return async (dispatch) => {
     try {
       const { mixState } = initialState;
+
       await dispatch(modifyIsMixing({ ...mixState, isMixing: true, originId }));
+
+      const interval = setInterval(() => {
+        dispatch(increasePbIndex());
+      }, 6000);
+
       let mixId = null;
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${MIX_API}/${originId}/${subId}`,
@@ -349,9 +355,6 @@ export const mixPost = (originId, subId, token) => {
           },
         },
       );
-      const interval = setInterval(() => {
-        dispatch(increasePbIndex());
-      }, 5000);
       if (response.status === 200) {
         setTimeout(async () => {
           await dispatch(mixPostSuccess());
@@ -365,9 +368,10 @@ export const mixPost = (originId, subId, token) => {
             }),
           );
           clearInterval(interval);
-        }, 50000);
+        }, 30000);
       } else {
         await dispatch(mixPostFail());
+        clearInterval(interval);
       }
     } catch (error) {
       await dispatch(mixPostFail());

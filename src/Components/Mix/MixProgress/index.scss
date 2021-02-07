@@ -19,6 +19,11 @@
     & .noStyleButton {
       margin-left: 1rem;
     }
+
+    & .noStyleButton.cancelBtn {
+      color: white;
+      @include purpleButton;
+    }
   }
 }
 
