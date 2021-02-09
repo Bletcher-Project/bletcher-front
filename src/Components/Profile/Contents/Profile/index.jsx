@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { userType } from 'PropTypes';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { updateUser, setLoadingState } from 'Redux/auth';
+
 import UploadImgFile from 'Components/Upload/UploadImgFile';
 import Thumbnail from 'Components/Thumbnail';
 import Input from 'Components/Form/Input';
 import Button from 'Components/Form/Button';
+import RoundLoader from 'Components/Loader/Round';
 
 const defaultProps = { user: null };
 const propTypes = { user: userType };
@@ -19,6 +23,10 @@ function Profile(props) {
   const [email, setEmail] = useState();
   const [introduce, setIntroduce] = useState();
   const [password, setPassword] = useState({ raw: '', confirm: '' });
+
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.authReducer.token);
+  const authLoading = useSelector((state) => state.authReducer.loading);
 
   useEffect(() => {
     setName(user && user.nickname);
@@ -55,8 +63,22 @@ function Profile(props) {
     setPassword({ ...password, confirm: e.target.value });
   };
 
-  const updateProfile = () => {
-    // TODO: update Profile
+  const updateProfile = async () => {
+    if (password.raw.length > 0 && password.raw === password.confirm) {
+      let updateData = { password: password.raw };
+      if (email !== user.email) updateData = { ...updateData, email };
+      if (name !== user.nickname) updateData = { ...updateData, name };
+      if (introduce !== user.introduce)
+        updateData = { ...updateData, introduce };
+      if (image.raw) updateData = { ...updateData, img: image.raw };
+
+      dispatch(setLoadingState(true));
+      await dispatch(updateUser(token, updateData));
+      dispatch(setLoadingState(false));
+    } else {
+      // TODO: Password Input Component error & helptext
+      alert('Password를 입력하세요.');
+    }
   };
 
   const initChanges = () => {
@@ -69,6 +91,7 @@ function Profile(props) {
 
   return (
     <div className="profile">
+      {authLoading && <RoundLoader />}
       <div className="profile__form">
         <div className="profile__form-photo">
           <UploadImgFile handleUploadImg={handleUploadImg}>
