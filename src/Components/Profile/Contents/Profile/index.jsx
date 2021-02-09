@@ -80,6 +80,15 @@ function Profile() {
   };
 
   const updateProfile = async () => {
+    let updateData = { password: password.raw };
+    if (email !== user.email) updateData = { ...updateData, email };
+    if (name !== user.nickname) updateData = { ...updateData, name };
+    if (introduce !== user.introduce) updateData = { ...updateData, introduce };
+    if (image.raw) updateData = { ...updateData, img: image.raw };
+    dispatch(updateUser(token, updateData));
+  };
+
+  const handleSaveChanges = async () => {
     if (password.raw.length === 0 && password.confirm.length === 0) {
       setPassword({
         ...password,
@@ -97,14 +106,8 @@ function Profile() {
       return;
     }
 
-    let updateData = { password: password.raw };
-    if (email !== user.email) updateData = { ...updateData, email };
-    if (name !== user.nickname) updateData = { ...updateData, name };
-    if (introduce !== user.introduce) updateData = { ...updateData, introduce };
-    if (image.raw) updateData = { ...updateData, img: image.raw };
-
     dispatch(setLoadingState(true));
-    await dispatch(updateUser(token, updateData));
+    await updateProfile();
     dispatch(setLoadingState(false));
   };
 
@@ -179,7 +182,7 @@ function Profile() {
         </form>
 
         <div className="profile__form-submit">
-          <Button size="small" width="80px" onClick={updateProfile}>
+          <Button size="small" width="80px" onClick={handleSaveChanges}>
             save
           </Button>
           <Button size="small" width="80px" white onClick={initChanges}>
