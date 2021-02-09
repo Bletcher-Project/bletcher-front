@@ -10,9 +10,11 @@ import Button from 'Components/Form/Button';
 import RoundLoader from 'Components/Loader/Round';
 
 import { DEFAULT_HELPER_TEXT, PasswordHelperText } from 'Constants/helper-text';
-
-const defaultProps = {};
-const propTypes = {};
+import {
+  checkEmailValidation,
+  checkNameValidation,
+  checkPasswordValidation,
+} from 'Utils/validation';
 
 function Profile() {
   const dispatch = useDispatch();
@@ -27,11 +29,17 @@ function Profile() {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [introduce, setIntroduce] = useState();
-  const [password, setPassword] = useState({
-    raw: '',
-    confirm: '',
-    error: false,
-    helperText: DEFAULT_HELPER_TEXT,
+  const [password, setPassword] = useState({ raw: '', confirm: '' });
+
+  const [isValid, setIsValid] = useState({
+    name: true,
+    email: true,
+    password: true,
+  });
+  const [helperText, setHelperText] = useState({
+    name: DEFAULT_HELPER_TEXT,
+    email: DEFAULT_HELPER_TEXT,
+    password: DEFAULT_HELPER_TEXT,
   });
 
   useEffect(() => {
@@ -62,21 +70,39 @@ function Profile() {
   };
 
   const handleChangePassword = (e) => {
-    setPassword({
-      ...password,
-      raw: e.target.value,
-      error: false,
-      helperText: DEFAULT_HELPER_TEXT,
-    });
+    setPassword({ ...password, raw: e.target.value });
   };
 
   const handleChangeRePassword = (e) => {
-    setPassword({
-      ...password,
-      confirm: e.target.value,
-      error: false,
-      helperText: DEFAULT_HELPER_TEXT,
+    setPassword({ ...password, confirm: e.target.value });
+  };
+
+  const checkValidation = async () => {
+    let pwdCheck = { isValid: true, helperText: DEFAULT_HELPER_TEXT };
+    let emCheck = { isValid: true, helperText: DEFAULT_HELPER_TEXT };
+    let nmCheck = { isValid: true, helperText: DEFAULT_HELPER_TEXT };
+
+    if (password.raw !== password.confirm) {
+      pwdCheck.isValid = false;
+      pwdCheck.helperText = PasswordHelperText.MISS_MATCH_PW;
+    } else {
+      pwdCheck = checkPasswordValidation(password.raw);
+    }
+    if (email !== user.email) emCheck = await checkEmailValidation(email);
+    if (name !== user.nickname) nmCheck = await checkNameValidation(name);
+
+    setIsValid({
+      name: nmCheck.isValid,
+      email: emCheck.isValid,
+      password: pwdCheck.isValid,
     });
+    setHelperText({
+      name: nmCheck.helperText,
+      email: emCheck.helperText,
+      password: pwdCheck.helperText,
+    });
+
+    return pwdCheck.isValid && emCheck.isValid && nmCheck.isValid;
   };
 
   const updateProfile = async () => {
@@ -85,28 +111,16 @@ function Profile() {
     if (name !== user.nickname) updateData = { ...updateData, name };
     if (introduce !== user.introduce) updateData = { ...updateData, introduce };
     if (image.raw) updateData = { ...updateData, img: image.raw };
-    dispatch(updateUser(token, updateData));
+    await dispatch(updateUser(token, updateData));
   };
 
   const handleSaveChanges = async () => {
-    if (password.raw.length === 0 && password.confirm.length === 0) {
-      setPassword({
-        ...password,
-        error: true,
-        helperText: PasswordHelperText.EMPTY_VALUE,
-      });
-      return;
-    }
-    if (password.raw !== password.confirm) {
-      setPassword({
-        ...password,
-        error: true,
-        helperText: PasswordHelperText.MISS_MATCH_PW,
-      });
-      return;
-    }
-
     dispatch(setLoadingState(true));
+    const result = await checkValidation();
+    if (!result) {
+      dispatch(setLoadingState(false));
+      return;
+    }
     await updateProfile();
     dispatch(setLoadingState(false));
   };
@@ -117,6 +131,12 @@ function Profile() {
     setEmail(user && user.email);
     setIntroduce(user && user.introduce);
     setPassword({ raw: '', confirm: '' });
+    setIsValid({ name: true, email: true, password: true });
+    setHelperText({
+      name: DEFAULT_HELPER_TEXT,
+      email: DEFAULT_HELPER_TEXT,
+      password: DEFAULT_HELPER_TEXT,
+    });
   };
 
   return (
@@ -139,6 +159,8 @@ function Profile() {
             type="text"
             autoComplete="username"
             width="100%"
+            error={!isValid.name}
+            helperText={helperText.name}
             onChange={(e) => handleChangeName(e)}
           />
           <Input
@@ -147,6 +169,8 @@ function Profile() {
             type="text"
             autoComplete="email"
             width="100%"
+            error={!isValid.email}
+            helperText={helperText.email}
             onChange={(e) => handleChangeEmail(e)}
           />
           <div className="profile__form__inputs-div">
@@ -156,8 +180,8 @@ function Profile() {
               type="password"
               autoComplete="password"
               width="49%"
-              error={password.error}
-              helperText={password.helperText}
+              error={!isValid.password}
+              helperText={helperText.password}
               onChange={(e) => handleChangePassword(e)}
             />
             <Input
@@ -166,8 +190,8 @@ function Profile() {
               type="password"
               autoComplete="password"
               width="49%"
-              error={password.error}
-              helperText={password.helperText}
+              error={!isValid.password}
+              helperText={helperText.password}
               onChange={(e) => handleChangeRePassword(e)}
             />
           </div>
@@ -193,8 +217,5 @@ function Profile() {
     </div>
   );
 }
-
-Profile.defaultProps = defaultProps;
-Profile.propTypes = propTypes;
 
 export default Profile;
