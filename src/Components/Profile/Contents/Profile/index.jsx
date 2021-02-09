@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { userType } from 'PropTypes';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUser, setLoadingState } from 'Redux/auth';
@@ -10,11 +9,17 @@ import Input from 'Components/Form/Input';
 import Button from 'Components/Form/Button';
 import RoundLoader from 'Components/Loader/Round';
 
-const defaultProps = { user: null };
-const propTypes = { user: userType };
+import { DEFAULT_HELPER_TEXT, PasswordHelperText } from 'Constants/helper-text';
 
-function Profile(props) {
-  const { user } = props;
+const defaultProps = {};
+const propTypes = {};
+
+function Profile() {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.authReducer.token);
+  const user = useSelector((state) => state.authReducer.user);
+  const authLoading = useSelector((state) => state.authReducer.loading);
+
   const [image, setImage] = useState({
     preview: user && user.profile_image,
     raw: null,
@@ -22,11 +27,12 @@ function Profile(props) {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [introduce, setIntroduce] = useState();
-  const [password, setPassword] = useState({ raw: '', confirm: '' });
-
-  const dispatch = useDispatch();
-  const token = useSelector((state) => state.authReducer.token);
-  const authLoading = useSelector((state) => state.authReducer.loading);
+  const [password, setPassword] = useState({
+    raw: '',
+    confirm: '',
+    error: false,
+    helperText: DEFAULT_HELPER_TEXT,
+  });
 
   useEffect(() => {
     setName(user && user.nickname);
@@ -56,29 +62,50 @@ function Profile(props) {
   };
 
   const handleChangePassword = (e) => {
-    setPassword({ ...password, raw: e.target.value });
+    setPassword({
+      ...password,
+      raw: e.target.value,
+      error: false,
+      helperText: DEFAULT_HELPER_TEXT,
+    });
   };
 
   const handleChangeRePassword = (e) => {
-    setPassword({ ...password, confirm: e.target.value });
+    setPassword({
+      ...password,
+      confirm: e.target.value,
+      error: false,
+      helperText: DEFAULT_HELPER_TEXT,
+    });
   };
 
   const updateProfile = async () => {
-    if (password.raw.length > 0 && password.raw === password.confirm) {
-      let updateData = { password: password.raw };
-      if (email !== user.email) updateData = { ...updateData, email };
-      if (name !== user.nickname) updateData = { ...updateData, name };
-      if (introduce !== user.introduce)
-        updateData = { ...updateData, introduce };
-      if (image.raw) updateData = { ...updateData, img: image.raw };
-
-      dispatch(setLoadingState(true));
-      await dispatch(updateUser(token, updateData));
-      dispatch(setLoadingState(false));
-    } else {
-      // TODO: Password Input Component error & helptext
-      alert('Password를 입력하세요.');
+    if (password.raw.length === 0 && password.confirm.length === 0) {
+      setPassword({
+        ...password,
+        error: true,
+        helperText: PasswordHelperText.EMPTY_VALUE,
+      });
+      return;
     }
+    if (password.raw !== password.confirm) {
+      setPassword({
+        ...password,
+        error: true,
+        helperText: PasswordHelperText.MISS_MATCH_PW,
+      });
+      return;
+    }
+
+    let updateData = { password: password.raw };
+    if (email !== user.email) updateData = { ...updateData, email };
+    if (name !== user.nickname) updateData = { ...updateData, name };
+    if (introduce !== user.introduce) updateData = { ...updateData, introduce };
+    if (image.raw) updateData = { ...updateData, img: image.raw };
+
+    dispatch(setLoadingState(true));
+    await dispatch(updateUser(token, updateData));
+    dispatch(setLoadingState(false));
   };
 
   const initChanges = () => {
@@ -126,6 +153,8 @@ function Profile(props) {
               type="password"
               autoComplete="password"
               width="49%"
+              error={password.error}
+              helperText={password.helperText}
               onChange={(e) => handleChangePassword(e)}
             />
             <Input
@@ -134,6 +163,8 @@ function Profile(props) {
               type="password"
               autoComplete="password"
               width="49%"
+              error={password.error}
+              helperText={password.helperText}
               onChange={(e) => handleChangeRePassword(e)}
             />
           </div>
