@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 
 import RoundInput from 'Components/Form/RoundInput';
 import CheckIcon from 'Components/Form/CheckIcon';
+import { DEFAULT_HELPER_TEXT } from 'Constants/helper-text';
 import {
-  DEFAULT_HELPER_TEXT,
-  EmailHelperText,
-  PasswordHelperText,
-  NameHelperText,
-} from 'Constants/helper-text';
-import { INIT, USER_API, QUERY_EMAIL, QUERY_NAME } from 'Constants/api-uri';
+  checkEmailValidation,
+  checkNameValidation,
+  checkPasswordValidation,
+} from 'Utils/validation';
 
 const propTypes = {
   handleValidation: PropTypes.func.isRequired,
@@ -48,178 +47,49 @@ class SignUpForm extends Component {
     }
   };
 
-  handleEmail = (e) => {
+  handleEmail = async (e) => {
     const { user, isValid, helperText } = this.state;
-    this.setState(
-      {
-        user: {
-          ...user,
-          email: e.target.value,
-        },
+    this.setState({
+      user: {
+        ...user,
+        email: e.target.value,
       },
-      async () => {
-        const result = await this.checkEmailValidation();
-        this.setState({
-          isValid: { ...isValid, email: result.isValid },
-          helperText: { ...helperText, email: result.helperText },
-        });
-      },
-    );
+    });
+    const result = await checkEmailValidation(e.target.value);
+    this.setState({
+      isValid: { ...isValid, email: result.isValid },
+      helperText: { ...helperText, email: result.helperText },
+    });
   };
 
-  handleName = (e) => {
+  handleName = async (e) => {
     const { user, isValid, helperText } = this.state;
-    this.setState(
-      {
-        user: {
-          ...user,
-          name: e.target.value,
-        },
+    this.setState({
+      user: {
+        ...user,
+        name: e.target.value,
       },
-      async () => {
-        const result = await this.checkNameValidation();
-        this.setState({
-          isValid: { ...isValid, name: result.isValid },
-          helperText: { ...helperText, name: result.helperText },
-        });
-      },
-    );
+    });
+    const result = await checkNameValidation(e.target.value);
+    this.setState({
+      isValid: { ...isValid, name: result.isValid },
+      helperText: { ...helperText, name: result.helperText },
+    });
   };
 
   handlePassword = (e) => {
     const { user, isValid, helperText } = this.state;
-    this.setState(
-      {
-        user: {
-          ...user,
-          password: e.target.value,
-        },
+    this.setState({
+      user: {
+        ...user,
+        password: e.target.value,
       },
-      () => {
-        const result = this.checkPasswordValidation();
-        this.setState({
-          isValid: { ...isValid, password: result.isValid },
-          helperText: { ...helperText, password: result.helperText },
-        });
-      },
-    );
-  };
-
-  checkEmailValidation = async () => {
-    const { user } = this.state;
-    const regExp = /^[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-    let isValid;
-    let helperText;
-
-    if (!user.email) {
-      isValid = false;
-      helperText = EmailHelperText.EMPTY_VALUE;
-    } else if (!regExp.test(user.email)) {
-      isValid = false;
-      helperText = EmailHelperText.NOT_VALID;
-    } else {
-      const result = await this.checkEmailExists();
-      if (result) {
-        isValid = false;
-        helperText = EmailHelperText.EXIST_VALUE;
-      } else {
-        isValid = true;
-        helperText = DEFAULT_HELPER_TEXT;
-      }
-    }
-
-    return { isValid, helperText };
-  };
-
-  checkEmailExists = async () => {
-    const { user } = this.state;
-    const response = await fetch(
-      `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}${QUERY_EMAIL}${user.email}`,
-      { method: 'GET' },
-    );
-    if (response.status === 204) {
-      return false;
-    }
-    return true;
-  };
-
-  checkNameValidation = async () => {
-    const { user } = this.state;
-    const regExp = /^[A-Za-z0-9_.]{3,30}$/;
-    const nonAlphabet = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]$/;
-    const isSpecial = /\W/;
-    const allowSpecial = /[_.]$/;
-    let isValid;
-    let helperText;
-
-    if (!user.name) {
-      isValid = false;
-      helperText = NameHelperText.EMPTY_VALUE;
-    } else if (!regExp.test(user.name)) {
-      isValid = false;
-      if (nonAlphabet.test(user.name)) {
-        helperText = NameHelperText.ONLY_ALPHABET;
-      } else if (isSpecial.test(user.name) && !allowSpecial.test(user.name)) {
-        helperText = NameHelperText.NO_SPECIAL_CHAR;
-      } else if (user.name.length < 3) {
-        helperText = NameHelperText.MIN_WORDS;
-      } else if (user.name.length > 30) {
-        helperText = NameHelperText.MAX_WORDS;
-      }
-    } else {
-      const result = await this.checkNameExists();
-      if (result) {
-        isValid = false;
-        helperText = NameHelperText.EXIST_VALUE;
-      } else {
-        isValid = true;
-        helperText = DEFAULT_HELPER_TEXT;
-      }
-    }
-
-    return { isValid, helperText };
-  };
-
-  checkNameExists = async () => {
-    const { user } = this.state;
-    const response = await fetch(
-      `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}${QUERY_NAME}${user.name}`,
-      { method: 'GET' },
-    );
-    if (response.status === 204) {
-      return false;
-    }
-    return true;
-  };
-
-  checkPasswordValidation = () => {
-    const { user } = this.state;
-    const regExp = /^(?=.*[0-9])(?=.*[a-zA-Z]).{8,16}$/;
-    const isNum = /^(?=.*[0-9])/;
-    const isChar = /^(?=.*[a-zA-Z])/;
-    let isValid;
-    let helperText;
-
-    if (!user.password) {
-      isValid = false;
-      helperText = PasswordHelperText.EMPTY_VALUE;
-    } else if (!regExp.test(user.password)) {
-      isValid = false;
-      if (!isNum.test(user.password)) {
-        helperText = PasswordHelperText.MISS_NUMBER;
-      } else if (!isChar.test(user.password)) {
-        helperText = PasswordHelperText.MISS_ALPHABET;
-      } else if (user.password.length < 8) {
-        helperText = PasswordHelperText.MIN_WORDS;
-      } else if (user.password.length > 16) {
-        helperText = PasswordHelperText.MAX_WORDS;
-      }
-    } else {
-      isValid = true;
-      helperText = DEFAULT_HELPER_TEXT;
-    }
-
-    return { isValid, helperText };
+    });
+    const result = checkPasswordValidation(e.target.value);
+    this.setState({
+      isValid: { ...isValid, password: result.isValid },
+      helperText: { ...helperText, password: result.helperText },
+    });
   };
 
   render() {
