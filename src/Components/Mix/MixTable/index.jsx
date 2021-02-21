@@ -36,6 +36,8 @@ const mapStateToProps = (state) => {
 };
 
 class MixTable extends Component {
+  subPostListRef = React.createRef();
+
   constructor(props) {
     super(props);
     this.state = {
@@ -76,10 +78,18 @@ class MixTable extends Component {
     });
   };
 
+  showPostAfterRender = () => {
+    setTimeout(() => {
+      this.subPostListRef.current.style.display = 'flex';
+    }, 1000);
+  };
+
   componentDidMount = async () => {
     const { getPostList } = this.props;
+
     await getPostList();
     await this.initSubPostList();
+    this.showPostAfterRender();
   };
 
   render() {
@@ -101,7 +111,13 @@ class MixTable extends Component {
             </NoStyleButton>
           </div>
           <div className="mixTable__content">
-            <div className="mixTable__content__postList">{subPostList}</div>
+            <div
+              className="mixTable__content__postList"
+              ref={this.subPostListRef}
+              style={{ display: 'none' }}
+            >
+              {subPostList}
+            </div>
           </div>
         </div>
       </>
