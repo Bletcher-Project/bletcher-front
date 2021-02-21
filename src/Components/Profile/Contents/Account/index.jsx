@@ -34,7 +34,7 @@ function Account() {
         <h3>Account Change</h3>
         <div className="account__change-op">
           <h4>Hide Profile</h4>
-          <DangerButton>Account deactivation</DangerButton>
+          <DangerButton disabled>Account deactivation</DangerButton>
         </div>
         <div className="account__change-op">
           <h4>Deleting accounts and account data</h4>

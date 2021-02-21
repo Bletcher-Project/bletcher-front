@@ -7,6 +7,7 @@ import colors from 'Constants/colors.scss';
 
 const defaultProps = {
   secondColor: false,
+  disabled: false,
   href: null,
   onClick: null,
 };
@@ -17,6 +18,7 @@ const propTypes = {
     PropTypes.arrayOf(PropTypes.element),
   ]).isRequired,
   secondColor: PropTypes.bool,
+  disabled: PropTypes.bool,
   href: PropTypes.string,
   onClick: PropTypes.func,
 };
@@ -42,11 +44,12 @@ const useStyles = makeStyles({
       boxShadow: 'none',
     },
     '&:focus': { outline: 'none' },
+    '&.Mui-disabled': { border: 'none' },
   },
 });
 
 function DangerButton(props) {
-  const { children, secondColor, href, onClick } = props;
+  const { children, secondColor, disabled, href, onClick } = props;
   const classes = useStyles(secondColor);
 
   return (
@@ -54,6 +57,7 @@ function DangerButton(props) {
       className={classes.root}
       variant="extended"
       component="button"
+      disabled={disabled}
       size="small"
       style={{ width: '210px' }}
       href={href}
