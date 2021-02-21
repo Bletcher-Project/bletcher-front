@@ -1,9 +1,26 @@
 import React from 'react';
 
+import ReactRouterPropTypes from 'react-router-prop-types';
+import { withRouter } from 'react-router-dom';
+
+import { useDispatch } from 'react-redux';
+import { signOut } from 'Redux/auth';
+
 import CheckBox from 'Components/Form/CheckBox';
 import DangerButton from 'Components/Form/DangerButton';
 
-function Account() {
+const propTypes = {
+  history: ReactRouterPropTypes.history.isRequired,
+};
+
+function Account({ history }) {
+  const dispatch = useDispatch();
+
+  const handleSignOut = () => {
+    dispatch(signOut());
+    history.push({ pathname: '/' });
+  };
+
   return (
     <div className="account">
       <p className="account__desc">
@@ -33,6 +50,10 @@ function Account() {
       <div className="account__change">
         <h3>Account Change</h3>
         <div className="account__change-op">
+          <h4>Sign Out Account</h4>
+          <DangerButton onClick={() => handleSignOut()}>Logout</DangerButton>
+        </div>
+        <div className="account__change-op">
           <h4>Hide Profile</h4>
           <DangerButton disabled>Account deactivation</DangerButton>
         </div>
@@ -45,4 +66,6 @@ function Account() {
   );
 }
 
-export default Account;
+Account.propTypes = propTypes;
+
+export default withRouter(Account);
