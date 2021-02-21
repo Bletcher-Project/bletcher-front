@@ -3,8 +3,8 @@ import React from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
 
-import { useDispatch } from 'react-redux';
-import { signOut } from 'Redux/auth';
+import { useSelector, useDispatch } from 'react-redux';
+import { signOut, deleteUser, setLoadingState } from 'Redux/auth';
 
 import CheckBox from 'Components/Form/CheckBox';
 import DangerButton from 'Components/Form/DangerButton';
@@ -15,9 +15,17 @@ const propTypes = {
 
 function Account({ history }) {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.authReducer.user);
 
   const handleSignOut = () => {
     dispatch(signOut());
+    history.push({ pathname: '/' });
+  };
+
+  const handleDeleteAccount = async () => {
+    dispatch(setLoadingState(true));
+    await dispatch(deleteUser(user.id));
+    dispatch(setLoadingState(false));
     history.push({ pathname: '/' });
   };
 
@@ -59,7 +67,9 @@ function Account({ history }) {
         </div>
         <div className="account__change-op">
           <h4>Deleting accounts and account data</h4>
-          <DangerButton secondColor>Account termination</DangerButton>
+          <DangerButton secondColor onClick={() => handleDeleteAccount()}>
+            Account termination
+          </DangerButton>
         </div>
       </div>
     </div>

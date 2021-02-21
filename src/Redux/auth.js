@@ -14,6 +14,9 @@ const GET_USER_FAIL = 'auth/GET_USER_FAIL';
 const PATCH_USER_SUCCESS = 'auth/PATCH_USER_SUCCESS';
 const PATCH_USER_FAIL = 'auth/PATCH_USER_FAIL';
 
+const DELETE_USER_SUCCESS = 'auth/DELETE_USER_SUCCESS';
+const DELETE_USER_FAIL = 'auth/DELETE_USER_FAIL';
+
 const SET_LOADING_TRUE = 'auth/SET_LOADING_TRUE';
 const SET_LOADING_FALSE = 'auth/SET_LOADING_FALSE';
 
@@ -32,6 +35,8 @@ const getUserSuccess = createAction(GET_USER_SUCCESS); // result.data
 const getUserFail = createAction(GET_USER_FAIL);
 const patchUserSuccess = createAction(PATCH_USER_SUCCESS); // result.data
 const patchUserFail = createAction(PATCH_USER_FAIL);
+const deleteUserSuccess = createAction(DELETE_USER_SUCCESS);
+const deleteUserFail = createAction(DELETE_USER_FAIL);
 const setLoadingTrue = createAction(SET_LOADING_TRUE);
 const setLoadingFalse = createAction(SET_LOADING_FALSE);
 
@@ -62,6 +67,13 @@ export default authReducer(
       return { ...state, user: action.payload };
     },
     [PATCH_USER_FAIL]: (state) => {
+      return state;
+    },
+    [DELETE_USER_SUCCESS]: (state) => {
+      localStorage.removeItem('token');
+      return { ...state, isLogin: false, token: null, user: null };
+    },
+    [DELETE_USER_FAIL]: (state) => {
       return state;
     },
     [SET_LOADING_TRUE]: (state) => {
@@ -187,6 +199,21 @@ export const updateUser = (token, newInfo) => {
       }
     } catch (error) {
       await dispatch(patchUserFail());
+    }
+  };
+};
+
+export const deleteUser = (userId) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}/${userId}`,
+        { method: 'DELETE' },
+      );
+      if (response.status === 200) await dispatch(deleteUserSuccess());
+      else await dispatch(deleteUserFail());
+    } catch (error) {
+      await dispatch(deleteUserFail());
     }
   };
 };
