@@ -155,7 +155,7 @@ export default postReducer(
     [RECOMPOSE_MIXING]: (state) => {
       const { originId } = state.mixState;
       return {
-        ...initialState,
+        ...state,
         mixState: {
           ...initialState.mixState,
           originId,

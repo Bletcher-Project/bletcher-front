@@ -48,6 +48,10 @@ function MixProgress() {
     });
   };
 
+  const cancleMix = () => {
+    dispatch(initMixState());
+  };
+
   const getImageDiv = (className, src) => {
     return (
       <div className={className}>
@@ -85,7 +89,7 @@ function MixProgress() {
     return (
       <>
         <span>{pgBarText[progressIndex]}</span>
-        <NoStyleButton className="cancelBtn" onClick={initMixState}>
+        <NoStyleButton className="cancelBtn" onClick={cancleMix}>
           cancel
         </NoStyleButton>
       </>
