@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { initializeMixState } from 'Redux/post';
+import { recomposeMixing, initMixState } from 'Redux/post';
+
+import { useHistory } from 'react-router-dom';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
 import MixComplete from 'Components/Mix/MixComplete';
@@ -23,12 +25,13 @@ const defaultProps = {};
 const propTypes = {};
 
 function MixProgress() {
+  const history = useHistory();
   const dispatch = useDispatch();
   const mixState = useSelector((state) => state.postReducer.mixState);
-  const { progressIndex, isMixing, mixId } = mixState;
+  const user = useSelector((state) => state.authReducer.user);
+  const { progressIndex, isMixing, mixId, originId } = mixState;
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState(false);
-
   const isMixEnd = () => {
     return !isMixing && mixId;
   };
@@ -38,7 +41,11 @@ function MixProgress() {
   };
 
   const refreshMix = () => {
-    dispatch(initializeMixState());
+    dispatch(recomposeMixing());
+    history.push({
+      pathname: `/user/${user.nickname}`,
+      search: `?recompose=${originId}`,
+    });
   };
 
   const getImageDiv = (className, src) => {
@@ -78,7 +85,7 @@ function MixProgress() {
     return (
       <>
         <span>{pgBarText[progressIndex]}</span>
-        <NoStyleButton className="cancelBtn" onClick={refreshMix}>
+        <NoStyleButton className="cancelBtn" onClick={initMixState}>
           cancel
         </NoStyleButton>
       </>
