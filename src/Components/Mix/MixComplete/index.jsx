@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
-import { getPostByPostId, recomposeMixing } from 'Redux/post';
+import { getPostByPostId, recomposeMixing, initMixState } from 'Redux/post';
 import { getUserPosts } from 'Redux/fetch-post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
@@ -25,6 +25,7 @@ const defaultProps = {
 };
 
 const propTypes = {
+  initializeMixState: PropTypes.func.isRequired,
   toggle: PropTypes.func.isRequired,
   history: ReactRouterPropTypes.history.isRequired,
   mixId: PropTypes.number,
@@ -49,6 +50,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     patchUserPost: (tabOption, userInfo, token) => {
       return dispatch(getUserPosts(tabOption, userInfo, token));
+    },
+    initializeMixState: () => {
+      return dispatch(initMixState());
     },
   };
 };
@@ -120,6 +124,19 @@ class MixComplete extends Component {
     }
   };
 
+  shortcutToFeed = () => {
+    const {
+      user,
+      token,
+      toggle,
+      patchUserPost,
+      initializeMixState,
+    } = this.props;
+    patchUserPost('me', user, token);
+    initializeMixState();
+    toggle();
+  };
+
   getSrc = (post) => {
     if (!post) return null;
     if (post.Image !== undefined) return post.Image.path;
@@ -133,7 +150,6 @@ class MixComplete extends Component {
   };
 
   render() {
-    const { user, token, toggle, patchUserPost } = this.props;
     const { isPublic, mixedPost } = this.state;
     return (
       <>
@@ -182,12 +198,7 @@ class MixComplete extends Component {
                 </div>
               </div>
               <div className="mixComplete__content__rightBox__buttons">
-                <NoStyleButton
-                  onClick={() => {
-                    toggle();
-                    patchUserPost('me', user, token);
-                  }}
-                >
+                <NoStyleButton onClick={this.shortcutToFeed}>
                   Shortcut to My Feeds
                 </NoStyleButton>
                 <NoStyleButton onClick={this.recompose}>

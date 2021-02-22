@@ -6,11 +6,9 @@ import { withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { getUserPosts } from 'Redux/fetch-post';
-import { getPostByPostId } from 'Redux/post';
 
 import NavBar from 'Components/Common/NavBar';
 import Loader from 'Components/Common/Loader';
-import MixHandler from 'Components/Mix/MixHandler';
 import MixChecker from 'Components/Mix/MixChecker';
 import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
@@ -24,9 +22,7 @@ import { postType, userType } from 'PropTypes';
 import EditButton from 'Assets/images/editButton.png';
 
 import camelCase from 'camelcase';
-import { Modal } from 'reactstrap';
 import cx from 'classnames';
-import queryString from 'query-string';
 
 const defaultProps = {
   user: {},
@@ -38,7 +34,6 @@ const defaultProps = {
 const propTypes = {
   mixId: PropTypes.number,
   isMixing: PropTypes.bool,
-  getPostById: PropTypes.func.isRequired,
   getPosts: PropTypes.func.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
   user: userType,
@@ -62,9 +57,6 @@ const mapDispatchToProps = (dispatch) => {
     getPosts: (tabOption, userInfo, token) => {
       dispatch(getUserPosts(tabOption, userInfo, token));
     },
-    getPostById: (postId, token) => {
-      return dispatch(getPostByPostId(postId, token));
-    },
   };
 };
 
@@ -76,9 +68,6 @@ class UserPage extends Component {
       userInfo: null,
       postOption: 'me',
       feedLoading: true,
-      isMixModalOpen: false,
-      chosenOriginPost: null,
-      chosenSubPost: null,
     };
   }
 
@@ -109,7 +98,7 @@ class UserPage extends Component {
     let icon;
     let position;
     if (option === 'me') {
-      icon = <MixButton onClick={() => this.mixModalHandler(data.id)} />;
+      icon = <MixButton originPost={data} />;
       position = 'both';
     } else {
       icon = <ShareButton />;
@@ -161,45 +150,12 @@ class UserPage extends Component {
     });
   };
 
-  mixModalHandler = async (postId) => {
-    const { token, getPostById } = this.props;
-    const originPost = await getPostById(postId, token);
-    this.setState({ isMixModalOpen: true, chosenOriginPost: originPost });
-  };
-
-  postSubPost = async (subPost) => {
-    await new Promise((accept) =>
-      this.setState({ chosenSubPost: subPost }, accept),
-    );
-  };
-
-  toggle = () => {
-    const { isMixModalOpen } = this.state;
-    this.setState({ isMixModalOpen: !isMixModalOpen });
-  };
-
-  modalOnClose = () => {
-    this.setState({ chosenSubPost: null, chosenOriginPost: null });
-  };
-
-  addLocationListener = () => {
-    const { history } = this.props;
-    history.listen((location) => {
-      if (location) {
-        const query = queryString.parse(location.search);
-        const originId = query.recompose;
-        if (originId !== undefined) this.mixModalHandler(originId);
-      }
-    });
-  };
-
   componentDidMount = async () => {
     const { user, mixId, isMixing } = this.props;
     if (user || (!isMixing && mixId)) {
       await this.setUser();
       await this.getUserPosts(USER_OPTION);
     }
-    this.addLocationListener();
   };
 
   componentDidUpdate = async (prevProps) => {
@@ -214,15 +170,8 @@ class UserPage extends Component {
   };
 
   render() {
-    const {
-      isMyPage,
-      postOption,
-      feedLoading,
-      isMixModalOpen,
-      chosenOriginPost,
-      chosenSubPost,
-    } = this.state;
-    const { user, userPosts, mixId, isMixing } = this.props;
+    const { isMyPage, postOption, feedLoading } = this.state;
+    const { user, userPosts } = this.props;
     return (
       <div className="userPage">
         <NavBar isActive={isMyPage ? 'user' : ''} />
@@ -261,17 +210,6 @@ class UserPage extends Component {
         <PostList
           posts={!feedLoading && userPosts ? this.showUserPosts() : <Loader />}
         />
-        <Modal
-          isOpen={chosenOriginPost && isMixModalOpen && !(isMixing || mixId)}
-          toggle={this.toggle}
-          onClosed={this.modalOnClose}
-        >
-          <MixHandler
-            chosenSubPost={chosenSubPost}
-            chosenOriginPost={chosenOriginPost}
-            subPostFunc={this.postSubPost}
-          />
-        </Modal>
       </div>
     );
   }

@@ -80,7 +80,8 @@ class MixTable extends Component {
 
   showPostAfterRender = () => {
     setTimeout(() => {
-      this.subPostListRef.current.style.display = 'flex';
+      if (this.subPostListRef.current)
+        this.subPostListRef.current.style.display = 'flex';
     }, 1000);
   };
 
