@@ -52,10 +52,12 @@ class Post extends Component {
             position={headerPosition}
           />
 
-        <div className="post__body">
-          <div className="post__body__image">
-            <img src={this.getSrc(post)} alt="artwork" />
+          <div className="post__body">
+            <div className="post__body__image">
+              <img src={this.getSrc(post)} alt="artwork" />
+            </div>
           </div>
+
           <PostFooter
             footerOption={footerOption}
             createdAt={footerOption ? post.created_at : ''}
