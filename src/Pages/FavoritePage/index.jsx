@@ -68,13 +68,9 @@ class FavoritePage extends Component {
           <p>There&apos;s no &quot;like&quot; work on the Favorite.</p>
           <p>Put your favorite work in it.</p>
         </div>
-        <Button
-          text="Going to see the artwork"
-          size="medium"
-          width="280px"
-          href="/"
-          white
-        />
+        <Button size="medium" width="280px" href="/" white>
+          Going to see the artwork
+        </Button>
       </div>
     );
   };

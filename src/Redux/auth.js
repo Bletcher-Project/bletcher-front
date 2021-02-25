@@ -11,6 +11,9 @@ const POST_USER_FAIL = 'auth/POST_USER_FAIL';
 const GET_USER_SUCCESS = 'auth/GET_USER_SUCCESS';
 const GET_USER_FAIL = 'auth/GET_USER_FAIL';
 
+const PATCH_USER_SUCCESS = 'auth/PATCH_USER_SUCCESS';
+const PATCH_USER_FAIL = 'auth/PATCH_USER_FAIL';
+
 const SET_LOADING_TRUE = 'auth/SET_LOADING_TRUE';
 const SET_LOADING_FALSE = 'auth/SET_LOADING_FALSE';
 
@@ -27,6 +30,8 @@ const postUserSuccess = createAction(POST_USER_SUCCESS);
 const postUserFail = createAction(POST_USER_FAIL);
 const getUserSuccess = createAction(GET_USER_SUCCESS); // result.data
 const getUserFail = createAction(GET_USER_FAIL);
+const patchUserSuccess = createAction(PATCH_USER_SUCCESS); // result.data
+const patchUserFail = createAction(PATCH_USER_FAIL);
 const setLoadingTrue = createAction(SET_LOADING_TRUE);
 const setLoadingFalse = createAction(SET_LOADING_FALSE);
 
@@ -52,6 +57,12 @@ export default authReducer(
     [GET_USER_FAIL]: (state) => {
       localStorage.removeItem('token');
       return { ...state, isLogin: false, token: null, user: null };
+    },
+    [PATCH_USER_SUCCESS]: (state, action) => {
+      return { ...state, user: action.payload };
+    },
+    [PATCH_USER_FAIL]: (state) => {
+      return state;
     },
     [SET_LOADING_TRUE]: (state) => {
       return { ...state, loading: true };
@@ -145,6 +156,37 @@ export const getUser = (token) => {
       }
     } catch (error) {
       await dispatch(getUserFail());
+    }
+  };
+};
+
+export const updateUser = (token, newInfo) => {
+  return async (dispatch) => {
+    try {
+      const formData = new FormData();
+      if (newInfo.email) formData.append('email', newInfo.email);
+      if (newInfo.name) formData.append('nickname', newInfo.name);
+      if (newInfo.introduce) formData.append('introduce', newInfo.introduce);
+      if (newInfo.img) formData.append('img', newInfo.img);
+      if (newInfo.password) formData.append('checkpassword', newInfo.password);
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'x-access-token': token,
+          },
+          body: formData,
+        },
+      );
+      if (response.status === 200) {
+        const result = await response.json();
+        await dispatch(patchUserSuccess(result.data));
+      } else {
+        await dispatch(patchUserFail());
+      }
+    } catch (error) {
+      await dispatch(patchUserFail());
     }
   };
 };

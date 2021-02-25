@@ -1,0 +1,55 @@
+/*
+  Account Component Styling
+*/
+
+.account {
+  & h3 {
+    font-size: $header3;
+  }
+
+  & h4 {
+    font-size: $header4;
+  }
+
+  & p {
+    font-size: $guidance;
+    color: $dark-gray;
+  }
+
+  &__desc {
+    text-align: center;
+  }
+
+  &__login {
+    padding: 20px;
+
+    &-guide span {
+      color: $black;
+      border-bottom: 1px solid $black;
+      margin-left: 10px;
+    }
+
+    &__options {
+      display: flex;
+
+      &-op {
+        width: 30%;
+      }
+    }
+  }
+
+  &__change {
+    padding: 20px;
+
+    &-op {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 15px;
+
+      & h4 {
+        margin: 0;
+      }
+    }
+  }
+}

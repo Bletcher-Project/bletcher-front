@@ -10,7 +10,6 @@ import Info from 'Components/Profile/Contents/Info';
 
 function ProfilePage() {
   const [content, setContent] = useState('profile');
-
   const switchPage = (dest) => {
     setContent(dest);
   };
