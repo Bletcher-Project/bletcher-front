@@ -42,6 +42,6 @@ export const QUERY_NAME = '?nickname=';
 /* apiGroup */
 export const USER_REQ_GROUP = [
   `${POST_API}${USER_ONE}`,
-  `${MIX_API}${MIX_ORIGIN}`,
-  `${MIX_API}${MIX_SUB}`,
+  `${POST_API}${MIX_API}${MIX_ORIGIN}`,
+  `${POST_API}${MIX_API}${MIX_SUB}`,
 ];

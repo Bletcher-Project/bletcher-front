@@ -6,15 +6,28 @@ import {
   IMAGE_API,
   FAVORITE_API,
   FUND_API,
+  MIX_API,
 } from 'Constants/api-uri';
 
-const initialState = {};
+const initialState = {
+  mixState: {
+    isMixing: false,
+    mixId: null,
+    progressIndex: 0,
+    progressInterval: null,
+    originId: null,
+  },
+  uploadState: {
+    isUploading: false,
+  },
+};
 
 const CLICK_POST_SUCCESS = 'post/CLICK_POST_SUCCESS';
 const CLICK_POST_FAIL = 'post/CLICK_POST_FAIL';
 
 const UPLOAD_POST_SUCCESS = 'post/UPLOAD_POST_SUCCESS';
 const UPLOAD_POST_FAIL = 'post/UPLOAD_POST_FAIL';
+const UPLOAD_POST_START = 'post/UPLOAD_POST_START';
 
 const DELETE_POST_SUCCESS = 'post/DELETE_POST_SUCCESS';
 const DELETE_POST_FAIL = 'post/DELETE_POST_FAIL';
@@ -28,6 +41,15 @@ const DEL_FAVORITE_FAIL = 'post/DEL_FAVORITE_FAIL';
 const ADD_FUNDING_SUCCESS = 'post/ADD_FUNDING_SUCCESS';
 const ADD_FUNDING_FAIL = 'post/ADD_FUNDING_FAIL';
 
+const MIX_POST_SUCCESS = 'post/MIX_POST_SUCCESS';
+const MIX_POST_FAIL = 'post/MIX_POST_FAIL';
+
+const INCREASE_PB_INDEX = 'post/INCREASE_PB_INDEX';
+const RECOMPOSE_MIXING = 'post/RECOMPOSE_MIXING';
+const START_MIX = 'post/START_MIX';
+const END_MIX = 'post/END_MIX';
+const INIT_MIXSTATE = 'post/INIT_MIXSTATE';
+
 export const clickPostSuccess = createAction(CLICK_POST_SUCCESS); // result.post
 export const clickPostFail = createAction(CLICK_POST_FAIL);
 export const uploadPostSuccess = createAction(UPLOAD_POST_SUCCESS); // result
@@ -40,6 +62,14 @@ export const delFavoriteSuccess = createAction(DEL_FAVORITE_SUCCESS);
 export const delFavoriteFail = createAction(DEL_FAVORITE_FAIL);
 export const addFundingSuccess = createAction(ADD_FUNDING_SUCCESS);
 export const addFundingFail = createAction(ADD_FUNDING_FAIL);
+export const mixPostSuccess = createAction(MIX_POST_SUCCESS);
+export const mixPostFail = createAction(MIX_POST_FAIL);
+export const increasePbIndex = createAction(INCREASE_PB_INDEX);
+export const recomposeMixing = createAction(RECOMPOSE_MIXING);
+export const uploadPostStart = createAction(UPLOAD_POST_START);
+export const startMix = createAction(START_MIX);
+export const endMix = createAction(END_MIX);
+export const initMixState = createAction(INIT_MIXSTATE);
 
 export default postReducer(
   {
@@ -50,10 +80,28 @@ export default postReducer(
       return state;
     },
     [UPLOAD_POST_SUCCESS]: (state) => {
-      return state;
+      return {
+        ...state,
+        uploadState: {
+          isUploading: false,
+        },
+      };
     },
     [UPLOAD_POST_FAIL]: (state) => {
-      return state;
+      return {
+        ...state,
+        uploadState: {
+          isUploading: false,
+        },
+      };
+    },
+    [UPLOAD_POST_START]: (state) => {
+      return {
+        ...state,
+        uploadState: {
+          isUploading: true,
+        },
+      };
     },
     [DELETE_POST_SUCCESS]: (state) => {
       return state;
@@ -78,6 +126,72 @@ export default postReducer(
     },
     [ADD_FUNDING_FAIL]: (state) => {
       return state;
+    },
+    [MIX_POST_SUCCESS]: (state) => {
+      return state;
+    },
+    [MIX_POST_FAIL]: (state) => {
+      const { progressInterval } = state.mixState;
+      clearInterval(progressInterval);
+      return {
+        ...state,
+        mixState: {
+          ...state.mixState,
+          mixId: 0,
+          progressInterval: null,
+        },
+      };
+    },
+    [INCREASE_PB_INDEX]: (state) => {
+      if (state.mixState.progressIndex >= 5) return state;
+      return {
+        ...state,
+        mixState: {
+          ...state.mixState,
+          progressIndex: state.mixState.progressIndex + 1,
+        },
+      };
+    },
+    [RECOMPOSE_MIXING]: (state) => {
+      const { originId } = state.mixState;
+      return {
+        ...state,
+        mixState: {
+          ...initialState.mixState,
+          originId,
+        },
+      };
+    },
+    [START_MIX]: (state, action) => {
+      const { originId, interval } = action.payload;
+      return {
+        ...state,
+        mixState: {
+          ...state.mixState,
+          originId,
+          isMixing: true,
+          progressInterval: interval,
+        },
+      };
+    },
+    [END_MIX]: (state, action) => {
+      const { mixId, originId } = action.payload;
+      const { progressInterval } = state.mixState;
+      clearInterval(progressInterval);
+      return {
+        ...state,
+        mixState: {
+          ...state.mixState,
+          mixId,
+          originId,
+          progressIndex: 0,
+          progressInterval: null,
+          isMixing: false,
+        },
+      };
+    },
+    [INIT_MIXSTATE]: (state) => {
+      return { ...state, mixState: initialState.mixState };
     },
   },
   initialState,
@@ -132,6 +246,7 @@ export const addFundingPost = (postId, token) => {
 export const uploadPost = (image, payload, token) => {
   return async (dispatch) => {
     try {
+      await dispatch(uploadPostStart());
       const responseImage = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${IMAGE_API}${POST_API}`,
         {
@@ -158,7 +273,7 @@ export const uploadPost = (image, payload, token) => {
       );
       if (response.status === 200) {
         const result = await response.json();
-        await dispatch(uploadPostSuccess(result));
+        await dispatch(uploadPostSuccess());
         await dispatch(addFundingPost(result.data.id, token));
       }
     } catch (err) {
@@ -230,6 +345,36 @@ export const deleteFavoritePost = (postId, token) => {
       }
     } catch (error) {
       await dispatch(delFavoriteFail());
+    }
+  };
+};
+
+export const mixPost = (originId, subId, token) => {
+  return async (dispatch) => {
+    try {
+      const interval = setInterval(() => {
+        dispatch(increasePbIndex());
+      }, 6000);
+      await dispatch(startMix({ originId, interval }));
+
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${MIX_API}/${originId}/${subId}`,
+        {
+          method: 'POST',
+          headers: {
+            'x-access-token': token,
+          },
+        },
+      );
+      if (response.status === 200) {
+        await dispatch(mixPostSuccess());
+        const mixId = (await response.json()).data;
+        await dispatch(endMix({ mixId, originId }));
+      } else {
+        await dispatch(mixPostFail());
+      }
+    } catch (error) {
+      await dispatch(mixPostFail());
     }
   };
 };

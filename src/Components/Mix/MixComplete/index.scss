@@ -1,0 +1,182 @@
+/*
+  MixComplete Component Styling
+*/
+
+.mixComplete {
+  background-color: white;
+  width: 80%;
+  height: 85%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  &__header {
+    width: 100%;
+    height: 25%;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content: center;
+    background-color: $background-color;
+    &__title {
+      color: $main-color;
+      font-size: 1.9rem;
+    }
+    &__description {
+      font-family: 'AppleSDGothicNeo';
+    }
+  }
+
+  &__content {
+    display: flex;
+    width: 100%;
+    height: 75%;
+
+    &__leftBox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50%;
+      padding: 0 1%;
+      &__imgBox {
+        height: 80%;
+        display: flex;
+        justify-content: center;
+
+        & img {
+          max-width: 85%;
+        }
+      }
+    }
+    &__rightBox {
+      margin: 3rem 0;
+      width: 50%;
+      padding: 0 3%;
+      display: flex;
+      flex-direction: column;
+      align-items: space-around;
+      justify-content: space-around;
+
+      & div {
+        margin-bottom: 0.5rem;
+      }
+
+      &__checkBox {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        &__option {
+          display: flex;
+          align-items: center;
+          width: 100%;
+
+          & * {
+            margin-right: auto;
+          }
+          & input[type='checkbox'] {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+          }
+
+          & input[type='checkbox'] + label:before {
+            content: ' ';
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            margin: -2px 8px 0;
+            text-align: center;
+            vertical-align: middle;
+            background: #fafafa;
+            border: 1px solid #cacece;
+            border-radius: 5px;
+          }
+
+          & input[type='checkbox'] + label:before {
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+          }
+
+          & input[type='checkbox']:checked + label:before {
+            content: '\2713';
+            color: white;
+            background: $main-color;
+            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05),
+              inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+          }
+          & label {
+            font-size: 1.6rem;
+          }
+        }
+      }
+
+      &__categories {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        &__category {
+          margin-right: auto;
+          &__name {
+            color: $main-color;
+          }
+        }
+      }
+
+      &__tos {
+        &__header {
+          font-size: 1.6rem;
+          font-family: 'GothamRoundMedium';
+          font-weight: bolder;
+        }
+        &__description {
+          margin-top: 1rem;
+          & li {
+            list-style: none;
+            margin-top: 1rem;
+          }
+          color: #676767;
+          font-family: 'GothamRoundLight';
+          font-size: 1rem;
+          line-height: 1rem;
+        }
+      }
+
+      &__buttons {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        margin-left: auto;
+        .noStyleButton {
+          text-align: center;
+          width: 100%;
+          padding: 1rem 3rem;
+          border-radius: 26px;
+          border: 2px solid $main-color;
+          margin-bottom: 1rem;
+        }
+        .noStyleButton:hover {
+          color: white;
+          background-color: $main-color;
+        }
+      }
+    }
+  }
+}

@@ -12,6 +12,7 @@ import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
 import MixButton from 'Components/Post/PostButton/MixButton';
 import FavoriteButton from 'Components/Post/PostButton/FavoriteButton';
+import MixChecker from 'Components/Mix/MixChecker';
 
 const defaultProps = {
   mainPost: [],
@@ -111,7 +112,7 @@ class MainPage extends Component {
         post={data.post}
         hoverIcon={
           <>
-            <MixButton />
+            <MixButton originPost={data.post} />
             <FavoriteButton postId={data.post.id} liked={data.isFavorite} />
           </>
         }
@@ -132,6 +133,7 @@ class MainPage extends Component {
       >
         <NavBar isActive="main" />
         <Jumbotron title="Find out" description="What other people painted" />
+        <MixChecker />
         <PostList posts={!loading ? this.renderPosts() : <Loader />} />
       </div>
     );

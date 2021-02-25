@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import { withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { getUserPosts } from 'Redux/fetch-post';
 
 import NavBar from 'Components/Common/NavBar';
 import Loader from 'Components/Common/Loader';
+import MixChecker from 'Components/Mix/MixChecker';
 import Thumbnail from 'Components/Thumbnail';
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
@@ -16,56 +18,28 @@ import ShareButton from 'Components/Post/PostButton/ShareButton';
 import Upload from 'Components/Upload/UploadPost';
 
 import USER_OPTION from 'Constants/userpage-option';
+import { postType, userType } from 'PropTypes';
 import EditButton from 'Assets/images/editButton.png';
 
 import camelCase from 'camelcase';
-
 import cx from 'classnames';
 
 const defaultProps = {
   user: {},
   token: '',
   userPosts: {},
+  mixId: null,
+  isMixing: false,
 };
 const propTypes = {
+  mixId: PropTypes.number,
+  isMixing: PropTypes.bool,
   getPosts: PropTypes.func.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    email: PropTypes.string,
-    nickname: PropTypes.string,
-    introduce: PropTypes.string,
-    profile_image: PropTypes.string,
-    password: PropTypes.string,
-    createdAt: PropTypes.string,
-    updatedAt: PropTypes.string,
-  }),
+  user: userType,
   token: PropTypes.string,
   history: ReactRouterPropTypes.history.isRequired,
-  userPosts: PropTypes.objectOf(
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        Category: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          name: PropTypes.string.isRequired,
-        }),
-        Image: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          path: PropTypes.string,
-        }),
-        User: PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          nickname: PropTypes.string.isRequired,
-        }),
-        created_at: PropTypes.string.isRequired,
-        description: PropTypes.string,
-        id: PropTypes.number.isRequired,
-        is_public: PropTypes.bool.isRequired,
-        title: PropTypes.string.isRequired,
-        updated_at: PropTypes.string.isRequired,
-      }),
-    ),
-  ),
+  userPosts: PropTypes.objectOf(PropTypes.arrayOf(postType.basicType)),
 };
 
 const mapStateToProps = (state) => {
@@ -73,6 +47,8 @@ const mapStateToProps = (state) => {
     token: state.authReducer.token,
     user: state.authReducer.user,
     userPosts: state.fetchPostReducer.userPosts,
+    mixId: state.postReducer.mixState.mixId,
+    isMixing: state.postReducer.mixState.isMixing,
   };
 };
 
@@ -122,7 +98,7 @@ class UserPage extends Component {
     let icon;
     let position;
     if (option === 'me') {
-      icon = <MixButton />;
+      icon = <MixButton originPost={data} />;
       position = 'both';
     } else {
       icon = <ShareButton />;
@@ -175,8 +151,8 @@ class UserPage extends Component {
   };
 
   componentDidMount = async () => {
-    const { user } = this.props;
-    if (user) {
+    const { user, mixId, isMixing } = this.props;
+    if (user || (!isMixing && mixId)) {
       await this.setUser();
       await this.getUserPosts(USER_OPTION);
     }
@@ -230,7 +206,7 @@ class UserPage extends Component {
             </ul>
           </div>
         </div>
-
+        <MixChecker />
         <PostList
           posts={!feedLoading && userPosts ? this.showUserPosts() : <Loader />}
         />
@@ -242,4 +218,6 @@ class UserPage extends Component {
 UserPage.defaultProps = defaultProps;
 UserPage.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserPage);
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(UserPage),
+);

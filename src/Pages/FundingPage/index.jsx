@@ -14,6 +14,7 @@ import Loader from 'Components/Common/Loader';
 import Jumbotron from 'Components/Common/Jumbotron';
 import DropFilter from 'Components/Common/DropFilter';
 import NoStyleButton from 'Components/Form/NoStyleButton';
+import MixChecker from 'Components/Mix/MixChecker';
 
 import FILTER from 'Constants/filter-option';
 import { fundingPost } from 'PropTypes/post';
@@ -198,6 +199,7 @@ class FundingPage extends Component {
               />
             </div>
           </div>
+          <MixChecker />
           <PostList
             posts={posts && !feedLoading ? this.renderPosts() : <Loader />}
           />
