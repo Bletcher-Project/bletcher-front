@@ -45,10 +45,13 @@ function MixButton(props) {
   };
 
   const recompose = async () => {
-    const post = await dispatch(getPostByPostId(originId, token));
-    setChosenOriginPost(post);
-    setIsOpen(true);
-    dispatch(startRecompose());
+    const { originPost } = props;
+    if (originPost) {
+      const post = originPost;
+      setChosenOriginPost(post);
+      setIsOpen(true);
+      dispatch(startRecompose());
+    }
   };
 
   useMountEffect(() => {
