@@ -151,7 +151,7 @@ class FundingPage extends Component {
   };
 
   renderPosts = () => {
-    const { posts } = this.state;
+    const { posts, option } = this.state;
     const fundIcon = (
       <>
         <FundButton />
@@ -162,8 +162,8 @@ class FundingPage extends Component {
       <Post
         key={data.id}
         post={data}
-        hoverIcon={fundIcon}
-        footerOption="funding"
+        hoverIcon={option === 'Ongoing' ? fundIcon : null}
+        footerOption={option === 'Ongoing' ? 'funding' : ''}
         onClick={() => this.showPostDetail(data.id)}
       />
     ));
