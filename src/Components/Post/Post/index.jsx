@@ -29,6 +29,7 @@ class Post extends Component {
   }
 
   getSrc = (post) => {
+    if (!post) return null;
     if (post.Image !== undefined) return post.Image.path;
     return post['Image.path'];
   };

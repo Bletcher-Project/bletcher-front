@@ -38,6 +38,7 @@ class DetailPage extends Component {
 
   getSrc = () => {
     const { post } = this.state;
+    if (!post) return null;
     if (post.Image !== undefined) return post.Image.path;
     return post && post['Image.path'];
   };
