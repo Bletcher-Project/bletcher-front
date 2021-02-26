@@ -25,11 +25,11 @@ const defaultProps = {};
 const propTypes = {};
 
 function MixProgress() {
-  const history = useHistory();
   const dispatch = useDispatch();
+  const history = useHistory();
   const mixState = useSelector((state) => state.postReducer.mixState);
   const user = useSelector((state) => state.authReducer.user);
-  const { progressIndex, isMixing, mixId, originId } = mixState;
+  const { progressIndex, isMixing, mixId } = mixState;
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState(false);
   const isMixEnd = () => {
@@ -44,7 +44,6 @@ function MixProgress() {
     dispatch(recomposeMixing());
     history.push({
       pathname: `/user/${user.nickname}`,
-      search: `?recompose=${originId}`,
     });
   };
 

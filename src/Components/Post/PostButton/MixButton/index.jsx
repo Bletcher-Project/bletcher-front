@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { getPostByPostId, startRecompose } from 'Redux/post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
 import MixHandler from 'Components/Mix/MixHandler';
@@ -10,7 +10,6 @@ import mixImage from 'Assets/images/mixButton.png';
 import { basicType } from 'PropTypes/post';
 
 import { Modal } from 'reactstrap';
-import queryString from 'query-string';
 
 const defaultProps = {
   originPost: null,
@@ -20,13 +19,14 @@ const propTypes = {
 };
 
 function MixButton(props) {
-  const history = useHistory();
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [chosenSubPost, setChosenSubPost] = useState(null);
   const [chosenOriginPost, setChosenOriginPost] = useState(null);
+  const token = useSelector((state) => state.authReducer.token);
   const mixState = useSelector((state) => state.postReducer.mixState);
-
-  const { isMixing, mixId } = mixState;
+  const { isMixing, mixId, recomposeFlag, originId } = mixState;
+  const useMountEffect = (func) => useEffect(func);
 
   const toggle = () => {
     const { originPost } = props;
@@ -44,18 +44,17 @@ function MixButton(props) {
     setChosenSubPost(subPost);
   };
 
-  useEffect(() => {
-    function addLocationListener() {
-      history.listen((location) => {
-        if (location) {
-          const query = queryString.parse(location.search);
-          const originId = query.recompose;
-          if (originId !== undefined) setChosenOriginPost(originId);
-        }
-      });
-    }
-    addLocationListener();
-  }, [props, history]);
+  const recompose = async () => {
+    const post = await dispatch(getPostByPostId(originId, token));
+    setChosenOriginPost(post);
+    setIsOpen(true);
+    dispatch(startRecompose());
+  };
+
+  useMountEffect(() => {
+    const { originPost } = props;
+    if (recomposeFlag && originId && originId === originPost.id) recompose();
+  });
 
   return (
     <>
