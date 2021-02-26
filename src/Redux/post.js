@@ -272,9 +272,7 @@ export const uploadPost = (image, payload, token) => {
         },
       );
       if (response.status === 200) {
-        const result = await response.json();
         await dispatch(uploadPostSuccess());
-        await dispatch(addFundingPost(result.data.id, token));
       }
     } catch (err) {
       await dispatch(uploadPostFail());
