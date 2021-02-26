@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getPostByPostId, startRecompose } from 'Redux/post';
+import { startRecompose } from 'Redux/post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
 import MixHandler from 'Components/Mix/MixHandler';
@@ -23,7 +23,6 @@ function MixButton(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [chosenSubPost, setChosenSubPost] = useState(null);
   const [chosenOriginPost, setChosenOriginPost] = useState(null);
-  const token = useSelector((state) => state.authReducer.token);
   const mixState = useSelector((state) => state.postReducer.mixState);
   const { isMixing, mixId, recomposeFlag, originId } = mixState;
   const useMountEffect = (func) => useEffect(func);
