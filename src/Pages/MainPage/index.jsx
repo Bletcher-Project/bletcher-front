@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { postType, userType } from 'PropTypes';
+import React, { useState, useEffect } from 'react';
 
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getMainPosts } from 'Redux/fetch-post';
 
 import NavBar from 'Components/Common/NavBar';
@@ -14,74 +12,33 @@ import MixButton from 'Components/Post/PostButton/MixButton';
 import FavoriteButton from 'Components/Post/PostButton/FavoriteButton';
 import MixChecker from 'Components/Mix/MixChecker';
 
-const defaultProps = {
-  mainPost: [],
-  user: null,
-  token: null,
-};
-const propTypes = {
-  getPosts: PropTypes.func.isRequired,
-  mainPost: postType.mainPost,
-  mainPageNum: PropTypes.number.isRequired,
-  user: userType,
-  token: PropTypes.string,
-};
+const defaultProps = {};
+const propTypes = {};
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getPosts: (userId, pageNum) => dispatch(getMainPosts(userId, pageNum)),
-  };
-};
+function MainPage() {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.authReducer.token);
+  const user = useSelector((state) => state.authReducer.user);
+  const mainPost = useSelector((state) => state.fetchPostReducer.mainPost);
+  const mainPageNum = useSelector(
+    (state) => state.fetchPostReducer.mainPageNum,
+  );
+  const [loading, setLoading] = useState(true);
 
-const mapStateToProps = (state) => {
-  return {
-    token: state.authReducer.token,
-    user: state.authReducer.user,
-    mainPost: state.fetchPostReducer.mainPost,
-    mainPageNum: state.fetchPostReducer.mainPageNum,
-    mainWillFetch: state.fetchPostReducer.mainWillFetch,
-  };
-};
-
-class MainPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-    };
-  }
-
-  async componentDidMount() {
-    const { token, user } = this.props;
-
-    if (!token) {
-      this.fetchMainPosts(0);
-    } else if (user) {
-      this.fetchMainPosts(user.id);
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    const { token, user } = this.props;
-
-    if (user !== prevProps.user) {
+  useEffect(() => {
+    const fetchMainPosts = async () => {
       if (!token) {
-        this.fetchMainPosts(0);
-      } else if (user) {
-        this.fetchMainPosts(user.id);
+        await dispatch(getMainPosts(0, mainPageNum));
+      } else {
+        await dispatch(getMainPosts(user.id, mainPageNum));
       }
-    }
-  }
+      setLoading(false);
+    };
 
-  fetchMainPosts = async (userId) => {
-    const { getPosts, mainPageNum } = this.props;
+    fetchMainPosts();
+  }, [token, user, mainPageNum, dispatch]);
 
-    await getPosts(userId, mainPageNum);
-    this.setState({ loading: false });
-  };
-
-  renderPosts = () => {
-    const { mainPost } = this.props;
+  const renderPosts = () => {
     return mainPost.map((data) => (
       <Post
         key={data.post.id}
@@ -98,20 +55,17 @@ class MainPage extends Component {
     ));
   };
 
-  render() {
-    const { loading } = this.state;
-    return (
-      <div className="mainPage">
-        <NavBar isActive="main" />
-        <Jumbotron title="Find out" description="What other people painted" />
-        <MixChecker />
-        <PostList posts={!loading ? this.renderPosts() : <Loader />} />
-      </div>
-    );
-  }
+  return (
+    <div className="mainPage">
+      <NavBar isActive="main" />
+      <Jumbotron title="Find out" description="What other people painted" />
+      <MixChecker />
+      <PostList posts={!loading ? renderPosts() : <Loader />} />
+    </div>
+  );
 }
 
 MainPage.defaultProps = defaultProps;
 MainPage.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
+export default MainPage;
