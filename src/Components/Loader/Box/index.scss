@@ -1,0 +1,45 @@
+/*
+  Box Loader Component Styling
+*/
+
+.boxLoader {
+  transform-origin: center center;
+  color: $main-color;
+  width: 50px;
+  height: 50px;
+  position: relative;
+  border: 3px solid;
+  display: inline-block;
+  animation: rect-rotate 2s linear infinite;
+}
+
+.boxLoader::after {
+  content: '';
+  height: 0px;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: $main-color;
+  opacity: 0.5;
+  animation: fill-rect 2s linear infinite;
+}
+
+@keyframes rect-rotate {
+  0% {
+    transform: rotate(0);
+  }
+  50%,
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fill-rect {
+  0%,
+  50% {
+    height: 0px;
+  }
+  100% {
+    height: inherit;
+  }
+}
