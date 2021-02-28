@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { postType, userType } from 'PropTypes';
 
 import { connect } from 'react-redux';
-import { getMainPosts, initPosts } from 'Redux/fetch-post';
+import { getMainPosts } from 'Redux/fetch-post';
 
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
@@ -21,10 +21,8 @@ const defaultProps = {
 };
 const propTypes = {
   getPosts: PropTypes.func.isRequired,
-  init: PropTypes.func.isRequired,
   mainPost: postType.mainPost,
   mainPageNum: PropTypes.number.isRequired,
-  mainWillFetch: PropTypes.bool.isRequired,
   user: userType,
   token: PropTypes.string,
 };
@@ -32,7 +30,6 @@ const propTypes = {
 const mapDispatchToProps = (dispatch) => {
   return {
     getPosts: (userId, pageNum) => dispatch(getMainPosts(userId, pageNum)),
-    init: () => dispatch(initPosts()),
   };
 };
 
@@ -55,16 +52,13 @@ class MainPage extends Component {
   }
 
   async componentDidMount() {
-    const { token, user, init } = this.props;
+    const { token, user } = this.props;
 
-    await init();
     if (!token) {
       this.fetchMainPosts(0);
     } else if (user) {
       this.fetchMainPosts(user.id);
     }
-
-    window.addEventListener('scroll', this.infiniteScroll, true);
   }
 
   componentDidUpdate(prevProps) {
@@ -78,24 +72,6 @@ class MainPage extends Component {
       }
     }
   }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.infiniteScroll);
-  }
-
-  infiniteScroll = async () => {
-    const { user, mainWillFetch } = this.props;
-    const { scrollHeight, scrollTop } = document.body;
-    const { clientHeight } = document.documentElement;
-
-    if (mainWillFetch && scrollTop + clientHeight === scrollHeight) {
-      if (user) {
-        this.fetchMainPosts(user.id);
-      } else {
-        this.fetchMainPosts(0);
-      }
-    }
-  };
 
   fetchMainPosts = async (userId) => {
     const { getPosts, mainPageNum } = this.props;
@@ -125,12 +101,7 @@ class MainPage extends Component {
   render() {
     const { loading } = this.state;
     return (
-      <div
-        className="mainPage"
-        ref={(main) => {
-          this.main = main;
-        }}
-      >
+      <div className="mainPage">
         <NavBar isActive="main" />
         <Jumbotron title="Find out" description="What other people painted" />
         <MixChecker />
