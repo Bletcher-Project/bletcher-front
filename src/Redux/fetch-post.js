@@ -79,8 +79,7 @@ export default fetchPostReducer(
     [GET_MAIN_POSTS_SUCCESS]: (state, action) => {
       return {
         ...state,
-        mainPost: state.mainPost.concat(action.payload),
-        // mainPageNum: state.mainPageNum + 1,
+        mainPost: action.payload,
       };
     },
     [GET_MAIN_POSTS_COMPLETE]: (state) => {

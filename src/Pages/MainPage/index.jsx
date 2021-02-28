@@ -29,10 +29,11 @@ function MainPage() {
     const fetchMainPosts = async () => {
       if (!token) {
         await dispatch(getMainPosts(0, mainPageNum));
-      } else {
+        setLoading(false);
+      } else if (user) {
         await dispatch(getMainPosts(user.id, mainPageNum));
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchMainPosts();
