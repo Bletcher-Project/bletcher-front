@@ -5,7 +5,7 @@ import { getMainPosts } from 'Redux/fetch-post';
 
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
-import Loader from 'Components/Common/Loader';
+import BoxLoader from 'Components/Loader/Box';
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
 import MixButton from 'Components/Post/PostButton/MixButton';
@@ -61,7 +61,7 @@ function MainPage() {
       <NavBar isActive="main" />
       <Jumbotron title="Find out" description="What other people painted" />
       <MixChecker />
-      <PostList posts={!loading ? renderPosts() : <Loader />} />
+      <PostList posts={!loading ? renderPosts() : <BoxLoader />} />
     </div>
   );
 }

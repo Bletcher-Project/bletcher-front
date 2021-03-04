@@ -10,7 +10,7 @@
   position: relative;
   border: 3px solid;
   display: inline-block;
-  animation: rect-rotate 2s linear infinite;
+  animation: rect-rotate 1.5s linear infinite;
 }
 
 .boxLoader::after {
@@ -21,7 +21,7 @@
   display: block;
   background: $main-color;
   opacity: 0.5;
-  animation: fill-rect 2s linear infinite;
+  animation: fill-rect 1.5s linear infinite;
 }
 
 @keyframes rect-rotate {
