@@ -31,7 +31,6 @@ function MixButton(props) {
   const useMountEffect = (func) => useEffect(func);
 
   const toggle = () => {
-    console.log(isLogin, openSignIn);
     if (isLogin) {
       const { originPost } = props;
       if (isOpen) setChosenOriginPost(null);
