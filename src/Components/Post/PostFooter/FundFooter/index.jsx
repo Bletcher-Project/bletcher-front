@@ -1,17 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+import PropTypes from 'prop-types';
 
 import DueDate from 'Assets/icons/DueDate';
 import HeartImg from 'Assets/images/fundHeart-bg-removed.png';
 
-import { dummyDueDate } from 'Dummies/dummyPost';
+import moment from 'moment';
 
 const calcDueDate = (createDate) => {
-  const dueDate = Date.parse(dummyDueDate) - Date.parse(createDate);
-  return new Date(dueDate).toTimeString().substring(0, 8);
+  const dueDate = moment(createDate).add(7, 'days');
+  const dday = moment.duration(dueDate.diff(moment()));
+  return `${dday.days()}:${dday.hours()}:${dday.minutes()}:${dday.seconds()} `;
 };
 
-function FundFooter(prop) {
-  const { createdAt } = prop;
+function FundFooter(props) {
+  const { createdAt } = props;
+  const [dueDate, setDueDate] = useState(calcDueDate(createdAt));
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDueDate(calcDueDate(createdAt));
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [createdAt]);
   return (
     <>
       <div className="post__footer__tab">
@@ -19,7 +31,7 @@ function FundFooter(prop) {
           <span className="mr-1 dueDateIcon">
             <DueDate />
           </span>
-          <span>{calcDueDate(createdAt)}</span>
+          <span>{dueDate}</span>
         </div>
         <div className="post__footer__tab__right">
           <span>
@@ -34,5 +46,13 @@ function FundFooter(prop) {
     </>
   );
 }
+
+FundFooter.propTypes = {
+  createdAt: PropTypes.string,
+};
+
+FundFooter.defaultProps = {
+  createdAt: '',
+};
 
 export default FundFooter;
