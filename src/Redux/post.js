@@ -16,6 +16,7 @@ const initialState = {
     progressIndex: 0,
     progressInterval: null,
     originId: null,
+    recomposeFlag: false,
   },
   uploadState: {
     isUploading: false,
@@ -46,6 +47,7 @@ const MIX_POST_FAIL = 'post/MIX_POST_FAIL';
 
 const INCREASE_PB_INDEX = 'post/INCREASE_PB_INDEX';
 const RECOMPOSE_MIXING = 'post/RECOMPOSE_MIXING';
+const START_RECOMPOSE = 'post/START_RECOMPOSE';
 const START_MIX = 'post/START_MIX';
 const END_MIX = 'post/END_MIX';
 const INIT_MIXSTATE = 'post/INIT_MIXSTATE';
@@ -66,6 +68,7 @@ export const mixPostSuccess = createAction(MIX_POST_SUCCESS);
 export const mixPostFail = createAction(MIX_POST_FAIL);
 export const increasePbIndex = createAction(INCREASE_PB_INDEX);
 export const recomposeMixing = createAction(RECOMPOSE_MIXING);
+export const startRecompose = createAction(START_RECOMPOSE);
 export const uploadPostStart = createAction(UPLOAD_POST_START);
 export const startMix = createAction(START_MIX);
 export const endMix = createAction(END_MIX);
@@ -159,6 +162,16 @@ export default postReducer(
         mixState: {
           ...initialState.mixState,
           originId,
+          recomposeFlag: true,
+        },
+      };
+    },
+    [START_RECOMPOSE]: (state) => {
+      return {
+        ...state,
+        mixState: {
+          ...state.mixState,
+          recomposeFlag: false,
         },
       };
     },
@@ -354,9 +367,8 @@ export const mixPost = (originId, subId, token) => {
     try {
       const interval = setInterval(() => {
         dispatch(increasePbIndex());
-      }, 6000);
+      }, 1000);
       await dispatch(startMix({ originId, interval }));
-
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${MIX_API}/${originId}/${subId}`,
         {
