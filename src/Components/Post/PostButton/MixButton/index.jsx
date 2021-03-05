@@ -4,6 +4,7 @@ import { startRecompose } from 'Redux/post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
 import MixHandler from 'Components/Mix/MixHandler';
+import SignInModal from 'Components/Sign/SignInModal';
 
 import mixImage from 'Assets/images/mixButton.png';
 
@@ -23,15 +24,22 @@ function MixButton(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [chosenSubPost, setChosenSubPost] = useState(null);
   const [chosenOriginPost, setChosenOriginPost] = useState(null);
+  const [openSignIn, setOpenSignin] = useState(false);
   const mixState = useSelector((state) => state.postReducer.mixState);
+  const isLogin = useSelector((state) => state.authReducer.isLogin);
   const { isMixing, mixId, recomposeFlag, originId } = mixState;
   const useMountEffect = (func) => useEffect(func);
 
   const toggle = () => {
-    const { originPost } = props;
-    if (isOpen) setChosenOriginPost(null);
-    else setChosenOriginPost(originPost);
-    setIsOpen(!isOpen);
+    console.log(isLogin, openSignIn);
+    if (isLogin) {
+      const { originPost } = props;
+      if (isOpen) setChosenOriginPost(null);
+      else setChosenOriginPost(originPost);
+      setIsOpen(!isOpen);
+    } else {
+      setOpenSignin(true);
+    }
   };
 
   const modalOnClose = () => {
@@ -56,6 +64,7 @@ function MixButton(props) {
   useMountEffect(() => {
     const { originPost } = props;
     if (recomposeFlag && originId && originId === originPost.id) recompose();
+    if (isLogin) setOpenSignin(false);
   });
 
   return (
@@ -63,7 +72,11 @@ function MixButton(props) {
       <NoStyleButton onClick={toggle}>
         <img className="postButton mix" src={mixImage} alt="mix" />
       </NoStyleButton>
-      {chosenOriginPost && (
+      <SignInModal
+        isOpen={openSignIn}
+        toggle={() => setOpenSignin(!openSignIn)}
+      />
+      {isLogin && chosenOriginPost && (
         <Modal
           isOpen={chosenOriginPost && isOpen && !(isMixing || mixId)}
           toggle={toggle}
