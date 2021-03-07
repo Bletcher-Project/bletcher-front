@@ -7,15 +7,18 @@ import {
   FAVORITE_API,
   FUND_API,
   MIX_API,
+  IMAGE_POST,
 } from 'Constants/api-uri';
 
 const initialState = {
   mixState: {
     isMixing: false,
     mixId: null,
+    mixImagePath: '',
     progressIndex: 0,
     progressInterval: null,
     originId: null,
+    subId: null,
     recomposeFlag: false,
   },
   uploadState: {
@@ -188,7 +191,7 @@ export default postReducer(
       };
     },
     [END_MIX]: (state, action) => {
-      const { mixId, originId } = action.payload;
+      const { mixId, originId, subId, mixImagePath } = action.payload;
       const { progressInterval } = state.mixState;
       clearInterval(progressInterval);
       return {
@@ -196,7 +199,9 @@ export default postReducer(
         mixState: {
           ...state.mixState,
           mixId,
+          mixImagePath,
           originId,
+          subId,
           progressIndex: 0,
           progressInterval: null,
           isMixing: false,
@@ -380,13 +385,43 @@ export const mixPost = (originId, subId, token) => {
       );
       if (response.status === 200) {
         await dispatch(mixPostSuccess());
-        const mixId = (await response.json()).data;
-        await dispatch(endMix({ mixId, originId }));
+        const result = await response.json();
+        const { image_id: mixId, image_path: mixImagePath } = result.data;
+        await dispatch(endMix({ mixId, originId, subId, mixImagePath }));
       } else {
         await dispatch(mixPostFail());
       }
     } catch (error) {
       await dispatch(mixPostFail());
+    }
+  };
+};
+
+export const uploadMixedPost = (originId, subId, isPublic, imageId, token) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${MIX_API}${IMAGE_POST}`,
+        {
+          method: 'POST',
+          headers: {
+            'x-access-token': token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            origin_post_id: originId,
+            sub_post_id: subId,
+            is_public: isPublic,
+            image_id: imageId,
+          }),
+        },
+      );
+      if (response.status === 200) {
+        await dispatch(uploadPostSuccess());
+        await dispatch(initMixState());
+      }
+    } catch (error) {
+      await dispatch(uploadPostFail());
     }
   };
 };

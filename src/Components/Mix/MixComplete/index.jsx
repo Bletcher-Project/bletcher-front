@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
-import { getPostByPostId, recomposeMixing, initMixState } from 'Redux/post';
+import { recomposeMixing, uploadMixedPost } from 'Redux/post';
 import { getUserPosts } from 'Redux/fetch-post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
@@ -16,24 +16,27 @@ import { withRouter } from 'react-router-dom';
 
 const defaultProps = {
   mixId: null,
+  mixImagePath: '',
   originId: null,
+  subId: null,
   token: '',
   user: null,
-  getMixedPost: null,
   recomposePost: null,
   patchUserPost: null,
+  uploadMixPost: null,
 };
 
 const propTypes = {
-  initializeMixState: PropTypes.func.isRequired,
   toggle: PropTypes.func.isRequired,
   history: ReactRouterPropTypes.history.isRequired,
   mixId: PropTypes.number,
+  mixImagePath: PropTypes.string,
   originId: PropTypes.number,
+  subId: PropTypes.number,
   token: PropTypes.string,
-  getMixedPost: PropTypes.func,
   recomposePost: PropTypes.func,
   patchUserPost: PropTypes.func,
+  uploadMixPost: PropTypes.func,
   user: PropTypes.shape({
     id: PropTypes.number,
     nickname: PropTypes.string,
@@ -42,17 +45,16 @@ const propTypes = {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getMixedPost: (postId, token) => {
-      return dispatch(getPostByPostId(postId, token));
-    },
     recomposePost: () => {
       return dispatch(recomposeMixing());
     },
     patchUserPost: (tabOption, userInfo, token) => {
       return dispatch(getUserPosts(tabOption, userInfo, token));
     },
-    initializeMixState: () => {
-      return dispatch(initMixState());
+    uploadMixPost: (originId, subId, isPublic, imageId, token) => {
+      return dispatch(
+        uploadMixedPost(originId, subId, isPublic, imageId, token),
+      );
     },
   };
 };
@@ -62,7 +64,9 @@ const mapStateToProps = (state) => {
     user: state.authReducer.user,
     token: state.authReducer.token,
     mixId: state.postReducer.mixState.mixId,
+    mixImagePath: state.postReducer.mixState.mixImagePath,
     originId: state.postReducer.mixState.originId,
+    subId: state.postReducer.mixState.subId,
   };
 };
 
@@ -71,7 +75,6 @@ class MixComplete extends Component {
     super(props);
     this.state = {
       isPublic: true,
-      mixedPost: null,
     };
   }
 
@@ -130,27 +133,20 @@ class MixComplete extends Component {
       token,
       toggle,
       patchUserPost,
-      initializeMixState,
+      uploadMixPost,
+      originId,
+      mixId,
+      subId,
     } = this.props;
+    const { isPublic } = this.state;
+    uploadMixPost(originId, subId, isPublic, mixId, token);
     patchUserPost('me', user, token);
-    initializeMixState();
     toggle();
   };
 
-  getSrc = (post) => {
-    if (!post) return null;
-    if (post.Image !== undefined) return post.Image.path;
-    return post['Image.path'];
-  };
-
-  componentDidMount = async () => {
-    const { getMixedPost, mixId, token } = this.props;
-    const mPost = await getMixedPost(mixId, token);
-    this.setState({ mixedPost: mPost });
-  };
-
   render() {
-    const { isPublic, mixedPost } = this.state;
+    const { isPublic } = this.state;
+    const { mixImagePath } = this.props;
     return (
       <>
         <div className="mixComplete">
@@ -163,7 +159,7 @@ class MixComplete extends Component {
           <div className="mixComplete__content">
             <div className="mixComplete__content__leftBox">
               <div className="mixComplete__content__leftBox__imgBox">
-                <img src={this.getSrc(mixedPost)} alt="" />
+                <img src={mixImagePath} alt="" />
               </div>
             </div>
             <div className="mixComplete__content__rightBox">
