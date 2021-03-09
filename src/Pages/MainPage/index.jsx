@@ -1,111 +1,45 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { postType, userType } from 'PropTypes';
+import React, { useState, useEffect } from 'react';
 
-import { connect } from 'react-redux';
-import { getMainPosts, initPosts } from 'Redux/fetch-post';
+import { useSelector, useDispatch } from 'react-redux';
+import { getMainPosts } from 'Redux/fetch-post';
 
 import NavBar from 'Components/Common/NavBar';
 import Jumbotron from 'Components/Common/Jumbotron';
-import Loader from 'Components/Common/Loader';
+import BoxLoader from 'Components/Loader/Box';
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
 import MixButton from 'Components/Post/PostButton/MixButton';
 import FavoriteButton from 'Components/Post/PostButton/FavoriteButton';
 import MixChecker from 'Components/Mix/MixChecker';
 
-const defaultProps = {
-  mainPost: [],
-  user: null,
-  token: null,
-};
-const propTypes = {
-  getPosts: PropTypes.func.isRequired,
-  init: PropTypes.func.isRequired,
-  mainPost: postType.mainPost,
-  mainPageNum: PropTypes.number.isRequired,
-  mainWillFetch: PropTypes.bool.isRequired,
-  user: userType,
-  token: PropTypes.string,
-};
+const defaultProps = {};
+const propTypes = {};
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getPosts: (userId, pageNum) => dispatch(getMainPosts(userId, pageNum)),
-    init: () => dispatch(initPosts()),
-  };
-};
+function MainPage() {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.authReducer.token);
+  const user = useSelector((state) => state.authReducer.user);
+  const mainPost = useSelector((state) => state.fetchPostReducer.mainPost);
+  const mainPageNum = useSelector(
+    (state) => state.fetchPostReducer.mainPageNum,
+  );
+  const [loading, setLoading] = useState(true);
 
-const mapStateToProps = (state) => {
-  return {
-    token: state.authReducer.token,
-    user: state.authReducer.user,
-    mainPost: state.fetchPostReducer.mainPost,
-    mainPageNum: state.fetchPostReducer.mainPageNum,
-    mainWillFetch: state.fetchPostReducer.mainWillFetch,
-  };
-};
-
-class MainPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-    };
-  }
-
-  async componentDidMount() {
-    const { token, user, init } = this.props;
-
-    await init();
-    if (!token) {
-      this.fetchMainPosts(0);
-    } else if (user) {
-      this.fetchMainPosts(user.id);
-    }
-
-    window.addEventListener('scroll', this.infiniteScroll, true);
-  }
-
-  componentDidUpdate(prevProps) {
-    const { token, user } = this.props;
-
-    if (user !== prevProps.user) {
+  useEffect(() => {
+    const fetchMainPosts = async () => {
       if (!token) {
-        this.fetchMainPosts(0);
+        await dispatch(getMainPosts(0, mainPageNum));
+        setLoading(false);
       } else if (user) {
-        this.fetchMainPosts(user.id);
+        await dispatch(getMainPosts(user.id, mainPageNum));
+        setLoading(false);
       }
-    }
-  }
+    };
 
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.infiniteScroll);
-  }
+    fetchMainPosts();
+  }, [token, user, mainPageNum, dispatch]);
 
-  infiniteScroll = async () => {
-    const { user, mainWillFetch } = this.props;
-    const { scrollHeight, scrollTop } = document.body;
-    const { clientHeight } = document.documentElement;
-
-    if (mainWillFetch && scrollTop + clientHeight === scrollHeight) {
-      if (user) {
-        this.fetchMainPosts(user.id);
-      } else {
-        this.fetchMainPosts(0);
-      }
-    }
-  };
-
-  fetchMainPosts = async (userId) => {
-    const { getPosts, mainPageNum } = this.props;
-
-    await getPosts(userId, mainPageNum);
-    this.setState({ loading: false });
-  };
-
-  renderPosts = () => {
-    const { mainPost } = this.props;
+  const renderPosts = () => {
     return mainPost.map((data) => (
       <Post
         key={data.post.id}
@@ -122,25 +56,17 @@ class MainPage extends Component {
     ));
   };
 
-  render() {
-    const { loading } = this.state;
-    return (
-      <div
-        className="mainPage"
-        ref={(main) => {
-          this.main = main;
-        }}
-      >
-        <NavBar isActive="main" />
-        <Jumbotron title="Find out" description="What other people painted" />
-        <MixChecker />
-        <PostList posts={!loading ? this.renderPosts() : <Loader />} />
-      </div>
-    );
-  }
+  return (
+    <div className="mainPage">
+      <NavBar isActive="main" />
+      <Jumbotron title="Find out" description="What other people painted" />
+      <MixChecker />
+      <PostList posts={!loading ? renderPosts() : <BoxLoader />} />
+    </div>
+  );
 }
 
 MainPage.defaultProps = defaultProps;
 MainPage.propTypes = propTypes;
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
+export default MainPage;
