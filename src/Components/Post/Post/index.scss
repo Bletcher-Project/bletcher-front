@@ -25,6 +25,7 @@
   &__body {
     height: 300px;
     display: flex;
+    justify-content: center;
     padding: 7px 25px 20px 25px;
 
     &__image {
@@ -32,10 +33,6 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
-
-      & img {
-        height: 100%;
-      }
     }
   }
 }
