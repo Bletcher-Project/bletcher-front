@@ -29,4 +29,11 @@ export const mainPost = PropTypes.arrayOf(
 );
 
 export const favoritePost = PropTypes.arrayOf(basicType.isRequired);
-export const fundingPost = PropTypes.arrayOf(basicType.isRequired);
+export const fundOngoingPost = PropTypes.arrayOf(
+  PropTypes.objectOf({
+    basicType,
+    isFunding: PropTypes.bool.isRequired,
+  }),
+);
+
+export const fundEndPost = PropTypes.arrayOf(basicType.isRequired);

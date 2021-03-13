@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 
 import PropTypes from 'prop-types';
+
+import { useSelector } from 'react-redux';
+import { getDueDate, getFundCount } from 'Redux/post';
 
 import DueDate from 'Assets/icons/DueDate';
 import HeartImg from 'Assets/images/fundHeart-bg-removed.png';
@@ -8,28 +11,55 @@ import HeartImg from 'Assets/images/fundHeart-bg-removed.png';
 import moment from 'moment';
 
 function FundFooter(props) {
-  const { createdAt } = props;
-  const calcDueDate = (createDate) => {
-    const dueDate = moment(createDate).add(7, 'days');
-    const dday = moment.duration(dueDate.diff(moment()));
-    return `${dday.days()}:${dday.hours()}:${dday.minutes()}:${dday.seconds()} `;
-  };
+  const progressRef = useRef();
+  const { postId } = props;
+  const token = useSelector((state) => state.authReducer.token);
+  const [timeLimit, setTimeLimit] = useState('');
+  const [dueDate, setDueDate] = useState('');
+  const [fundCount, setFundCount] = useState(0);
 
-  const calcPercentage = (heartNum) => {
+  const calcPercentage = () => {
     const maxHeart = 10;
-    return `${(heartNum / maxHeart) * 100}%`;
+    return `${(fundCount / maxHeart) * 100}%`;
   };
 
-  const [dueDate, setDueDate] = useState(calcDueDate(createdAt));
+  const parseTimeLimit = useCallback(() => {
+    let parsedLeftDate = '';
+    if (dueDate) {
+      const leftDate = moment.duration(moment(dueDate).diff(moment()));
+      parsedLeftDate = `${leftDate.days()}일 ${leftDate.hours()}시간 ${leftDate.minutes()}분`;
+    }
+    return parsedLeftDate;
+  }, [dueDate]);
+
+  const getBarStyle = () => {
+    const calcedWidth = calcPercentage();
+    if (calcedWidth === '0%' && progressRef.current)
+      progressRef.current.style.opacity = '60%';
+
+    return {
+      width: calcedWidth,
+    };
+  };
 
   useEffect(() => {
+    async function fetchFundData() {
+      const dd = await getDueDate(postId, token);
+      const fc = await getFundCount(postId, token);
+      setDueDate(dd);
+      setFundCount(fc);
+      setTimeLimit(parseTimeLimit());
+    }
+    fetchFundData();
+
     const interval = setInterval(() => {
-      setDueDate(calcDueDate(createdAt));
-    }, 1000);
+      setTimeLimit(parseTimeLimit());
+    }, 1000 * 60);
     return () => {
       clearInterval(interval);
     };
-  }, [createdAt]);
+  }, [postId, token, parseTimeLimit]);
+
   return (
     <>
       <div className="post__footer__tab">
@@ -37,31 +67,28 @@ function FundFooter(props) {
           <span className="mr-1 dueDateIcon">
             <DueDate />
           </span>
-          <span>{dueDate}</span>
+          <span>{timeLimit}</span>
         </div>
         <div className="post__footer__tab__right">
           <span>
             <img className="fundHeart" src={HeartImg} alt="fund" />
           </span>
-          <span>3</span>
+          <span>{fundCount}</span>
         </div>
       </div>
-      <div className="post__footer__progress">
-        <hr
-          className="post__footer__progress__bar"
-          style={{ width: calcPercentage(3) }}
-        />
+      <div className="post__footer__progress" ref={progressRef}>
+        <hr className="post__footer__progress__bar" style={getBarStyle()} />
       </div>
     </>
   );
 }
 
 FundFooter.propTypes = {
-  createdAt: PropTypes.string,
+  postId: PropTypes.number,
 };
 
 FundFooter.defaultProps = {
-  createdAt: '',
+  postId: null,
 };
 
 export default FundFooter;

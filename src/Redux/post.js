@@ -6,7 +6,9 @@ import {
   IMAGE_API,
   FAVORITE_API,
   FUND_API,
+  FUND_DUEDATE,
   MIX_API,
+  FUND_COUNT,
 } from 'Constants/api-uri';
 
 const initialState = {
@@ -243,6 +245,26 @@ export const addFundingPost = (postId, token) => {
   };
 };
 
+export const deleteFundingPost = (postId, token) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${FUND_API}/${postId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'x-access-token': token,
+          },
+        },
+      );
+      if (response.status === 200) await dispatch(addFundingSuccess());
+      else await dispatch(addFundingFail());
+    } catch (error) {
+      await dispatch(addFundingFail());
+    }
+  };
+};
+
 export const uploadPost = (image, payload, token) => {
   return async (dispatch) => {
     try {
@@ -375,4 +397,50 @@ export const mixPost = (originId, subId, token) => {
       await dispatch(mixPostFail());
     }
   };
+};
+
+export const getDueDate = async (postId, token) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_SERVER_URL}${INIT}${FUND_API}${FUND_DUEDATE}/${postId}`,
+      {
+        method: 'GET',
+        headers: {
+          'x-access-token': token,
+        },
+      },
+    );
+
+    if (response.status === 200) {
+      const result = await response.json();
+      const duedate = result.data;
+      return duedate;
+    }
+    return new Date();
+  } catch (error) {
+    return '';
+  }
+};
+
+export const getFundCount = async (postId, token) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_SERVER_URL}${INIT}${FUND_API}${FUND_COUNT}/${postId}`,
+      {
+        method: 'GET',
+        headers: {
+          'x-access-token': token,
+        },
+      },
+    );
+
+    if (response.status === 200) {
+      const result = await response.json();
+      const fundCount = result.data.counts;
+      return fundCount;
+    }
+    return 0;
+  } catch (error) {
+    return 0;
+  }
 };

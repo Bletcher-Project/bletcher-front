@@ -206,11 +206,11 @@ export const getNewPosts = () => {
   };
 };
 
-export const getFundingPosts = () => {
+export const getFundingPosts = (userId) => {
   return async (dispatch) => {
     try {
       const responseOngoing = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${FUND_API}${FUND_ONGOING}`,
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${POST_API}${FUND_API}${FUND_ONGOING}/${userId}`,
         { method: 'GET' },
       );
       const responseEnd = await fetch(
@@ -223,7 +223,10 @@ export const getFundingPosts = () => {
       } else {
         if (responseOngoing.status === 200) {
           const resultOngoing = await responseOngoing.json();
-          result = { ...result, onGoingPost: resultOngoing.data };
+          result = {
+            ...result,
+            onGoingPost: resultOngoing.data,
+          };
         }
         if (responseEnd.status === 200) {
           const resultEnd = await responseEnd.json();

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
@@ -17,7 +17,7 @@ import NoStyleButton from 'Components/Form/NoStyleButton';
 import MixChecker from 'Components/Mix/MixChecker';
 
 import FILTER from 'Constants/filter-option';
-import { fundingPost } from 'PropTypes/post';
+import { fundOngoingPost, fundEndPost } from 'PropTypes/post';
 
 import { withRouter } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
@@ -25,6 +25,7 @@ import cx from 'classnames';
 
 const defaultProps = {
   user: null,
+  token: null,
   fundingPosts: {
     onGoingPost: [],
     endPost: [],
@@ -33,24 +34,26 @@ const defaultProps = {
 
 const propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
+  token: PropTypes.string,
   user: PropTypes.shape({
     id: PropTypes.number,
     nickname: PropTypes.string,
   }),
   getPosts: PropTypes.func.isRequired,
-  fundingPosts: PropTypes.objectOf(fundingPost),
+  fundingPosts: PropTypes.shape({ fundOngoingPost, fundEndPost }),
 };
 
 const mapStateToProps = (state) => {
   return {
     user: state.authReducer.user,
+    token: state.authReducer.token,
     fundingPosts: state.fetchPostReducer.fundingPosts,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPosts: () => dispatch(getFundingPosts()),
+    getPosts: (userId) => dispatch(getFundingPosts(userId)),
   };
 };
 
@@ -66,7 +69,24 @@ class FundingPage extends Component {
   }
 
   componentDidMount = async () => {
-    await this.fetchFundingPosts();
+    const { token, user } = this.props;
+    if (!token) {
+      await this.fetchFundingPosts(0);
+    } else if (user) {
+      await this.fetchFundingPosts(user.id);
+    }
+  };
+
+  componentDidUpdate = (prevProps) => {
+    const { token, user } = this.props;
+
+    if (user !== prevProps.user) {
+      if (!token) {
+        this.fetchFundingPosts(0);
+      } else if (user) {
+        this.fetchFundingPosts(user.id);
+      }
+    }
   };
 
   getPostByOption = () => {
@@ -77,9 +97,9 @@ class FundingPage extends Component {
     return filteredPosts;
   };
 
-  fetchFundingPosts = async () => {
+  fetchFundingPosts = async (userId) => {
     const { getPosts } = this.props;
-    await getPosts();
+    await getPosts(userId);
     const { fundingPosts } = this.props;
     if (fundingPosts) {
       this.setState({
@@ -115,7 +135,7 @@ class FundingPage extends Component {
   getMyPosts = () => {
     const { user } = this.props;
     const currentPost = this.getPostByOption();
-    return currentPost.filter((data) => data['User.id'] === user.id);
+    return currentPost.filter((data) => data.post['User.id'] === user.id);
   };
 
   showMyPosts = () => {
@@ -150,23 +170,34 @@ class FundingPage extends Component {
     history.push({ pathname: '/detail', search: searchQuery });
   };
 
-  renderPosts = () => {
-    const { posts, option } = this.state;
-    const fundIcon = (
+  getFundIcon = (isFunding, postId, postRef) => {
+    return (
       <>
-        <FundButton />
+        <FundButton isFunding={isFunding} postId={postId} postRef={postRef} />
         <ShareButton />
       </>
     );
-    return posts.map((data) => (
-      <Post
-        key={data.id}
-        post={data}
-        hoverIcon={option === 'Ongoing' ? fundIcon : null}
-        footerOption={option === 'Ongoing' ? 'funding' : ''}
-        onClick={() => this.showPostDetail(data.id)}
-      />
-    ));
+  };
+
+  renderPosts = () => {
+    const { posts, option } = this.state;
+    return posts.map((data) => {
+      const postRef = createRef();
+      return (
+        <Post
+          ref={postRef}
+          key={data.post.id}
+          post={data.post}
+          hoverIcon={
+            option === 'Ongoing'
+              ? this.getFundIcon(data.isFunding, data.post.id, postRef)
+              : null
+          }
+          footerOption={option === 'Ongoing' ? 'funding' : ''}
+          onClick={() => this.showPostDetail(data.post.id)}
+        />
+      );
+    });
   };
 
   render() {

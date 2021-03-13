@@ -62,6 +62,7 @@ class Post extends Component {
           <PostFooter
             footerOption={footerOption}
             createdAt={footerOption ? post.created_at : ''}
+            postId={post.id}
           />
         </div>
       </NoStyleButton>

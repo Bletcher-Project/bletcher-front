@@ -20,17 +20,19 @@ const createdAtValidationCheck = (prop) => {
 const defaultProps = {
   createdAt: '',
   footerOption: '',
+  postId: null,
 };
 
 const propTypes = {
+  postId: PropTypes.number,
   footerOption: PropTypes.string,
   createdAt: createdAtValidationCheck,
 };
 
-const switchFooter = (footerOption, createdAt) => {
+const switchFooter = (footerOption, createdAt, postId) => {
   switch (footerOption) {
     case 'funding':
-      return <FundFooter createdAt={createdAt} />;
+      return <FundFooter postId={postId} createdAt={createdAt} />;
     case 'shop':
       return <ShopFooter />;
     default:
@@ -39,8 +41,8 @@ const switchFooter = (footerOption, createdAt) => {
 };
 
 function PostFooter(props) {
-  const { footerOption, createdAt } = props;
-  const activeFooter = switchFooter(footerOption, createdAt);
+  const { footerOption, createdAt, postId } = props;
+  const activeFooter = switchFooter(footerOption, createdAt, postId);
   return <div className="post__footer">{activeFooter}</div>;
 }
 
