@@ -30,7 +30,7 @@ export const mainPost = PropTypes.arrayOf(
 
 export const favoritePost = PropTypes.arrayOf(basicType.isRequired);
 export const fundOngoingPost = PropTypes.arrayOf(
-  PropTypes.objectOf({
+  PropTypes.shape({
     basicType,
     isFunding: PropTypes.bool.isRequired,
   }),

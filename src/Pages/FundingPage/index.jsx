@@ -40,7 +40,10 @@ const propTypes = {
     nickname: PropTypes.string,
   }),
   getPosts: PropTypes.func.isRequired,
-  fundingPosts: PropTypes.shape({ fundOngoingPost, fundEndPost }),
+  fundingPosts: PropTypes.shape({
+    onGoingPost: fundOngoingPost,
+    endPost: fundEndPost,
+  }),
 };
 
 const mapStateToProps = (state) => {

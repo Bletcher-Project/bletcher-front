@@ -22,6 +22,9 @@ const initialState = {
   uploadState: {
     isUploading: false,
   },
+  fundState: {
+    fundFlag: 0,
+  },
 };
 
 const CLICK_POST_SUCCESS = 'post/CLICK_POST_SUCCESS';
@@ -42,6 +45,8 @@ const DEL_FAVORITE_FAIL = 'post/DEL_FAVORITE_FAIL';
 
 const ADD_FUNDING_SUCCESS = 'post/ADD_FUNDING_SUCCESS';
 const ADD_FUNDING_FAIL = 'post/ADD_FUNDING_FAIL';
+
+const ACTIVATE_FUND_FLAG = 'post/ACTIVATE_FUND_FLAG';
 
 const MIX_POST_SUCCESS = 'post/MIX_POST_SUCCESS';
 const MIX_POST_FAIL = 'post/MIX_POST_FAIL';
@@ -64,6 +69,7 @@ export const delFavoriteSuccess = createAction(DEL_FAVORITE_SUCCESS);
 export const delFavoriteFail = createAction(DEL_FAVORITE_FAIL);
 export const addFundingSuccess = createAction(ADD_FUNDING_SUCCESS);
 export const addFundingFail = createAction(ADD_FUNDING_FAIL);
+export const activateFundFlag = createAction(ACTIVATE_FUND_FLAG);
 export const mixPostSuccess = createAction(MIX_POST_SUCCESS);
 export const mixPostFail = createAction(MIX_POST_FAIL);
 export const increasePbIndex = createAction(INCREASE_PB_INDEX);
@@ -124,10 +130,24 @@ export default postReducer(
       return state;
     },
     [ADD_FUNDING_SUCCESS]: (state) => {
-      return state;
+      return {
+        ...state,
+        fundState: {
+          fundFlag: 0,
+        },
+      };
     },
     [ADD_FUNDING_FAIL]: (state) => {
       return state;
+    },
+    [ACTIVATE_FUND_FLAG]: (state, action) => {
+      const { fundFlag } = action.payload;
+      return {
+        ...state,
+        fundState: {
+          fundFlag,
+        },
+      };
     },
     [MIX_POST_SUCCESS]: (state) => {
       return state;
@@ -228,6 +248,7 @@ export const getPostByPostId = (postId, token) => {
 export const addFundingPost = (postId, token) => {
   return async (dispatch) => {
     try {
+      await dispatch(activateFundFlag(1));
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${FUND_API}/${postId}`,
         {
@@ -248,6 +269,7 @@ export const addFundingPost = (postId, token) => {
 export const deleteFundingPost = (postId, token) => {
   return async (dispatch) => {
     try {
+      await dispatch(activateFundFlag(-1));
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${FUND_API}/${postId}`,
         {
