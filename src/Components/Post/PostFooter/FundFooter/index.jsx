@@ -35,9 +35,10 @@ function FundFooter(props) {
 
   const getBarStyle = () => {
     const calcedWidth = calcPercentage();
-    if (calcedWidth === '0%' && progressRef.current)
-      progressRef.current.style.opacity = '60%';
-
+    if (progressRef.current) {
+      if (calcedWidth === '0%') progressRef.current.style.opacity = '60%';
+      else progressRef.current.style.opacity = 'unset';
+    }
     return {
       width: calcedWidth,
     };
