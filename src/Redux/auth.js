@@ -220,7 +220,7 @@ export const updateUser = (token, newInfo) => {
       if (newInfo.name) formData.append('nickname', newInfo.name);
       if (newInfo.introduce) formData.append('introduce', newInfo.introduce);
       if (newInfo.img) formData.append('img', newInfo.img);
-      if (newInfo.password) formData.append('checkpassword', newInfo.password);
+      if (newInfo.password) formData.append('password', newInfo.password);
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}`,
         {

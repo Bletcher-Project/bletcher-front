@@ -91,7 +91,7 @@ function Profile() {
     if (password.raw !== password.confirm) {
       pwdCheck.isValid = false;
       pwdCheck.helperText = PasswordHelperText.MISS_MATCH_PW;
-    } else {
+    } else if (password.raw.length > 0 || password.confirm.length > 0) {
       pwdCheck = checkPasswordValidation(password.raw);
     }
     if (email !== user.email) emCheck = await checkEmailValidation(email);
