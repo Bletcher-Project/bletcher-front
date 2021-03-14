@@ -145,7 +145,10 @@ function Profile() {
     <div className="profile">
       {authLoading && <RoundLoader />}
       {!authChecked ? (
-        <CheckPassword />
+        <div className="profile__check">
+          <h2>Please enter your existing password.</h2>
+          <CheckPassword />
+        </div>
       ) : (
         <div className="profile__form">
           <div className="profile__form-photo">

@@ -6,6 +6,16 @@
   display: flex;
   justify-content: center;
 
+  &__check {
+    margin-top: 10%;
+    @include content-center;
+
+    & h2 {
+      font-size: $header2;
+      margin-bottom: 20px;
+    }
+  }
+
   &__form {
     width: 60%;
     display: flex;
