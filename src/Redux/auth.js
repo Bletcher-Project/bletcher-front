@@ -1,6 +1,6 @@
 import { createAction, handleActions as authReducer } from 'redux-actions';
 
-import { INIT, AUTH_API, USER_API } from 'Constants/api-uri';
+import { INIT, AUTH_API, USER_API, USER_CHECK } from 'Constants/api-uri';
 
 const SET_TOKEN = 'auth/SET_TOKEN';
 const REMOVE_TOKEN = 'auth/REMOVE_TOKEN';
@@ -10,6 +10,9 @@ const POST_USER_FAIL = 'auth/POST_USER_FAIL';
 
 const GET_USER_SUCCESS = 'auth/GET_USER_SUCCESS';
 const GET_USER_FAIL = 'auth/GET_USER_FAIL';
+
+const CHECK_PASSWORD_SUCCESS = 'auth/CHECK_USER_SUCCESS';
+const CHECK_PASSWORD_FAIL = 'auth/CHECK_USER_FAIL';
 
 const PATCH_USER_SUCCESS = 'auth/PATCH_USER_SUCCESS';
 const PATCH_USER_FAIL = 'auth/PATCH_USER_FAIL';
@@ -33,6 +36,8 @@ const postUserSuccess = createAction(POST_USER_SUCCESS);
 const postUserFail = createAction(POST_USER_FAIL);
 const getUserSuccess = createAction(GET_USER_SUCCESS); // result.data
 const getUserFail = createAction(GET_USER_FAIL);
+const checkPasswordSuccess = createAction(CHECK_PASSWORD_SUCCESS);
+const checkPasswordFail = createAction(CHECK_PASSWORD_FAIL);
 const patchUserSuccess = createAction(PATCH_USER_SUCCESS); // result.data
 const patchUserFail = createAction(PATCH_USER_FAIL);
 const deleteUserSuccess = createAction(DELETE_USER_SUCCESS);
@@ -62,6 +67,12 @@ export default authReducer(
     [GET_USER_FAIL]: (state) => {
       localStorage.removeItem('token');
       return { ...state, isLogin: false, token: null, user: null };
+    },
+    [CHECK_PASSWORD_SUCCESS]: (state) => {
+      return state;
+    },
+    [CHECK_PASSWORD_FAIL]: (state) => {
+      return state;
     },
     [PATCH_USER_SUCCESS]: (state, action) => {
       return { ...state, user: action.payload };
@@ -168,6 +179,35 @@ export const getUser = (token) => {
       }
     } catch (error) {
       await dispatch(getUserFail());
+    }
+  };
+};
+
+export const checkPassword = (token, password) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}${USER_CHECK}`,
+        {
+          method: 'POST',
+          headers: {
+            'x-access-token': token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            checkpassword: password,
+          }),
+        },
+      );
+      if (response.status === 200) {
+        dispatch(checkPasswordSuccess());
+        return true;
+      }
+      dispatch(checkPasswordFail());
+      return false;
+    } catch (error) {
+      dispatch(checkPasswordFail());
+      return false;
     }
   };
 };
