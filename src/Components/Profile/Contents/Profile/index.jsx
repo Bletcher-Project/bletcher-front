@@ -50,6 +50,10 @@ function Profile() {
     setIntroduce(user && user.introduce);
   }, [user]);
 
+  const handleAuthCheck = () => {
+    setAuthChecked(true);
+  };
+
   const handleUploadImg = (e) => {
     if (e.target.files.length) {
       setImage({
@@ -147,7 +151,7 @@ function Profile() {
       {!authChecked ? (
         <div className="profile__check">
           <h2>Please enter your existing password.</h2>
-          <CheckPassword />
+          <CheckPassword handleAuthCheck={handleAuthCheck} />
         </div>
       ) : (
         <div className="profile__form">
