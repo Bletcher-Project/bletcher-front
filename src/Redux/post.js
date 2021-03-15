@@ -47,6 +47,10 @@ const ADD_FUNDING_SUCCESS = 'post/ADD_FUNDING_SUCCESS';
 const ADD_FUNDING_FAIL = 'post/ADD_FUNDING_FAIL';
 
 const ACTIVATE_FUND_FLAG = 'post/ACTIVATE_FUND_FLAG';
+const GET_DUE_DATE_SUCCESS = 'post/GET_DUE_DATE_SUCCESS';
+const GET_DUE_DATE_FAIL = 'post/GET_DUE_DATE_FAIL';
+const GET_FUND_COUNT_SUCCESS = 'post/GET_FUND_COUNT_SUCCESS';
+const GET_FUND_COUNT_FAIL = 'post/GET_FUND_COUNT_FAIL';
 
 const MIX_POST_SUCCESS = 'post/MIX_POST_SUCCESS';
 const MIX_POST_FAIL = 'post/MIX_POST_FAIL';
@@ -70,6 +74,10 @@ export const delFavoriteFail = createAction(DEL_FAVORITE_FAIL);
 export const addFundingSuccess = createAction(ADD_FUNDING_SUCCESS);
 export const addFundingFail = createAction(ADD_FUNDING_FAIL);
 export const activateFundFlag = createAction(ACTIVATE_FUND_FLAG);
+export const getDueDateSuccess = createAction(GET_DUE_DATE_SUCCESS);
+export const getDueDateFail = createAction(GET_DUE_DATE_FAIL);
+export const getFundCountSuccess = createAction(GET_FUND_COUNT_SUCCESS);
+export const getFundCountFail = createAction(GET_FUND_COUNT_FAIL);
 export const mixPostSuccess = createAction(MIX_POST_SUCCESS);
 export const mixPostFail = createAction(MIX_POST_FAIL);
 export const increasePbIndex = createAction(INCREASE_PB_INDEX);
@@ -148,6 +156,18 @@ export default postReducer(
           fundFlag,
         },
       };
+    },
+    [GET_DUE_DATE_SUCCESS]: (state) => {
+      return state;
+    },
+    [GET_DUE_DATE_FAIL]: (state) => {
+      return state;
+    },
+    [GET_FUND_COUNT_SUCCESS]: (state) => {
+      return state;
+    },
+    [GET_FUND_COUNT_FAIL]: (state) => {
+      return state;
     },
     [MIX_POST_SUCCESS]: (state) => {
       return state;
@@ -400,42 +420,45 @@ export const mixPost = (originId, subId, token) => {
   };
 };
 
-export const getDueDate = async (postId) => {
-  try {
-    const response = await fetch(
-      `${process.env.REACT_APP_SERVER_URL}${INIT}${FUND_API}${FUND_DUEDATE}/${postId}`,
-      {
-        method: 'GET',
-      },
-    );
-
-    if (response.status === 200) {
-      const result = await response.json();
-      const duedate = result.data;
-      return duedate;
+export const getDueDate = (postId) => {
+  return async (dispatch) => {
+    let dueDate = '';
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${FUND_API}${FUND_DUEDATE}/${postId}`,
+        {
+          method: 'GET',
+        },
+      );
+      if (response.status === 200) {
+        dueDate = await response.json().then((res) => res.data);
+        await dispatch(getDueDateSuccess());
+      } else await dispatch(getDueDateFail());
+    } catch (error) {
+      await dispatch(getDueDateFail());
     }
-    return new Date();
-  } catch (error) {
-    return '';
-  }
+    return dueDate;
+  };
 };
 
-export const getFundCount = async (postId) => {
-  try {
-    const response = await fetch(
-      `${process.env.REACT_APP_SERVER_URL}${INIT}${FUND_API}${FUND_COUNT}/${postId}`,
-      {
-        method: 'GET',
-      },
-    );
+export const getFundCount = (postId) => {
+  return async (dispatch) => {
+    let fundCount = 0;
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}${INIT}${FUND_API}${FUND_COUNT}/${postId}`,
+        {
+          method: 'GET',
+        },
+      );
 
-    if (response.status === 200) {
-      const result = await response.json();
-      const fundCount = result.data.counts;
-      return fundCount;
+      if (response.status === 200) {
+        fundCount = await response.json().then((res) => res.data.counts);
+        await dispatch(getFundCountSuccess());
+      } else await dispatch(getFundCountFail());
+    } catch (error) {
+      await dispatch(getFundCountFail());
     }
-    return 0;
-  } catch (error) {
-    return 0;
-  }
+    return fundCount;
+  };
 };

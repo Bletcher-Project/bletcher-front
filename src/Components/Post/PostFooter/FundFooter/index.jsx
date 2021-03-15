@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 
 import PropTypes from 'prop-types';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getDueDate, getFundCount } from 'Redux/post';
 
 import DueDate from 'Assets/icons/DueDate';
@@ -12,6 +12,7 @@ import parseTimeLimit from 'Utils/parseTimeLimit';
 
 function FundFooter(props) {
   const progressRef = useRef();
+  const dispatch = useDispatch();
   const { postId } = props;
   const fundFlag = useSelector((state) => state.postReducer.fundState.fundFlag);
   const [timeLimit, setTimeLimit] = useState('');
@@ -19,6 +20,7 @@ function FundFooter(props) {
 
   const calcPercentage = () => {
     const maxHeart = 10;
+    if (fundCount >= maxHeart) return '100%';
     return `${(fundCount / maxHeart) * 100}%`;
   };
 
@@ -35,19 +37,19 @@ function FundFooter(props) {
 
   useEffect(() => {
     async function fetchDueDate() {
-      const dd = await getDueDate(postId);
+      const dd = await dispatch(getDueDate(postId));
       setTimeLimit(parseTimeLimit(dd));
     }
     fetchDueDate();
-  }, [postId]);
+  }, [postId, dispatch]);
 
   useEffect(() => {
     async function fetchFundCount() {
-      const fc = await getFundCount(postId);
+      const fc = await dispatch(getFundCount(postId));
       setFundCount(fc);
     }
     fetchFundCount();
-  }, [fundFlag, postId]);
+  }, [fundFlag, postId, dispatch]);
 
   return (
     <>
