@@ -126,14 +126,20 @@ class FundingPage extends Component {
     });
   };
 
-  orderPost = (sortOption) => {
-    const sortOrder = sortOption === 'Latest' ? -1 : 1;
+  orderPost = async (sortOption) => {
     const currentPost = this.getPostByOption();
-    this.setState(() => ({
-      posts: currentPost.sort((l, r) => {
-        return l.created_at < r.created_at ? sortOrder : -1 * sortOrder;
-      }),
-    }));
+    if (sortOption === 'Popular') {
+      // sort by fund count
+    } else {
+      const sortOrder = sortOption === 'Latest' ? -1 : 1;
+      this.setState(() => ({
+        posts: currentPost.sort((l, r) => {
+          return l.post.created_at > r.post.created_at
+            ? sortOrder
+            : -1 * sortOrder;
+        }),
+      }));
+    }
   };
 
   getMyPosts = () => {
@@ -148,9 +154,7 @@ class FundingPage extends Component {
 
   dropDownHandler = (e) => {
     const target = e.target.innerText;
-    if (target === 'Popular') {
-      // sort by funding Favorite
-    } else if (target === 'Recommended') {
+    if (target === 'Recommended') {
       // sort by our favorite
     } else if (target === 'My') {
       this.showMyPosts();
@@ -237,12 +241,14 @@ class FundingPage extends Component {
                 </NoStyleButton>
               </span>
             </div>
-            <div className="fundingPage__optionBar__filter">
-              <DropFilter
-                filterTitle={filter}
-                items={this.createDropDownItem()}
-              />
-            </div>
+            {option === 'Ongoing' && (
+              <div className="fundingPage__optionBar__filter">
+                <DropFilter
+                  filterTitle={filter}
+                  items={this.createDropDownItem()}
+                />
+              </div>
+            )}
           </div>
           <MixChecker />
           <PostList

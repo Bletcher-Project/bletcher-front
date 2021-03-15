@@ -13,7 +13,6 @@ import moment from 'moment';
 function FundFooter(props) {
   const progressRef = useRef();
   const { postId } = props;
-  const token = useSelector((state) => state.authReducer.token);
   const fundFlag = useSelector((state) => state.postReducer.fundState.fundFlag);
   const [timeLimit, setTimeLimit] = useState('');
   const [fundCount, setFundCount] = useState(0);
@@ -53,11 +52,11 @@ function FundFooter(props) {
 
   useEffect(() => {
     async function fetchFundCount() {
-      const fc = await getFundCount(postId, token);
+      const fc = await getFundCount(postId);
       setFundCount(fc);
     }
     fetchFundCount();
-  }, [fundFlag, postId, token]);
+  }, [fundFlag, postId]);
 
   return (
     <>

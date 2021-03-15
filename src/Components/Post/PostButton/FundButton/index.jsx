@@ -29,8 +29,10 @@ function FundButton(props) {
   const fundClickHandler = async (e) => {
     e.stopPropagation();
     if (isLogin) {
-      if (!isClicked) dispatch(addFundingPost(postId, token));
-      setIsClicked(true);
+      if (!isClicked) {
+        dispatch(addFundingPost(postId, token));
+        setIsClicked(true);
+      }
     }
   };
   return (

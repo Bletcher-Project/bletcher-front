@@ -420,15 +420,12 @@ export const getDueDate = async (postId) => {
   }
 };
 
-export const getFundCount = async (postId, token) => {
+export const getFundCount = async (postId) => {
   try {
     const response = await fetch(
       `${process.env.REACT_APP_SERVER_URL}${INIT}${FUND_API}${FUND_COUNT}/${postId}`,
       {
         method: 'GET',
-        headers: {
-          'x-access-token': token,
-        },
       },
     );
 
