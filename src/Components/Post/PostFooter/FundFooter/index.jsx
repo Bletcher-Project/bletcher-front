@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import PropTypes from 'prop-types';
 
@@ -23,14 +23,14 @@ function FundFooter(props) {
     return `${(fundCount / maxHeart) * 100}%`;
   };
 
-  const parseTimeLimit = useCallback((dueDate) => {
+  const parseTimeLimit = (dueDate) => {
     let parsedLeftDate = '';
     if (dueDate) {
       const leftDate = moment.duration(moment(dueDate).diff(moment()));
       parsedLeftDate = `${leftDate.days()}일 ${leftDate.hours()}시간 ${leftDate.minutes()}분`;
     }
     return parsedLeftDate;
-  }, []);
+  };
 
   const getBarStyle = () => {
     const calcedWidth = calcPercentage();
@@ -44,19 +44,12 @@ function FundFooter(props) {
   };
 
   useEffect(() => {
-    async function fetchFundData() {
+    async function fetchDueDate() {
       const dd = await getDueDate(postId);
       setTimeLimit(parseTimeLimit(dd));
     }
-    fetchFundData();
-
-    const interval = setInterval(() => {
-      setTimeLimit(parseTimeLimit());
-    }, 1000 * 60);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [postId, parseTimeLimit]);
+    fetchDueDate();
+  }, [postId]);
 
   useEffect(() => {
     async function fetchFundCount() {

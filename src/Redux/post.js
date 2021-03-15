@@ -266,27 +266,6 @@ export const addFundingPost = (postId, token) => {
   };
 };
 
-export const deleteFundingPost = (postId, token) => {
-  return async (dispatch) => {
-    try {
-      await dispatch(activateFundFlag(-1));
-      const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}${INIT}${FUND_API}/${postId}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'x-access-token': token,
-          },
-        },
-      );
-      if (response.status === 200) await dispatch(addFundingSuccess());
-      else await dispatch(addFundingFail());
-    } catch (error) {
-      await dispatch(addFundingFail());
-    }
-  };
-};
-
 export const uploadPost = (image, payload, token) => {
   return async (dispatch) => {
     try {

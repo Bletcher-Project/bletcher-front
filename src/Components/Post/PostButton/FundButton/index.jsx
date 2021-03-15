@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { addFundingPost, deleteFundingPost } from 'Redux/post';
+import { addFundingPost } from 'Redux/post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
 
@@ -26,14 +26,11 @@ function FundButton(props) {
   const token = useSelector((state) => state.authReducer.token);
 
   const [isClicked, setIsClicked] = useState(isFunding);
-  const toggle = () => setIsClicked(!isClicked);
-
   const fundClickHandler = async (e) => {
     e.stopPropagation();
-    toggle();
     if (isLogin) {
-      if (isClicked) await dispatch(deleteFundingPost(postId, token));
-      else await dispatch(addFundingPost(postId, token));
+      if (!isClicked) dispatch(addFundingPost(postId, token));
+      setIsClicked(true);
     }
   };
   return (
