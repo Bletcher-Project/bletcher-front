@@ -421,15 +421,12 @@ export const mixPost = (originId, subId, token) => {
   };
 };
 
-export const getDueDate = async (postId, token) => {
+export const getDueDate = async (postId) => {
   try {
     const response = await fetch(
       `${process.env.REACT_APP_SERVER_URL}${INIT}${FUND_API}${FUND_DUEDATE}/${postId}`,
       {
         method: 'GET',
-        headers: {
-          'x-access-token': token,
-        },
       },
     );
 

@@ -3,21 +3,25 @@ import PropTypes from 'prop-types';
 
 const defaultProps = {
   children: null,
+  description: ['Hope to see you', 'next Version'],
+  title: 'Please wait',
 };
 const propTypes = {
   children: PropTypes.element,
+  description: PropTypes.arrayOf(PropTypes.string),
+  title: PropTypes.string,
 };
 
 function Empty(props) {
-  const { children } = props;
+  const { children, description, title } = props;
   return (
     <div className="empty">
-      <h1 className="empty__header">Please wait</h1>
+      <h1 className="empty__header">{title}</h1>
       {children}
       <p className="empty__description">
-        Hope to see you
+        {description[0]}
         <br />
-        next Version
+        {description[1]}
       </p>
     </div>
   );

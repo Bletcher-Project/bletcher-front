@@ -16,7 +16,6 @@ function FundFooter(props) {
   const token = useSelector((state) => state.authReducer.token);
   const fundFlag = useSelector((state) => state.postReducer.fundState.fundFlag);
   const [timeLimit, setTimeLimit] = useState('');
-  const [dueDate, setDueDate] = useState('');
   const [fundCount, setFundCount] = useState(0);
 
   const calcPercentage = () => {
@@ -24,14 +23,14 @@ function FundFooter(props) {
     return `${(fundCount / maxHeart) * 100}%`;
   };
 
-  const parseTimeLimit = useCallback(() => {
+  const parseTimeLimit = useCallback((dueDate) => {
     let parsedLeftDate = '';
     if (dueDate) {
       const leftDate = moment.duration(moment(dueDate).diff(moment()));
       parsedLeftDate = `${leftDate.days()}일 ${leftDate.hours()}시간 ${leftDate.minutes()}분`;
     }
     return parsedLeftDate;
-  }, [dueDate]);
+  }, []);
 
   const getBarStyle = () => {
     const calcedWidth = calcPercentage();
@@ -46,9 +45,8 @@ function FundFooter(props) {
 
   useEffect(() => {
     async function fetchFundData() {
-      const dd = await getDueDate(postId, token);
-      setDueDate(dd);
-      setTimeLimit(parseTimeLimit());
+      const dd = await getDueDate(postId);
+      setTimeLimit(parseTimeLimit(dd));
     }
     fetchFundData();
 
@@ -58,7 +56,7 @@ function FundFooter(props) {
     return () => {
       clearInterval(interval);
     };
-  }, [postId, token, parseTimeLimit]);
+  }, [postId, parseTimeLimit]);
 
   useEffect(() => {
     async function fetchFundCount() {

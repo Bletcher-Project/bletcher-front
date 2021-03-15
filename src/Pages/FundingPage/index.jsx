@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
@@ -11,6 +11,7 @@ import FundButton from 'Components/Post/PostButton/FundButton';
 import ShareButton from 'Components/Post/PostButton/ShareButton';
 import NavBar from 'Components/Common/NavBar';
 import Loader from 'Components/Common/Loader';
+import Empty from 'Components/Common/Empty';
 import Jumbotron from 'Components/Common/Jumbotron';
 import DropFilter from 'Components/Common/DropFilter';
 import NoStyleButton from 'Components/Form/NoStyleButton';
@@ -161,9 +162,13 @@ class FundingPage extends Component {
 
   optionClickHandler = async (e) => {
     await new Promise((accept) =>
-      this.setState({ option: e.target.innerText }, accept),
+      this.setState({ option: e.target.innerText, feedLoading: true }, accept),
     );
-    this.setState({ filter: 'Recommended', posts: this.getPostByOption() });
+    this.setState({
+      posts: this.getPostByOption(),
+      filter: 'Recommended',
+      feedLoading: false,
+    });
   };
 
   showPostDetail = (postId) => {
@@ -173,10 +178,10 @@ class FundingPage extends Component {
     history.push({ pathname: '/detail', search: searchQuery });
   };
 
-  getFundIcon = (isFunding, postId, postRef) => {
+  getFundIcon = (isFunding, postId) => {
     return (
       <>
-        <FundButton isFunding={isFunding} postId={postId} postRef={postRef} />
+        <FundButton isFunding={isFunding} postId={postId} />
         <ShareButton />
       </>
     );
@@ -184,20 +189,26 @@ class FundingPage extends Component {
 
   renderPosts = () => {
     const { posts, option } = this.state;
+    if (!posts.length)
+      return (
+        <Empty
+          title="Launch Your Work"
+          description={["We're waiting", 'your masterpiece']}
+        />
+      );
+
     return posts.map((data) => {
-      const postRef = createRef();
+      const postId = option === 'Ongoing' ? data.post.id : data.id;
+      const postData = option === 'Ongoing' ? data.post : data;
+      const hoverIcon =
+        option === 'Ongoing' ? this.getFundIcon(data.isFunding, postId) : null;
       return (
         <Post
-          ref={postRef}
-          key={data.post.id}
-          post={data.post}
-          hoverIcon={
-            option === 'Ongoing'
-              ? this.getFundIcon(data.isFunding, data.post.id, postRef)
-              : null
-          }
+          key={postId}
+          post={postData}
+          hoverIcon={hoverIcon}
           footerOption={option === 'Ongoing' ? 'funding' : ''}
-          onClick={() => this.showPostDetail(data.post.id)}
+          onClick={() => this.showPostDetail(postId)}
         />
       );
     });
