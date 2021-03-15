@@ -8,7 +8,7 @@ import { getDueDate, getFundCount } from 'Redux/post';
 import DueDate from 'Assets/icons/DueDate';
 import HeartImg from 'Assets/images/fundHeart-bg-removed.png';
 
-import moment from 'moment';
+import parseTimeLimit from 'Utils/parseTimeLimit';
 
 function FundFooter(props) {
   const progressRef = useRef();
@@ -20,15 +20,6 @@ function FundFooter(props) {
   const calcPercentage = () => {
     const maxHeart = 10;
     return `${(fundCount / maxHeart) * 100}%`;
-  };
-
-  const parseTimeLimit = (dueDate) => {
-    let parsedLeftDate = '';
-    if (dueDate) {
-      const leftDate = moment.duration(moment(dueDate).diff(moment()));
-      parsedLeftDate = `${leftDate.days()}일 ${leftDate.hours()}시간 ${leftDate.minutes()}분`;
-    }
-    return parsedLeftDate;
   };
 
   const getBarStyle = () => {
