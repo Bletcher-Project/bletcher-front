@@ -23,7 +23,7 @@ const initialState = {
     isUploading: false,
   },
   fundState: {
-    fundFlag: 0,
+    fundFlag: false,
   },
 };
 
@@ -141,7 +141,7 @@ export default postReducer(
       return {
         ...state,
         fundState: {
-          fundFlag: 0,
+          fundFlag: false,
         },
       };
     },
@@ -268,7 +268,7 @@ export const getPostByPostId = (postId, token) => {
 export const addFundingPost = (postId, token) => {
   return async (dispatch) => {
     try {
-      await dispatch(activateFundFlag(1));
+      await dispatch(activateFundFlag(true));
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${FUND_API}/${postId}`,
         {
