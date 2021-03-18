@@ -34,6 +34,14 @@ class Post extends Component {
     return post['Image.path'];
   };
 
+  resizeHeight = (src) => {
+    const path = this.getSrc(src);
+    const img = new Image();
+    img.src = path;
+    if (img.height < 300) return { height: 'initial' };
+    return { height: '100%' };
+  };
+
   render() {
     const {
       post,
@@ -55,7 +63,11 @@ class Post extends Component {
 
           <div className="post__body">
             <div className="post__body__image">
-              <img src={this.getSrc(post)} alt="artwork" />
+              <img
+                src={this.getSrc(post)}
+                style={this.resizeHeight(post)}
+                alt="artwork"
+              />
             </div>
           </div>
 
