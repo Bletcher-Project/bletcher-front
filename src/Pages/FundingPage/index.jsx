@@ -4,6 +4,7 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
 import { getFundingPosts } from 'Redux/fetch-post';
+import { getFundCount } from 'Redux/post';
 
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
@@ -41,6 +42,7 @@ const propTypes = {
     nickname: PropTypes.string,
   }),
   getPosts: PropTypes.func.isRequired,
+  getHeartCount: PropTypes.func.isRequired,
   fundingPosts: PropTypes.shape({
     onGoingPost: fundOngoingPost,
     endPost: fundEndPost,
@@ -58,6 +60,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getPosts: (userId) => dispatch(getFundingPosts(userId)),
+    getHeartCount: (postId) => dispatch(getFundCount(postId)),
   };
 };
 
@@ -93,11 +96,26 @@ class FundingPage extends Component {
     }
   };
 
-  getPostByOption = () => {
+  getPostByOption = async () => {
     const { option } = this.state;
-    const { fundingPosts } = this.props;
+    const { fundingPosts, getHeartCount } = this.props;
+    const mergedOngoingPost = (
+      await Promise.all(
+        fundingPosts.onGoingPost.map((post) => getHeartCount(post.post.id)),
+      )
+    ).map((count, index) => {
+      const post = fundingPosts.onGoingPost[index];
+      return {
+        ...post,
+        post: {
+          ...post.post,
+          fundCount: count,
+        },
+      };
+    });
+
     const filteredPosts =
-      option === 'Ongoing' ? fundingPosts.onGoingPost : fundingPosts.endPost;
+      option === 'Ongoing' ? mergedOngoingPost : fundingPosts.endPost;
     return filteredPosts;
   };
 
@@ -108,7 +126,7 @@ class FundingPage extends Component {
     if (fundingPosts) {
       this.setState({
         feedLoading: false,
-        posts: this.getPostByOption(),
+        posts: await this.getPostByOption(),
       });
     }
   };
@@ -127,9 +145,13 @@ class FundingPage extends Component {
   };
 
   orderPost = async (sortOption) => {
-    const currentPost = this.getPostByOption();
+    const currentPost = await this.getPostByOption();
     if (sortOption === 'Popular') {
-      // sort by fund count
+      this.setState(() => ({
+        posts: currentPost.sort((l, r) => {
+          return r.post.fundCount - l.post.fundCount;
+        }),
+      }));
     } else {
       const sortOrder = sortOption === 'Latest' ? -1 : 1;
       this.setState(() => ({
@@ -142,14 +164,14 @@ class FundingPage extends Component {
     }
   };
 
-  getMyPosts = () => {
+  getMyPosts = async () => {
     const { user } = this.props;
-    const currentPost = this.getPostByOption();
+    const currentPost = await this.getPostByOption();
     return currentPost.filter((data) => data.post['User.id'] === user.id);
   };
 
-  showMyPosts = () => {
-    this.setState({ posts: this.getMyPosts() });
+  showMyPosts = async () => {
+    this.setState({ posts: await this.getMyPosts() });
   };
 
   dropDownHandler = (e) => {
@@ -169,7 +191,7 @@ class FundingPage extends Component {
       this.setState({ option: e.target.innerText, feedLoading: true }, accept),
     );
     this.setState({
-      posts: this.getPostByOption(),
+      posts: await this.getPostByOption(),
       filter: 'Recommended',
       feedLoading: false,
     });
