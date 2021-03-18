@@ -22,12 +22,16 @@ import cx from 'classnames';
 const defaultProps = {};
 const propTypes = {
   getPost: PropTypes.func.isRequired,
+  getDetailDueDate: PropTypes.func.isRequired,
+  getDetailFundCount: PropTypes.func.isRequired,
   location: ReactRouterPropTypes.location.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getPost: async (postId, token) => dispatch(getPostByPostId(postId, token)),
+    getDetailDueDate: (postId) => dispatch(getDueDate(postId)),
+    getDetailFundCount: (postId) => dispatch(getFundCount(postId)),
   };
 };
 class DetailPage extends Component {
@@ -58,14 +62,14 @@ class DetailPage extends Component {
   };
 
   componentDidMount = async () => {
-    const { getPost } = this.props;
+    const { getPost, getDetailDueDate, getDetailFundCount } = this.props;
     const params = this.getParamsByQuery();
     const { postId, isActive } = params;
 
     if (postId) {
       const detailedPost = await getPost(postId);
-      const dueDate = parseTimeLimit(await getDueDate(postId));
-      const fundCount = await getFundCount(postId);
+      const dueDate = parseTimeLimit(await getDetailDueDate(postId));
+      const fundCount = await getDetailFundCount(postId);
       this.setState({ post: detailedPost, dueDate, fundCount });
     } else this.linkToNotFound();
 

@@ -40,9 +40,8 @@ const switchFooter = (footerOption, createdAt, postId) => {
   }
 };
 
-function PostFooter(props) {
-  const { footerOption, createdAt, postId } = props;
-  const activeFooter = switchFooter(footerOption, createdAt, postId);
+function PostFooter({ footerOption, createdAt, postId, fundCount }) {
+  const activeFooter = switchFooter(footerOption, createdAt, postId, fundCount);
   return <div className="post__footer">{activeFooter}</div>;
 }
 
