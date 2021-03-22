@@ -25,7 +25,7 @@ function Profile() {
 
   const [authChecked, setAuthChecked] = useState(false);
   const [image, setImage] = useState({
-    preview: user && user.profile_image,
+    preview: user && user.Image && user.Image.path,
     raw: null,
   });
   const [name, setName] = useState();
@@ -132,7 +132,7 @@ function Profile() {
   };
 
   const initChanges = () => {
-    setImage({ preview: user && user.profile_image, raw: null });
+    setImage({ preview: user && user.Image && user.Image.path, raw: null });
     setName(user && user.nickname);
     setEmail(user && user.email);
     setIntroduce(user && user.introduce);
