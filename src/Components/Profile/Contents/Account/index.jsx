@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
@@ -8,12 +8,19 @@ import { signOut, deleteUser, setLoadingState } from 'Redux/auth';
 
 import CheckBox from 'Components/Form/CheckBox';
 import DangerButton from 'Components/Form/DangerButton';
+import ConfirmModal from 'Components/Profile/ConfirmModal';
 
 const propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
 };
 
 function Account({ history }) {
+  const [modal, setModal] = useState({
+    active: false,
+    goal: '',
+    event: null,
+  });
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authReducer.user);
 
@@ -27,6 +34,18 @@ function Account({ history }) {
     await dispatch(deleteUser(user.id));
     dispatch(setLoadingState(false));
     history.push({ pathname: '/' });
+  };
+
+  const openSignOutModal = () => {
+    setModal({ active: true, goal: 'log out', event: handleSignOut });
+  };
+
+  const openDeleteAccountModal = () => {
+    setModal({
+      active: true,
+      goal: 'delete account',
+      event: handleDeleteAccount,
+    });
   };
 
   return (
@@ -59,7 +78,7 @@ function Account({ history }) {
         <h3>Account Change</h3>
         <div className="account__change-op">
           <h4>Sign Out Account</h4>
-          <DangerButton onClick={() => handleSignOut()}>Logout</DangerButton>
+          <DangerButton onClick={() => openSignOutModal()}>Logout</DangerButton>
         </div>
         <div className="account__change-op">
           <h4>Hide Profile</h4>
@@ -67,11 +86,18 @@ function Account({ history }) {
         </div>
         <div className="account__change-op">
           <h4>Deleting accounts and account data</h4>
-          <DangerButton secondColor onClick={() => handleDeleteAccount()}>
+          <DangerButton secondColor onClick={() => openDeleteAccountModal()}>
             Account termination
           </DangerButton>
         </div>
       </div>
+
+      <ConfirmModal
+        isOpen={modal.active}
+        toggle={() => setModal({ ...modal, active: !modal.active })}
+        goal={modal.goal}
+        handleEvent={modal.event}
+      />
     </div>
   );
 }
