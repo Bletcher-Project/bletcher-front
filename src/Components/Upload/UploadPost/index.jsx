@@ -5,15 +5,14 @@ import * as PostAction from 'Redux/post';
 
 import PropTypes from 'prop-types';
 
-import Cropper from 'react-cropper';
-import 'cropperjs/dist/cropper.css';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-
 import RoundLoader from 'Components/Loader/Round';
+import NoStyleButton from 'Components/Form/NoStyleButton';
+import ImageCropper from 'Components/Upload/ImageCropper';
 
 import plusButton from 'Assets/images/plus.svg';
+
+import { Modal } from 'reactstrap';
+import TextField from '@material-ui/core/TextField';
 
 const defaultProps = {
   user: null,
@@ -48,23 +47,16 @@ class Upload extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pictureImg: null,
-      pictureImgUrl: null,
+      imageFormData: null,
       content: '',
       modal: false,
     };
   }
 
-  handlePictureImg = async (e) => {
-    if (e.target.files[0] !== undefined) {
-      await new Promise((accept) =>
-        this.setState({ pictureImg: e.target.files[0] }, accept),
-      );
-      const { pictureImg } = this.state;
-      this.setState({
-        pictureImgUrl: URL.createObjectURL(pictureImg),
-      });
-    }
+  handlePictureWithCropper = (imageFormData) => {
+    this.setState({
+      imageFormData,
+    });
   };
 
   handleContent = (e) => {
@@ -73,29 +65,17 @@ class Upload extends Component {
 
   handlePostUpload = async () => {
     const { user, uploadPost, token } = this.props;
-    const { pictureImgUrl, pictureImg, content } = this.state;
+    const { imageFormData, content } = this.state;
     if (user) {
-      if (pictureImgUrl) {
-        this.cropper.getCroppedCanvas({ imageSmoothingQuality: 'high' }).toBlob(
-          async (croppedImg) => {
-            const image = new FormData();
-            const params = new URLSearchParams();
-            image.append('img', croppedImg, pictureImg.name);
-            params.append('title', content);
-            params.append('user_id', user.id);
-            params.append('description', content);
-            params.append('category_id', 5);
-            params.append('is_public', true);
-            const postUpload = await uploadPost(image, params, token);
-            if (postUpload) window.location.reload();
-            // TO DO :: notify failed to upload image
-          },
-          undefined,
-          1,
-        );
-      } else {
-        // TO DO :: notify uploading image !
-      }
+      const params = new URLSearchParams();
+
+      params.append('title', content);
+      params.append('user_id', user.id);
+      params.append('description', content);
+      params.append('category_id', 5);
+      params.append('is_public', true);
+      const postUpload = await uploadPost(imageFormData, params, token);
+      if (postUpload) window.location.reload();
     } else {
       // TO DO :: implement login modal !
     }
@@ -107,84 +87,55 @@ class Upload extends Component {
   };
 
   render() {
-    const { content, modal, pictureImgUrl } = this.state;
+    const { content, modal } = this.state;
     const { isUploading } = this.props;
     return (
       <>
         {isUploading && <RoundLoader />}
-        <button
-          type="button"
-          onClick={this.toggle}
-          className="uploadModalButton"
-        >
-          <img src={plusButton} alt="+" />
-        </button>
-        <Modal isOpen={modal} toggle={this.toggle} className="className">
-          <ModalHeader toggle={this.toggle}>
-            Upload Your Masterpiece!
-          </ModalHeader>
-          <ModalBody>
-            <div className="postUpload">
-              <div className="postUpload__creator">
-                <div className="postUpload__creator-uploadPic">
-                  <Button
-                    size="small"
-                    fullWidth
-                    disableRipple
-                    disableFocusRipple
-                  >
-                    <label htmlFor="art-upload">
-                      upload image
-                      <input
-                        accept="image/*"
-                        type="file"
-                        name="img"
-                        id="art-upload"
-                        style={{ display: 'none' }}
-                        onChange={this.handlePictureImg}
-                      />
-                    </label>
-                  </Button>
+        <>
+          <button
+            type="button"
+            onClick={this.toggle}
+            className="uploadModalButton"
+          >
+            <img src={plusButton} alt="+" />
+          </button>
+          <Modal isOpen={modal} toggle={this.toggle}>
+            <div className="uploadPost">
+              <div className="uploadPost__header">
+                <div className="uploadPost__header__title">
+                  Upload Your Masterpiece!
                 </div>
-                {pictureImgUrl && (
-                  <div className="postUpload__creator-previewPic">
-                    <Cropper
-                      className="cropper"
-                      alt="original"
-                      src={pictureImgUrl}
-                      ref={(cropper) => {
-                        this.cropper = cropper;
-                      }}
-                      // Cropper.js options
-                      center
-                    />
-                  </div>
-                )}
-                <div className="postUpload__creator-content">
+              </div>
+              <div className="uploadPost__content">
+                <div className="uploadPost__content__border">
+                  <ImageCropper imgHandler={this.handlePictureWithCropper} />
+                </div>
+                <div className="uploadPost__content__input">
                   <TextField
                     id="outlined-multiline"
-                    placeholder="Type your art..."
+                    placeholder="Art's title"
                     value={content}
                     multiline
                     rows="3"
                     rowsMax="10"
                     variant="outlined"
-                    fullWidth
                     onChange={this.handleContent}
                   />
                 </div>
               </div>
+              <div className="uploadPost__footer">
+                <NoStyleButton onClick={this.handlePostUpload}>
+                  <div className="uploadPost__footer__upload">
+                    <div className="uploadPost__footer__upload__text">
+                      upload!
+                    </div>
+                  </div>
+                </NoStyleButton>
+              </div>
             </div>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={this.handlePostUpload}>
-              Upload
-            </Button>
-            <Button color="secondary" onClick={this.toggle}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Modal>
+          </Modal>
+        </>
       </>
     );
   }
