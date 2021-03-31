@@ -16,9 +16,12 @@
     border: 1px solid $border-gray;
     overflow: hidden;
     @include content-center;
+    position: relative;
 
     & img {
-      height: 100%;
+      position: absolute;
+      max-width: 100%;
+      height: auto;
     }
 
     &.default {

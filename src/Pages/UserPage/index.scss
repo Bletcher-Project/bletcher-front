@@ -8,7 +8,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 1rem;
+    margin-top: 2rem;
 
     &__thumb {
       position: relative;
@@ -18,13 +18,13 @@
         background-color: transparent;
         position: absolute;
         bottom: 0;
-        right: -1.5rem;
+        right: -10px;
         &:focus {
           outline: none;
         }
         & img {
-          width: 2.7rem;
-          height: 2.7rem;
+          width: 27px;
+          height: 27px;
         }
       }
     }
@@ -35,7 +35,7 @@
         font-size: 2.2rem;
         font-weight: bold;
         color: $main-color;
-        text-shadow: 0 2px 2px $main-color;
+        text-shadow: 0 1px 5px $light-purple;
       }
     }
 
