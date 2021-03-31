@@ -159,6 +159,20 @@ function Profile() {
             <UploadImgFile handleUploadImg={handleUploadImg}>
               <Thumbnail src={image.preview} userName={user && user.nickname} />
             </UploadImgFile>
+            <button
+              type="button"
+              onClick={() =>
+                setImage({
+                  preview: null,
+                  raw: null,
+                })
+              }
+              className="profile__form-photo__delete"
+            >
+              <div className="profile__form-photo__delete__btn">
+                <div className="profile__form-photo__delete__btn-flag" />
+              </div>
+            </button>
           </div>
           <p className="profile__form-desc">
             Bletcher users will be able to identify you with the information

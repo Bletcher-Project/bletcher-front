@@ -24,6 +24,34 @@
 
     &-photo {
       margin-bottom: 40px;
+      position: relative;
+
+      &__delete {
+        position: absolute;
+        border: none;
+        background-color: transparent;
+        bottom: 3px;
+        right: -7px;
+
+        &:focus {
+          outline: none;
+        }
+
+        &__btn {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background-color: $white;
+          box-shadow: 0 0 6px rgba($color: red, $alpha: 0.3);
+          @include content-center;
+
+          &-flag {
+            width: 50%;
+            height: 3px;
+            background-color: red;
+          }
+        }
+      }
     }
 
     &-desc {
