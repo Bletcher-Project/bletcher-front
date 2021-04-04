@@ -7,8 +7,6 @@ import NoStyleButton from 'Components/Form/NoStyleButton';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 
-import Button from '@material-ui/core/Button';
-
 function ImageCropper(props) {
   const { imgHandler } = props;
   const cropperRef = useRef(null);
@@ -48,7 +46,7 @@ function ImageCropper(props) {
     } else {
       // TO DO :: implement login modal !
     }
-  }, [imgHandler, pictureImgUrl, user, pictureImg]);
+  }, [imgHandler, user, pictureImg]);
 
   const removePicture = () => {
     setPictureImg(null);
@@ -85,24 +83,17 @@ function ImageCropper(props) {
             {!pictureImg && (
               <div className="imageCropper__creator-previewPic__empty">
                 <div className="imageCropper__creator-previewPic__empty-uploadPic">
-                  <Button
-                    size="small"
-                    fullWidth
-                    disableRipple
-                    disableFocusRipple
-                  >
-                    <label htmlFor="art-upload">
-                      upload image
-                      <input
-                        accept="image/*"
-                        type="file"
-                        name="img"
-                        id="art-upload"
-                        style={{ display: 'none' }}
-                        onChange={handlePictureImg}
-                      />
-                    </label>
-                  </Button>
+                  <label htmlFor="art-upload">
+                    Choose Image
+                    <input
+                      accept="image/*"
+                      type="file"
+                      name="img"
+                      id="art-upload"
+                      style={{ display: 'none' }}
+                      onChange={handlePictureImg}
+                    />
+                  </label>
                 </div>
               </div>
             )}

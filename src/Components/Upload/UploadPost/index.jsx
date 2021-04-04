@@ -48,7 +48,8 @@ class Upload extends Component {
     super(props);
     this.state = {
       imageFormData: null,
-      content: '',
+      title: '',
+      description: '',
       modal: false,
     };
   }
@@ -59,19 +60,23 @@ class Upload extends Component {
     });
   };
 
-  handleContent = (e) => {
-    this.setState({ content: e.target.value });
+  handleTitle = (e) => {
+    this.setState({ title: e.target.value });
+  };
+
+  handleDescription = (e) => {
+    this.setState({ description: e.target.value });
   };
 
   handlePostUpload = async () => {
     const { user, uploadPost, token } = this.props;
-    const { imageFormData, content } = this.state;
+    const { imageFormData, title, description } = this.state;
     if (user) {
       const params = new URLSearchParams();
 
-      params.append('title', content);
+      params.append('title', title);
       params.append('user_id', user.id);
-      params.append('description', content);
+      params.append('description', description);
       params.append('category_id', 5);
       params.append('is_public', true);
       const postUpload = await uploadPost(imageFormData, params, token);
@@ -104,34 +109,45 @@ class Upload extends Component {
             <div className="uploadPost">
               <div className="uploadPost__header">
                 <div className="uploadPost__header__title">
-                  Upload Your Masterpiece!
+                  Share Your Masterpiece with Blecther.
+                </div>
+                <div className="uploadPost__header__sub">
+                  This will be automatically uploaded to my feed and displayed
+                  to Blecther home.
                 </div>
               </div>
               <div className="uploadPost__content">
-                <div className="uploadPost__content__border">
+                <div className="uploadPost__content__image">
                   <ImageCropper imgHandler={this.handlePictureWithCropper} />
                 </div>
-                <div className="uploadPost__content__input">
+              </div>
+              <div className="uploadPost__footer">
+                <div className="uploadPost__footer__input">
+                  <div className="uploadPost__footer__input__text">
+                    Brief Introduction about Your Masterpiece
+                  </div>
                   <TextField
                     id="outlined-multiline"
                     placeholder="Art's title"
                     value={content}
-                    multiline
-                    rows="3"
-                    rowsMax="10"
-                    variant="outlined"
-                    onChange={this.handleContent}
+                    rows="1"
+                    focused={false}
+                    onChange={this.handleTitle}
+                  />
+                  <TextField
+                    id="outlined-multiline"
+                    placeholder="Art's description"
+                    value={content}
+                    rows="1"
+                    focused={false}
+                    onChange={this.handleDescription}
                   />
                 </div>
-              </div>
-              <div className="uploadPost__footer">
-                <NoStyleButton onClick={this.handlePostUpload}>
-                  <div className="uploadPost__footer__upload">
-                    <div className="uploadPost__footer__upload__text">
-                      upload!
-                    </div>
-                  </div>
-                </NoStyleButton>
+                <div className="uploadPost__footer__buttons">
+                  <NoStyleButton onClick={this.handlePostUpload}>
+                    <div className="uploadPost__footer__upload">Upload</div>
+                  </NoStyleButton>
+                </div>
               </div>
             </div>
           </Modal>
