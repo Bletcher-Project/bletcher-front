@@ -46,7 +46,7 @@ class Post extends Component {
 
   onClickOnlyByMouse = (e) => {
     const { onClick } = this.props;
-    if (this.isClickedByMouse(e)) onClick();
+    if (this.isClickedByMouse(e) && onClick) onClick();
   };
 
   render() {
