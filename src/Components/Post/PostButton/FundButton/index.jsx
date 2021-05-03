@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addFundingPost } from 'Redux/post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
+import SignInModal from 'Components/Sign/SignInModal';
 
 import bgFilledHeartImg from 'Assets/images/fundHeart-bg-fill.png';
 import bgFilledPurpleImg from 'Assets/images/fundHeart-bg-purple.png';
@@ -26,6 +27,8 @@ function FundButton(props) {
   const token = useSelector((state) => state.authReducer.token);
 
   const [isClicked, setIsClicked] = useState(isFunding);
+  const [modalVisible, setModalVisible] = useState(false);
+
   const fundClickHandler = async (e) => {
     e.stopPropagation();
     if (isLogin) {
@@ -33,16 +36,24 @@ function FundButton(props) {
         dispatch(addFundingPost(postId, token));
         setIsClicked(true);
       }
+    } else {
+      setModalVisible(true);
     }
   };
   return (
-    <NoStyleButton onClick={(e) => fundClickHandler(e)}>
-      <img
-        className="postButton fund"
-        src={isClicked ? bgFilledPurpleImg : bgFilledHeartImg}
-        alt="fund"
+    <>
+      <NoStyleButton onClick={(e) => fundClickHandler(e)}>
+        <img
+          className="postButton fund"
+          src={isClicked ? bgFilledPurpleImg : bgFilledHeartImg}
+          alt="fund"
+        />
+      </NoStyleButton>
+      <SignInModal
+        isOpen={modalVisible}
+        toggle={() => setModalVisible(!modalVisible)}
       />
-    </NoStyleButton>
+    </>
   );
 }
 
