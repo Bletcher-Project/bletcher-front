@@ -36,11 +36,18 @@ function FundFooter(props) {
   };
 
   useEffect(() => {
+    const oneMinute = 60000;
     async function fetchDueDate() {
       const dd = await dispatch(getDueDate(postId));
       setTimeLimit(parseTimeLimit(dd));
     }
     fetchDueDate();
+
+    const dueDateFetchInterval = setInterval(() => {
+      fetchDueDate();
+    }, oneMinute);
+
+    return () => clearInterval(dueDateFetchInterval);
   }, [postId, dispatch]);
 
   useEffect(() => {
