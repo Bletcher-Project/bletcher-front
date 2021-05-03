@@ -4,6 +4,7 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
 import { getFundingPosts } from 'Redux/fetch-post';
+import { getFundCount } from 'Redux/post';
 
 import Post from 'Components/Post/Post';
 import PostList from 'Components/Post/PostList';
@@ -11,13 +12,14 @@ import FundButton from 'Components/Post/PostButton/FundButton';
 import ShareButton from 'Components/Post/PostButton/ShareButton';
 import NavBar from 'Components/Common/NavBar';
 import Loader from 'Components/Common/Loader';
+import Empty from 'Components/Common/Empty';
 import Jumbotron from 'Components/Common/Jumbotron';
 import DropFilter from 'Components/Common/DropFilter';
 import NoStyleButton from 'Components/Form/NoStyleButton';
 import MixChecker from 'Components/Mix/MixChecker';
 
 import FILTER from 'Constants/filter-option';
-import { fundingPost } from 'PropTypes/post';
+import { fundOngoingPost, fundEndPost } from 'PropTypes/post';
 
 import { withRouter } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
@@ -25,6 +27,7 @@ import cx from 'classnames';
 
 const defaultProps = {
   user: null,
+  token: null,
   fundingPosts: {
     onGoingPost: [],
     endPost: [],
@@ -33,24 +36,31 @@ const defaultProps = {
 
 const propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
+  token: PropTypes.string,
   user: PropTypes.shape({
     id: PropTypes.number,
     nickname: PropTypes.string,
   }),
   getPosts: PropTypes.func.isRequired,
-  fundingPosts: PropTypes.objectOf(fundingPost),
+  getHeartCount: PropTypes.func.isRequired,
+  fundingPosts: PropTypes.shape({
+    onGoingPost: fundOngoingPost,
+    endPost: fundEndPost,
+  }),
 };
 
 const mapStateToProps = (state) => {
   return {
     user: state.authReducer.user,
+    token: state.authReducer.token,
     fundingPosts: state.fetchPostReducer.fundingPosts,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPosts: () => dispatch(getFundingPosts()),
+    getPosts: (userId) => dispatch(getFundingPosts(userId)),
+    getHeartCount: (postId) => dispatch(getFundCount(postId)),
   };
 };
 
@@ -66,25 +76,57 @@ class FundingPage extends Component {
   }
 
   componentDidMount = async () => {
-    await this.fetchFundingPosts();
+    const { token, user } = this.props;
+    if (!token) {
+      await this.fetchFundingPosts(0);
+    } else if (user) {
+      await this.fetchFundingPosts(user.id);
+    }
   };
 
-  getPostByOption = () => {
+  componentDidUpdate = (prevProps) => {
+    const { token, user } = this.props;
+
+    if (user !== prevProps.user) {
+      if (!token) {
+        this.fetchFundingPosts(0);
+      } else if (user) {
+        this.fetchFundingPosts(user.id);
+      }
+    }
+  };
+
+  getPostByOption = async () => {
     const { option } = this.state;
-    const { fundingPosts } = this.props;
+    const { fundingPosts, getHeartCount } = this.props;
+    const mergedOngoingPost = (
+      await Promise.all(
+        fundingPosts.onGoingPost.map((post) => getHeartCount(post.post.id)),
+      )
+    ).map((count, index) => {
+      const post = fundingPosts.onGoingPost[index];
+      return {
+        ...post,
+        post: {
+          ...post.post,
+          fundCount: count,
+        },
+      };
+    });
+
     const filteredPosts =
-      option === 'Ongoing' ? fundingPosts.onGoingPost : fundingPosts.endPost;
+      option === 'Ongoing' ? mergedOngoingPost : fundingPosts.endPost;
     return filteredPosts;
   };
 
-  fetchFundingPosts = async () => {
+  fetchFundingPosts = async (userId) => {
     const { getPosts } = this.props;
-    await getPosts();
+    await getPosts(userId);
     const { fundingPosts } = this.props;
     if (fundingPosts) {
       this.setState({
         feedLoading: false,
-        posts: this.getPostByOption(),
+        posts: await this.getPostByOption(),
       });
     }
   };
@@ -102,31 +144,39 @@ class FundingPage extends Component {
     });
   };
 
-  orderPost = (sortOption) => {
-    const sortOrder = sortOption === 'Latest' ? -1 : 1;
-    const currentPost = this.getPostByOption();
-    this.setState(() => ({
-      posts: currentPost.sort((l, r) => {
-        return l.created_at < r.created_at ? sortOrder : -1 * sortOrder;
-      }),
-    }));
+  orderPost = async (sortOption) => {
+    const currentPost = await this.getPostByOption();
+    if (sortOption === 'Popular') {
+      this.setState(() => ({
+        posts: currentPost.sort((l, r) => {
+          return r.post.fundCount - l.post.fundCount;
+        }),
+      }));
+    } else {
+      const sortOrder = sortOption === 'Latest' ? -1 : 1;
+      this.setState(() => ({
+        posts: currentPost.sort((l, r) => {
+          return l.post.created_at > r.post.created_at
+            ? sortOrder
+            : -1 * sortOrder;
+        }),
+      }));
+    }
   };
 
-  getMyPosts = () => {
+  getMyPosts = async () => {
     const { user } = this.props;
-    const currentPost = this.getPostByOption();
-    return currentPost.filter((data) => data['User.id'] === user.id);
+    const currentPost = await this.getPostByOption();
+    return currentPost.filter((data) => data.post['User.id'] === user.id);
   };
 
-  showMyPosts = () => {
-    this.setState({ posts: this.getMyPosts() });
+  showMyPosts = async () => {
+    this.setState({ posts: await this.getMyPosts() });
   };
 
   dropDownHandler = (e) => {
     const target = e.target.innerText;
-    if (target === 'Popular') {
-      // sort by funding Favorite
-    } else if (target === 'Recommended') {
+    if (target === 'Recommended') {
       // sort by our favorite
     } else if (target === 'My') {
       this.showMyPosts();
@@ -138,9 +188,13 @@ class FundingPage extends Component {
 
   optionClickHandler = async (e) => {
     await new Promise((accept) =>
-      this.setState({ option: e.target.innerText }, accept),
+      this.setState({ option: e.target.innerText, feedLoading: true }, accept),
     );
-    this.setState({ filter: 'Recommended', posts: this.getPostByOption() });
+    this.setState({
+      posts: await this.getPostByOption(),
+      filter: 'Recommended',
+      feedLoading: false,
+    });
   };
 
   showPostDetail = (postId) => {
@@ -150,23 +204,40 @@ class FundingPage extends Component {
     history.push({ pathname: '/detail', search: searchQuery });
   };
 
-  renderPosts = () => {
-    const { posts } = this.state;
-    const fundIcon = (
+  getFundIcon = (isFunding, postId) => {
+    return (
       <>
-        <FundButton />
+        <FundButton isFunding={isFunding} postId={postId} />
         <ShareButton />
       </>
     );
-    return posts.map((data) => (
-      <Post
-        key={data.id}
-        post={data}
-        hoverIcon={fundIcon}
-        footerOption="funding"
-        onClick={() => this.showPostDetail(data.id)}
-      />
-    ));
+  };
+
+  renderPosts = () => {
+    const { posts, option } = this.state;
+    if (!posts.length)
+      return (
+        <Empty
+          title="Launch Your Work"
+          description={["We're waiting", 'your masterpiece']}
+        />
+      );
+
+    return posts.map((data) => {
+      const postId = option === 'Ongoing' ? data.post.id : data.id;
+      const postData = option === 'Ongoing' ? data.post : data;
+      const hoverIcon =
+        option === 'Ongoing' ? this.getFundIcon(data.isFunding, postId) : null;
+      return (
+        <Post
+          key={postId}
+          post={postData}
+          hoverIcon={hoverIcon}
+          footerOption={option === 'Ongoing' ? 'funding' : ''}
+          onClick={() => this.showPostDetail(postId)}
+        />
+      );
+    });
   };
 
   render() {
@@ -192,12 +263,14 @@ class FundingPage extends Component {
                 </NoStyleButton>
               </span>
             </div>
-            <div className="fundingPage__optionBar__filter">
-              <DropFilter
-                filterTitle={filter}
-                items={this.createDropDownItem()}
-              />
-            </div>
+            {option === 'Ongoing' && (
+              <div className="fundingPage__optionBar__filter">
+                <DropFilter
+                  filterTitle={filter}
+                  items={this.createDropDownItem()}
+                />
+              </div>
+            )}
           </div>
           <MixChecker />
           <PostList

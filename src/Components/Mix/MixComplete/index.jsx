@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
 import { connect } from 'react-redux';
-import { getPostByPostId, recomposeMixing, initMixState } from 'Redux/post';
+import {
+  getPostByPostId,
+  recomposeMixing,
+  initMixState,
+  addFundingPost,
+} from 'Redux/post';
 import { getUserPosts } from 'Redux/fetch-post';
 
 import NoStyleButton from 'Components/Form/NoStyleButton';
@@ -25,6 +30,7 @@ const defaultProps = {
 };
 
 const propTypes = {
+  addFunding: PropTypes.func.isRequired,
   initializeMixState: PropTypes.func.isRequired,
   toggle: PropTypes.func.isRequired,
   history: ReactRouterPropTypes.history.isRequired,
@@ -53,6 +59,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     initializeMixState: () => {
       return dispatch(initMixState());
+    },
+    addFunding: (postId, token) => {
+      dispatch(addFundingPost(postId, token));
     },
   };
 };
@@ -131,7 +140,10 @@ class MixComplete extends Component {
       toggle,
       patchUserPost,
       initializeMixState,
+      addFunding,
+      mixId,
     } = this.props;
+    addFunding(mixId, token);
     patchUserPost('me', user, token);
     initializeMixState();
     toggle();

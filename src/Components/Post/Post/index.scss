@@ -8,7 +8,7 @@
   width: 250px;
   height: fit-content;
   position: relative;
-  margin: 2% 0;
+  margin: 5% 0;
   padding-bottom: 1rem;
   border-radius: 5px;
   cursor: pointer;
@@ -25,6 +25,7 @@
   &__body {
     height: 300px;
     display: flex;
+    justify-content: center;
     padding: 7px 25px 20px 25px;
 
     &__image {
@@ -32,10 +33,6 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
-
-      & img {
-        height: 100%;
-      }
     }
   }
 }

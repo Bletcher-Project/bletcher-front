@@ -29,8 +29,24 @@ class Post extends Component {
   }
 
   getSrc = (post) => {
+    if (!post) return null;
     if (post.Image !== undefined) return post.Image.path;
     return post['Image.path'];
+  };
+
+  resizeHeight = (src) => {
+    const path = this.getSrc(src);
+    const img = new Image();
+    img.src = path;
+    if (img.height < 300) return { height: 'initial' };
+    return { height: '100%' };
+  };
+
+  isClickedByMouse = (e) => e.detail;
+
+  onClickOnlyByMouse = (e) => {
+    const { onClick } = this.props;
+    if (this.isClickedByMouse(e) && onClick) onClick();
   };
 
   render() {
@@ -40,10 +56,9 @@ class Post extends Component {
       headerPosition,
       footerOption,
       headerBackground,
-      onClick,
     } = this.props;
     return (
-      <NoStyleButton onClick={onClick}>
+      <NoStyleButton onClick={(e) => this.onClickOnlyByMouse(e)}>
         <div className="post">
           <div className="post__hover">{hoverIcon}</div>
           <PostHeader
@@ -54,13 +69,18 @@ class Post extends Component {
 
           <div className="post__body">
             <div className="post__body__image">
-              <img src={this.getSrc(post)} alt="artwork" />
+              <img
+                src={this.getSrc(post)}
+                style={this.resizeHeight(post)}
+                alt="artwork"
+              />
             </div>
           </div>
 
           <PostFooter
             footerOption={footerOption}
             createdAt={footerOption ? post.created_at : ''}
+            postId={post.id}
           />
         </div>
       </NoStyleButton>

@@ -31,6 +31,8 @@ export const MIX_SUB = '/sub';
 export const FUND_API = '/funds';
 export const FUND_ONGOING = '/ongoing';
 export const FUND_END = '/end';
+export const FUND_DUEDATE = '/duedate';
+export const FUND_COUNT = '/count';
 
 /* comments */
 export const COMMENT_API = '/comments';

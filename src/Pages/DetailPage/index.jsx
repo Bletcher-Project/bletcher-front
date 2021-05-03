@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { getPostByPostId } from 'Redux/post';
+import { getPostByPostId, getFundCount, getDueDate } from 'Redux/post';
 
 import NavBar from 'Components/Common/NavBar';
 
 import DueDate from 'Assets/images/dueDate-filled.svg';
 import HeartImg from 'Assets/images/fundHeart-bg-purple.png';
+
+import parseTimeLimit from 'Utils/parseTimeLimit';
 
 import profile1 from 'Dummies/dummyImage/1.jpg';
 import profile2 from 'Dummies/dummyImage/2.jpg';
@@ -20,12 +22,16 @@ import cx from 'classnames';
 const defaultProps = {};
 const propTypes = {
   getPost: PropTypes.func.isRequired,
+  getDetailDueDate: PropTypes.func.isRequired,
+  getDetailFundCount: PropTypes.func.isRequired,
   location: ReactRouterPropTypes.location.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getPost: async (postId, token) => dispatch(getPostByPostId(postId, token)),
+    getDetailDueDate: (postId) => dispatch(getDueDate(postId)),
+    getDetailFundCount: (postId) => dispatch(getFundCount(postId)),
   };
 };
 class DetailPage extends Component {
@@ -33,11 +39,14 @@ class DetailPage extends Component {
     super(props);
     this.state = {
       post: {},
+      fundCount: 0,
+      dueDate: '',
     };
   }
 
   getSrc = () => {
     const { post } = this.state;
+    if (!post) return null;
     if (post.Image !== undefined) return post.Image.path;
     return post && post['Image.path'];
   };
@@ -53,15 +62,15 @@ class DetailPage extends Component {
   };
 
   componentDidMount = async () => {
-    const { getPost } = this.props;
+    const { getPost, getDetailDueDate, getDetailFundCount } = this.props;
     const params = this.getParamsByQuery();
     const { postId, isActive } = params;
 
     if (postId) {
       const detailedPost = await getPost(postId);
-      await new Promise((accept) =>
-        this.setState({ post: detailedPost }, accept),
-      );
+      const dueDate = parseTimeLimit(await getDetailDueDate(postId));
+      const fundCount = await getDetailFundCount(postId);
+      this.setState({ post: detailedPost, dueDate, fundCount });
     } else this.linkToNotFound();
 
     if (!(isActive === 'Ongoing' || isActive === 'End')) this.linkToNotFound();
@@ -70,6 +79,7 @@ class DetailPage extends Component {
   render() {
     const params = this.getParamsByQuery();
     const { isActive } = params;
+    const { dueDate, fundCount } = this.state;
     return (
       <div className="wrapper">
         <NavBar isActive="detail" />
@@ -94,13 +104,13 @@ class DetailPage extends Component {
                   <span>
                     <img src={DueDate} alt="dueDate" />
                   </span>
-                  <span>1:32:21</span>
+                  <span>{dueDate}</span>
                 </div>
                 <div>
                   <span>
                     <img src={HeartImg} alt="fund-heart" />
                   </span>
-                  <span>362</span>
+                  <span>{fundCount}</span>
                 </div>
               </div>
             )}
