@@ -42,6 +42,13 @@ class Post extends Component {
     return { height: '100%' };
   };
 
+  isClickedByMouse = (e) => e.detail;
+
+  onClickOnlyByMouse = (e) => {
+    const { onClick } = this.props;
+    if (this.isClickedByMouse(e)) onClick();
+  };
+
   render() {
     const {
       post,
@@ -49,10 +56,9 @@ class Post extends Component {
       headerPosition,
       footerOption,
       headerBackground,
-      onClick,
     } = this.props;
     return (
-      <NoStyleButton onClick={onClick}>
+      <NoStyleButton onClick={(e) => this.onClickOnlyByMouse(e)}>
         <div className="post">
           <div className="post__hover">{hoverIcon}</div>
           <PostHeader
