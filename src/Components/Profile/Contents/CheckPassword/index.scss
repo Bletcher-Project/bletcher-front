@@ -1,0 +1,15 @@
+/*
+  Check Password Component Styling
+*/
+
+.checkPassword {
+  display: flex;
+
+  &__input {
+    margin-right: 10px;
+  }
+
+  &__btn {
+    margin-top: 1px;
+  }
+}

@@ -13,6 +13,7 @@ export const PasswordHelperText = {
   MIN_WORDS: 'Should be more than 8 words',
   MAX_WORDS: 'Should no greater than 16 words',
   MISS_MATCH_PW: 'Enter same password above',
+  NOT_VALID: 'Please check your password again',
 };
 
 export const NameHelperText = {

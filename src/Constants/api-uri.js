@@ -12,6 +12,7 @@ export const AUTH_API = '/auth';
 /* users */
 export const USER_API = '/users';
 export const USER_ONE = '/user';
+export const USER_CHECK = '/check';
 export const MY = '/my';
 
 /* posts */

@@ -178,7 +178,7 @@ class UserPage extends Component {
         <div className="userPage__header">
           <div className="userPage__header__thumb">
             <Thumbnail
-              src={user ? user.profile_image : null}
+              src={user ? user.Image && user.Image.path : null}
               userName={user ? user.nickname : null}
               size={100}
             />

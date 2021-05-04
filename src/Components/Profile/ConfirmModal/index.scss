@@ -1,0 +1,25 @@
+/*
+  Confirm Modal Component Styling
+*/
+
+.confirmModal {
+  &__header {
+    font-size: $header1;
+    text-align: center;
+  }
+
+  &__body {
+    display: flex;
+    justify-content: center;
+
+    &-btn {
+      margin: 5px;
+    }
+  }
+
+  & .modal-content {
+    border: none;
+    border-radius: 20px;
+    padding: 20px;
+  }
+}
