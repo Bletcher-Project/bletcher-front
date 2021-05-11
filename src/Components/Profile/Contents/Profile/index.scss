@@ -21,9 +21,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-
     &-photo {
       margin-bottom: 40px;
+      position: relative;
+
+      &__deleteButton {
+        border: none;
+        background-color: transparent;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        padding: 0;
+        &:focus {
+          outline: none;
+        }
+      }
     }
 
     &-desc {
