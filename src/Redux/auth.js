@@ -74,8 +74,8 @@ export default authReducer(
     [CHECK_PASSWORD_FAIL]: (state) => {
       return state;
     },
-    [PATCH_USER_SUCCESS]: (state, action) => {
-      return { ...state, user: action.payload };
+    [PATCH_USER_SUCCESS]: (state) => {
+      return { ...state };
     },
     [PATCH_USER_FAIL]: (state) => {
       return state;
@@ -219,8 +219,11 @@ export const updateUser = (token, newInfo) => {
       if (newInfo.email) formData.append('email', newInfo.email);
       if (newInfo.name) formData.append('nickname', newInfo.name);
       if (newInfo.introduce) formData.append('introduce', newInfo.introduce);
-      if (newInfo.img) formData.append('img', newInfo.img);
       if (newInfo.password) formData.append('password', newInfo.password);
+      if (newInfo.profileImgDeleteFlag)
+        formData.append('profile_img_delete', newInfo.profileImgDeleteFlag);
+      else if (newInfo.img) formData.append('img', newInfo.img);
+
       const response = await fetch(
         `${process.env.REACT_APP_SERVER_URL}${INIT}${USER_API}`,
         {
@@ -232,8 +235,8 @@ export const updateUser = (token, newInfo) => {
         },
       );
       if (response.status === 200) {
-        const result = await response.json();
-        await dispatch(patchUserSuccess(result.data));
+        await dispatch(patchUserSuccess());
+        await dispatch(getUser(token));
       } else {
         await dispatch(patchUserFail());
       }

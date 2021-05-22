@@ -11,6 +11,9 @@ import RoundLoader from 'Components/Loader/Round';
 import CheckPassword from 'Components/Profile/Contents/CheckPassword';
 
 import { DEFAULT_HELPER_TEXT, PasswordHelperText } from 'Constants/helper-text';
+
+import deleteX from 'Assets/images/delete-x.svg';
+
 import {
   checkEmailValidation,
   checkNameValidation,
@@ -38,6 +41,9 @@ function Profile() {
     email: true,
     password: true,
   });
+
+  const [isDeleted, setIsDeleted] = useState(false);
+
   const [helperText, setHelperText] = useState({
     name: DEFAULT_HELPER_TEXT,
     email: DEFAULT_HELPER_TEXT,
@@ -60,6 +66,7 @@ function Profile() {
         preview: URL.createObjectURL(e.target.files[0]),
         raw: e.target.files[0],
       });
+      setIsDeleted(false);
     }
   };
 
@@ -116,7 +123,9 @@ function Profile() {
     if (email !== user.email) updateData = { ...updateData, email };
     if (name !== user.nickname) updateData = { ...updateData, name };
     if (introduce !== user.introduce) updateData = { ...updateData, introduce };
-    if (image.raw) updateData = { ...updateData, img: image.raw };
+    if (isDeleted) {
+      updateData = { ...updateData, profileImgDeleteFlag: true };
+    } else if (image.raw) updateData = { ...updateData, img: image.raw };
     await dispatch(updateUser(token, updateData));
   };
 
@@ -138,6 +147,7 @@ function Profile() {
     setIntroduce(user && user.introduce);
     setPassword({ raw: '', confirm: '' });
     setIsValid({ name: true, email: true, password: true });
+    setIsDeleted(false);
     setHelperText({
       name: DEFAULT_HELPER_TEXT,
       email: DEFAULT_HELPER_TEXT,
@@ -157,7 +167,23 @@ function Profile() {
         <div className="profile__form">
           <div className="profile__form-photo">
             <UploadImgFile handleUploadImg={handleUploadImg}>
-              <Thumbnail src={image.preview} userName={user && user.nickname} />
+              <>
+                <Thumbnail
+                  src={isDeleted ? null : image.preview}
+                  userName={user && user.nickname}
+                />
+
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsDeleted(true);
+                  }}
+                  className="profile__form-photo__deleteButton"
+                >
+                  <img src={deleteX} alt="del" />
+                </button>
+              </>
             </UploadImgFile>
           </div>
           <p className="profile__form-desc">
