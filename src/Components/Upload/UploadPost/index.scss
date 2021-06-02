@@ -2,69 +2,92 @@
   Upload Post Component Styling
 */
 
-.postUpload {
-  width: 500px;
-  button:focus {
-    outline: none;
-  }
-
-  .backBtn {
-    width: 35px;
-    cursor: pointer;
-  }
-
-  &__creator {
-    &-uploadPic {
-      width: 80%;
-      margin: auto;
-      margin-bottom: 5px;
-
-      label {
-        width: 100%;
-        margin: 0;
-        cursor: pointer;
-      }
+.uploadPost {
+  background-color: white;
+  z-index: 1005;
+  width: 70%;
+  height: 70%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  &__header {
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content: center;
+    background-color: $background-color;
+    &__title {
+      color: $main-color;
+      font-size: 1.9rem;
     }
 
-    &-previewPic {
+    &__sub {
+      font-family: 'AppleSDGothicNeo';
+    }
+  }
+
+  &__content {
+    width: 90%;
+    height: 50%;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    &__image {
+      height: 100%;
+    }
+  }
+
+  &__footer {
+    width: 100%;
+    margin-bottom: 3%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    &__input {
+      width: 40%;
+      height: 40%;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      width: 80%;
-      min-height: 300px;
-      margin: auto;
-      border: 2px dotted #ccd0d5;
-      border-radius: 4px;
-      margin-bottom: 20px;
-
-      .cropper {
-        width: 100%;
-        max-height: 300px;
+      & input {
+        width: max-content;
       }
-    }
 
-    &-content {
-      width: 80%;
-      margin: auto;
-    }
-  }
-
-  &__sketcher {
-    &-uploadPic {
-      display: flex;
-
-      div {
-        width: 50%;
-        border: 1px solid #ccd0d5;
-        border-radius: 4px;
+      &__text {
         text-align: center;
+        color: $main-color;
+        font-size: 1.3rem;
       }
     }
-  }
+    &__buttons {
+      width: fit-content;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      & .noStyleButton {
+        height: fit-content;
+        padding: 1rem 4rem;
+        border-radius: 26px;
+        border: 2px solid $main-color;
+        text-align: center;
 
-  &__upload {
-    margin-top: 20px;
-    text-align: center;
+        &:hover {
+          color: white;
+          background-color: $main-color;
+        }
+      }
+    }
   }
 }
